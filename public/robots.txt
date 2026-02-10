@@ -1,0 +1,11 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin/private pages
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /builder/
+
+# Sitemap
+Sitemap: https://resume-forge-ai-lilac.vercel.app/sitemap.xml
