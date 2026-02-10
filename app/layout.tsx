@@ -9,7 +9,7 @@ const siteConfig = {
   description:
     "Build professional, ATS-optimized resumes with AI assistance. Get hired faster with intelligent job matching, real-time PDF preview, and expert templates. Free resume builder trusted by 10,000+ job seekers.",
   url: "https://resume-forge-ai-lilac.vercel.app", // Replace with your actual domain
-  ogImage: "https://resume-forge-ai-lilac.vercel.app/og-image.png", // Replace with your OG image
+  ogImage: "https://resume-forge-ai-lilac.vercel.app/images/og-image.png", // Replace with your OG image
   links: {
     twitter: "https://twitter.com/resumeforgeai",
     github: "https://github.com/yourusername/resume-builder",
