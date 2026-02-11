@@ -250,7 +250,7 @@ export default function LatexModernTemplate({
 
           <View style={styles.contactRow}>
             {resume.personalInfo.linkedin && (
-              <Link src={resume.personalInfo.linkedin} style={styles.link} underline>
+              <Link src={resume.personalInfo.linkedin} style={styles.link}>
                 LinkedIn: {resume.personalInfo.linkedin}
               </Link>
             )}
@@ -308,8 +308,7 @@ export default function LatexModernTemplate({
                 </View>
 
                 {exp.achievements.map((achievement, i) => {
-                  // Parse achievement if it has a bold title (e.g., "Title: Description")
-                  const parts = achievement.split(/:(.*)/s);
+                  const parts = achievement.split(/:(.*)/);
                   const hasTitle = parts.length > 1;
 
                   return (
@@ -419,7 +418,7 @@ export default function LatexModernTemplate({
             <View style={styles.achievementsList}>
               {resume.achievements.map((achievement, idx) => {
                 // Parse achievement if formatted as "Label: Description"
-                const parts = achievement.split(/:(.*)/s);
+                const parts = achievement.split(/:(.*)/);
                 const hasLabel = parts.length > 1;
 
                 return (
