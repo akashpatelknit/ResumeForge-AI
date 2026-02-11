@@ -12,7 +12,18 @@ interface ResumeStore {
     updates: Partial<Resume["experience"][0]>,
   ) => void;
   deleteExperience: (id: string) => void;
-  // Add similar methods for education, skills, projects
+  addEducation: (education: Resume["education"][0]) => void;
+  updateEducation: (
+    id: string,
+    updates: Partial<Resume["education"][0]>,
+  ) => void;
+  deleteEducation: (id: string) => void;
+  addSkill: (skill: Resume["skills"][0]) => void;
+  updateSkill: (id: string, updates: Partial<Resume["skills"][0]>) => void;
+  deleteSkill: (id: string) => void;
+  addProject: (project: Resume["projects"][0]) => void;
+  updateProject: (id: string, updates: Partial<Resume["projects"][0]>) => void;
+  deleteProject: (id: string) => void;
 }
 
 export const useResumeStore = create<ResumeStore>((set) => ({

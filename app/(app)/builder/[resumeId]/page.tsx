@@ -18,6 +18,7 @@ export default function BuilderPage({
     // Load resume data (for now, use mock data)
     const mockResume = {
       id: params.resumeId,
+      userId: "mock-user", // ✅ add this
       title: "My Resume",
       templateId: "modern",
       personalInfo: {

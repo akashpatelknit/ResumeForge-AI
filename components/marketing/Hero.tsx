@@ -5,9 +5,9 @@ import { ArrowRight, Rocket } from "lucide-react";
 const Hero = () => (
   <section className="relative min-h-[90vh] overflow-hidden flex items-center">
     {/* Animated gradient background */}
-    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50" />
-    <div className="pointer-events-none absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-purple-200/20 blur-3xl" />
-    <div className="pointer-events-none absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-200/20 blur-3xl" />
+    <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-purple-50 via-blue-50 to-pink-50" />
+    <div className="pointer-events-none absolute -top-40 -right-40 h-150 w-150 rounded-full bg-purple-200/20 blur-3xl" />
+    <div className="pointer-events-none absolute -bottom-40 -left-40 h-125 w-125 rounded-full bg-blue-200/20 blur-3xl" />
 
     {/* Grid pattern */}
     <div
@@ -30,7 +30,7 @@ const Hero = () => (
 
         <h1 className="mb-6 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           Land Your Dream Job with{" "}
-          <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
             AI-Optimized Resumes
           </span>
         </h1>
@@ -44,7 +44,7 @@ const Hero = () => (
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button
             size="lg"
-            className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 px-8 text-base text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+            className="gap-2 bg-linear-to-r from-purple-600 to-blue-600 px-8 text-base text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
           >
             Start Building for Free
             <ArrowRight className="h-4 w-4" />
