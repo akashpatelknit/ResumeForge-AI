@@ -10,6 +10,14 @@ import {
 } from "@/components/ui/sheet";
 import { Sparkles, Menu } from "lucide-react";
 
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+
 const navLinks = [
   { label: "Features", href: "#features" },
   { label: "Templates", href: "#templates" },
@@ -54,15 +62,25 @@ const Header = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" size="sm">
-            Login
-          </Button>
-          <Button
-            size="sm"
-            className="bg-gradient-hero text-white hover:opacity-90"
-          >
-            Sign Up Free
-          </Button>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="ghost" size="sm">
+                Login
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button
+                size="sm"
+                className="bg-gradient-hero text-white hover:opacity-90"
+              >
+                Sign Up Free
+              </Button>
+            </SignUpButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
@@ -85,12 +103,25 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
-              <Button variant="ghost" className="justify-start">
-                Login
-              </Button>
-              <Button className="bg-gradient-hero text-white">
-                Sign Up Free
-              </Button>
+
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button variant="ghost" className="justify-start">
+                    Login
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="bg-gradient-hero text-white">
+                    Sign Up Free
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
+
+              <SignedIn>
+                <div className="pt-4 border-t">
+                  <UserButton afterSignOutUrl="/" />
+                </div>
+              </SignedIn>
             </nav>
           </SheetContent>
         </Sheet>

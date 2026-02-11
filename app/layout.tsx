@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import "./index.css";
 
@@ -156,54 +157,60 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log(
+    "process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:",
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  );
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Additional SEO tags */}
-        <link rel="canonical" href={siteConfig.url} />
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          {/* Additional SEO tags */}
+          <link rel="canonical" href={siteConfig.url} />
 
-        {/* Preconnect to external domains for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+          {/* Preconnect to external domains for performance */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
 
-        {/* Schema.org structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: siteConfig.name,
-              description: siteConfig.description,
-              url: siteConfig.url,
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Any",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                ratingCount: "10000",
-              },
-              author: {
-                "@type": "Organization",
+          {/* Schema.org structured data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
                 name: siteConfig.name,
+                description: siteConfig.description,
                 url: siteConfig.url,
-              },
-            }),
-          }}
-        />
-      </head>
-      <body className="min-h-screen bg-background font-sans antialiased">
-        {children}
-      </body>
-    </html>
+                applicationCategory: "BusinessApplication",
+                operatingSystem: "Any",
+                offers: {
+                  "@type": "Offer",
+                  price: "0",
+                  priceCurrency: "USD",
+                },
+                aggregateRating: {
+                  "@type": "AggregateRating",
+                  ratingValue: "4.9",
+                  ratingCount: "10000",
+                },
+                author: {
+                  "@type": "Organization",
+                  name: siteConfig.name,
+                  url: siteConfig.url,
+                },
+              }),
+            }}
+          />
+        </head>
+        <body className="min-h-screen bg-background font-sans antialiased">
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

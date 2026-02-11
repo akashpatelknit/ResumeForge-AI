@@ -1,42 +1,191 @@
 import { create } from "zustand";
-import { Resume } from "@/types/resume";
+import { Education, Experience, Project, Resume, Skill } from "@/types/resume";
 
 interface ResumeStore {
   currentResume: Resume | null;
-  savedResumes: Resume[];
-  isLoading: boolean;
-
-  // Actions
   setCurrentResume: (resume: Resume) => void;
-  updateResume: (updates: Partial<Resume>) => void;
-  saveResume: () => Promise<void>;
-  loadResumes: () => Promise<void>;
-  deleteResume: (id: string) => Promise<void>;
+  updatePersonalInfo: (info: Partial<Resume["personalInfo"]>) => void;
+  updateSummary: (summary: string) => void;
+  addExperience: (experience: Resume["experience"][0]) => void;
+  updateExperience: (
+    id: string,
+    updates: Partial<Resume["experience"][0]>,
+  ) => void;
+  deleteExperience: (id: string) => void;
+  // Add similar methods for education, skills, projects
 }
 
-export const useResumeStore = create<ResumeStore>((set, get) => ({
+export const useResumeStore = create<ResumeStore>((set) => ({
   currentResume: null,
-  savedResumes: [],
-  isLoading: false,
 
   setCurrentResume: (resume) => set({ currentResume: resume }),
 
-  updateResume: (updates) =>
+  updatePersonalInfo: (info) =>
     set((state) => ({
       currentResume: state.currentResume
-        ? { ...state.currentResume, ...updates }
+        ? {
+            ...state.currentResume,
+            personalInfo: { ...state.currentResume.personalInfo, ...info },
+          }
         : null,
     })),
 
-  saveResume: async () => {
-    // API call to save resume
-  },
+  updateSummary: (summary) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? { ...state.currentResume, summary }
+        : null,
+    })),
 
-  loadResumes: async () => {
-    // API call to load resumes
-  },
+  // Experience methods
+  addExperience: (experience: Experience) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            experience: [...state.currentResume.experience, experience],
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
 
-  deleteResume: async (id) => {
-    // API call to delete resume
-  },
+  updateExperience: (id: string, updates: Partial<Experience>) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            experience: state.currentResume.experience.map((exp) =>
+              exp.id === id ? { ...exp, ...updates } : exp,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  deleteExperience: (id: string) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            experience: state.currentResume.experience.filter(
+              (exp) => exp.id !== id,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  // Education methods
+  addEducation: (education: Education) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            education: [...state.currentResume.education, education],
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  updateEducation: (id: string, updates: Partial<Education>) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            education: state.currentResume.education.map((edu) =>
+              edu.id === id ? { ...edu, ...updates } : edu,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  deleteEducation: (id: string) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            education: state.currentResume.education.filter(
+              (edu) => edu.id !== id,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  // Skills methods
+  addSkill: (skill: Skill) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            skills: [...state.currentResume.skills, skill],
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  updateSkill: (id: string, updates: Partial<Skill>) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            skills: state.currentResume.skills.map((skill) =>
+              skill.id === id ? { ...skill, ...updates } : skill,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  deleteSkill: (id: string) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            skills: state.currentResume.skills.filter(
+              (skill) => skill.id !== id,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  // Projects methods
+  addProject: (project: Project) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            projects: [...state.currentResume.projects, project],
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  updateProject: (id: string, updates: Partial<Project>) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            projects: state.currentResume.projects.map((project) =>
+              project.id === id ? { ...project, ...updates } : project,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
+
+  deleteProject: (id: string) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            projects: state.currentResume.projects.filter(
+              (project) => project.id !== id,
+            ),
+            updatedAt: new Date(),
+          }
+        : null,
+    })),
 }));
