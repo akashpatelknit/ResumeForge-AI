@@ -2,34 +2,90 @@
 
 import { Card } from "@/components/ui/card";
 import { Resume } from "@/types/resume";
-import { PDFViewer } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import ModernTemplate from "@/components/pdf/templates/ModernTemplate";
+import { useEffect, useState } from "react";
 
 interface PDFPreviewProps {
   resume: Resume | null;
 }
 
 export default function PDFPreview({ resume }: PDFPreviewProps) {
+  const [pdfData, setPdfData] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const generatePdf = async () => {
+      if (resume) {
+        try {
+          setLoading(true);
+          const blob = await pdf(<ModernTemplate resume={resume} />).toBlob();
+          const reader = new FileReader();
+
+          reader.onloadend = () => {
+            const base64data = reader.result as string;
+            setPdfData(base64data);
+          };
+
+          reader.readAsDataURL(blob);
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    generatePdf();
+  }, [resume]);
+
   if (!resume) {
     return (
-      <Card className="p-6 h-[800px] flex items-center justify-center">
+      <Card className="p-6 h-[200px] flex items-center justify-center bg-gray-50">
         <p className="text-gray-400">No resume data</p>
       </Card>
     );
   }
 
+  if (loading || !pdfData) {
+    return (
+      <Card className="p-6 h-[800px] flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-2">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <p className="text-gray-400">Loading preview...</p>
+        </div>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="p-4 overflow-hidden">
-      <div className="mb-3">
-        <h3 className="font-semibold text-sm text-gray-700">Live Preview</h3>
-      </div>
-      <div
-        className="border rounded-lg overflow-hidden bg-white"
-        style={{ height: "800px" }}
-      >
-        <PDFViewer width="100%" height="100%" showToolbar={false}>
-          <ModernTemplate resume={resume} />
-        </PDFViewer>
+    <Card className="p-0 overflow-hidden">
+      <div className="w-full h-200 flex items-center justify-center bg-gray-50">
+        <div
+          className="w-full h-full max-w-[210mm] bg-white rounded-lg shadow-xl overflow-hidden"
+          style={{
+            aspectRatio: "1 / 1.414", // A4 ratio
+          }}
+        >
+          <object
+            data={pdfData}
+            type="application/pdf"
+            className="w-full h-full"
+            style={{
+              border: "none",
+              display: "block",
+            }}
+          >
+            <embed
+              src={pdfData}
+              type="application/pdf"
+              className="w-full h-full"
+              style={{
+                border: "none",
+              }}
+            />
+          </object>
+        </div>
       </div>
     </Card>
   );

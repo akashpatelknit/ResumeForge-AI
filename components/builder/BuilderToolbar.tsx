@@ -19,6 +19,7 @@ export default function BuilderToolbar() {
 
   const handleDownload = () => {
     // TODO: Generate and download PDF
+    
     console.log("Download PDF");
   };
 

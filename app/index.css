@@ -33,10 +33,60 @@
   }
 }
 
-.card {
-  padding: 2em;
+/* PDF Preview Fixes - Add this to your globals.css */
+
+/* Remove scrollbars from all PDF-related elements */
+iframe[title="Resume Preview"] {
+  border: none !important;
+  background-color: white !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-.read-the-docs {
-  color: #888;
+iframe[title="Resume Preview"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Fix for PDFViewer if you still want to use it */
+.react-pdf__Page {
+  background-color: white !important;
+}
+
+.react-pdf__Page__canvas {
+  background-color: white !important;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove margins and set proper background */
+.react-pdf__Document {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  background-color: #f9fafb !important;
+  min-height: 100% !important;
+}
+
+/* Alternative: Target by class name if using PDFViewer */
+div[class*="rpv"] {
+  background-color: #f9fafb !important;
+}
+
+div[class*="rpv"] canvas {
+  background-color: white !important;
+}
+
+/* Hide all scrollbars in PDF containers */
+.pdf-container,
+.pdf-container * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.pdf-container *::-webkit-scrollbar,
+.pdf-container::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }

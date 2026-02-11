@@ -10,6 +10,8 @@ export default function PersonalInfoSection() {
 
   if (!currentResume) return null;
 
+  console.log("Current Resume in PersonalInfoSection:", currentResume);
+
   return (
     <div className="space-y-6">
       <div>
