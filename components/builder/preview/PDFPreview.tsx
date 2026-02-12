@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Resume } from "@/types/resume";
 import { pdf } from "@react-pdf/renderer";
-import ModernTemplate from "@/components/pdf/templates/ModernTemplate";
+import ModernTemplate from "@/components/pdf/template/ModernTemplate";
 import { useEffect, useState } from "react";
 
 interface PDFPreviewProps {

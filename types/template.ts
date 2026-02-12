@@ -4,15 +4,16 @@ export interface Template {
   description: string;
   thumbnail: string;
   category: "modern" | "professional" | "minimal" | "creative";
-  colors: {
+  type: "resume" | "cover-letter";
+  colors?: {
     primary: string;
     secondary: string;
     text: string;
   };
-  fonts: {
+  fonts?: {
     heading: string;
     body: string;
   };
-  features: string[];
+  features?: string[];
   isPremium: boolean;
 }

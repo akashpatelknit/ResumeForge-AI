@@ -5,6 +5,7 @@ import { useResumeStore } from "@/store/resumeStore";
 import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
+import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
 
 export default function BuilderPage({
   params,
@@ -254,6 +255,7 @@ export default function BuilderPage({
           <div className="sticky top-6 h-fit">
             <PDFPreview resume={currentResume} />
           </div>
+          <AIOptimizeButton />
         </div>
       </div>
     </div>
