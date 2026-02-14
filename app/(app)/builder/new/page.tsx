@@ -1,7 +1,7 @@
 "use client";
 
 import TemplateCard from "@/components/builder/TemplateCard";
-import { templates } from "@/config/templates";
+import { sampleTemplates } from "@/config/templates";
 
 import { useRouter } from "next/navigation";
 
@@ -37,7 +37,7 @@ export default function TemplateSelectionPage() {
     <div className="container py-12">
       <h1 className="text-3xl font-bold mb-8">Choose a Template</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {templates.map((template) => (
+        {sampleTemplates.map((template) => (
           <TemplateCard
             key={template.id}
             template={template}

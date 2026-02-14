@@ -1,7 +1,13 @@
 import React from "react";
 import { Search, Bell, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function DashboardHeader() {
   return (
@@ -39,13 +45,9 @@ export default function DashboardHeader() {
           </button>
 
           {/* User Avatar Dropdown */}
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors group">
-            <Avatar className="w-8 h-8 ring-2 ring-purple-100">
-              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
-              <AvatarFallback>SJ</AvatarFallback>
-            </Avatar>
-            <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" />
-          </button>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
       </div>
     </header>

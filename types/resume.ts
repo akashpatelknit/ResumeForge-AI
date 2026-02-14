@@ -62,6 +62,9 @@ export interface Resume {
   achievements?: string[];
   certifications?: Certification[];
   languages?: Language[];
+  isFavorite?: boolean;
+  thumbnail?: string;
+  atsScore?: number; // For ATS optimization score
   createdAt: Date;
   updatedAt: Date;
 }

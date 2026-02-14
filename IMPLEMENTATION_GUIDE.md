@@ -3,9 +3,11 @@
 ## Quick Start
 
 ### 1. View the Dashboard
+
 Navigate to: `http://localhost:3000/dashboard`
 
 ### 2. File Locations
+
 All dashboard files are organized in the following structure:
 
 ```
@@ -43,6 +45,7 @@ project-root/
 **Location:** `components/shared/DashboardSidebar.tsx`
 
 **Features:**
+
 - Fixed left sidebar (240px width)
 - Logo with gradient badge
 - 5 navigation items
@@ -52,6 +55,7 @@ project-root/
 - "Upgrade to Pro" CTA button
 
 **Customization:**
+
 ```tsx
 // Change navigation items
 const navItems: NavItem[] = [
@@ -59,7 +63,7 @@ const navItems: NavItem[] = [
 ];
 
 // Modify logo
-<div className='h-8 w-8 bg-gradient-to-r from-purple-600 to-blue-600'>
+<div className='h-8 w-8 bg-linear-to-r from-purple-600 to-blue-600'>
   {/* Change logo color gradient here */}
 </div>
 
@@ -73,12 +77,14 @@ const navItems: NavItem[] = [
 **Location:** `components/shared/DashboardHeader.tsx`
 
 **Features:**
+
 - Page title with description
 - Search bar with magnifying icon
 - Bell icon with notification dot
 - User avatar dropdown menu
 
 **Usage:**
+
 ```tsx
 <DashboardHeader
   title="Your Page Title"
@@ -87,6 +93,7 @@ const navItems: NavItem[] = [
 ```
 
 **Customization:**
+
 ```tsx
 // Add more menu items to dropdown
 <DropdownMenuItem>Custom Option</DropdownMenuItem>
@@ -106,31 +113,35 @@ placeholder='Search something...'
 **Purpose:** Display key metrics with trends and badges
 
 **Props:**
+
 ```tsx
 <StatsCard
   title="Card Title"
   value="999"
   icon={<IconComponent size={20} />}
-  trend={{ value: '+15%', direction: 'up' }}
-  badge={{ label: 'Excellent', color: 'green' }}
+  trend={{ value: "+15%", direction: "up" }}
+  badge={{ label: "Excellent", color: "green" }}
   accentColor="purple"
   updated="2 mins ago"
 />
 ```
 
 **Accent Color Options:**
+
 - `purple` - Deep purple gradient
 - `blue` - Deep blue gradient
 - `green` - Emerald green gradient
 - `pink` - Pink/rose gradient
 
 **Badge Color Options:**
+
 - `green` - Success
 - `blue` - Info
 - `purple` - Primary
 - `pink` - Secondary
 
 **Customization:**
+
 ```tsx
 // Add more accent colors
 const accentGradients = {
@@ -149,21 +160,23 @@ className={`p-6 bg-gradient-to-br ${accentGradients[accentColor]}`}
 **Purpose:** 3-column grid of action cards for common tasks
 
 **Current Actions:**
+
 1. Create New Resume
 2. Import from LinkedIn
 3. Generate Cover Letter
 
 **Customization:**
+
 ```tsx
 // Add or modify actions
 const actions: QuickAction[] = [
   {
-    title: 'Your Action',
-    description: 'Brief description',
+    title: "Your Action",
+    description: "Brief description",
     icon: <IconComponent size={28} />,
-    href: '/path',
-    gradient: 'from-color-600 to-color-700',
-    iconColor: 'text-white',
+    href: "/path",
+    gradient: "from-color-600 to-color-700",
+    iconColor: "text-white",
   },
 ];
 ```
@@ -175,12 +188,14 @@ const actions: QuickAction[] = [
 **Purpose:** Table showing 5 most recent resumes with actions
 
 **Features:**
+
 - Responsive table
 - Progress bar for ATS scores
 - Action dropdown menu
 - Emoji thumbnails
 
 **Current Columns:**
+
 - Resume Title
 - Template Used
 - Last Modified
@@ -188,6 +203,7 @@ const actions: QuickAction[] = [
 - Actions
 
 **Customization:**
+
 ```tsx
 // Modify sample data
 const recentResumes: Resume[] = [
@@ -215,21 +231,24 @@ const recentResumes: Resume[] = [
 **Purpose:** Visualize downloads and views over 7 days
 
 **Features:**
+
 - Area chart with gradient fills
 - Dual data series (downloads & views)
 - Custom tooltip on hover
 - Week view (Mon-Sun)
 
 **Current Data:**
+
 ```tsx
 const chartData = [
-  { day: 'Mon', downloads: 4, views: 24 },
-  { day: 'Tue', downloads: 3, views: 21 },
+  { day: "Mon", downloads: 4, views: 24 },
+  { day: "Tue", downloads: 3, views: 21 },
   // ... more days
 ];
 ```
 
 **Customization:**
+
 ```tsx
 // Change chart type
 <LineChart>                          {/* Change to LineChart */}
@@ -262,11 +281,13 @@ const chartData = [
 **Purpose:** Display AI recommendations and insights
 
 **Current Insights:**
+
 1. Add Quantifiable Metrics (High priority)
 2. Keyword Optimization (High priority)
 3. Template Recommendation (Medium priority)
 
 **Customization:**
+
 ```tsx
 // Add or modify insights
 const insights: Insight[] = [
@@ -325,7 +346,7 @@ mb-4                      {/* 16px bottom margin */}
 
 ```tsx
 // Primary
-bg-gradient-to-r from-purple-600 to-blue-600    {/* Primary gradient */}
+bg-linear-to-r from-purple-600 to-blue-600    {/* Primary gradient */}
 
 // Accents
 bg-purple-100 text-purple-700                   {/* Purple badge */}
@@ -394,7 +415,7 @@ transition-all duration-300     {/* Longer 300ms transition */}
 ### Custom Animation Example
 
 ```tsx
-<div className='animate-in fade-in slide-in-from-bottom-4 delay-100'>
+<div className="animate-in fade-in slide-in-from-bottom-4 delay-100">
   {/* This element fades in and slides up from bottom with 100ms delay */}
 </div>
 ```
@@ -411,13 +432,13 @@ const [resumes, setResumes] = useState([]);
 
 useEffect(() => {
   // Fetch from API
-  fetch('/api/resumes')
-    .then(res => res.json())
-    .then(data => setResumes(data));
+  fetch("/api/resumes")
+    .then((res) => res.json())
+    .then((data) => setResumes(data));
 }, []);
 
 // Pass to component
-<RecentResumes data={resumes} />
+<RecentResumes data={resumes} />;
 ```
 
 ### API Integration Points
@@ -444,7 +465,7 @@ const handleAction = useCallback(() => {
 
 // Use useMemo for derived data
 const processedData = useMemo(() => {
-  return data.map(item => ({...item, processed: true}));
+  return data.map((item) => ({ ...item, processed: true }));
 }, [data]);
 ```
 
@@ -452,14 +473,9 @@ const processedData = useMemo(() => {
 
 ```tsx
 // Use Next.js Image component instead of img
-import Image from 'next/image';
+import Image from "next/image";
 
-<Image
-  src={thumbnail}
-  alt='Resume thumbnail'
-  width={40}
-  height={40}
-/>
+<Image src={thumbnail} alt="Resume thumbnail" width={40} height={40} />;
 ```
 
 ## Accessibility
@@ -468,11 +484,7 @@ import Image from 'next/image';
 
 ```tsx
 // Add ARIA labels to interactive elements
-<Button
-  variant='ghost'
-  size='icon'
-  aria-label='Open user menu'
->
+<Button variant="ghost" size="icon" aria-label="Open user menu">
   <UserIcon size={20} />
 </Button>
 ```
@@ -495,18 +507,22 @@ import Image from 'next/image';
 ### Common Issues
 
 **Stats cards not showing:**
+
 - Check if icons are properly imported from lucide-react
 - Verify accentColor prop is one of: 'purple', 'blue', 'green', 'pink'
 
 **Sidebar not appearing on mobile:**
+
 - Ensure `isOpen` state is present in component
 - Check CSS classes for mobile visibility
 
 **Charts not displaying:**
+
 - Verify recharts is installed: `npm install recharts`
 - Check data array format matches expected structure
 
 **Styling not applied:**
+
 - Clear `.next` build directory: `rm -rf .next`
 - Rebuild: `npm run dev`
 - Check Tailwind CSS config includes component paths
@@ -518,12 +534,12 @@ import Image from 'next/image';
 ```tsx
 // app/(app)/dashboard/page.tsx
 <StatsCard
-  title='Custom Metric'
-  value='999'
+  title="Custom Metric"
+  value="999"
   icon={<CustomIcon size={20} />}
-  trend={{ value: '+50%', direction: 'up' }}
-  accentColor='blue'
-  updated='Last updated 1 hour ago'
+  trend={{ value: "+50%", direction: "up" }}
+  accentColor="blue"
+  updated="Last updated 1 hour ago"
 />
 ```
 
@@ -531,22 +547,20 @@ import Image from 'next/image';
 
 ```tsx
 // Create components/dashboard/CustomChart.tsx
-import { Card } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { Card } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 export function CustomChart() {
   return (
-    <Card className='p-6'>
-      <h2 className='text-xl font-bold mb-6'>Your Chart Title</h2>
-      <BarChart data={chartData}>
-        {/* Chart definition */}
-      </BarChart>
+    <Card className="p-6">
+      <h2 className="text-xl font-bold mb-6">Your Chart Title</h2>
+      <BarChart data={chartData}>{/* Chart definition */}</BarChart>
     </Card>
   );
 }
 
 // Import in dashboard page
-import { CustomChart } from '@/components/dashboard/CustomChart';
+import { CustomChart } from "@/components/dashboard/CustomChart";
 ```
 
 ## Deployment Checklist

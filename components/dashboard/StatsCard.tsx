@@ -105,7 +105,7 @@ export default function StatsCard({
 
       {/* Decorative gradient overlay */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${accentColorClasses[accentColor]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`}
+        className={`absolute inset-0 bg-linear-to-br ${accentColorClasses[accentColor]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`}
       ></div>
     </Card>
   );

@@ -16,4 +16,8 @@ export interface Template {
   };
   features?: string[];
   isPremium: boolean;
+  fullPreview: string;
+  rating: number;
+  usageCount: number;
+  bestFor: string[];
 }

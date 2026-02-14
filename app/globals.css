@@ -127,7 +127,7 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-[hsl(271,81%,56%)] via-[hsl(221,83%,53%)] to-[hsl(330,81%,60%)] bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-[hsl(271,81%,56%)] via-[hsl(221,83%,53%)] to-[hsl(330,81%,60%)] bg-clip-text text-transparent;
   }
   .bg-gradient-hero {
     background: linear-gradient(

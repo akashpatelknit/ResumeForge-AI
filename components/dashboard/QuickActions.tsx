@@ -44,8 +44,8 @@ export default function QuickActions() {
             >
               <div
                 className={`
-                  bg-gradient-to-br ${action.gradient} p-6 text-white text-left
-                  group-hover:bg-gradient-to-br group-hover:${action.hoverGradient}
+                  bg-linear-to-br ${action.gradient} p-6 text-white text-left
+                  group-hover:bg-linear-to-br group-hover:${action.hoverGradient}
                   transition-all duration-300
                 `}
               >

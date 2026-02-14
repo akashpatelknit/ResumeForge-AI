@@ -94,14 +94,14 @@ export default function AIInsights() {
 
       {/* Footer CTA */}
       <div className="px-6 pb-6">
-        <button className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+        <button className="w-full py-3 px-4 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
           <Sparkles className="w-4 h-4" />
           Apply All Suggestions
         </button>
       </div>
 
       {/* Bottom decoration */}
-      <div className="h-1 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600"></div>
+      <div className="h-1 bg-linear-to-r from-purple-600 via-blue-600 to-purple-600"></div>
     </Card>
   );
 }

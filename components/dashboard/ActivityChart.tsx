@@ -47,7 +47,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 export default function ActivityChart() {
   return (
     <Card className="overflow-hidden border shadow-sm">
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-purple-50/50 via-blue-50/30 to-transparent">
+      <div className="p-6 border-b border-gray-100 bg-linear-to-r from-purple-50/50 via-blue-50/30 to-transparent">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
