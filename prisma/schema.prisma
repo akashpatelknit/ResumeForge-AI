@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Resume {
+  id           String            @id @default(uuid()) @db.Uuid
+  userId       String            @map("user_id")
+  title        String
+  templateId   String            @map("template_id")
+  data         Json
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  coverLetters CoverLetter[]
+  analytics    ResumeAnalytics[]
+
+  @@index([userId])
+  @@map("resumes")
+}
+
+model CoverLetter {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id")
+  resumeId    String   @map("resume_id") @db.Uuid
+  title       String
+  content     String
+  jobTitle    String?  @map("job_title")
+  companyName String?  @map("company_name")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("cover_letters")
+}
+
+model ResumeAnalytics {
+  id        String   @id @default(uuid()) @db.Uuid
+  resumeId  String   @map("resume_id") @db.Uuid
+  eventType String   @map("event_type")
+  eventData Json?    @map("event_data")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([resumeId])
+  @@map("resume_analytics")
+}
+
+model UserPreferences {
+  userId      String   @id @map("user_id")
+  preferences Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("user_preferences")
+}

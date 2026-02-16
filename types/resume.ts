@@ -1,4 +1,12 @@
 // types/resume.ts
+import { Prisma, Resume as PrismaResume } from "@/app/generated/prisma/client";
+
+export type ResumeWithRelations = Prisma.ResumeGetPayload<{
+  include: {
+    coverLetters: true;
+    analytics: true;
+  };
+}>;
 export interface PersonalInfo {
   fullName: string;
   email: string;
@@ -47,6 +55,23 @@ export interface Skill {
   category: string; // e.g., "Frontend", "Backend"
   items: string[];
 }
+
+export interface ResumeData {
+  personalInfo: PersonalInfo;
+  summary: string;
+  experience: Experience[];
+  education: Education[];
+  skills: Skill[];
+  projects: Project[];
+  achievements: any[];
+  certifications: any[];
+  languages: string[];
+  isFavorite: boolean;
+  thumbnail: string;
+  atsScore: number;
+}
+
+export type AppResume = Omit<PrismaResume, "data"> & ResumeData;
 
 export interface Resume {
   id: string;

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
-import { Resume } from "@/types/resume";
+import { AppResume, Resume } from "@/types/resume";
 
 // LaTeX-inspired styles matching the original template
 const styles = StyleSheet.create({
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
 });
 
 interface LatexModernTemplateProps {
-  resume: Resume;
+  resume: AppResume;
 }
 
 export default function LatexModernTemplate({

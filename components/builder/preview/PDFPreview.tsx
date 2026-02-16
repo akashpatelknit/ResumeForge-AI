@@ -1,13 +1,13 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Resume } from "@/types/resume";
+import { AppResume, Resume } from "@/types/resume";
 import { pdf } from "@react-pdf/renderer";
 import ModernTemplate from "@/components/pdf/template/ModernTemplate";
 import { useEffect, useState } from "react";
 
 interface PDFPreviewProps {
-  resume: Resume | null;
+  resume: AppResume | null;
 }
 
 export default function PDFPreview({ resume }: PDFPreviewProps) {
@@ -41,7 +41,7 @@ export default function PDFPreview({ resume }: PDFPreviewProps) {
 
   if (!resume) {
     return (
-      <Card className="p-6 h-[200px] flex items-center justify-center bg-gray-50">
+      <Card className="p-6 h-50 flex items-center justify-center bg-gray-50">
         <p className="text-gray-400">No resume data</p>
       </Card>
     );
@@ -49,7 +49,7 @@ export default function PDFPreview({ resume }: PDFPreviewProps) {
 
   if (loading || !pdfData) {
     return (
-      <Card className="p-6 h-[800px] flex items-center justify-center bg-gray-50">
+      <Card className="p-6 h-200 flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-2">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           <p className="text-gray-400">Loading preview...</p>

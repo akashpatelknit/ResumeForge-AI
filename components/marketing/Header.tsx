@@ -17,6 +17,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -28,6 +29,7 @@ const navLinks = [
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -79,6 +81,13 @@ const Header = () => {
           </SignedOut>
 
           <SignedIn>
+            <Button
+              className="bg-gradient-hero text-white cursor-pointer"
+              size="sm"
+              onClick={() => router.push("/dashboard")}
+            >
+              View Dashboard
+            </Button>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
@@ -116,7 +125,6 @@ const Header = () => {
                   </Button>
                 </SignUpButton>
               </SignedOut>
-
               <SignedIn>
                 <div className="pt-4 border-t">
                   <UserButton afterSignOutUrl="/" />

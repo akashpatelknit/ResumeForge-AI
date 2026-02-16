@@ -1,9 +1,43 @@
 import { create } from "zustand";
-import { Education, Experience, Project, Resume, Skill } from "@/types/resume";
+import {
+  AppResume,
+  Education,
+  Experience,
+  Project,
+  Resume,
+  Skill,
+} from "@/types/resume";
+import {
+  createResume,
+  deleteResume,
+  getResume,
+  updateResume,
+} from "@/lib/db/resumes";
+import { Prisma } from "@/app/generated/prisma/client";
+import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
+
+const toInputJson = (v: unknown) => v as Prisma.InputJsonValue;
 
 interface ResumeStore {
-  currentResume: Resume | null;
-  setCurrentResume: (resume: Resume) => void;
+  currentResume: AppResume | null;
+  isLoading: boolean;
+  isSaving: boolean;
+  lastSaved: Date | null;
+
+  // Load resume from database
+  loadResume: (id: string, userId: string) => Promise<void>;
+
+  // Save current resume to database
+  saveResume: () => Promise<void>;
+
+  // Create new resume
+  createNewResume: (userId: string, templateId: string) => Promise<AppResume>;
+
+  // Delete resume
+  deleteResume: (id: string, userId: string) => Promise<void>;
+
+  // Existing methods
+  setCurrentResume: (resume: AppResume | null) => void;
   updatePersonalInfo: (info: Partial<Resume["personalInfo"]>) => void;
   updateSummary: (summary: string) => void;
   addExperience: (experience: Resume["experience"][0]) => void;
@@ -26,9 +60,151 @@ interface ResumeStore {
   deleteProject: (id: string) => void;
 }
 
-export const useResumeStore = create<ResumeStore>((set) => ({
+export const useResumeStore = create<ResumeStore>((set, get) => ({
   currentResume: null,
+  isLoading: false,
+  isSaving: false,
+  lastSaved: null,
 
+  loadResume: async (id: string) => {
+    set({ isLoading: true });
+
+    try {
+      const res = await fetch(`/api/resumes/${id}`);
+
+      if (!res.ok) {
+        set({ currentResume: null, isLoading: false });
+        return;
+      }
+
+      const resume = await res.json();
+
+      set({
+        currentResume: mapResumeFromDB(resume),
+        isLoading: false,
+        lastSaved: new Date(resume.updatedAt),
+      });
+    } catch (error) {
+      console.error("Error loading resume:", error);
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  saveResume: async () => {
+    const { currentResume } = get();
+    if (!currentResume) return;
+
+    set({ isSaving: true });
+
+    try {
+      const res = await fetch(`/api/resumes/${currentResume.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: currentResume.title,
+          templateId: currentResume.templateId,
+          data: {
+            personalInfo: currentResume.personalInfo,
+            summary: currentResume.summary,
+            experience: currentResume.experience,
+            education: currentResume.education,
+            skills: currentResume.skills,
+            projects: currentResume.projects,
+            achievements: currentResume.achievements,
+            certifications: currentResume.certifications,
+            languages: currentResume.languages,
+            isFavorite: currentResume.isFavorite,
+            thumbnail: currentResume.thumbnail,
+            atsScore: currentResume.atsScore,
+          },
+        }),
+      });
+
+      const updated = await res.json();
+
+      set({
+        currentResume: mapResumeFromDB(updated),
+        isSaving: false,
+        lastSaved: new Date(),
+      });
+    } catch (error) {
+      console.error("Error saving resume:", error);
+      set({ isSaving: false });
+      throw error;
+    }
+  },
+
+  createNewResume: async (templateId: string) => {
+    set({ isLoading: true });
+
+    try {
+      const res = await fetch("/api/resumes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Untitled Resume",
+          templateId,
+          data: {
+            personalInfo: {
+              fullName: "",
+              email: "",
+              phone: "",
+              location: "",
+            },
+            summary: "",
+            experience: [],
+            education: [],
+            skills: [],
+            projects: [],
+            achievements: [],
+            certifications: [],
+            languages: [],
+            isFavorite: false,
+            thumbnail: "",
+            atsScore: 0,
+          },
+        }),
+      });
+
+      const newResume = await res.json();
+      const mapped = mapResumeFromDB(newResume);
+
+      set({
+        currentResume: mapped,
+        isLoading: false,
+        lastSaved: new Date(),
+      });
+
+      return mapped;
+    } catch (error) {
+      console.error("Error creating resume:", error);
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  // NEW: Delete resume
+  deleteResume: async (id: string) => {
+    set({ isLoading: true });
+
+    try {
+      await fetch(`/api/resumes/${id}`, {
+        method: "DELETE",
+      });
+
+      set({
+        currentResume: null,
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error("Error deleting resume:", error);
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  // EXISTING METHODS (unchanged)
   setCurrentResume: (resume) => set({ currentResume: resume }),
 
   updatePersonalInfo: (info) =>
@@ -37,6 +213,7 @@ export const useResumeStore = create<ResumeStore>((set) => ({
         ? {
             ...state.currentResume,
             personalInfo: { ...state.currentResume.personalInfo, ...info },
+            updatedAt: new Date(),
           }
         : null,
     })),
@@ -44,7 +221,7 @@ export const useResumeStore = create<ResumeStore>((set) => ({
   updateSummary: (summary) =>
     set((state) => ({
       currentResume: state.currentResume
-        ? { ...state.currentResume, summary }
+        ? { ...state.currentResume, summary, updatedAt: new Date() }
         : null,
     })),
 
