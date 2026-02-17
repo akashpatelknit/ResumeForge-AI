@@ -9,7 +9,7 @@
 
 **Build professional, ATS-optimized resumes with AI assistance in minutes.**
 
-[Demo](https://resumeforge.ai) · [Report Bug](https://github.com/yourusername/resumeforge/issues) · [Request Feature](https://github.com/yourusername/resumeforge/issues)
+[Demo](https://resume-forge-ai-lilac.vercel.app) · [Report Bug](https://github.com/akashpatelknit/ResumeForge-AI/issues) · [Request Feature](https://github.com/akashpatelknit/ResumeForge-AI/issues)
 
 </div>
 
@@ -88,8 +88,9 @@ Traditional resume builders are time-consuming and don't optimize for modern hir
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/yourusername/resumeforge-ai.git
+   git clone https://github.com/akashpatelknit/ResumeForge-AI.git
    cd resumeforge-ai
    ```
 
@@ -318,7 +319,7 @@ The app can also be deployed to:
 
 ---
 
-## 🧪 Testing
+<!-- ## 🧪 Testing
 
 ```bash
 # Run unit tests
@@ -332,7 +333,7 @@ npm run type-check
 
 # Run linting
 npm run lint
-```
+``` -->
 
 ---
 
@@ -376,7 +377,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 - [ ] Job board integration
 - [ ] API for developers
 
-See the [open issues](https://github.com/yourusername/resumeforge/issues) for a full list of proposed features.
+See the [open issues](https://github.com/akashpatelknit/ResumeForge-AI/issues) for a full list of proposed features.
 
 ---
 
@@ -402,10 +403,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Project Maintainer:** Akash Patel
 
 - Email: your.email@example.com
-- Twitter: [@yourusername](https://twitter.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- Twitter: [@yourusername](https://x.com/cotsec14)
+- LinkedIn: [Your Profile](https://www.linkedin.com/in/akash-patel-9330aa201)
 
-**Project Link:** [https://github.com/yourusername/resumeforge-ai](https://github.com/yourusername/resumeforge-ai)
+**Project Link:** [https://github.com/akashpatelknit/ResumeForge-AI](https://github.com/akashpatelknit/ResumeForge-AI)
 
 ---
 
@@ -423,7 +424,7 @@ If you find this project helpful, please consider:
 
 <div align="center">
 
-**Built with ❤️ by [Akash Patel](https://yourwebsite.com)**
+**Built with ❤️ by [Akash Patel](https://akashbuilds.vercel.app)**
 
 Made with [Next.js](https://nextjs.org/) · Powered by [AI](https://www.anthropic.com/)
 
