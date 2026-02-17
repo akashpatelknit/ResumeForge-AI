@@ -1,6 +1,3 @@
-## 📄 **Professional README.md**
-
-````markdown
 # 🚀 ResumeForge AI - AI-Powered Resume Builder
 
 <div align="center">
