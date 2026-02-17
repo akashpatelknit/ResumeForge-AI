@@ -92,7 +92,6 @@ Traditional resume builders are time-consuming and don't optimize for modern hir
    git clone https://github.com/yourusername/resumeforge-ai.git
    cd resumeforge-ai
    ```
-````
 
 2. **Install dependencies**
 
