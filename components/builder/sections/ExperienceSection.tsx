@@ -95,7 +95,7 @@ export default function ExperienceSection() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`company-${exp.id}`}>Company *</Label>
                   <Input
                     id={`company-${exp.id}`}
@@ -107,7 +107,7 @@ export default function ExperienceSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`position-${exp.id}`}>Position *</Label>
                   <Input
                     id={`position-${exp.id}`}
@@ -119,7 +119,7 @@ export default function ExperienceSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`location-${exp.id}`}>Location *</Label>
                   <Input
                     id={`location-${exp.id}`}
@@ -132,7 +132,7 @@ export default function ExperienceSection() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`startDate-${exp.id}`}>Start Date *</Label>
                     <Input
                       id={`startDate-${exp.id}`}
@@ -143,7 +143,7 @@ export default function ExperienceSection() {
                       }
                     />
                   </div>
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`endDate-${exp.id}`}>End Date</Label>
                     <Input
                       id={`endDate-${exp.id}`}
@@ -160,7 +160,7 @@ export default function ExperienceSection() {
                 </div>
               </div>
 
-              <div>
+              <div className="space-y-1">
                 <Label htmlFor={`description-${exp.id}`}>Description</Label>
                 <Textarea
                   id={`description-${exp.id}`}
@@ -174,25 +174,26 @@ export default function ExperienceSection() {
                 />
               </div>
 
-              <div>
+              <div className="space-y-1">
                 <Label>Key Achievements</Label>
                 <div className="space-y-2 mt-2">
-                  {exp.achievements.map((achievement, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-2 p-2 bg-gray-50 rounded"
-                    >
-                      <span className="text-sm flex-1">• {achievement}</span>
-                      <Button
-                        onClick={() => handleDeleteAchievement(exp.id, idx)}
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+                  {Array.isArray(exp.achievements) &&
+                    exp.achievements.map((achievement, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2 p-2 bg-gray-50 rounded"
                       >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  ))}
+                        <span className="text-sm flex-1">• {achievement}</span>
+                        <Button
+                          onClick={() => handleDeleteAchievement(exp.id, idx)}
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ))}
                 </div>
 
                 <div className="flex gap-2 mt-2">

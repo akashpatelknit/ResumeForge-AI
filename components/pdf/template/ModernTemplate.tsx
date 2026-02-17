@@ -234,6 +234,7 @@ interface LatexModernTemplateProps {
 export default function LatexModernTemplate({
   resume,
 }: LatexModernTemplateProps) {
+  console.log("LatexModernTemplate received resume:", resume);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -277,23 +278,25 @@ export default function LatexModernTemplate({
         )}
 
         {/* Skills Summary */}
-        {resume.skills.length > 0 && (
+        {(resume.skills ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Skills Summary</Text>
-            {resume.skills.map((skill, idx) => (
+            {(resume.skills ?? []).map((skill, idx) => (
               <View key={idx} style={styles.skillItem}>
                 <Text style={styles.skillCategory}>{skill.category}</Text>
-                <Text style={styles.skillList}>{skill.items.join(", ")}</Text>
+                <Text style={styles.skillList}>
+                  {(skill.items ?? []).join(", ")}
+                </Text>
               </View>
             ))}
           </View>
         )}
 
         {/* Experience */}
-        {resume.experience.length > 0 && (
+        {(resume.experience ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Experience</Text>
-            {resume.experience.map((exp, idx) => (
+            {(resume.experience ?? []).map((exp, idx) => (
               <View key={idx} style={styles.experienceItem}>
                 <View style={styles.experienceHeader}>
                   <Text style={styles.companyName}>{exp.company}</Text>
@@ -307,8 +310,12 @@ export default function LatexModernTemplate({
                   </Text>
                 </View>
 
-                {exp.achievements.map((achievement, i) => {
-                  const parts = achievement.split(/:(.*)/);
+                {(exp.achievements ?? []).map((achievement, i) => {
+                  const text =
+                    typeof achievement === "string"
+                      ? achievement
+                      : String(achievement ?? "");
+                  const parts = text.split(/:(.*)/);
                   const hasTitle = parts.length > 1;
 
                   return (
@@ -323,7 +330,7 @@ export default function LatexModernTemplate({
                             {parts[1]}
                           </>
                         ) : (
-                          achievement
+                          text
                         )}
                       </Text>
                     </View>
@@ -335,10 +342,10 @@ export default function LatexModernTemplate({
         )}
 
         {/* Projects */}
-        {resume.projects && resume.projects.length > 0 && (
+        {(resume.projects ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Projects</Text>
-            {resume.projects.map((project, idx) => (
+            {(resume.projects ?? []).map((project, idx) => (
               <View key={idx} style={styles.projectItem}>
                 <View style={styles.projectHeader}>
                   <Text style={styles.projectName}>{project.name}</Text>
@@ -356,16 +363,24 @@ export default function LatexModernTemplate({
                   </Text>
                 )}
 
-                {project.highlights.map((highlight, i) => (
-                  <View key={i} style={styles.projectHighlight}>
-                    <Text style={styles.projectBullet}>•</Text>
-                    <Text style={styles.projectHighlightText}>{highlight}</Text>
-                  </View>
-                ))}
+                {/* ✅ FIX: guard against undefined highlights */}
+                {(project.highlights ?? []).map((highlight, i) => {
+                  const text =
+                    typeof highlight === "string"
+                      ? highlight
+                      : String(highlight ?? "");
+                  return (
+                    <View key={i} style={styles.projectHighlight}>
+                      <Text style={styles.projectBullet}>•</Text>
+                      <Text style={styles.projectHighlightText}>{text}</Text>
+                    </View>
+                  );
+                })}
 
-                {project.technologies.length > 0 && (
+                {/* ✅ FIX: guard against undefined technologies */}
+                {(project.technologies ?? []).length > 0 && (
                   <Text style={styles.techStack}>
-                    Tech Stack: {project.technologies.join(", ")}
+                    Tech Stack: {(project.technologies ?? []).join(", ")}
                   </Text>
                 )}
               </View>
@@ -374,10 +389,10 @@ export default function LatexModernTemplate({
         )}
 
         {/* Education */}
-        {resume.education.length > 0 && (
+        {(resume.education ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Education</Text>
-            {resume.education.map((edu, idx) => (
+            {(resume.education ?? []).map((edu, idx) => (
               <View key={idx} style={styles.educationItem}>
                 <View style={styles.educationHeader}>
                   <Text style={styles.institutionName}>{edu.institution}</Text>
@@ -399,26 +414,35 @@ export default function LatexModernTemplate({
                   </Text>
                 )}
 
-                {edu.achievements &&
-                  edu.achievements.map((achievement, i) => (
+                {/* ✅ FIX: guard against undefined edu.achievements */}
+                {(edu.achievements ?? []).map((achievement, i) => {
+                  const text =
+                    typeof achievement === "string"
+                      ? achievement
+                      : String(achievement ?? "");
+                  return (
                     <View key={i} style={styles.achievementItem}>
                       <Text style={styles.achievementBullet}>•</Text>
-                      <Text style={styles.achievementText}>{achievement}</Text>
+                      <Text style={styles.achievementText}>{text}</Text>
                     </View>
-                  ))}
+                  );
+                })}
               </View>
             ))}
           </View>
         )}
 
         {/* Achievements */}
-        {resume.achievements && resume.achievements.length > 0 && (
+        {(resume.achievements ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Achievements</Text>
             <View style={styles.achievementsList}>
-              {resume.achievements.map((achievement, idx) => {
-                // Parse achievement if formatted as "Label: Description"
-                const parts = achievement.split(/:(.*)/);
+              {(resume.achievements ?? []).map((achievement, idx) => {
+                const text =
+                  typeof achievement === "string"
+                    ? achievement
+                    : String(achievement ?? "");
+                const parts = text.split(/:(.*)/);
                 const hasLabel = parts.length > 1;
 
                 return (
@@ -434,7 +458,7 @@ export default function LatexModernTemplate({
                       <>
                         <Text style={styles.achievementBullet}>•</Text>
                         <Text style={styles.achievementDescription}>
-                          {achievement}
+                          {text}
                         </Text>
                       </>
                     )}
@@ -446,10 +470,10 @@ export default function LatexModernTemplate({
         )}
 
         {/* Certifications */}
-        {resume.certifications && resume.certifications.length > 0 && (
+        {(resume.certifications ?? []).length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>Certifications</Text>
-            {resume.certifications.map((cert, idx) => (
+            {(resume.certifications ?? []).map((cert, idx) => (
               <View key={idx} style={{ marginBottom: 5 }}>
                 <Text style={{ fontSize: 10, fontFamily: "Helvetica-Bold" }}>
                   {cert.name}

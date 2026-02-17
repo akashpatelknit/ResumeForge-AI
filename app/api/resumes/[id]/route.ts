@@ -46,7 +46,7 @@ export async function PUT(
 
     const body = await request.json();
 
-    const resume = await updateResume(params.id, {
+    const resume = await updateResume(params.id, userId, {
       title: body.title,
       templateId: body.templateId,
       data: body.data,

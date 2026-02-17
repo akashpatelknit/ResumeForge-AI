@@ -96,7 +96,7 @@ export default function EducationSection() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`institution-${edu.id}`}>Institution *</Label>
                   <Input
                     id={`institution-${edu.id}`}
@@ -108,7 +108,7 @@ export default function EducationSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`degree-${edu.id}`}>Degree *</Label>
                   <Input
                     id={`degree-${edu.id}`}
@@ -120,7 +120,7 @@ export default function EducationSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`field-${edu.id}`}>Field of Study *</Label>
                   <Input
                     id={`field-${edu.id}`}
@@ -132,7 +132,7 @@ export default function EducationSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`location-${edu.id}`}>Location *</Label>
                   <Input
                     id={`location-${edu.id}`}
@@ -145,7 +145,7 @@ export default function EducationSection() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`startDate-${edu.id}`}>Start Date *</Label>
                     <Input
                       id={`startDate-${edu.id}`}
@@ -156,9 +156,9 @@ export default function EducationSection() {
                       }
                     />
                   </div>
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`endDate-${edu.id}`}>
-                      End Date (or Expected) *
+                      End Date *
                     </Label>
                     <Input
                       id={`endDate-${edu.id}`}
@@ -171,7 +171,7 @@ export default function EducationSection() {
                   </div>
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`gpa-${edu.id}`}>GPA (Optional)</Label>
                   <Input
                     id={`gpa-${edu.id}`}
@@ -184,7 +184,7 @@ export default function EducationSection() {
                 </div>
               </div>
 
-              <div>
+              <div className="space-y-1">
                 <Label>Achievements & Honors</Label>
                 <div className="space-y-2 mt-2">
                   {edu.achievements?.map((achievement, idx) => (

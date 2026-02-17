@@ -42,7 +42,7 @@ export default function ProjectsSection() {
     const project = currentResume.projects.find((p) => p.id === projectId);
     if (project) {
       updateProject(projectId, {
-        technologies: [...project.technologies, tech],
+        technologies: [...(project.technologies || []), tech],
       });
       setNewTechnology({ ...newTechnology, [projectId]: "" });
     }
@@ -63,7 +63,7 @@ export default function ProjectsSection() {
     const project = currentResume.projects.find((p) => p.id === projectId);
     if (project) {
       updateProject(projectId, {
-        highlights: [...project.highlights, highlight],
+        highlights: [...(project.highlights || []), highlight],
       });
       setNewHighlight({ ...newHighlight, [projectId]: "" });
     }
@@ -119,7 +119,7 @@ export default function ProjectsSection() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`name-${project.id}`}>Project Name *</Label>
                   <Input
                     id={`name-${project.id}`}
@@ -131,7 +131,7 @@ export default function ProjectsSection() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label htmlFor={`description-${project.id}`}>
                     Description *
                   </Label>
@@ -148,7 +148,7 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`link-${project.id}`}>
                       Live Demo Link (Optional)
                     </Label>
@@ -162,7 +162,7 @@ export default function ProjectsSection() {
                     />
                   </div>
 
-                  <div>
+                  <div className="space-y-1">
                     <Label htmlFor={`github-${project.id}`}>
                       GitHub Link (Optional)
                     </Label>
@@ -177,14 +177,16 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <Label>Technologies Used</Label>
-                  <div className="flex flex-wrap gap-2 mt-2 min-h-[40px] p-2 border rounded-md bg-gray-50">
-                    {project.technologies.length === 0 ? (
+                  <div className="flex flex-wrap gap-2 mt-2 min-h-10 p-2 border rounded-md bg-gray-50">
+                    {Array.isArray(project.technologies) &&
+                    project.technologies.length === 0 ? (
                       <span className="text-sm text-gray-400">
                         No technologies added yet
                       </span>
                     ) : (
+                      Array.isArray(project.technologies) &&
                       project.technologies.map((tech, idx) => (
                         <Badge
                           key={idx}
@@ -237,22 +239,25 @@ export default function ProjectsSection() {
                 <div>
                   <Label>Key Highlights</Label>
                   <div className="space-y-2 mt-2">
-                    {project.highlights.map((highlight, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-2 p-2 bg-gray-50 rounded"
-                      >
-                        <span className="text-sm flex-1">• {highlight}</span>
-                        <Button
-                          onClick={() => handleDeleteHighlight(project.id, idx)}
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+                    {Array.isArray(project.highlights) &&
+                      project.highlights.map((highlight, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2 p-2 bg-gray-50 rounded"
                         >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    ))}
+                          <span className="text-sm flex-1">• {highlight}</span>
+                          <Button
+                            onClick={() =>
+                              handleDeleteHighlight(project.id, idx)
+                            }
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ))}
                   </div>
 
                   <div className="flex gap-2 mt-2">

@@ -3,13 +3,6 @@ import { LucideIcon, TrendingUp } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-//  title: "Total Resumes",
-//       value: "12",
-//       icon: FileText,
-//       trend: "+2 this month",
-//       trendPositive: true,
-//       accentColor: "purple",
-
 interface StatsCardProps {
   title: string;
   value: string;

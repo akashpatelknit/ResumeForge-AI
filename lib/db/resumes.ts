@@ -29,10 +29,15 @@ export async function createResume(
 }
 
 // Update resume
-export async function updateResume(id: string, data: Prisma.ResumeUpdateInput) {
+export async function updateResume(
+  id: string,
+  userId: string,
+  data: Prisma.ResumeUpdateInput,
+) {
   return prisma.resume.update({
     where: {
       id,
+      userId,
     },
     data,
   });

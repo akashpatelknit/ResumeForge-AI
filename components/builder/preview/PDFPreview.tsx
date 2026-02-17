@@ -14,29 +14,35 @@ export default function PDFPreview({ resume }: PDFPreviewProps) {
   const [pdfData, setPdfData] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
+  console.log("PDFPreview received resume:", pdfData);
+
   useEffect(() => {
-    const generatePdf = async () => {
-      if (resume) {
-        try {
-          setLoading(true);
-          const blob = await pdf(<ModernTemplate resume={resume} />).toBlob();
-          const reader = new FileReader();
+    if (!resume) return;
+    if (!resume?.personalInfo) return;
 
-          reader.onloadend = () => {
-            const base64data = reader.result as string;
-            setPdfData(base64data);
-          };
+    const timeout = setTimeout(async () => {
+      try {
+        setLoading(true);
 
-          reader.readAsDataURL(blob);
-        } catch (error) {
-          console.error("Error generating PDF:", error);
-        } finally {
-          setLoading(false);
-        }
+        const blob = await pdf(<ModernTemplate resume={resume} />).toBlob();
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const base64data = reader.result as string;
+          setPdfData(base64data);
+        };
+
+        reader.readAsDataURL(blob);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        setLoading(false);
       }
-    };
+    }, 600); // debounce delay
 
-    generatePdf();
+    // cancel previous run
+    return () => clearTimeout(timeout);
   }, [resume]);
 
   if (!resume) {

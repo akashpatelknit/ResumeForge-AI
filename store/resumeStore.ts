@@ -7,12 +7,7 @@ import {
   Resume,
   Skill,
 } from "@/types/resume";
-import {
-  createResume,
-  deleteResume,
-  getResume,
-  updateResume,
-} from "@/lib/db/resumes";
+
 import { Prisma } from "@/app/generated/prisma/client";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 
@@ -40,6 +35,7 @@ interface ResumeStore {
   setCurrentResume: (resume: AppResume | null) => void;
   updatePersonalInfo: (info: Partial<Resume["personalInfo"]>) => void;
   updateSummary: (summary: string) => void;
+  updateTitle: (title: string) => void;
   addExperience: (experience: Resume["experience"][0]) => void;
   updateExperience: (
     id: string,
@@ -93,6 +89,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
 
   saveResume: async () => {
     const { currentResume } = get();
+
     if (!currentResume) return;
 
     set({ isSaving: true });
@@ -206,6 +203,13 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
 
   // EXISTING METHODS (unchanged)
   setCurrentResume: (resume) => set({ currentResume: resume }),
+
+  updateTitle: (title) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? { ...state.currentResume, title, updatedAt: new Date() }
+        : null,
+    })),
 
   updatePersonalInfo: (info) =>
     set((state) => ({

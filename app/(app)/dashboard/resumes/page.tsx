@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Sidebar from "@/components/shared/Sidebar";
-import DashboardHeader from "@/components/shared/DashboardHeader";
+
 import { Button } from "@/components/ui/button";
 import { Plus, Grid3x3, List } from "lucide-react";
 import ResumeFilters from "@/components/dashboard/ResumeFilters";
@@ -139,12 +138,8 @@ export default function ResumesPage() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-linear-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-        <DashboardHeader />
-
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 overflow-y-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">

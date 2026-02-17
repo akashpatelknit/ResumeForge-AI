@@ -1,25 +1,18 @@
-import React from "react";
-import { Search, Bell, ChevronDown } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { Search, Bell } from "lucide-react";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 
 export default function DashboardHeader() {
+  const { user, isLoaded, isSignedIn } = useUser();
   return (
     <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-200">
       <div className="flex items-center justify-between px-6 lg:px-8 py-4">
         {/* Page Title */}
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
             Dashboard
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Welcome back, Sarah! 👋
+            Welcome back, {user?.firstName || "User"}
           </p>
         </div>
 

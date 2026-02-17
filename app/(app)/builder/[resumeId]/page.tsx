@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useResumeStore } from "@/store/resumeStore";
 import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
 import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
-import { ResumeData } from "@/types/database";
 import { AppResume } from "@/types/resume";
 import { useAuth } from "@clerk/nextjs";
 
@@ -233,19 +232,24 @@ export function createEmptyResume(
 export default function BuilderPage({
   params,
 }: {
-  params: { resumeId: string };
+  params: Promise<{ resumeId: string }>;
 }) {
-  const { currentResume, setCurrentResume } = useResumeStore();
+  const { currentResume, setCurrentResume, loadResume } = useResumeStore();
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useAuth();
+  const { resumeId } = use(params);
+
+  console.log("Current Resume in BuilderPage:", currentResume);
 
   useEffect(() => {
     if (!userId) return;
 
-    setCurrentResume(createEmptyResume(userId, "modern"));
+    if (resumeId) {
+      loadResume(resumeId, userId);
+    }
 
     setIsLoading(false);
-  }, [params.resumeId, setCurrentResume]);
+  }, [resumeId, setCurrentResume, userId]);
 
   if (isLoading) {
     return (
@@ -261,8 +265,8 @@ export default function BuilderPage({
       <BuilderToolbar />
 
       {/* Main Builder Interface */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="container mx-auto px-4 py-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Left: Form Editor */}
           <div className="space-y-4">
             <ResumeForm />

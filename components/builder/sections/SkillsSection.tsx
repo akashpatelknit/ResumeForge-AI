@@ -99,12 +99,13 @@ export default function SkillsSection() {
 
               <div>
                 <Label>Skills in this category</Label>
-                <div className="flex flex-wrap gap-2 mt-2 min-h-[40px] p-2 border rounded-md bg-gray-50">
-                  {skill.items.length === 0 ? (
+                <div className="flex flex-wrap gap-2 mt-2 min-h-10 p-2 border rounded-md bg-gray-50">
+                  {Array.isArray(skill.items) && skill.items.length === 0 ? (
                     <span className="text-sm text-gray-400">
                       No skills added yet
                     </span>
                   ) : (
+                    Array.isArray(skill.items) &&
                     skill.items.map((item, idx) => (
                       <Badge
                         key={idx}

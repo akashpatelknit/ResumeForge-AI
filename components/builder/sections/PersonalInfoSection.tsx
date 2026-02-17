@@ -18,7 +18,7 @@ export default function PersonalInfoSection() {
         <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="fullName">Full Name *</Label>
             <Input
               id="fullName"
@@ -28,7 +28,7 @@ export default function PersonalInfoSection() {
             />
           </div>
 
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="email">Email *</Label>
             <Input
               id="email"
@@ -39,7 +39,7 @@ export default function PersonalInfoSection() {
             />
           </div>
 
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="phone">Phone *</Label>
             <Input
               id="phone"
@@ -49,7 +49,7 @@ export default function PersonalInfoSection() {
             />
           </div>
 
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="location">Location *</Label>
             <Input
               id="location"
@@ -59,7 +59,7 @@ export default function PersonalInfoSection() {
             />
           </div>
 
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="linkedin">LinkedIn</Label>
             <Input
               id="linkedin"
@@ -69,7 +69,7 @@ export default function PersonalInfoSection() {
             />
           </div>
 
-          <div>
+          <div className="space-y-1">
             <Label htmlFor="github">GitHub</Label>
             <Input
               id="github"
@@ -81,7 +81,7 @@ export default function PersonalInfoSection() {
         </div>
       </div>
 
-      <div>
+      <div className="space-y-1">
         <Label htmlFor="summary">Professional Summary</Label>
         <Textarea
           id="summary"

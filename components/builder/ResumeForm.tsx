@@ -10,11 +10,10 @@ import EducationSection from "./sections/EducationSection";
 import SkillsSection from "./sections/SkillsSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import { useResumeStore } from "@/store/resumeStore";
-import { saveResume } from "@/lib/api/resumes";
 import { Loader2 } from "lucide-react";
 
 export default function ResumeForm() {
-  const { currentResume } = useResumeStore();
+  const { currentResume, saveResume } = useResumeStore();
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
@@ -22,20 +21,7 @@ export default function ResumeForm() {
 
     setIsSaving(true);
     try {
-      await saveResume({
-        id: currentResume.id,
-        title: currentResume.title,
-        templateId: currentResume.templateId,
-        personalInfo: currentResume.personalInfo,
-        summary: currentResume.summary,
-        experience: currentResume.experience,
-        education: currentResume.education,
-        skills: currentResume.skills,
-        projects: currentResume.projects,
-        achievements: currentResume.achievements,
-        certifications: currentResume.certifications,
-        languages: currentResume.languages,
-      });
+      await saveResume();
     } finally {
       setIsSaving(false);
     }

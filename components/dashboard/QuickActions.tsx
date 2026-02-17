@@ -1,6 +1,5 @@
 import React from "react";
 import { Plus, Github, FileText } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 const actions = [
   {
