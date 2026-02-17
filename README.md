@@ -402,9 +402,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Project Maintainer:** Akash Patel
 
-- Email: your.email@example.com
-- Twitter: [@yourusername](https://x.com/cotsec14)
-- LinkedIn: [Your Profile](https://www.linkedin.com/in/akash-patel-9330aa201)
+- Email: akashpatel20606@gmail.com
+- Twitter: [@cotsec14](https://x.com/cotsec14)
+- LinkedIn: [Linkedin](https://www.linkedin.com/in/akash-patel-9330aa201)
 
 **Project Link:** [https://github.com/akashpatelknit/ResumeForge-AI](https://github.com/akashpatelknit/ResumeForge-AI)
 
