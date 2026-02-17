@@ -429,4 +429,4 @@ If you find this project helpful, please consider:
 Made with [Next.js](https://nextjs.org/) · Powered by [AI](https://www.anthropic.com/)
 
 </div>
-```
+
