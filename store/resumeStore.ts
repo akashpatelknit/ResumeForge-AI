@@ -11,8 +11,6 @@ import {
 import { Prisma } from "@/app/generated/prisma/client";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 
-const toInputJson = (v: unknown) => v as Prisma.InputJsonValue;
-
 interface ResumeStore {
   currentResume: AppResume | null;
   isLoading: boolean;
