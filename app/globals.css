@@ -152,3 +152,31 @@
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+}

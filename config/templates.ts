@@ -23,74 +23,11 @@ export const sampleTemplates: Template[] = [
     bestFor: ["Software Engineers", "Product Managers"],
   },
   {
-    id: "executive",
+    id: "executive-pro",
     name: "Executive",
     description: "Premium layout for senior positions",
     category: "professional",
     type: "resume",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    features: [
-      "Elegant design",
-      "Photo support",
-      "Achievement focus",
-      "Premium styling",
-    ],
-    rating: 4.9,
-    usageCount: 567,
-    isPremium: true,
-    bestFor: ["C-Level", "VP", "Directors"],
-  },
-  {
-    id: "executive",
-    name: "Executive",
-    type: "resume",
-    description: "Premium layout for senior positions",
-    category: "professional",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    features: [
-      "Elegant design",
-      "Photo support",
-      "Achievement focus",
-      "Premium styling",
-    ],
-    rating: 4.9,
-    usageCount: 567,
-    isPremium: true,
-    bestFor: ["C-Level", "VP", "Directors"],
-  },
-  {
-    id: "executive",
-    name: "Executive",
-    type: "resume",
-    description: "Premium layout for senior positions",
-    category: "professional",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    features: [
-      "Elegant design",
-      "Photo support",
-      "Achievement focus",
-      "Premium styling",
-    ],
-    rating: 4.9,
-    usageCount: 567,
-    isPremium: true,
-    bestFor: ["C-Level", "VP", "Directors"],
-  },
-  {
-    id: "executive",
-    name: "Executive",
-    type: "resume",
-    description: "Premium layout for senior positions",
-    category: "professional",
     thumbnail:
       "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
     fullPreview:
@@ -147,47 +84,5 @@ export const sampleTemplates: Template[] = [
     usageCount: 2156,
     isPremium: false,
     bestFor: ["Any Industry", "Entry Level", "Career Changers"],
-  },
-  {
-    id: "tech-modern",
-    name: "Tech Modern",
-    type: "resume",
-    description: "Perfect for tech roles with modern aesthetics",
-    category: "modern",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=tech1&backgroundColor=3b82f6",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=tech1&backgroundColor=3b82f6",
-    features: [
-      "GitHub integration",
-      "Skills visualization",
-      "Project showcase",
-      "Link support",
-    ],
-    rating: 4.9,
-    usageCount: 1678,
-    isPremium: true,
-    bestFor: ["Software Developers", "Data Scientists", "DevOps"],
-  },
-  {
-    id: "classic-professional",
-    type: "resume",
-    name: "Classic Professional",
-    description: "Timeless design trusted by recruiters",
-    category: "professional",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=classic1&backgroundColor=64748b",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=classic1&backgroundColor=64748b",
-    features: [
-      "Traditional layout",
-      "Formal styling",
-      "ATS-optimized",
-      "Print-friendly",
-    ],
-    rating: 4.5,
-    usageCount: 3421,
-    isPremium: false,
-    bestFor: ["Finance", "Legal", "Healthcare", "Academia"],
   },
 ];

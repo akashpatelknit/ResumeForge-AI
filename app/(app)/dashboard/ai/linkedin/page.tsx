@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Linkedin,
   Mail,
@@ -80,15 +80,22 @@ export default function LinkedInMessageGenerator() {
     targetRole: "",
     company: "",
   });
+
   const [generated, setGenerated] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showResumeDropdown, setShowResumeDropdown] = useState(false);
+  const [currentOutput, setCurrentOutput] = useState({
+    connect: "",
+    inmail: "",
+    referral: "",
+    followup: "",
+  });
 
   const activeTab = OUTPUT_TABS.find((t) => t.id === activeOutputTab);
-  const currentOutput =
-    SAMPLE_OUTPUTS[activeOutputTab as keyof typeof SAMPLE_OUTPUTS] || "";
-  const charCount = currentOutput.length;
+
+  const charCount =
+    currentOutput[activeOutputTab as keyof typeof currentOutput]?.length || 0;
   const charLimit = activeTab?.charLimit || 300;
   const charPercent = Math.min((charCount / charLimit) * 100, 100);
 
@@ -100,22 +107,81 @@ export default function LinkedInMessageGenerator() {
 
   const handleGenerate = async () => {
     setIsGenerating(true);
-    await new Promise((r) => setTimeout(r, 1800));
+    await fetchOutput(activeOutputTab);
     setGenerated(true);
     setIsGenerating(false);
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentOutput);
+    navigator.clipboard.writeText(
+      currentOutput[activeOutputTab as keyof typeof currentOutput] || "",
+    );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleRegenerate = async () => {
     setIsGenerating(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    await fetchOutput(activeOutputTab);
     setIsGenerating(false);
   };
+
+  const fetchOutput = async (activeOutputTab: string) => {
+    setIsGenerating(true);
+
+    const response = await fetch("/api/ai/linkedin", {
+      method: "POST",
+      body: JSON.stringify({
+        tool: activeOutputTab,
+        resume: {
+          name: "Akash Patel",
+          role: "Frontend Developer",
+          experience_years: 3,
+          location: "Bangalore, India",
+          skills: [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Node.js",
+            "MongoDB",
+            "TailwindCSS",
+          ],
+          summary:
+            "Frontend developer specializing in scalable web applications and AI-powered SaaS platforms.",
+          experience: [
+            {
+              company: "TechNova Solutions",
+              role: "Frontend Developer",
+              duration: "Jan 2023 - Present",
+              achievements: [
+                "Built scalable dashboards",
+                "Improved performance by 35%",
+                "Integrated AI APIs",
+              ],
+            },
+          ],
+          projects: ["ResumeForge AI SaaS platform", "Job Tracker App"],
+          education: "B.Tech Computer Science",
+        },
+        jobDescription,
+        tone,
+      }),
+    });
+
+    const data = await response.json();
+    setGenerated(true);
+    setIsGenerating(false);
+    setCurrentOutput((prev) => ({
+      ...prev,
+      [activeOutputTab]: data.result,
+    }));
+  };
+
+  useEffect(() => {
+    if (currentOutput[activeOutputTab as keyof typeof currentOutput] === "") {
+      fetchOutput(activeOutputTab);
+    }
+  }, [activeOutputTab]);
 
   return (
     <div className=" bg-gray-50 p-0">
@@ -326,7 +392,7 @@ export default function LinkedInMessageGenerator() {
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  Generate All Messages
+                  Generate Message
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -418,7 +484,11 @@ export default function LinkedInMessageGenerator() {
                     </div>
                   ) : (
                     <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-                      {currentOutput}
+                      {
+                        currentOutput[
+                          activeOutputTab as keyof typeof currentOutput
+                        ]
+                      }
                     </p>
                   )}
                 </div>

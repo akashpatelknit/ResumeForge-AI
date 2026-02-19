@@ -11,6 +11,8 @@
   "dependencies": {
     "@base-ui/react": "^1.1.0",
     "@clerk/nextjs": "^6.37.3",
+    "@google/genai": "^1.42.0",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@monaco-editor/react": "^4.7.0",
     "@neondatabase/serverless": "^1.0.2",

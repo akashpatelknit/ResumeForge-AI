@@ -1,5 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { act, useState } from "react";
 import { Plus, Github, FileText } from "lucide-react";
+import TemplateSelectionModal from "../modal/TemplateSelectionModal";
+import { useRouter } from "next/navigation";
 
 const actions = [
   {
@@ -8,6 +12,7 @@ const actions = [
     icon: Plus,
     gradient: "from-purple-600 to-blue-600",
     hoverGradient: "from-purple-700 to-blue-700",
+    action: "create",
   },
   {
     title: "Import from GitHub",
@@ -15,6 +20,7 @@ const actions = [
     icon: Github,
     gradient: "from-blue-600 to-cyan-600",
     hoverGradient: "from-blue-700 to-cyan-700",
+    action: "import",
   },
   {
     title: "Generate Cover Letter",
@@ -22,10 +28,38 @@ const actions = [
     icon: FileText,
     gradient: "from-purple-600 to-pink-600",
     hoverGradient: "from-purple-700 to-pink-700",
+    action: "letter",
   },
 ];
 
 export default function QuickActions() {
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const router = useRouter();
+
+  const handleAction = (action: string) => {
+    switch (action) {
+      case "create":
+        setShowTemplateModal(true);
+        break;
+      case "import":
+        break;
+      case "letter":
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleCreateResume = async (templateId: string) => {
+    // Create new resume with selected template
+    // const newResume = await createResume(userId, templateId);
+
+    // Close modal
+    setShowTemplateModal(false);
+
+    // Navigate to builder
+    router.push(`/builder/1`);
+  };
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -40,6 +74,7 @@ export default function QuickActions() {
               key={action.title}
               className="group relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
               style={{ animationDelay: `${index * 100}ms` }}
+              onClick={() => handleAction(action.action)}
             >
               <div
                 className={`
@@ -83,6 +118,11 @@ export default function QuickActions() {
           );
         })}
       </div>
+      <TemplateSelectionModal
+        open={showTemplateModal}
+        onClose={() => setShowTemplateModal(false)}
+        onSelect={handleCreateResume}
+      />
     </div>
   );
 }

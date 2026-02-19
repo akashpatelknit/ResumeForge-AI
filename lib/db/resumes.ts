@@ -1,7 +1,6 @@
 import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ResumeData } from "@/types/resume";
-import { Resume } from "@prisma/client";
 
 // Get all resumes for a user
 export async function getResumes(userId: string) {

@@ -43,11 +43,7 @@ interface NavItem {
 }
 
 const navigation: NavItem[] = [
-  {
-    name: "Dashboard",
-    icon: Home,
-    href: "/dashboard",
-  },
+  { name: "Dashboard", icon: Home, href: "/dashboard" },
   {
     name: "Resumes",
     icon: FileText,
@@ -108,16 +104,8 @@ const navigation: NavItem[] = [
       { name: "STAR Generator", href: "/dashboard/interview/star", icon: Star },
     ],
   },
-  {
-    name: "Analytics",
-    icon: BarChart3,
-    href: "/dashboard/analytics",
-  },
-  {
-    name: "Settings",
-    icon: Settings,
-    href: "/dashboard/settings",
-  },
+  { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
+  { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
 export default function Sidebar() {
@@ -136,10 +124,32 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* Custom scrollbar styles */}
+      <style>{`
+        .sidebar-nav::-webkit-scrollbar {
+          width: 4px;
+        }
+        .sidebar-nav::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+          background: #e2e8f0;
+          border-radius: 999px;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+          background: #cbd5e1;
+        }
+        /* Firefox */
+        .sidebar-nav {
+          scrollbar-width: thin;
+          scrollbar-color: #e2e8f0 transparent;
+        }
+      `}</style>
+
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer border-none"
       >
         {isMobileMenuOpen ? (
           <X className="w-6 h-6 text-gray-700" />
@@ -166,13 +176,13 @@ export default function Sidebar() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-5 border-b border-gray-100">
+          <div className="p-5 border-b border-gray-100 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-purple-600 to-blue-600 flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-200">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-xl bg-linear-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                <h1 className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   ResumeForge
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">AI Powered</p>
@@ -181,11 +191,11 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <nav className="sidebar-nav flex-1 p-4 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
               const Icon = item.icon;
 
-              // Single link (no children)
+              // Single link
               if (!item.children) {
                 const isActive =
                   item.href === "/dashboard"
@@ -200,12 +210,12 @@ export default function Sidebar() {
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
                       ${
                         isActive
-                          ? "bg-linear-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-200"
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-200"
                           : "text-gray-700 hover:bg-gray-100 hover:translate-x-1"
                       }`}
                   >
                     <Icon
-                      className={`w-5 h-5 ${!isActive && "group-hover:scale-110 transition-transform"}`}
+                      className={`w-5 h-5 shrink-0 ${!isActive && "group-hover:scale-110 transition-transform"}`}
                     />
                     <span className="font-medium text-sm">{item.name}</span>
                   </Link>
@@ -218,13 +228,12 @@ export default function Sidebar() {
 
               return (
                 <div key={item.name}>
-                  {/* Section Header */}
                   <button
                     onClick={() => toggleSection(item.name)}
-                    className={`w-full group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+                    className={`w-full group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer border-none bg-transparent
                       ${
                         hasActiveChild
-                          ? "bg-purple-50 text-purple-700"
+                          ? "bg-blue-50 text-blue-700"
                           : "text-gray-700 hover:bg-gray-100"
                       }`}
                   >
@@ -233,13 +242,12 @@ export default function Sidebar() {
                       {item.name}
                     </span>
                     {isOpen ? (
-                      <ChevronDown className="w-4 h-4" />
+                      <ChevronDown className="w-4 h-4 shrink-0" />
                     ) : (
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-4 h-4 shrink-0" />
                     )}
                   </button>
 
-                  {/* Children */}
                   {isOpen && (
                     <div className="ml-4 mt-1 space-y-1 border-l-2 border-gray-100 pl-3">
                       {item.children.map((child) => {
@@ -256,7 +264,7 @@ export default function Sidebar() {
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
                               ${
                                 isChildActiveRoute
-                                  ? "bg-linear-to-r from-purple-600 to-blue-600 text-white shadow-md"
+                                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-100"
                                   : "text-gray-600 hover:bg-gray-100 hover:translate-x-1"
                               }`}
                           >
@@ -275,19 +283,21 @@ export default function Sidebar() {
           </nav>
 
           {/* Upgrade CTA */}
-          <div className="p-4 border-t border-gray-100">
-            <div className="bg-linear-to-br from-purple-600 via-purple-500 to-blue-600 rounded-2xl p-4 text-white relative overflow-hidden">
+          <div className="p-4 border-t border-gray-100 shrink-0">
+            <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-purple-700 rounded-2xl p-4 text-white relative overflow-hidden">
+              {/* Decorative blob */}
+              <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10" />
               <div className="relative">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-1.5">
                   <Zap className="w-4 h-4" />
                   <span className="text-xs font-bold uppercase tracking-wider">
                     Pro
                   </span>
                 </div>
-                <p className="text-sm font-medium mb-3 leading-relaxed">
+                <p className="text-sm font-medium mb-3 leading-relaxed opacity-90">
                   Unlock unlimited resumes & AI tools
                 </p>
-                <Button className="w-full bg-white text-purple-700 hover:bg-gray-100 font-semibold shadow-lg">
+                <Button className="w-full bg-white text-blue-700 hover:bg-gray-50 font-semibold shadow-lg text-sm cursor-pointer">
                   Upgrade Now
                 </Button>
               </div>
