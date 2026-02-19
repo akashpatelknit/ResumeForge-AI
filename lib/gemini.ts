@@ -1,3 +1,4 @@
+import "server-only";
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
@@ -12,7 +13,6 @@ const ai = new GoogleGenAI({
 
 // // Deep analysis / premium feature
 // model = "gemini-3-flash";
-
 
 export async function generateText(prompt: string) {
   const response = await ai.models.generateContent({

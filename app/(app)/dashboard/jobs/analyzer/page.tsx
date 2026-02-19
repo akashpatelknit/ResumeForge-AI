@@ -27,8 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { generateText } from "@/lib/gemini";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -554,10 +552,7 @@ export default function JobAnalyzer() {
     });
   };
 
-  const text = async () => {
-    const response = await generateText("What is the meaning of life?");
-    console.log(response);
-  };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
