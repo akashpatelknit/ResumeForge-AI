@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Plus, Grid3x3, List } from "lucide-react";
@@ -10,6 +10,9 @@ import ResumeGridView from "@/components/dashboard/ResumeGridView";
 import ResumeListView from "@/components/dashboard/ResumeList";
 import BulkActionsBar from "@/components/dashboard/BulkActionsBar";
 import { Resume } from "@/types/resume";
+import { useRouter } from "next/navigation";
+import { useResumeStore } from "@/store/resumeStore";
+import { useUser } from "@clerk/nextjs";
 
 const sampleResumes: Resume[] = [
   {
@@ -73,16 +76,28 @@ const sampleResumes: Resume[] = [
 
 export default function ResumesPage() {
   const [resumes, setResumes] = useState<Resume[]>(sampleResumes);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [selectedResumes, setSelectedResumes] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("lastModified");
+  const { currentResume, createNewResume } = useResumeStore();
+  const router = useRouter();
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  useEffect(() => {
+    loadResumes();
+  }, []);
+
+  const loadResumes = async () => {
+    const res = await fetch("/api/resumes");
+    const data = await res.json();
+    setResumes(data);
+  };
 
   // Filter and sort resumes
   const filteredResumes = resumes
     .filter((resume) => {
-      // Search filter
       if (
         searchQuery &&
         !resume.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -90,7 +105,6 @@ export default function ResumesPage() {
         return false;
       }
 
-      // Category filter
       if (filterCategory === "favorites" && !resume.isFavorite) return false;
       if (filterCategory === "recent") {
         const recentTerms = ["hour", "hours", "today", "yesterday"];
@@ -132,29 +146,20 @@ export default function ResumesPage() {
 
   const handleBulkAction = (action: string) => {
     console.log(`Bulk action: ${action} on`, selectedResumes);
-    // Implement bulk actions here
     setSelectedResumes([]);
   };
 
+  const handleCreateResume = async () => {
+    await createNewResume("modern", user?.id || ""); // Pass user ID if needed for resume creation
+    router.push(`/builder/${currentResume?.id}`);
+  };
+
   return (
-    <div className="flex h-screen overflow-hidden bg-linear-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+    <div className="flex overflow-hidden">
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                  My Resumes
-                </h1>
-              </div>
-
-              <Button className="bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200">
-                <Plus className="w-4 h-4 mr-2" />
-                Create New Resume
-              </Button>
-            </div>
-
+          <div className="mb-4">
             {/* Filters & View Toggle */}
             <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
               <ResumeFilters
@@ -167,27 +172,36 @@ export default function ResumesPage() {
               />
 
               {/* View Mode Toggle */}
-              <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded transition-colors ${
-                    viewMode === "grid"
-                      ? "bg-purple-100 text-purple-600"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
+              <div className="flex items-center gap-2">
+                <Button
+                  className="bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={handleCreateResume}
                 >
-                  <Grid3x3 className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded transition-colors ${
-                    viewMode === "list"
-                      ? "bg-purple-100 text-purple-600"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <List className="w-4 h-4" />
-                </button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create New Resume
+                </Button>
+                <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded transition-colors ${
+                      viewMode === "grid"
+                        ? "bg-purple-100 text-purple-600"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    <Grid3x3 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-2 rounded transition-colors ${
+                      viewMode === "list"
+                        ? "bg-purple-100 text-purple-600"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

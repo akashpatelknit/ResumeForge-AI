@@ -19,7 +19,7 @@ export default function DashboardHeader() {
         {/* Right Actions */}
         <div className="flex items-center gap-4">
           {/* Search Bar - Hidden on mobile */}
-          <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-xl px-4 py-2.5 w-80 hover:bg-gray-150 transition-colors group">
+          {/* <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-xl px-4 py-2.5 w-80 hover:bg-gray-150 transition-colors group">
             <Search className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
             <input
               type="text"
@@ -29,7 +29,7 @@ export default function DashboardHeader() {
             <kbd className="hidden lg:block px-2 py-1 text-xs font-semibold text-gray-500 bg-white border border-gray-300 rounded">
               ⌘K
             </kbd>
-          </div>
+          </div> */}
 
           {/* Notifications */}
           <button className="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors group">

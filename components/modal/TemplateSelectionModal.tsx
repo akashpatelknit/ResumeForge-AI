@@ -26,7 +26,7 @@ export default function TemplateSelectionModal({
 }) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
+ 
   const handleSelect = (templateId: string) => {
     onSelect(templateId);
     onClose();
@@ -69,7 +69,7 @@ export default function TemplateSelectionModal({
                 onClick={() => setSelectedId(template.id)}
               >
                 {/* Thumbnail */}
-                <div className="relative overflow-hidden bg-gray-50 aspect-[4/3] rounded-t-[14px]">
+                <div className="relative overflow-hidden bg-gray-50 aspect-4/3 rounded-t-[14px]">
                   <img
                     src={template.thumbnail}
                     alt={template.name}
@@ -94,7 +94,7 @@ export default function TemplateSelectionModal({
                       }}
                       className={cn(
                         "px-5 py-2.5 rounded-xl text-sm font-semibold text-white",
-                        "bg-gradient-to-br from-violet-500 to-purple-600",
+                        "bg-linear-to-br from-violet-500 to-purple-600",
                         "shadow-lg shadow-violet-500/30",
                         "hover:from-violet-600 hover:to-purple-700",
                         "transform transition-all duration-200",
@@ -147,7 +147,7 @@ export default function TemplateSelectionModal({
               {selectedId && (
                 <Button
                   onClick={() => handleSelect(selectedId)}
-                  className="rounded-xl text-sm bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white shadow shadow-violet-200"
+                  className="rounded-xl text-sm bg-linear-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white shadow shadow-violet-200"
                 >
                   Use Selected Template
                 </Button>

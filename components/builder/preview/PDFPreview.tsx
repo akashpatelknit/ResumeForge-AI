@@ -5,6 +5,7 @@ import { AppResume, Resume } from "@/types/resume";
 import { pdf } from "@react-pdf/renderer";
 import ModernTemplate from "@/components/pdf/template/ModernTemplate";
 import { useEffect, useState } from "react";
+import { getTemplateComponent } from "@/components/pdf/template";
 
 interface PDFPreviewProps {
   resume: AppResume | null;
@@ -23,8 +24,8 @@ export default function PDFPreview({ resume }: PDFPreviewProps) {
     const timeout = setTimeout(async () => {
       try {
         setLoading(true);
-
-        const blob = await pdf(<ModernTemplate resume={resume} />).toBlob();
+        const TemplateComponent = getTemplateComponent(resume.templateId);
+        const blob = await pdf(<TemplateComponent resume={resume} />).toBlob();
 
         const reader = new FileReader();
 

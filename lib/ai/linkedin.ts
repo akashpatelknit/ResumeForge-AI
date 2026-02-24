@@ -1,39 +1,70 @@
-import { generateText } from "../gemini";
-import { LINKEDIN_PROMPTS } from "./prompts";
+import { generateText } from "../openai";
+import { LINKEDIN_PROMPTS } from "./linkedinPrompts";
 
 export async function generateLinkedInContent({
   tool,
   resume,
   jobDescription,
   tone,
+  manualInputs,
 }: {
   tool: keyof typeof LINKEDIN_PROMPTS;
-  resume: string;
-  jobDescription?: string;
+  resume: string | object;
+  jobDescription?: string | object;
+  manualInputs?: Record<string, string>;
   tone?: string;
 }) {
+  const resumeText =
+    typeof resume === "string"
+      ? resume.trim()
+      : JSON.stringify(resume, null, 2);
+
+  const jobDesc =
+    typeof jobDescription === "string"
+      ? jobDescription.trim()
+      : JSON.stringify(jobDescription ?? "");
+
+  const hasJobDescription = jobDesc.trim().length > 0;
+  const hasManualInputs = manualInputs && Object.keys(manualInputs).length > 0;
+
   const prompt = `
-    You are a professional AI career assistant specializing in LinkedIn communication.
+TASK: ${tool.toUpperCase()}
 
-    Global Rules:
-    - Never explain your reasoning
-    - Never provide templates
-    - Always produce final ready-to-use content
+TONE: ${tone ?? "Professional"}
 
-    RESUME:
-    ${JSON.stringify(resume, null, 2)}
+RESUME:
+${resumeText}
 
-    JOB DESCRIPTION:
-    ${jobDescription ?? "Not provided"}
+JOB DESCRIPTION:
+${hasJobDescription ? jobDesc : "Not provided — write naturally without referencing a specific role or company."}
 
-    TONE:
-    ${tone ?? "Friendly"}
+${
+  hasJobDescription
+    ? `EXTRACTION TASK:
+Before writing the message, silently extract the following from the JOB DESCRIPTION if present:
+- Role Name
+- Job ID / Requisition ID
+- Company Name
+- Location
+- Job Type (Full-time / Contract / Part-time)
+- Work Mode (Remote / Hybrid / On-site)
 
-    TASK:
-    ${LINKEDIN_PROMPTS[tool]}
-    `;
+Use these extracted values naturally in the message where relevant.
+Do NOT list or display the extracted values — just use them in the output.`
+    : ""
+}
 
-  // return prompt;
+${
+  hasManualInputs
+    ? `ADDITIONAL CONTEXT:\n${Object.entries(manualInputs!)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join("\n")}`
+    : ""
+}
+
+INSTRUCTIONS:
+${LINKEDIN_PROMPTS[tool]}
+  `.trim();
 
   return await generateText(prompt);
 }

@@ -49,8 +49,8 @@ const navigation: NavItem[] = [
     icon: FileText,
     children: [
       { name: "My Resumes", href: "/dashboard/resumes", icon: FileText },
-      { name: "Create New", href: "/dashboard/resumes/new", icon: PlusCircle },
-      { name: "Templates", href: "/dashboard/templates", icon: Layout },
+      // { name: "Create New", href: "/dashboard/resumes/new", icon: PlusCircle },
+      { name: "Templates", href: "/dashboard/template", icon: Layout },
     ],
   },
   {
@@ -80,30 +80,30 @@ const navigation: NavItem[] = [
         href: "/dashboard/ai/cover-letters",
         icon: FileText,
       },
-      {
-        name: "Referral Messages",
-        href: "/dashboard/ai/referrals",
-        icon: Users,
-      },
+      // {
+      //   name: "Referral Messages",
+      //   href: "/dashboard/ai/referrals",
+      //   icon: Users,
+      // },
     ],
   },
-  {
-    name: "Interview Prep",
-    icon: Mic,
-    children: [
-      {
-        name: "Mock Interview",
-        href: "/dashboard/interview/mock",
-        icon: MessageSquare,
-      },
-      {
-        name: "Question Bank",
-        href: "/dashboard/interview/questions",
-        icon: BookOpen,
-      },
-      { name: "STAR Generator", href: "/dashboard/interview/star", icon: Star },
-    ],
-  },
+  // {
+  //   name: "Interview Prep",
+  //   icon: Mic,
+  //   children: [
+  //     {
+  //       name: "Mock Interview",
+  //       href: "/dashboard/interview/mock",
+  //       icon: MessageSquare,
+  //     },
+  //     {
+  //       name: "Question Bank",
+  //       href: "/dashboard/interview/questions",
+  //       icon: BookOpen,
+  //     },
+  //     { name: "STAR Generator", href: "/dashboard/interview/star", icon: Star },
+  //   ],
+  // },
   { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
@@ -284,7 +284,7 @@ export default function Sidebar() {
 
           {/* Upgrade CTA */}
           <div className="p-4 border-t border-gray-100 shrink-0">
-            <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-purple-700 rounded-2xl p-4 text-white relative overflow-hidden">
+            <div className="bg-linear-to-br from-blue-600 via-purple-600 to-purple-700 rounded-2xl p-4 text-white relative overflow-hidden">
               {/* Decorative blob */}
               <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10" />
               <div className="relative">

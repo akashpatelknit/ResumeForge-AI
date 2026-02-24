@@ -8,7 +8,6 @@ import {
   Skill,
 } from "@/types/resume";
 
-import { Prisma } from "@/app/generated/prisma/client";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 
 interface ResumeStore {
@@ -130,7 +129,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
     }
   },
 
-  createNewResume: async (templateId: string) => {
+  createNewResume: async (templateId: string, userId: string) => {
     set({ isLoading: true });
 
     try {
@@ -140,30 +139,190 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
         body: JSON.stringify({
           title: "Untitled Resume",
           templateId,
+          userId,
           data: {
             personalInfo: {
-              fullName: "",
-              email: "",
-              phone: "",
-              location: "",
+              fullName: "Alex Johnson",
+              email: "alex.johnson@gmail.com",
+              phone: "+1 (415) 555-0192",
+              location: "San Francisco, CA",
+              linkedIn: "linkedin.com/in/alexjohnson",
+              github: "github.com/alexjohnson",
+              website: "alexjohnson.dev",
             },
-            summary: "",
-            experience: [],
-            education: [],
-            skills: [],
-            projects: [],
-            achievements: [],
-            certifications: [],
-            languages: [],
+            summary:
+              "Full-stack software engineer with 4+ years of experience building scalable web applications using React, Node.js, and cloud infrastructure. Passionate about clean architecture, developer tooling, and shipping products users love.",
+
+            experience: [
+              {
+                id: "exp_1",
+                company: "Stripe",
+                role: "Software Engineer II",
+                location: "San Francisco, CA",
+                startDate: "2022-06",
+                endDate: null, // currently working
+                current: true,
+                description:
+                  "Led development of internal dashboard used by 200+ support agents, reducing ticket resolution time by 35%. Built reusable component library adopted across 4 product teams.",
+                achievements: [
+                  "Architected a real-time notification system using WebSockets serving 50k+ concurrent users",
+                  "Reduced API response times by 40% through query optimization and Redis caching",
+                  "Mentored 2 junior engineers and conducted 30+ technical interviews",
+                ],
+                technologies: [
+                  "React",
+                  "TypeScript",
+                  "Node.js",
+                  "PostgreSQL",
+                  "Redis",
+                ],
+              },
+              {
+                id: "exp_2",
+                company: "Razorpay",
+                role: "Frontend Engineer",
+                location: "Bengaluru, India",
+                startDate: "2020-07",
+                endDate: "2022-05",
+                current: false,
+                description:
+                  "Worked on the merchant-facing payments dashboard handling ₹500Cr+ in daily transactions.",
+                achievements: [
+                  "Rebuilt the analytics dashboard from scratch using React and D3.js, improving load time by 60%",
+                  "Integrated Razorpay's design system across 12 legacy pages",
+                  "Collaborated with backend teams to design RESTful APIs for new reporting features",
+                ],
+                technologies: [
+                  "React",
+                  "JavaScript",
+                  "D3.js",
+                  "SCSS",
+                  "REST APIs",
+                ],
+              },
+            ],
+
+            education: [
+              {
+                id: "edu_1",
+                institution: "Indian Institute of Technology, Bombay",
+                degree: "B.Tech",
+                field: "Computer Science and Engineering",
+                startDate: "2016-07",
+                endDate: "2020-05",
+                grade: "8.7 / 10 CGPA",
+                activities: "Tech fest organizer, Open Source Club lead",
+              },
+            ],
+
+            skills: [
+              {
+                id: "skill_1",
+                category: "Languages",
+                items: ["TypeScript", "JavaScript", "Python", "SQL"],
+              },
+              {
+                id: "skill_2",
+                category: "Frontend",
+                items: ["React", "Next.js", "Tailwind CSS", "Redux"],
+              },
+              {
+                id: "skill_3",
+                category: "Backend",
+                items: ["Node.js", "Express", "Prisma", "GraphQL"],
+              },
+              {
+                id: "skill_4",
+                category: "DevOps & Tools",
+                items: ["AWS", "Docker", "GitHub Actions", "Vercel"],
+              },
+            ],
+
+            projects: [
+              {
+                id: "proj_1",
+                name: "ResumeAI",
+                description:
+                  "AI-powered resume builder with ATS scoring, multiple templates, and PDF export. Built with Next.js, Prisma, and OpenAI API.",
+                url: "resumeai.vercel.app",
+                github: "github.com/alexjohnson/resumeai",
+                startDate: "2023-09",
+                endDate: "2023-12",
+                technologies: ["Next.js", "OpenAI", "Prisma", "Tailwind CSS"],
+                achievements: [
+                  "Acquired 1,200+ users within 3 months of launch",
+                  "Implemented ATS scoring algorithm with 85% accuracy vs industry tools",
+                ],
+              },
+              {
+                id: "proj_2",
+                name: "DevPulse",
+                description:
+                  "GitHub activity tracker that visualizes contribution patterns and generates weekly digest emails.",
+                url: "devpulse.app",
+                github: "github.com/alexjohnson/devpulse",
+                startDate: "2023-02",
+                endDate: "2023-05",
+                technologies: ["React", "Node.js", "GitHub API", "SendGrid"],
+                achievements: [
+                  "500+ active users, 4.8/5 rating on Product Hunt",
+                ],
+              },
+            ],
+
+            achievements: [
+              {
+                id: "ach_1",
+                title: "Winner — HackMIT 2022",
+                description:
+                  "Built an accessibility linting tool for React apps. Won 1st place out of 180 teams.",
+                date: "2022-10",
+              },
+              {
+                id: "ach_2",
+                title: "Google Summer of Code 2021",
+                description:
+                  "Contributed to Mozilla's DevTools project, merged 14 PRs improving debugger performance.",
+                date: "2021-08",
+              },
+            ],
+
+            certifications: [
+              {
+                id: "cert_1",
+                name: "AWS Certified Solutions Architect – Associate",
+                issuer: "Amazon Web Services",
+                issueDate: "2023-03",
+                expiryDate: "2026-03",
+                credentialUrl: "credly.com/badges/aws-saa",
+              },
+              {
+                id: "cert_2",
+                name: "Meta Front-End Developer Certificate",
+                issuer: "Meta / Coursera",
+                issueDate: "2021-11",
+                expiryDate: null,
+                credentialUrl: "coursera.org/verify/meta-frontend",
+              },
+            ],
+
+            languages: [
+              { id: "lang_1", language: "English", proficiency: "Fluent" },
+              { id: "lang_2", language: "Hindi", proficiency: "Native" },
+              { id: "lang_3", language: "French", proficiency: "Beginner" },
+            ],
+
             isFavorite: false,
             thumbnail: "",
-            atsScore: 0,
+            atsScore: 78,
           },
         }),
       });
 
       const newResume = await res.json();
       const mapped = mapResumeFromDB(newResume);
+
+      console.log("Created new resume:", mapped);
 
       set({
         currentResume: mapped,

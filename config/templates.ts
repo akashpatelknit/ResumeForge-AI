@@ -2,8 +2,8 @@ import { Template } from "@/types/template";
 
 export const sampleTemplates: Template[] = [
   {
-    id: "modern-professional",
-    name: "Modern Professional",
+    id: "modern",
+    name: "Modern",
     description: "Clean two-column design with color accents",
     category: "modern",
     type: "resume",
@@ -23,8 +23,8 @@ export const sampleTemplates: Template[] = [
     bestFor: ["Software Engineers", "Product Managers"],
   },
   {
-    id: "executive-pro",
-    name: "Executive",
+    id: "professional",
+    name: "Professional",
     description: "Premium layout for senior positions",
     category: "professional",
     type: "resume",
@@ -44,8 +44,8 @@ export const sampleTemplates: Template[] = [
     bestFor: ["C-Level", "VP", "Directors"],
   },
   {
-    id: "creative-bold",
-    name: "Creative Bold",
+    id: "classic",
+    name: "Classic",
     type: "resume",
     description: "Stand out with vibrant colors and unique layout",
     category: "creative",
@@ -63,26 +63,5 @@ export const sampleTemplates: Template[] = [
     usageCount: 892,
     isPremium: false,
     bestFor: ["Designers", "Marketers", "Content Creators"],
-  },
-  {
-    id: "minimal-clean",
-    name: "Minimal Clean",
-    type: "resume",
-    description: "Simple and elegant, perfect for any industry",
-    category: "minimal",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=minimal1&backgroundColor=10b981",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=minimal1&backgroundColor=10b981",
-    features: [
-      "Clean typography",
-      "White space focus",
-      "Easy to scan",
-      "ATS-friendly",
-    ],
-    rating: 4.6,
-    usageCount: 2156,
-    isPremium: false,
-    bestFor: ["Any Industry", "Entry Level", "Career Changers"],
   },
 ];

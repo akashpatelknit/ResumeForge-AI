@@ -1,4 +1,4 @@
-import { Resume } from "@/types/resume";
+import { AppResume, Resume } from "@/types/resume";
 import {
   Document,
   Page,
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MinimalTemplate({ resume }: { resume: Resume }) {
+export default function MinimalTemplate({ resume }: { resume: AppResume }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>

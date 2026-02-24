@@ -1,8 +1,10 @@
 import ModernTemplate from "./ModernTemplate";
 import ProfessionalTemplate from "./ProfessionalTemplate";
 import MinimalTemplate from "./MinimalTemplate";
+import { AppResume } from "@/types/resume";
+import { ComponentType } from "react";
 
-export const templateComponents = {
+const templateRegistry: Record<string, ComponentType<{ resume: AppResume }>> = {
   modern: ModernTemplate,
   professional: ProfessionalTemplate,
   minimal: MinimalTemplate,
@@ -10,7 +12,7 @@ export const templateComponents = {
 
 export function getTemplateComponent(templateId: string) {
   return (
-    templateComponents[templateId as keyof typeof templateComponents] ||
+    templateRegistry[templateId as keyof typeof templateRegistry] ||
     ModernTemplate
   );
 }

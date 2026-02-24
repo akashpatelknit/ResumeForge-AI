@@ -173,10 +173,10 @@ export default function ResumeCard({
         </div> */}
 
         {/* Last Modified */}
-        <p className="text-xs text-gray-500 mb-4">
-          Updated {resume.updatedAt.toLocaleDateString()} at{" "}
-          {resume.updatedAt.toLocaleTimeString()}
-        </p>
+       <p className="text-xs text-gray-500 mb-4">
+  Updated {new Date(resume.updatedAt).toLocaleDateString()} at{" "}
+  {new Date(resume.updatedAt).toLocaleTimeString()}
+</p>
 
         {/* Actions */}
         <div className="flex items-center gap-2">

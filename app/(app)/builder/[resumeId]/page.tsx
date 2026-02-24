@@ -239,8 +239,6 @@ export default function BuilderPage({
   const { userId } = useAuth();
   const { resumeId } = use(params);
 
-  console.log("Current Resume in BuilderPage:", currentResume);
-
   useEffect(() => {
     if (!userId) return;
 

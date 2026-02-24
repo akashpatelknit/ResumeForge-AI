@@ -4,6 +4,8 @@ import React, { act, useState } from "react";
 import { Plus, Github, FileText } from "lucide-react";
 import TemplateSelectionModal from "../modal/TemplateSelectionModal";
 import { useRouter } from "next/navigation";
+import { useResumeStore } from "@/store/resumeStore";
+import { useUser } from "@clerk/nextjs";
 
 const actions = [
   {
@@ -34,8 +36,9 @@ const actions = [
 
 export default function QuickActions() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const { createNewResume } = useResumeStore();
   const router = useRouter();
-
+  const { user, isLoaded, isSignedIn } = useUser();
   const handleAction = (action: string) => {
     switch (action) {
       case "create":
@@ -51,15 +54,10 @@ export default function QuickActions() {
   };
 
   const handleCreateResume = async (templateId: string) => {
-    // Create new resume with selected template
-    // const newResume = await createResume(userId, templateId);
-
-    // Close modal
-    setShowTemplateModal(false);
-
-    // Navigate to builder
-    router.push(`/builder/1`);
+    const newResume = await createNewResume(templateId, user?.id || "");
+    router.push(`/builder/${newResume?.id}`);
   };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
