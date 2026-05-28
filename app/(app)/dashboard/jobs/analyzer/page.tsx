@@ -533,13 +533,6 @@ export default function JobAnalyzer() {
   const testApi = async () => {
     fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
-      headers: {
-        Authorization:
-          "Bearer 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",
-        "HTTP-Referer": "http://localhost:3000/", // Optional. Site URL for rankings on openrouter.ai.
-        "X-Title": "ResumeForge AI", // Optional. Site title for rankings on openrouter.ai.
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         model: "openai/gpt-5.2",
         messages: [
