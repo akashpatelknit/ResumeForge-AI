@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import "./index.css";
 
@@ -157,16 +158,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log(
-    "process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:",
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    "DATABASE_URL:",
-    process.env.DATABASE_URL,
-  );
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <head>
+        <head suppressHydrationWarning>
           {/* Additional SEO tags */}
           <link rel="canonical" href={siteConfig.url} />
 
@@ -209,8 +204,12 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className="min-h-screen bg-background font-sans antialiased">
+        <body
+          className="min-h-screen bg-background font-sans antialiased"
+          suppressHydrationWarning
+        >
           {children}
+          <Toaster richColors position="top-right" />
         </body>
       </html>
     </ClerkProvider>

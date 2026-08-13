@@ -19,9 +19,6 @@ import {
   PlusCircle,
   Briefcase,
   Search,
-  Linkedin,
-  Mail,
-  Users,
   MessageSquare,
   BookOpen,
   Star,
@@ -65,28 +62,7 @@ const navigation: NavItem[] = [
       { name: "Job Analyzer", href: "/dashboard/jobs/analyzer", icon: Search },
     ],
   },
-  {
-    name: "AI Tools",
-    icon: Bot,
-    children: [
-      {
-        name: "LinkedIn Messages",
-        href: "/dashboard/ai/linkedin",
-        icon: Linkedin,
-      },
-      { name: "Cold Emails", href: "/dashboard/ai/cold-emails", icon: Mail },
-      {
-        name: "Cover Letters",
-        href: "/dashboard/ai/cover-letters",
-        icon: FileText,
-      },
-      // {
-      //   name: "Referral Messages",
-      //   href: "/dashboard/ai/referrals",
-      //   icon: Users,
-      // },
-    ],
-  },
+  { name: "AI Outreach", icon: Bot, href: "/dashboard/ai/outreach" },
   // {
   //   name: "Interview Prep",
   //   icon: Mic,

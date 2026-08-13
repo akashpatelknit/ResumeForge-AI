@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
+    marginBottom: 4,
   },
   headerRow2: {
     flexDirection: "row",
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
   // \textbf{{\LARGE Name}}  ≈ 22pt bold
   name: {
     fontSize: 22,
+    lineHeight: 1.15,
     fontFamily: "Helvetica-Bold",
   },
   // Email on right of row 1 — rendered as a clickable mailto link
@@ -606,23 +608,25 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
             <Text style={styles.sectionTitle}>Achievements</Text>
             <View style={styles.subHeadingList}>
               {(resume.achievements ?? []).map((achievement, idx) => {
-                const text =
+                // Achievement entries are { title, description } objects
+                // (see lib/seedResumeData.ts, types/resume.ts) — fall back
+                // to treating a plain string as an untitled description for
+                // older/looser data rather than stringifying the object.
+                const label =
+                  typeof achievement === "string" ? null : achievement?.title || null;
+                const desc =
                   typeof achievement === "string"
                     ? achievement
-                    : String(achievement ?? "");
-                const colonIdx = text.indexOf(":");
-                const hasLabel = colonIdx > 0 && colonIdx <= 40;
-                const label = hasLabel ? text.slice(0, colonIdx) : null;
-                const desc = hasLabel
-                  ? text.slice(colonIdx + 1).trimStart()
-                  : text;
+                    : achievement?.description || "";
+
+                if (!label && !desc) return null;
 
                 return (
                   <View key={idx} style={styles.subItem}>
                     <Text style={styles.subItemBullet}>•</Text>
                     <View style={styles.subItemTextWrap}>
                       <Text>
-                        {hasLabel && (
+                        {label && (
                           <Text style={styles.subItemLabelBold}>{label}: </Text>
                         )}
                         <Text style={styles.subItemValue}>{desc}</Text>
@@ -660,6 +664,53 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
             </View>
           </View>
         )}
+
+        {/* ================================================================
+            CUSTOM SECTIONS — user-defined sections beyond the fixed set
+            (Publications, Volunteer Work, Awards, etc.). Same visual
+            vocabulary as everywhere else: bold heading, italic subheading,
+            paragraph, bullet list.
+        ================================================================ */}
+        {(resume.customSections ?? [])
+          .filter((section) => section.title && section.items.length > 0)
+          .map((section) => (
+            <View key={section.id}>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <View style={styles.subHeadingList}>
+                {section.items.map((item) => (
+                  <View key={item.id} style={styles.subheadingItem}>
+                    {(item.heading || item.subheading) && (
+                      <View style={styles.subheadingTopRow}>
+                        <Text style={styles.subheadingCompany}>
+                          {item.heading}
+                        </Text>
+                        <Text style={styles.subheadingPosition}>
+                          {item.subheading}
+                        </Text>
+                      </View>
+                    )}
+                    {item.description && (
+                      <Text style={styles.summaryText}>
+                        {item.description}
+                      </Text>
+                    )}
+                    {(item.bullets ?? []).length > 0 && (
+                      <View style={styles.itemList}>
+                        {item.bullets.map((bullet, i) => (
+                          <View key={i} style={styles.itemRow}>
+                            <Text style={styles.itemBullet}>•</Text>
+                            <Text style={styles.itemBodyNormal}>
+                              {bullet}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))}
       </Page>
     </Document>
   );

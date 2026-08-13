@@ -1,31 +1,26 @@
 "use client";
 
+import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Save,
-  Download,
-  Eye,
-  ChevronLeft,
-  Github,
-  Sparkles,
-  FileText,
-  Star,
-  LayoutTemplate,
-} from "lucide-react";
+import { Save, Download, Eye, ChevronLeft } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
-import { useState } from "react";
 import Link from "next/link";
 
-const sidebarItems = [
-  { icon: Github, label: "Import from GitHub" },
-  { icon: Sparkles, label: "AI Improve Resume" },
-  { icon: FileText, label: "ATS Score" },
-  { icon: Star, label: "Skill Suggestions" },
-  { icon: LayoutTemplate, label: "Templates" },
-];
+interface BuilderToolbarProps {
+  // Rendered in the middle of the toolbar, replacing the old placeholder
+  // icon row — used by the builder page for its Form/LaTeX mode toggle so
+  // there's one header bar instead of two stacked ones.
+  centerSlot?: ReactNode;
+  // Rendered in the right-hand action group, before Save/Preview/Download —
+  // used for LaTeX-mode-only controls (Templates, Recompile, save status).
+  endSlot?: ReactNode;
+}
 
-export default function BuilderToolbar() {
+export default function BuilderToolbar({
+  centerSlot,
+  endSlot,
+}: BuilderToolbarProps) {
   const { currentResume, updateTitle } = useResumeStore();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -52,31 +47,22 @@ export default function BuilderToolbar() {
             </Link>
 
             <Input
-              value={currentResume?.title}
+              value={currentResume?.title ?? ""}
               onChange={(e) => updateTitle(e.target.value)}
               className="w-64 font-semibold"
               placeholder="Resume Title"
             />
           </div>
 
-          {/* Middle Tools (from sidebar) */}
-          <div className="hidden md:flex items-center gap-1">
-            {sidebarItems.map((item, i) => (
-              <button
-                key={i}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition group relative"
-              >
-                <item.icon size={18} />
-
-                <span className="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </div>
+          {/* Middle */}
+          {centerSlot && (
+            <div className="hidden md:flex items-center gap-3">{centerSlot}</div>
+          )}
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
+            {endSlot}
+
             <Button
               variant="outline"
               size="sm"

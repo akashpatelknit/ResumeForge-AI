@@ -9,6 +9,7 @@ import ExperienceSection from "./sections/ExperienceSection";
 import EducationSection from "./sections/EducationSection";
 import SkillsSection from "./sections/SkillsSection";
 import ProjectsSection from "./sections/ProjectsSection";
+import CustomSectionsSection from "./sections/CustomSectionsSection";
 import { useResumeStore } from "@/store/resumeStore";
 import { Loader2 } from "lucide-react";
 
@@ -31,12 +32,13 @@ export default function ResumeForm() {
     <div className="space-y-4">
       <Card className="p-6">
         <Tabs defaultValue="personal" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="personal">Personal</TabsTrigger>
             <TabsTrigger value="experience">Experience</TabsTrigger>
             <TabsTrigger value="education">Education</TabsTrigger>
             <TabsTrigger value="skills">Skills</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="custom">Custom</TabsTrigger>
           </TabsList>
 
           <TabsContent value="personal" className="space-y-4 mt-4">
@@ -57,6 +59,10 @@ export default function ResumeForm() {
 
           <TabsContent value="projects" className="space-y-4 mt-4">
             <ProjectsSection />
+          </TabsContent>
+
+          <TabsContent value="custom" className="space-y-4 mt-4">
+            <CustomSectionsSection />
           </TabsContent>
         </Tabs>
       </Card>

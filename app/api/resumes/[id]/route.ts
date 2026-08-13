@@ -50,6 +50,7 @@ export async function PUT(
       title: body.title,
       templateId: body.templateId,
       data: body.data,
+      latexSource: body.latexSource,
     });
 
     return NextResponse.json(resume);

@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
 }
 
 
@@ -13,6 +14,11 @@ model Resume {
   title        String
   templateId   String            @map("template_id")
   data         Json
+  // Raw LaTeX source for the Overleaf-style editor (app/(app)/builder/[resumeId]/latex).
+  // Kept as its own column rather than a field inside `data` — it's a fundamentally
+  // different kind of content (freeform text vs. structured form JSON) and doesn't
+  // benefit from JSON querying. Tradeoff: needs a migration instead of being schema-free.
+  latexSource  String?           @map("latex_source")
   createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
   coverLetters CoverLetter[]

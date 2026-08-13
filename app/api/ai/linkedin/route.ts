@@ -1,9 +1,19 @@
+import { auth } from "@clerk/nextjs/server";
 import { generateLinkedInContent } from "@/lib/ai/linkedin";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const { userId } = await auth();
 
-  const result = await generateLinkedInContent(body);
+  if (!userId) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  return Response.json({ result });
+  try {
+    const body = await req.json();
+    const result = await generateLinkedInContent(body);
+    return Response.json({ result });
+  } catch (error) {
+    console.error("Failed to generate LinkedIn content:", error);
+    return Response.json({ error: "Generation failed" }, { status: 500 });
+  }
 }

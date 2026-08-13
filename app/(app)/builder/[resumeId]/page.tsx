@@ -1,253 +1,412 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 import { useResumeStore } from "@/store/resumeStore";
 import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
 import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
-import { AppResume } from "@/types/resume";
-import { useAuth } from "@clerk/nextjs";
 
-export function createEmptyResume(
-  userId: string,
-  templateId: string,
-): AppResume {
-  return {
-    id: crypto.randomUUID(),
-    userId,
-    title: "Untitled Resume",
-    templateId,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    personalInfo: {
-      fullName: "Akash Patel",
-      email: "akashpatel20606@gmail.com",
-      phone: "+91-9369201975",
-      location: "India",
-      linkedin: "linkedin.com/in/akash-patel-9330aa201",
-      github: "github.com/akashpatelknit",
-      portfolio: "",
-    },
-
-    summary:
-      "Full Stack Developer with 3+ years of experience building scalable web applications using React, Node.js, and modern JavaScript technologies. Skilled in developing responsive UIs, scalable APIs, and deploying production-ready applications.",
-    experience: [
-      {
-        id: "exp-1",
-        company: "Tata Consultancy Services (TCS)",
-        position: "Full Stack Developer",
-        location: "Remote / India",
-        startDate: "2023-05",
-        endDate: "Present",
-        description:
-          "Worked on scalable full-stack enterprise applications across frontend, backend, and cloud deployment.",
-
-        achievements: [
-          "Delivered 15+ full-stack features across React, Spring Boot, and PostgreSQL improving engagement by 35% while owning the complete lifecycle from UI to deployment.",
-          "Built reusable React components and scalable APIs handling 100K+ daily requests with JWT auth, rate limiting, and Redis caching.",
-          "Optimized PostgreSQL queries reducing execution time by 60% and deployed services using AWS, Docker, and CI/CD pipelines reducing deployment time by 70% with automated testing.",
-        ],
-      },
-
-      {
-        id: "exp-2",
-        company: "Flabs - Pathology Lab Software",
-        position: "Full Stack Developer",
-        location: "Remote / India",
-        startDate: "2022-01",
-        endDate: "2023-04",
-        description:
-          "Developed healthcare SaaS platform features serving 200+ labs.",
-
-        achievements: [
-          "Built full-stack healthcare SaaS features using React and Node.js improving workflow efficiency by 45% with APIs handling 50K+ daily requests.",
-          "Implemented real-time WebSocket updates reducing latency by 80% and optimized MongoDB schemas improving query performance by 45%.",
-          "Implemented JWT authentication, RBAC, and maintained test coverage above 80% across frontend and backend services.",
-        ],
-      },
-    ],
-
-    education: [
-      {
-        id: "edu-1",
-        institution: "KNIT Sultanpur",
-        degree: "Bachelor of Technology",
-        field: "Computer Science",
-        location: "Sultanpur, India",
-        startDate: "2018",
-        endDate: "2022",
-      },
-    ],
-
-    skills: [
-      {
-        id: "skill-1",
-        category: "Frontend",
-        items: [
-          "React.js",
-          "Next.js",
-          "Redux",
-          "React Query",
-          "TypeScript",
-          "JavaScript (ES6+)",
-          "HTML5",
-          "CSS3",
-        ],
-      },
-      {
-        id: "skill-2",
-        category: "Styling",
-        items: [
-          "Tailwind CSS",
-          "Sass/SCSS",
-          "Styled Components",
-          "Material UI",
-          "Responsive Design",
-        ],
-      },
-      {
-        id: "skill-3",
-        category: "Backend",
-        items: [
-          "Node.js",
-          "Express.js",
-          "NestJS",
-          "Spring Boot",
-          "REST APIs",
-          "GraphQL",
-          "Microservices",
-        ],
-      },
-      {
-        id: "skill-4",
-        category: "Databases",
-        items: [
-          "MongoDB",
-          "PostgreSQL",
-          "Redis",
-          "SQL",
-          "Database Design",
-          "Query Optimization",
-        ],
-      },
-      {
-        id: "skill-5",
-        category: "DevOps & Tools",
-        items: [
-          "Docker",
-          "AWS (EC2, S3, RDS)",
-          "Git/GitHub",
-          "CI/CD",
-          "Jest",
-          "React Testing Library",
-          "Postman",
-        ],
-      },
-      {
-        id: "skill-6",
-        category: "Core",
-        items: [
-          "Full Stack Development",
-          "System Design",
-          "API Integration",
-          "JWT Authentication",
-          "OAuth",
-        ],
-      },
-    ],
-    projects: [
-      {
-        id: "proj-1",
-        name: "Homekrew - Full-Stack Home Services Platform",
-        description:
-          "Complete service marketplace with customer, vendor, and admin systems covering full frontend to backend deployment.",
-
-        technologies: [
-          "React.js",
-          "Next.js",
-          "Redux",
-          "TypeScript",
-          "Tailwind CSS",
-          "Node.js",
-          "Express.js",
-          "MongoDB",
-          "Redis",
-          "Socket.io",
-          "JWT",
-          "AWS",
-          "Docker",
-        ],
-
-        link: "",
-
-        highlights: [
-          "Architected and developed full marketplace platform with customer, vendor, and admin dashboards using React and scalable Node.js APIs.",
-          "Implemented JWT authentication, RBAC, and real-time updates with Socket.io supporting secure multi-role workflows.",
-          "Built admin dashboard with analytics, vendor management, and integrated Razorpay & Stripe payment systems.",
-          "Optimized performance using MongoDB indexing, Redis caching, and frontend lazy loading reducing API response time by 60% and page load by 50%.",
-        ],
-      },
-
-      {
-        id: "proj-2",
-        name: "E-Commerce Platform with Admin CMS",
-        description:
-          "Full-featured e-commerce platform supporting product discovery, cart, checkout, and order management workflows.",
-
-        technologies: [
-          "React.js",
-          "Node.js",
-          "Express.js",
-          "MongoDB",
-          "JWT",
-          "Stripe API",
-          "Tailwind CSS",
-          "Redux",
-          "Axios",
-          "Nodemailer",
-        ],
-
-        link: "",
-
-        highlights: [
-          "Developed responsive React UI supporting catalog browsing, filtering, cart, and checkout workflows with mobile-first optimization.",
-          "Built scalable Node.js and MongoDB backend APIs managing products, inventory, and order processing.",
-          "Created admin CMS with secure authentication and role-based access control for product and order management.",
-          "Integrated Stripe payments with webhook handling and automated notification workflows.",
-        ],
-      },
-    ],
-
-    achievements: [],
-    certifications: [],
-    languages: [],
-
-    isFavorite: false,
-    thumbnail: "",
-    atsScore: 0,
-  };
-}
+/* ============================================================================
+ * LaTeX editing mode — DISABLED HERE, NOT DELETED.
+ *
+ * Turned off at your request while you get familiar with the LaTeX side
+ * separately. Nothing about the feature itself was touched or removed —
+ * every file it depends on is untouched and still fully working:
+ *
+ *   lib/latex/generateLatexFromResume.ts   Form -> LaTeX (deterministic)
+ *   lib/latex/extractResumeFromLatex.ts    LaTeX -> Form (via Gemini)
+ *   lib/latex/compile.ts                   Tectonic compile backend
+ *   lib/latex/templates/                   selectable .tex templates
+ *   components/builder/latex/LatexEditor.tsx
+ *   components/builder/latex/LatexPreviewPane.tsx
+ *   hooks/useLatexAutoSave.ts
+ *   app/api/compile-latex/route.ts
+ *   app/api/ai/latex-to-resume/route.ts
+ *
+ * This file previously wired those into a Form/LaTeX toggle right here.
+ * That exact wiring is preserved below as a comment so it can be restored
+ * by uncommenting it and swapping the JSX back — nothing needs to be
+ * rebuilt from scratch.
+ *
+ * ----------------------------------------------------------------------------
+ *
+ * import { use, useCallback, useEffect, useRef, useState } from "react";
+ * import { useAuth } from "@clerk/nextjs";
+ * import { toast } from "sonner";
+ * import { Code2, FileText, LayoutTemplate, Loader2, Play } from "lucide-react";
+ * import { cn } from "@/lib/utils";
+ * import { Button } from "@/components/ui/button";
+ * import {
+ *   DropdownMenu,
+ *   DropdownMenuContent,
+ *   DropdownMenuItem,
+ *   DropdownMenuTrigger,
+ * } from "@/components/ui/dropdown-menu";
+ * import { useResumeStore } from "@/store/resumeStore";
+ * import { useDebounce } from "@/hooks/useDebounce";
+ * import { useLatexAutoSave } from "@/hooks/useLatexAutoSave";
+ * import ResumeForm from "@/components/builder/ResumeForm";
+ * import BuilderToolbar from "@/components/builder/BuilderToolbar";
+ * import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
+ * import LatexEditor from "@/components/builder/latex/LatexEditor";
+ * import LatexPreviewPane from "@/components/builder/latex/LatexPreviewPane";
+ * import { generateLatexFromResume } from "@/lib/latex/generateLatexFromResume";
+ * import { LATEX_TEMPLATES, type LatexTemplateOption } from "@/lib/latex/templates";
+ * import type { LatexDiagnostic } from "@/types/latex";
+ * import type { AppResume } from "@/types/resume";
+ *
+ * type Mode = "form" | "latex";
+ *
+ * // Two editing modes for the same resume, sharing one PDF pipeline: the
+ * // preview is ALWAYS produced by compiling LaTeX (via Tectonic,
+ * // /api/compile-latex), never by @react-pdf/renderer, regardless of which
+ * // editor is visible.
+ * //
+ * // Sync model — the mode toggle IS the sync trigger:
+ * // - Switching Form -> LaTeX: nothing to do, latexSource is kept
+ * //   continuously regenerated from form data while in Form mode (see the
+ * //   debouncedResume effect below).
+ * // - Switching LaTeX -> Form: the current (possibly hand-edited) LaTeX is
+ * //   sent to Gemini to extract structured fields back into the form. This
+ * //   direction is inherently best-effort — LaTeX is freeform text, not a
+ * //   fixed schema — so custom formatting/macros that don't map onto the
+ * //   form's fields are lost. We warn about this via toast rather than
+ * //   pretending it's a lossless round-trip.
+ * export default function BuilderPage({
+ *   params,
+ * }: {
+ *   params: Promise<{ resumeId: string }>;
+ * }) {
+ *   const { currentResume, setCurrentResume, loadResume } = useResumeStore();
+ *   const [isLoading, setIsLoading] = useState(true);
+ *   const { userId } = useAuth();
+ *   const { resumeId } = use(params);
+ *
+ *   const [mode, setModeState] = useState<Mode>("form");
+ *   const [latexSource, setLatexSource] = useState("");
+ *   const [isSyncingToForm, setIsSyncingToForm] = useState(false);
+ *   const hasInitializedLatexRef = useRef(false);
+ *
+ *   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+ *   const [isCompiling, setIsCompiling] = useState(false);
+ *   const [compileError, setCompileError] = useState<string | null>(null);
+ *   const [rawLog, setRawLog] = useState<string | null>(null);
+ *   const [diagnostics, setDiagnostics] = useState<LatexDiagnostic[]>([]);
+ *
+ *   useEffect(() => {
+ *     if (!userId) return;
+ *     let cancelled = false;
+ *
+ *     const run = async () => {
+ *       if (resumeId) {
+ *         await loadResume(resumeId, userId);
+ *       }
+ *       if (!cancelled) setIsLoading(false);
+ *     };
+ *
+ *     run();
+ *     return () => {
+ *       cancelled = true;
+ *     };
+ *     // eslint-disable-next-line react-hooks/exhaustive-deps
+ *   }, [resumeId, userId]);
+ *
+ *   // Initialize latexSource exactly once, after the resume has loaded: reuse
+ *   // a previously saved/hand-edited source if one exists, otherwise generate
+ *   // a fresh one from the form data.
+ *   useEffect(() => {
+ *     if (!currentResume || hasInitializedLatexRef.current) return;
+ *     hasInitializedLatexRef.current = true;
+ *     const saved = currentResume.latexSource;
+ *     setLatexSource(
+ *       saved && saved.trim() ? saved : generateLatexFromResume(currentResume),
+ *     );
+ *   }, [currentResume]);
+ *
+ *   const debouncedResume = useDebounce(currentResume, 800);
+ *
+ *   // Form -> LaTeX: while in Form mode, keep latexSource regenerated from
+ *   // the latest form data so the preview (and a future toggle to LaTeX
+ *   // mode) always reflects what's in the form.
+ *   useEffect(() => {
+ *     if (mode !== "form" || !debouncedResume || !hasInitializedLatexRef.current) {
+ *       return;
+ *     }
+ *     setLatexSource(generateLatexFromResume(debouncedResume));
+ *   }, [debouncedResume, mode]);
+ *
+ *   const { isSaving: isSavingLatex, lastSaved } = useLatexAutoSave(
+ *     resumeId,
+ *     latexSource,
+ *   );
+ *
+ *   const handleRecompile = useCallback(async (source: string) => {
+ *     setIsCompiling(true);
+ *     setCompileError(null);
+ *     setRawLog(null);
+ *
+ *     try {
+ *       const res = await fetch("/api/compile-latex", {
+ *         method: "POST",
+ *         headers: { "Content-Type": "application/json" },
+ *         body: JSON.stringify({ latexCode: source }),
+ *       });
+ *
+ *       if (res.ok) {
+ *         const blob = await res.blob();
+ *         setPdfBlob(blob);
+ *         setDiagnostics([]);
+ *         return;
+ *       }
+ *
+ *       const errorBody = await res.json().catch(() => ({}));
+ *       setCompileError(errorBody.error ?? "Compilation failed.");
+ *       setRawLog(errorBody.rawLog ?? null);
+ *       setDiagnostics(errorBody.diagnostics ?? []);
+ *     } catch (error) {
+ *       console.error("LaTeX compile request failed:", error);
+ *       setCompileError("Could not reach the compile service.");
+ *     } finally {
+ *       setIsCompiling(false);
+ *     }
+ *   }, []);
+ *
+ *   // Single compile pipeline driving the preview, regardless of mode.
+ *   const debouncedLatexSource = useDebounce(latexSource, 800);
+ *   useEffect(() => {
+ *     if (!debouncedLatexSource) return;
+ *     handleRecompile(debouncedLatexSource);
+ *   }, [debouncedLatexSource, handleRecompile]);
+ *
+ *   const handleModeChange = async (next: Mode) => {
+ *     if (next === mode || isSyncingToForm) return;
+ *
+ *     if (next === "form") {
+ *       setIsSyncingToForm(true);
+ *       try {
+ *         const res = await fetch("/api/ai/latex-to-resume", {
+ *           method: "POST",
+ *           headers: { "Content-Type": "application/json" },
+ *           body: JSON.stringify({ latexCode: latexSource }),
+ *         });
+ *
+ *         if (!res.ok) {
+ *           const errorBody = await res.json().catch(() => ({}));
+ *           throw new Error(errorBody.error ?? "Failed to sync form fields");
+ *         }
+ *
+ *         const { result } = await res.json();
+ *         if (currentResume) {
+ *           setCurrentResume({ ...currentResume, ...result } as AppResume);
+ *         }
+ *         toast.warning(
+ *           "Form fields updated from your LaTeX — please review. Custom LaTeX formatting isn't captured by the form.",
+ *         );
+ *       } catch (error) {
+ *         console.error("Failed to sync form from LaTeX:", error);
+ *         toast.error("Couldn't sync form fields from your LaTeX. Staying in LaTeX mode.");
+ *         setIsSyncingToForm(false);
+ *         return; // don't switch modes on failure — don't strand the user
+ *       }
+ *       setIsSyncingToForm(false);
+ *     }
+ *
+ *     setModeState(next);
+ *   };
+ *
+ *   const handleSelectTemplate = (template: LatexTemplateOption) => {
+ *     const hasCustomContent =
+ *       latexSource.trim().length > 0 &&
+ *       !LATEX_TEMPLATES.some((t) => t.source === latexSource);
+ *
+ *     if (
+ *       hasCustomContent &&
+ *       !window.confirm(
+ *         `Replace the current LaTeX with the "${template.name}" template? This can't be undone.`,
+ *       )
+ *     ) {
+ *       return;
+ *     }
+ *
+ *     setLatexSource(template.source);
+ *   };
+ *
+ *   if (isLoading) {
+ *     return (
+ *       <div className="flex items-center justify-center min-h-screen">
+ *         Loading...
+ *       </div>
+ *     );
+ *   }
+ *
+ *   const modeToggle = (
+ *     <div className="inline-flex rounded-lg border border-gray-200 p-0.5">
+ *       <button
+ *         onClick={() => handleModeChange("form")}
+ *         disabled={isSyncingToForm}
+ *         className={cn(
+ *           "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60",
+ *           mode === "form"
+ *             ? "bg-purple-600 text-white"
+ *             : "text-gray-600 hover:bg-gray-100",
+ *         )}
+ *       >
+ *         <FileText className="h-4 w-4" />
+ *         Form
+ *       </button>
+ *       <button
+ *         onClick={() => handleModeChange("latex")}
+ *         disabled={isSyncingToForm}
+ *         className={cn(
+ *           "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60",
+ *           mode === "latex"
+ *             ? "bg-purple-600 text-white"
+ *             : "text-gray-600 hover:bg-gray-100",
+ *         )}
+ *       >
+ *         <Code2 className="h-4 w-4" />
+ *         LaTeX
+ *       </button>
+ *     </div>
+ *   );
+ *
+ *   const statusText = isSyncingToForm ? (
+ *     <span className="flex items-center gap-1.5 text-xs text-gray-500">
+ *       <Loader2 className="h-3 w-3 animate-spin" />
+ *       Syncing form fields from LaTeX...
+ *     </span>
+ *   ) : mode === "latex" ? (
+ *     <span className="text-xs text-gray-400">
+ *       {isSavingLatex
+ *         ? "Saving..."
+ *         : lastSaved
+ *           ? `Saved ${lastSaved.toLocaleTimeString()}`
+ *           : ""}
+ *     </span>
+ *   ) : (
+ *     <span className="hidden text-xs text-gray-400 lg:inline">
+ *       Preview compiles from LaTeX generated off your form fields
+ *     </span>
+ *   );
+ *
+ *   const toolbarCenter = (
+ *     <>
+ *       {modeToggle}
+ *       {statusText}
+ *     </>
+ *   );
+ *
+ *   const toolbarEnd =
+ *     mode === "latex" ? (
+ *       <>
+ *         <DropdownMenu>
+ *           <DropdownMenuTrigger asChild>
+ *             <Button variant="outline" size="sm">
+ *               <LayoutTemplate className="mr-2 h-4 w-4" />
+ *               Templates
+ *             </Button>
+ *           </DropdownMenuTrigger>
+ *           <DropdownMenuContent align="end" className="w-64">
+ *             {LATEX_TEMPLATES.map((template) => (
+ *               <DropdownMenuItem
+ *                 key={template.id}
+ *                 onClick={() => handleSelectTemplate(template)}
+ *                 className="flex-col items-start gap-0.5"
+ *               >
+ *                 <span className="font-medium">{template.name}</span>
+ *                 <span className="text-xs text-gray-500">
+ *                   {template.description}
+ *                 </span>
+ *               </DropdownMenuItem>
+ *             ))}
+ *           </DropdownMenuContent>
+ *         </DropdownMenu>
+ *
+ *         <Button
+ *           size="sm"
+ *           onClick={() => handleRecompile(latexSource)}
+ *           disabled={isCompiling}
+ *           className="bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
+ *         >
+ *           {isCompiling ? (
+ *             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+ *           ) : (
+ *             <Play className="mr-2 h-4 w-4" />
+ *           )}
+ *           Recompile
+ *         </Button>
+ *       </>
+ *     ) : null;
+ *
+ *   return (
+ *     <div className="min-h-screen bg-gray-50">
+ *       <BuilderToolbar centerSlot={toolbarCenter} endSlot={toolbarEnd} />
+ *
+ *       <div className="container mx-auto px-4 py-4">
+ *         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+ *           <div className="min-h-0">
+ *             {mode === "form" ? (
+ *               <ResumeForm />
+ *             ) : (
+ *               <div className="h-[75vh] overflow-hidden rounded-lg border bg-white">
+ *                 <LatexEditor
+ *                   value={latexSource}
+ *                   onChange={setLatexSource}
+ *                   diagnostics={diagnostics}
+ *                   className="h-full"
+ *                 />
+ *               </div>
+ *             )}
+ *           </div>
+ *
+ *           <div className="sticky top-6 h-fit">
+ *             <div className="h-full overflow-hidden rounded-lg border">
+ *               <LatexPreviewPane
+ *                 pdfBlob={pdfBlob}
+ *                 isCompiling={isCompiling}
+ *                 errorMessage={compileError}
+ *                 rawLog={rawLog}
+ *               />
+ *             </div>
+ *           </div>
+ *         </div>
+ *       </div>
+ *
+ *       <AIOptimizeButton />
+ *     </div>
+ *   );
+ * }
+ * ========================================================================= */
 
 export default function BuilderPage({
   params,
 }: {
   params: Promise<{ resumeId: string }>;
 }) {
-  const { currentResume, setCurrentResume, loadResume } = useResumeStore();
+  const { currentResume, loadResume } = useResumeStore();
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useAuth();
   const { resumeId } = use(params);
 
   useEffect(() => {
     if (!userId) return;
+    let cancelled = false;
 
-    if (resumeId) {
-      loadResume(resumeId, userId);
-    }
+    const run = async () => {
+      if (resumeId) {
+        await loadResume(resumeId, userId);
+      }
+      if (!cancelled) setIsLoading(false);
+    };
 
-    setIsLoading(false);
-  }, [resumeId, setCurrentResume, userId]);
+    run();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeId, userId]);
 
   if (isLoading) {
     return (
@@ -259,24 +418,21 @@ export default function BuilderPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Toolbar */}
       <BuilderToolbar />
 
-      {/* Main Builder Interface */}
       <div className="container mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Left: Form Editor */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="space-y-4">
             <ResumeForm />
           </div>
 
-          {/* Right: PDF Preview */}
           <div className="sticky top-6 h-fit">
             <PDFPreview resume={currentResume} />
           </div>
-          <AIOptimizeButton />
         </div>
       </div>
+
+      <AIOptimizeButton />
     </div>
   );
 }

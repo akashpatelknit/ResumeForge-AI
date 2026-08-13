@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/store/resumeStore";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 import { Experience } from "@/types/resume";
+import GenerateWithAI from "@/components/builder/ai/GenerateWithAI";
 
 export default function ExperienceSection() {
   const { currentResume, addExperience, updateExperience, deleteExperience } =
@@ -175,7 +176,55 @@ export default function ExperienceSection() {
               </div>
 
               <div className="space-y-1">
-                <Label>Key Achievements</Label>
+                <div className="flex items-center justify-between">
+                  <Label>Key Achievements</Label>
+                  <GenerateWithAI<string[]>
+                    endpoint="/api/ai/generate-achievements"
+                    title="Generate Key Achievements"
+                    description={
+                      exp.achievements?.length
+                        ? "Paste a rough description of what you did — or leave blank to rewrite your existing achievements"
+                        : "Paste a rough description of what you did at this role"
+                    }
+                    placeholder="e.g. built the payment system, worked with a team of 5, reduced checkout latency..."
+                    buildBody={(rawInput) => ({
+                      rawInput,
+                      existingAchievements: exp.achievements,
+                      role: exp.position,
+                      company: exp.company,
+                    })}
+                    parseResult={(json) =>
+                      (json as { achievements: string[] }).achievements
+                    }
+                    renderPreview={(achievements) => (
+                      <ul className="space-y-1 rounded-md border bg-gray-50 p-3">
+                        {achievements.map((achievement, i) => (
+                          <li key={i} className="text-sm text-gray-800">
+                            • {achievement}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    onUse={(achievements, rawInput) =>
+                      updateExperience(exp.id, {
+                        // Blank rawInput means the model rewrote the
+                        // existing bullets, not extracted new ones from
+                        // fresh input — replace rather than pile on
+                        // rephrased duplicates of what's already there.
+                        achievements: rawInput.trim()
+                          ? [...(exp.achievements || []), ...achievements]
+                          : achievements,
+                      })
+                    }
+                    isInputValid={(rawInput) =>
+                      !!rawInput.trim() || !!exp.achievements?.length
+                    }
+                    emptyInputHint="Add a description above — there are no existing achievements to rewrite yet."
+                    idleLabel={(rawInput) =>
+                      rawInput.trim() ? "Generate" : "Rewrite existing achievements"
+                    }
+                  />
+                </div>
                 <div className="space-y-2 mt-2">
                   {Array.isArray(exp.achievements) &&
                     exp.achievements.map((achievement, idx) => (

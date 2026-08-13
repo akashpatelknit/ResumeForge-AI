@@ -1,4 +1,4 @@
-import { generateText } from "../gemini";
+import { generateText } from "./llm";
 import { buildColdEmailPrompt } from "./buildColdEmailPrompt";
 export function parseAIJson(text: string) {
   const cleaned = text

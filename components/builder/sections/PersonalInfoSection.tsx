@@ -4,13 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/store/resumeStore";
+import GenerateWithAI from "@/components/builder/ai/GenerateWithAI";
 
 export default function PersonalInfoSection() {
   const { currentResume, updatePersonalInfo, updateSummary } = useResumeStore();
 
   if (!currentResume) return null;
-
-  console.log("Current Resume in PersonalInfoSection:", currentResume);
 
   return (
     <div className="space-y-6">
@@ -82,7 +81,38 @@ export default function PersonalInfoSection() {
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="summary">Professional Summary</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="summary">Professional Summary</Label>
+          <GenerateWithAI<string>
+            endpoint="/api/ai/generate-summary"
+            title="Generate with AI"
+            description={
+              currentResume.summary?.trim()
+                ? "Paste notes, a LinkedIn About section, or a job description you're targeting — or leave blank to polish your current summary"
+                : "Paste notes, a LinkedIn About section, or a job description you're targeting"
+            }
+            placeholder="e.g. 5 years as a backend engineer, mostly Node.js and Postgres... or paste a job posting to tailor toward"
+            buildBody={(rawInput) => ({
+              rawInput,
+              existingSummary: currentResume.summary,
+              resumeContext: { name: currentResume.personalInfo.fullName },
+            })}
+            parseResult={(json) => (json as { summary: string }).summary}
+            renderPreview={(summary) => (
+              <div className="rounded-md border bg-gray-50 p-3 text-sm text-gray-800">
+                {summary}
+              </div>
+            )}
+            onUse={updateSummary}
+            isInputValid={(rawInput) =>
+              !!rawInput.trim() || !!currentResume.summary?.trim()
+            }
+            emptyInputHint="Add some notes or a job description above — there's no existing summary to regenerate yet."
+            idleLabel={(rawInput) =>
+              rawInput.trim() ? "Generate" : "Regenerate from current summary"
+            }
+          />
+        </div>
         <Textarea
           id="summary"
           value={currentResume.summary}

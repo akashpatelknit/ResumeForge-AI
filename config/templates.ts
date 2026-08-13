@@ -1,10 +1,16 @@
 import { Template } from "@/types/template";
 
+// Only one template active for now (single-column, ATS-friendly — a port
+// of the classic Anubhav Singh / xprilion LaTeX resume template, see
+// components/pdf/template/ModernTemplate.tsx). Kept as an array, and the
+// template registry (components/pdf/template/index.tsx) is keyed by id,
+// specifically so adding more later is just appending another entry here
+// plus a new component in the registry — no restructuring needed.
 export const sampleTemplates: Template[] = [
   {
     id: "modern",
-    name: "Modern",
-    description: "Clean two-column design with color accents",
+    name: "Classic ATS",
+    description: "Clean single-column layout, optimized for ATS parsing",
     category: "modern",
     type: "resume",
     thumbnail:
@@ -12,56 +18,14 @@ export const sampleTemplates: Template[] = [
     fullPreview:
       "https://api.dicebear.com/7.x/shapes/svg?seed=modern1&backgroundColor=8b5cf6",
     features: [
-      "Two-column layout",
-      "Color accents",
+      "Single-column layout",
       "ATS-optimized",
-      "Icon support",
+      "Custom sections support",
+      "Clean typography",
     ],
     rating: 4.8,
     usageCount: 1234,
     isPremium: false,
-    bestFor: ["Software Engineers", "Product Managers"],
-  },
-  {
-    id: "professional",
-    name: "Professional",
-    description: "Premium layout for senior positions",
-    category: "professional",
-    type: "resume",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=exec1&backgroundColor=f59e0b",
-    features: [
-      "Elegant design",
-      "Photo support",
-      "Achievement focus",
-      "Premium styling",
-    ],
-    rating: 4.9,
-    usageCount: 567,
-    isPremium: true,
-    bestFor: ["C-Level", "VP", "Directors"],
-  },
-  {
-    id: "classic",
-    name: "Classic",
-    type: "resume",
-    description: "Stand out with vibrant colors and unique layout",
-    category: "creative",
-    thumbnail:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=creative1&backgroundColor=ec4899",
-    fullPreview:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=creative1&backgroundColor=ec4899",
-    features: [
-      "Bold typography",
-      "Custom sections",
-      "Portfolio links",
-      "Color customization",
-    ],
-    rating: 4.7,
-    usageCount: 892,
-    isPremium: false,
-    bestFor: ["Designers", "Marketers", "Content Creators"],
+    bestFor: ["Software Engineers", "Product Managers", "Most roles"],
   },
 ];

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Plus, Grid3x3, List } from "lucide-react";
+import { Plus, Grid3x3, List, Loader2 } from "lucide-react";
 import ResumeFilters from "@/components/dashboard/ResumeFilters";
 import EmptyResumeState from "@/components/dashboard/EmptyResumeState";
 import ResumeGridView from "@/components/dashboard/ResumeGridView";
@@ -13,6 +13,7 @@ import { Resume } from "@/types/resume";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 const sampleResumes: Resume[] = [
   {
@@ -81,19 +82,32 @@ export default function ResumesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("lastModified");
-  const { currentResume, createNewResume } = useResumeStore();
+  const { createNewResume } = useResumeStore();
+  const [isCreatingResume, setIsCreatingResume] = useState(false);
   const router = useRouter();
   const { user, isLoaded, isSignedIn } = useUser();
+
+  const loadResumes = async () => {
+    try {
+      const res = await fetch("/api/resumes");
+      const data = await res.json();
+
+      if (!res.ok || !Array.isArray(data)) {
+        throw new Error(
+          (data && data.error) || "Failed to load resumes",
+        );
+      }
+
+      setResumes(data);
+    } catch (error) {
+      console.error("Failed to load resumes:", error);
+      toast.error("Failed to load resumes. Please refresh the page.");
+    }
+  };
 
   useEffect(() => {
     loadResumes();
   }, []);
-
-  const loadResumes = async () => {
-    const res = await fetch("/api/resumes");
-    const data = await res.json();
-    setResumes(data);
-  };
 
   // Filter and sort resumes
   const filteredResumes = resumes
@@ -150,8 +164,16 @@ export default function ResumesPage() {
   };
 
   const handleCreateResume = async () => {
-    await createNewResume("modern", user?.id || ""); // Pass user ID if needed for resume creation
-    router.push(`/builder/${currentResume?.id}`);
+    if (isCreatingResume) return;
+    setIsCreatingResume(true);
+    try {
+      const newResume = await createNewResume("modern", user?.id || "");
+      router.push(`/builder/${newResume.id}`);
+    } catch (error) {
+      console.error("Failed to create resume:", error);
+      toast.error("Failed to create resume. Please try again.");
+      setIsCreatingResume(false);
+    }
   };
 
   return (
@@ -174,11 +196,16 @@ export default function ResumesPage() {
               {/* View Mode Toggle */}
               <div className="flex items-center gap-2">
                 <Button
-                  className="bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70"
                   onClick={handleCreateResume}
+                  disabled={isCreatingResume}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create New Resume
+                  {isCreatingResume ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Plus className="w-4 h-4 mr-2" />
+                  )}
+                  {isCreatingResume ? "Creating..." : "Create New Resume"}
                 </Button>
                 <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
                   <button

@@ -56,6 +56,33 @@ export interface Skill {
   items: string[];
 }
 
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  date?: string;
+}
+
+// A user-defined section beyond the fixed set (Experience, Projects, etc.) —
+// e.g. "Publications", "Volunteer Work", "Awards". Reuses the same visual
+// vocabulary as the rest of the resume (bold heading, italic subheading,
+// paragraph, bullet list) so it renders consistently in both the PDF
+// template and the LaTeX generator without needing bespoke layout per
+// section a user might invent.
+export interface CustomSectionItem {
+  id: string;
+  heading?: string;
+  subheading?: string;
+  description?: string;
+  bullets: string[];
+}
+
+export interface CustomSection {
+  id: string;
+  title: string;
+  items: CustomSectionItem[];
+}
+
 export interface ResumeData {
   personalInfo: PersonalInfo;
   summary: string;
@@ -63,9 +90,10 @@ export interface ResumeData {
   education: Education[];
   skills: Skill[];
   projects: Project[];
-  achievements: any[];
-  certifications: any[];
+  achievements: Achievement[];
+  certifications: Certification[];
   languages: string[];
+  customSections: CustomSection[];
   isFavorite: boolean;
   thumbnail: string;
   atsScore: number;

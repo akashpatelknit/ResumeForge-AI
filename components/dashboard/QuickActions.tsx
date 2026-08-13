@@ -1,11 +1,12 @@
 "use client";
 
-import React, { act, useState } from "react";
+import React, { useState } from "react";
 import { Plus, Github, FileText } from "lucide-react";
 import TemplateSelectionModal from "../modal/TemplateSelectionModal";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 const actions = [
   {
@@ -54,8 +55,14 @@ export default function QuickActions() {
   };
 
   const handleCreateResume = async (templateId: string) => {
-    const newResume = await createNewResume(templateId, user?.id || "");
-    router.push(`/builder/${newResume?.id}`);
+    try {
+      const newResume = await createNewResume(templateId, user?.id || "");
+      router.push(`/builder/${newResume.id}`);
+    } catch (error) {
+      console.error("Failed to create resume from template:", error);
+      toast.error("Failed to create resume. Please try again.");
+      throw error; // let TemplateSelectionModal know creation failed
+    }
   };
 
   return (

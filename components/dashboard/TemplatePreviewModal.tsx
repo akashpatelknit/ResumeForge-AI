@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 interface TemplatePreviewModalProps {
   template: Template;
@@ -45,9 +46,23 @@ export default function TemplatePreviewModal({
 }: TemplatePreviewModalProps) {
   const [zoom, setZoom] = useState(100);
   const [isVisible, setIsVisible] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
-  const { currentResume, createNewResume } = useResumeStore();
+  const { createNewResume } = useResumeStore();
   const { user, isLoaded, isSignedIn } = useUser();
+
+  const handleUseTemplate = async () => {
+    if (isCreating) return;
+    setIsCreating(true);
+    try {
+      const newResume = await createNewResume(template.id, user?.id || "");
+      router.push(`/builder/${newResume.id}`);
+    } catch (error) {
+      console.error("Failed to create resume from template:", error);
+      toast.error("Failed to create resume. Please try again.");
+      setIsCreating(false);
+    }
+  };
 
   // Use refs to avoid stale closures while keeping keyboard nav always fresh
   const onCloseRef = React.useRef(onClose);
@@ -353,14 +368,18 @@ export default function TemplatePreviewModal({
               ) : (
                 <>
                   <Button
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold text-sm h-11 rounded-xl transition-all hover:shadow-lg hover:shadow-gray-900/20 border-0 group"
-                    onClick={() => {
-                      createNewResume(template.id, user?.id || "");
-                      router.push(`/builder/${currentResume?.id}`);
-                    }}
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold text-sm h-11 rounded-xl transition-all hover:shadow-lg hover:shadow-gray-900/20 border-0 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    onClick={handleUseTemplate}
+                    disabled={isCreating}
                   >
-                    Use This Template
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
+                    {isCreating ? (
+                      "Creating resume..."
+                    ) : (
+                      <>
+                        Use This Template
+                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
+                      </>
+                    )}
                   </Button>
                   <Button
                     variant="outline"

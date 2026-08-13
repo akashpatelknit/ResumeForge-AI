@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useResumeStore } from "@/store/resumeStore";
 import { Plus, Trash2, GripVertical, X } from "lucide-react";
 import { Project } from "@/types/resume";
+import GenerateWithAI from "@/components/builder/ai/GenerateWithAI";
 
 export default function ProjectsSection() {
   const { currentResume, addProject, updateProject, deleteProject } =
@@ -237,7 +238,54 @@ export default function ProjectsSection() {
                 </div>
 
                 <div>
-                  <Label>Key Highlights</Label>
+                  <div className="flex items-center justify-between">
+                    <Label>Key Highlights</Label>
+                    <GenerateWithAI<string[]>
+                      endpoint="/api/ai/generate-highlights"
+                      title="Generate Key Highlights"
+                      description={
+                        project.highlights?.length
+                          ? "Paste project notes or a description — or leave blank to rewrite your existing highlights"
+                          : "Paste project notes, README content, or a rough description"
+                      }
+                      placeholder="e.g. built a rate limiter using Redis and Lua scripting, handled high concurrency, tested with k6..."
+                      buildBody={(rawInput) => ({
+                        rawInput,
+                        existingHighlights: project.highlights,
+                        projectName: project.name,
+                        techStack: project.technologies,
+                      })}
+                      parseResult={(json) =>
+                        (json as { highlights: string[] }).highlights
+                      }
+                      renderPreview={(highlights) => (
+                        <ul className="space-y-1 rounded-md border bg-gray-50 p-3">
+                          {highlights.map((highlight, i) => (
+                            <li key={i} className="text-sm text-gray-800">
+                              • {highlight}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      onUse={(highlights, rawInput) =>
+                        updateProject(project.id, {
+                          // Blank rawInput means the model rewrote the
+                          // existing highlights, not extracted new ones —
+                          // replace rather than duplicate rephrasings.
+                          highlights: rawInput.trim()
+                            ? [...(project.highlights || []), ...highlights]
+                            : highlights,
+                        })
+                      }
+                      isInputValid={(rawInput) =>
+                        !!rawInput.trim() || !!project.highlights?.length
+                      }
+                      emptyInputHint="Add project notes above — there are no existing highlights to rewrite yet."
+                      idleLabel={(rawInput) =>
+                        rawInput.trim() ? "Generate" : "Rewrite existing highlights"
+                      }
+                    />
+                  </div>
                   <div className="space-y-2 mt-2">
                     {Array.isArray(project.highlights) &&
                       project.highlights.map((highlight, idx) => (
