@@ -1,4 +1,4 @@
-import { Resume as PrismaResume } from "@prisma/client";
+import { Resume as PrismaResume } from "@/app/generated/prisma/client";
 import { AppResume, ResumeData } from "@/types/resume";
 
 // Resumes created before a field existed in ResumeData (customSections is
