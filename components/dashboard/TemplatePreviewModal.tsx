@@ -25,6 +25,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Template } from "@/types/template";
+import TemplateThumbnail from "./TemplateThumbnail";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
@@ -230,12 +231,7 @@ export default function TemplatePreviewModal({
                       "0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)",
                   }}
                 >
-                  <img
-                    src={template.fullPreview}
-                    alt={template.name}
-                    className="w-full h-full object-cover"
-                    draggable={false}
-                  />
+                  <TemplateThumbnail variant="modal" />
                 </div>
               </div>
             </div>

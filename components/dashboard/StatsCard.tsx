@@ -12,6 +12,10 @@ interface StatsCardProps {
   badge?: string;
   badgeColor?: "green" | "blue" | "purple" | "red";
   accentColor: "purple" | "blue" | "green" | "pink";
+  // "lg" (default) is the primary stat; "sm" renders smaller icon/value
+  // text for a secondary stat that shouldn't compete for attention.
+  size?: "sm" | "lg";
+  onClick?: () => void;
 }
 
 const accentColorClasses = {
@@ -44,22 +48,40 @@ export default function StatsCard({
   badge,
   badgeColor = "green",
   accentColor,
+  size = "lg",
+  onClick,
 }: StatsCardProps) {
+  const isSmall = size === "sm";
+
   return (
     <Card
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
       className={`
         group relative overflow-hidden bg-linear-to-br ${accentColorClasses[accentColor]}
-        border shadow-sm hover:shadow-xl transition-all duration-300 
-        hover:-translate-y-1 cursor-pointer h-full
+        border shadow-sm hover:shadow-xl transition-all duration-300
+        hover:-translate-y-1 h-full
+        ${onClick ? "cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-400 outline-none" : ""}
       `}
     >
-      <div className="p-5 py-0 h-full flex flex-col">
+      <div className={`h-full flex flex-col ${isSmall ? "p-4 py-0" : "p-5 py-0"}`}>
         {/* Icon */}
         <div className="flex items-start justify-between mb-3">
           <div
-            className={`p-2.5 rounded-xl ${iconColorClasses[accentColor]} group-hover:scale-110 transition-transform duration-300`}
+            className={`rounded-xl ${iconColorClasses[accentColor]} group-hover:scale-110 transition-transform duration-300 ${isSmall ? "p-2" : "p-2.5"}`}
           >
-            <Icon className="w-4 h-4" />
+            <Icon className={isSmall ? "w-3.5 h-3.5" : "w-4 h-4"} />
           </div>
           {badge && (
             <Badge
@@ -73,8 +95,12 @@ export default function StatsCard({
 
         {/* Value */}
         <div className="space-y-1 flex-1">
-          <h3 className="text-sm font-medium text-gray-600">{title}</h3>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <h3 className={`font-medium text-gray-600 ${isSmall ? "text-xs" : "text-sm"}`}>
+            {title}
+          </h3>
+          <p className={`font-bold text-gray-900 ${isSmall ? "text-lg" : "text-2xl"}`}>
+            {value}
+          </p>
         </div>
 
         {/* Trend */}

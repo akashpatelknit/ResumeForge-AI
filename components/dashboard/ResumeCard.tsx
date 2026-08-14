@@ -1,35 +1,16 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Star,
-  Download,
-  Eye,
-  Sparkles,
-  Edit,
-  MoreVertical,
-  Copy,
-  RefreshCw,
-  Share2,
-  Archive,
-  Trash2,
-} from "lucide-react";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Resume } from "@/types/resume";
+import { Star } from "lucide-react";
+import type { AppResume } from "@/types/resume";
+import ResumeCardActions from "./ResumeCardActions";
 
 interface ResumeCardProps {
-  resume: Resume;
+  resume: AppResume;
   isSelected: boolean;
   onToggleSelect: (id: string) => void;
   onToggleFavorite: (id: string) => void;
+  onRefresh?: () => void;
 }
 
 const getATSBadge = (score: number) => {
@@ -59,6 +40,7 @@ export default function ResumeCard({
   isSelected,
   onToggleSelect,
   onToggleFavorite,
+  onRefresh,
 }: ResumeCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const atsBadge = getATSBadge(resume.atsScore ?? 0);
@@ -179,50 +161,7 @@ export default function ResumeCard({
 </p>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            className="flex-1 bg-linear-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
-          >
-            <Edit className="w-3.5 h-3.5 mr-1.5" />
-            Edit
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            <Download className="w-3.5 h-3.5 mr-1.5" />
-            Download
-          </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="outline" className="px-2">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
-                <Copy className="w-4 h-4 mr-2" />
-                Duplicate
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Change Template
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Share2 className="w-4 h-4 mr-2" />
-                Share Link
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Archive className="w-4 h-4 mr-2" />
-                Archive
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <ResumeCardActions resume={resume} onRefresh={onRefresh} />
       </div>
     </Card>
   );

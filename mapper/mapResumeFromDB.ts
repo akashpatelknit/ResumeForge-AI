@@ -31,6 +31,7 @@ export function mapResumeFromDB(r: PrismaResume): AppResume {
     languages: data.languages ?? [],
     customSections: data.customSections ?? [],
     isFavorite: data.isFavorite ?? false,
+    isArchived: data.isArchived ?? false,
     thumbnail: data.thumbnail ?? "",
     atsScore: data.atsScore ?? 0,
   };

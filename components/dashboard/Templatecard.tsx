@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Crown, Eye, Check } from "lucide-react";
+import { Star, Crown, Eye, Check, Clock } from "lucide-react";
 import { Template } from "@/types/template";
+import TemplateThumbnail from "./TemplateThumbnail";
 
 interface TemplateCardProps {
   template: Template;
@@ -22,6 +23,30 @@ export default function TemplateCard({
 }: TemplateCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  if (template.comingSoon) {
+    return (
+      <Card className="relative overflow-hidden p-0 rounded-xl shadow-sm opacity-70 saturate-0">
+        <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
+          <TemplateThumbnail />
+          <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+            <Badge className="bg-gray-900 text-white text-[10px] px-2.5 py-1 border-0">
+              <Clock className="w-3 h-3 mr-1" />
+              Coming Soon
+            </Badge>
+          </div>
+        </div>
+        <div className="p-3 space-y-1">
+          <h3 className="text-sm font-semibold text-gray-700 line-clamp-1">
+            {template.name}
+          </h3>
+          <p className="text-xs text-gray-400 line-clamp-2">
+            {template.description}
+          </p>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card
       className={`
@@ -33,15 +58,11 @@ export default function TemplateCard({
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onPreview(template)}
     >
-      {/* ================= IMAGE ================= */}
-      <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
-        <img
-          src={template.thumbnail}
-          alt={template.name}
-          draggable={false}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+      {/* ================= THUMBNAIL ================= */}
+      <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden border-b border-gray-100">
+        <TemplateThumbnail className="transition-transform duration-500 group-hover:scale-105" />
 
         {/* Compare Checkbox */}
         <div
@@ -79,7 +100,10 @@ export default function TemplateCard({
           <Button
             size="sm"
             className="bg-white text-gray-900 hover:bg-gray-100 text-xs font-semibold"
-            onClick={() => onPreview(template)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPreview(template);
+            }}
           >
             <Eye className="w-4 h-4 mr-2" />
             Preview
@@ -88,21 +112,21 @@ export default function TemplateCard({
       </div>
 
       {/* ================= INFO ================= */}
-      <div className="p-3 space-y-1.5">
-        {/* Title */}
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover:text-purple-600 transition-colors">
-          {template.name}
-        </h3>
-
-        {/* Category + Rating */}
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <span className="capitalize">{template.category}</span>
-
-          <div className="flex items-center gap-1">
+      <div className="p-4 space-y-1.5">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover:text-purple-600 transition-colors">
+            {template.name}
+          </h3>
+          <div className="flex items-center gap-1 shrink-0">
             <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-            <span className="font-medium text-gray-800">{template.rating}</span>
+            <span className="text-xs font-medium text-gray-800">
+              {template.rating}
+            </span>
           </div>
         </div>
+        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
+          {template.description}
+        </p>
       </div>
     </Card>
   );

@@ -125,6 +125,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
             languages: currentResume.languages,
             customSections: currentResume.customSections,
             isFavorite: currentResume.isFavorite,
+            isArchived: currentResume.isArchived,
             thumbnail: currentResume.thumbnail,
             atsScore: currentResume.atsScore,
           },

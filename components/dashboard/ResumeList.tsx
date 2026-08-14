@@ -1,26 +1,7 @@
 import React, { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Star,
-  Download,
-  Eye,
-  Sparkles,
-  Edit,
-  MoreVertical,
-  Copy,
-  Share2,
-  Archive,
-  Trash2,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Star } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -37,14 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Resume } from "@/types/resume";
-import { useRouter } from "next/navigation";
+import type { AppResume } from "@/types/resume";
+import ResumeCardActions from "./ResumeCardActions";
 
 interface ResumeListViewProps {
-  resumes: Resume[];
+  resumes: AppResume[];
   selectedResumes: string[];
   onToggleSelect: (id: string) => void;
   onToggleFavorite: (id: string) => void;
+  onRefresh?: () => void;
 }
 
 const getATSBadge = (score: number) => {
@@ -76,8 +58,8 @@ export default function ResumeListView({
   selectedResumes,
   onToggleSelect,
   onToggleFavorite,
+  onRefresh,
 }: ResumeListViewProps) {
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
@@ -133,9 +115,6 @@ export default function ResumeListView({
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 ATS Score
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Stats
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Modified
@@ -236,21 +215,6 @@ export default function ResumeListView({
                     </div>
                   </td>
 
-                  {/* Stats */}
-                  <td className="px-4 py-4">
-                    <div className="flex items-center gap-4 text-xs text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Download className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Eye className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Sparkles className="w-3.5 h-3.5" />
-                      </div>
-                    </div>
-                  </td>
-
                   {/* Modified */}
                   <td className="px-4 py-4">
                     <span className="text-sm text-gray-600">
@@ -259,49 +223,15 @@ export default function ResumeListView({
                     </span>
                   </td>
 
-                  {/* Actions */}
+                  {/* Actions — same shared component the grid card uses,
+                      so list and grid can never offer different actions */}
                   <td className="px-4 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => router.push(`/builder/${resume.id}`)}
-                      >
-                        <Edit className="w-3.5 h-3.5 mr-1" />
-                        Edit
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Download className="w-3.5 h-3.5" />
-                      </Button>
-
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button size="sm" variant="outline" className="px-2">
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem>
-                            <Copy className="w-4 h-4 mr-2" />
-                            Duplicate
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => router.push(`/builder/${resume.id}`)}
-                          >
-                            <Share2 className="w-4 h-4 mr-2" />
-                            Share Link
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Archive className="w-4 h-4 mr-2" />
-                            Archive
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    <div className="flex items-center justify-end">
+                      <ResumeCardActions
+                        resume={resume}
+                        fill={false}
+                        onRefresh={onRefresh}
+                      />
                     </div>
                   </td>
                 </tr>

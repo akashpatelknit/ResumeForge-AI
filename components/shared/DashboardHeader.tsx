@@ -1,8 +1,91 @@
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Search, Bell } from "lucide-react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
+import type { AppResume } from "@/types/resume";
 
+interface HeaderSummary {
+  count: number;
+  avgScore: number | null;
+  lowestId: string | null;
+}
+
+// This header is rendered once, in the shared dashboard layout, above every
+// /dashboard/* route — not just the main dashboard page. The resume
+// count/ATS average line only makes sense on the dashboard home, so it's
+// gated on pathname and fetched independently here rather than lifted from
+// app/(app)/dashboard/page.tsx's own fetch (that page has no way to pass
+// data up into a layout-level sibling). This does mean a second, lightweight
+// GET /api/resumes call alongside the page's own — acceptable for one small
+// text line, but worth knowing about if this pattern gets reused elsewhere.
 export default function DashboardHeader() {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { user } = useUser();
+  const pathname = usePathname();
+  const router = useRouter();
+  const isDashboardHome = pathname === "/dashboard";
+
+  const [summary, setSummary] = useState<HeaderSummary | null>(null);
+
+  useEffect(() => {
+    if (!isDashboardHome) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/resumes");
+        const data = await res.json();
+        if (!res.ok || !Array.isArray(data) || cancelled) return;
+
+        const active = (data as unknown[])
+          .map((r) => mapResumeFromDB(r as Parameters<typeof mapResumeFromDB>[0]))
+          .filter((r: AppResume) => !r.isArchived);
+
+        const avgScore =
+          active.length > 0
+            ? Math.round(
+                active.reduce((sum, r) => sum + (r.atsScore ?? 0), 0) /
+                  active.length,
+              )
+            : null;
+
+        const lowest =
+          active.length > 0
+            ? [...active].sort(
+                (a, b) => (a.atsScore ?? 0) - (b.atsScore ?? 0),
+              )[0]
+            : null;
+
+        if (!cancelled) {
+          setSummary({
+            count: active.length,
+            avgScore,
+            lowestId: lowest?.id ?? null,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load dashboard header summary:", error);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isDashboardHome]);
+
+  // Bridges this component (rendered in the layout) to the page below it
+  // (a route sibling, not a child — there's no direct prop path) via a URL
+  // query param. app/(app)/dashboard/page.tsx reads `?highlight=` on mount
+  // and strips it back off once handled.
+  const handleAtsClick = useCallback(() => {
+    if (!summary?.lowestId) return;
+    router.replace(`/dashboard?highlight=${summary.lowestId}`, {
+      scroll: false,
+    });
+  }, [router, summary]);
+
   return (
     <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-200">
       <div className="flex items-center justify-between px-6 lg:px-8 py-4">
@@ -13,6 +96,27 @@ export default function DashboardHeader() {
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
             Welcome back, {user?.firstName || "User"}
+            {isDashboardHome && summary && (
+              <>
+                <span className="text-gray-300 mx-1.5">·</span>
+                <span>
+                  {summary.count} {summary.count === 1 ? "resume" : "resumes"}
+                </span>
+                {summary.avgScore !== null && (
+                  <>
+                    <span className="text-gray-300 mx-1.5">·</span>
+                    <button
+                      type="button"
+                      onClick={handleAtsClick}
+                      disabled={!summary.lowestId}
+                      className="text-gray-500 hover:text-gray-800 underline decoration-dotted underline-offset-2 disabled:no-underline disabled:cursor-default cursor-pointer bg-transparent border-none p-0 font-inherit"
+                    >
+                      ATS avg {summary.avgScore}/100
+                    </button>
+                  </>
+                )}
+              </>
+            )}
           </p>
         </div>
 

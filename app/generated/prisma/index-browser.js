@@ -151,6 +151,26 @@ exports.Prisma.ResumeAnalyticsScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.JobApplicationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  company: 'company',
+  role: 'role',
+  status: 'status',
+  appliedDate: 'appliedDate',
+  matchScore: 'matchScore',
+  tags: 'tags',
+  location: 'location',
+  salary: 'salary',
+  notes: 'notes',
+  url: 'url',
+  jobDescription: 'jobDescription',
+  source: 'source',
+  resumeId: 'resumeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserPreferencesScalarFieldEnum = {
   userId: 'userId',
   preferences: 'preferences',
@@ -193,6 +213,7 @@ exports.Prisma.ModelName = {
   Resume: 'Resume',
   CoverLetter: 'CoverLetter',
   ResumeAnalytics: 'ResumeAnalytics',
+  JobApplication: 'JobApplication',
   UserPreferences: 'UserPreferences'
 };
 

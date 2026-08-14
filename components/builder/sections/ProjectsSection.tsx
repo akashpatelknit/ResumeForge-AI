@@ -7,11 +7,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useResumeStore } from "@/store/resumeStore";
-import { Plus, Trash2, GripVertical, X } from "lucide-react";
+import { Plus, Trash2, GripVertical, X, Github } from "lucide-react";
 import { Project } from "@/types/resume";
 import GenerateWithAI from "@/components/builder/ai/GenerateWithAI";
+import GitHubImportModal from "@/components/builder/github/GitHubImportModal";
 
-export default function ProjectsSection() {
+interface ProjectsSectionProps {
+  // Set when this tab was opened via the dashboard's "Import from GitHub"
+  // quick action (?importGithub=1 — see ResumeForm.tsx), so the modal is
+  // already open instead of making the user click the button again.
+  autoOpenGithubImport?: boolean;
+}
+
+export default function ProjectsSection({
+  autoOpenGithubImport = false,
+}: ProjectsSectionProps) {
   const { currentResume, addProject, updateProject, deleteProject } =
     useResumeStore();
   const [newTechnology, setNewTechnology] = useState<{ [key: string]: string }>(
@@ -20,6 +30,7 @@ export default function ProjectsSection() {
   const [newHighlight, setNewHighlight] = useState<{ [key: string]: string }>(
     {},
   );
+  const [showGithubImport, setShowGithubImport] = useState(autoOpenGithubImport);
 
   if (!currentResume) return null;
 
@@ -84,11 +95,26 @@ export default function ProjectsSection() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Projects</h3>
-        <Button onClick={handleAddProject} size="sm">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Project
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => setShowGithubImport(true)}
+            size="sm"
+            variant="outline"
+          >
+            <Github className="w-4 h-4 mr-2" />
+            Import from GitHub
+          </Button>
+          <Button onClick={handleAddProject} size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Project
+          </Button>
+        </div>
       </div>
+
+      <GitHubImportModal
+        open={showGithubImport}
+        onOpenChange={setShowGithubImport}
+      />
 
       {currentResume.projects.length === 0 ? (
         <div className="text-center py-8 border-2 border-dashed rounded-lg">

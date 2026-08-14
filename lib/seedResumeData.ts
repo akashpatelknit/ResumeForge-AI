@@ -107,6 +107,7 @@ const modernSeed: ResumeData = {
   languages: ["English (Fluent)"],
   customSections: [],
   isFavorite: false,
+  isArchived: false,
   thumbnail: "",
   atsScore: 78,
 };
@@ -183,6 +184,7 @@ const professionalSeed: ResumeData = {
   languages: ["English (Native)"],
   customSections: [],
   isFavorite: false,
+  isArchived: false,
   thumbnail: "",
   atsScore: 82,
 };
@@ -247,6 +249,7 @@ const classicSeed: ResumeData = {
   languages: ["English (Native)"],
   customSections: [],
   isFavorite: false,
+  isArchived: false,
   thumbnail: "",
   atsScore: 74,
 };

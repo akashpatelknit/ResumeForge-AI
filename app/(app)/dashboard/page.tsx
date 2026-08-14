@@ -1,74 +1,123 @@
 "use client";
 
-import StatsCard from "@/components/dashboard/StatsCard";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentResumes from "@/components/dashboard/RecentResumes";
 import AIInsights from "@/components/dashboard/AIInsights";
-import { FileText, Download, Target, Sparkles, LucideIcon } from "lucide-react";
-interface StatsCardProps {
-  title: string;
-  value: string;
-  icon: LucideIcon;
-  trend?: string;
-  trendPositive?: boolean;
-  badge?: string;
-  badgeColor?: "green" | "blue" | "purple" | "red";
-  accentColor: "purple" | "blue" | "green" | "pink";
+import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
+import type { AppResume } from "@/types/resume";
+
+// Bridges the ATS-avg click in components/shared/DashboardHeader.tsx (a
+// layout-level sibling of this page, not a parent/child — no direct prop
+// path exists) to this page's scroll+highlight behavior via a `?highlight=`
+// query param. Reading useSearchParams() requires a Suspense boundary.
+function HighlightFromQueryParam({
+  resumes,
+  isLoading,
+  onHighlight,
+}: {
+  resumes: AppResume[];
+  isLoading: boolean;
+  onHighlight: (id: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Wait for resumes to finish loading before deciding anything — acting
+    // while `resumes` is still [] would strip the param before it could
+    // ever match.
+    if (isLoading) return;
+
+    const highlight = searchParams.get("highlight");
+    if (!highlight) return;
+
+    if (resumes.some((r) => r.id === highlight)) {
+      onHighlight(highlight);
+    }
+    router.replace("/dashboard", { scroll: false });
+  }, [searchParams, resumes, isLoading, router, onHighlight]);
+
+  return null;
 }
+
 export default function DashboardPage() {
-  const stats: StatsCardProps[] = [
-    {
-      title: "Total Resumes",
-      value: "12",
-      icon: FileText,
-      trend: "+2 this month",
-      trendPositive: true,
-      accentColor: "purple",
-    },
-    {
-      title: "Total Downloads",
-      value: "48",
-      icon: Download,
-      trend: "+15%",
-      trendPositive: true,
-      accentColor: "blue",
-    },
-    {
-      title: "ATS Score Average",
-      value: "87/100",
-      icon: Target,
-      badge: "Excellent",
-      badgeColor: "green",
-      accentColor: "green",
-    },
-    {
-      title: "AI Optimizations",
-      value: "24",
-      icon: Sparkles,
-      trend: "+8 this week",
-      trendPositive: true,
-      accentColor: "pink",
-    },
-  ];
+  const [resumes, setResumes] = useState<AppResume[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [highlightResumeId, setHighlightResumeId] = useState<string | null>(null);
+
+  const loadResumes = useCallback(async () => {
+    try {
+      const res = await fetch("/api/resumes");
+      const data = await res.json();
+      if (!res.ok || !Array.isArray(data)) {
+        throw new Error((data && data.error) || "Failed to load resumes");
+      }
+      setResumes(
+        data.map((r: unknown) =>
+          mapResumeFromDB(r as Parameters<typeof mapResumeFromDB>[0]),
+        ),
+      );
+    } catch (error) {
+      console.error("Failed to load resumes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadResumes();
+  }, [loadResumes]);
+
+  // Archived resumes are hidden from the resumes list by default elsewhere
+  // in the app (see app/(app)/dashboard/resumes/page.tsx) — the dashboard's
+  // recommendations follow the same rule so they don't get skewed by
+  // resumes the user has already set aside.
+  const active = resumes.filter((r) => !r.isArchived);
+
+  const handleHighlight = useCallback((id: string) => {
+    setHighlightResumeId(id);
+    document
+      .getElementById(`resume-row-${id}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Clear after a moment so the highlight reads as a pointer, not a
+    // permanent state.
+    setTimeout(() => setHighlightResumeId(null), 2500);
+  }, []);
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat) => (
-          <StatsCard key={stat.title} {...stat} />
-        ))}
-      </div>
+      <Suspense fallback={null}>
+        <HighlightFromQueryParam
+          resumes={active}
+          isLoading={isLoading}
+          onHighlight={handleHighlight}
+        />
+      </Suspense>
 
+      {/* The 4 stat cards (Total Resumes, Total Downloads, ATS Score
+          Average, AI Optimizations) were removed — resume count and ATS
+          average now live as a compact inline line in the header itself
+          (components/shared/DashboardHeader.tsx), and Total
+          Downloads/AI Optimizations were dropped entirely (they were
+          hardcoded vanity numbers with no real data source). Quick Actions
+          now sits first since there's no card grid above it anymore. */}
       <div className="mb-4">
         <QuickActions />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-8">
-          <RecentResumes />
+          <RecentResumes
+            resumes={active}
+            isLoading={isLoading}
+            highlightResumeId={highlightResumeId}
+            onRefresh={loadResumes}
+          />
         </div>
 
-        <AIInsights />
+        <AIInsights resumes={active} isLoading={isLoading} />
       </div>
     </>
   );

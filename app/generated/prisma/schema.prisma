@@ -55,6 +55,31 @@ model ResumeAnalytics {
   @@map("resume_analytics")
 }
 
+model JobApplication {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @map("user_id")
+  company        String
+  role           String
+  status         String    @default("wishlist")
+  appliedDate    DateTime? @map("applied_date") @db.Timestamptz(6)
+  matchScore     Int?      @map("match_score")
+  tags           String[]  @default([])
+  location       String?
+  salary         String?
+  notes          String?
+  url            String?
+  jobDescription String?   @map("job_description")
+  // Where this entry originated — surfaced nowhere in the board UI, kept
+  // only so a smart-prompt-created entry stays traceable from "manual".
+  source         String    @default("manual")
+  resumeId       String?   @map("resume_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([userId])
+  @@map("job_applications")
+}
+
 model UserPreferences {
   userId      String   @id @map("user_id")
   preferences Json     @default("{}")

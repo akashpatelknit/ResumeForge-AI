@@ -62,33 +62,31 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className=" bg-gray-50">
-      <main className="max-w-7xl mx-auto">
+    <div className="bg-gray-50">
+      <main className="mx-auto">
         {/* Header */}
-        {/* <div className="mb-8"> */}
-        {/* <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Resume Templates
-          </h1> */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Resume Templates
+            </h1>
+            <p className="text-sm text-gray-500">
+              Pick a layout to start your resume — more are on the way.
+            </p>
+          </div>
 
-        {/* Search */}
-        {/* <div className="relative w-full lg:w-96 mb-6">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          {/* Search */}
+          <div className="relative w-full md:w-80 shrink-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search templates..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-purple-100 focus:border-purple-400 outline-none transition-all"
             />
-          </div> */}
-
-        {/* Category Tabs */}
-        {/* <TemplateFilters
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            getCategoryCount={getCategoryCount}
-          /> */}
-        {/* </div> */}
+          </div>
+        </div>
 
         {/* Template Grid */}
         <TemplateGrid

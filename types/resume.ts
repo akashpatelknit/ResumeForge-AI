@@ -95,6 +95,9 @@ export interface ResumeData {
   languages: string[];
   customSections: CustomSection[];
   isFavorite: boolean;
+  // Soft-hide from the default resume list — lives in the `data` JSON blob
+  // rather than a dedicated Prisma column, so no migration is needed.
+  isArchived: boolean;
   thumbnail: string;
   atsScore: number;
 }

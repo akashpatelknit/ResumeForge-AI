@@ -1,63 +1,93 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Github, FileText } from "lucide-react";
-import TemplateSelectionModal from "../modal/TemplateSelectionModal";
+import { Plus, Target, FileText, Github } from "lucide-react";
 import { useRouter } from "next/navigation";
+import TemplateSelectionModal from "../modal/TemplateSelectionModal";
+import ResumePickerDialog from "./ResumePickerDialog";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 
+// "Import from GitHub" now has a real feature behind it (see
+// components/builder/github/GitHubImportModal.tsx) — it's back as a tile,
+// this time wired to the actual flow instead of a no-op.
 const actions = [
   {
+    id: "ats",
+    title: "Check ATS Score",
+    description: "See how your resume scores against a job",
+    icon: Target,
+    gradient: "from-green-600 to-emerald-600",
+    hoverGradient: "from-green-700 to-emerald-700",
+    href: "/dashboard/jobs/analyzer",
+  },
+  {
+    id: "create",
     title: "Create New Resume",
     description: "Start from scratch or use AI",
     icon: Plus,
     gradient: "from-purple-600 to-blue-600",
     hoverGradient: "from-purple-700 to-blue-700",
-    action: "create",
+    href: null, // opens the template modal instead of navigating
   },
   {
-    title: "Import from GitHub",
-    description: "Auto-fill from your profile",
-    icon: Github,
-    gradient: "from-blue-600 to-cyan-600",
-    hoverGradient: "from-blue-700 to-cyan-700",
-    action: "import",
-  },
-  {
+    id: "cover-letter",
     title: "Generate Cover Letter",
     description: "AI-powered in seconds",
     icon: FileText,
     gradient: "from-purple-600 to-pink-600",
     hoverGradient: "from-purple-700 to-pink-700",
-    action: "letter",
+    // The Cover Letter tab lives inside the AI Outreach page (one of 5
+    // tabs sharing that page's resume/JD panel) — there's no per-tab deep
+    // link, so this lands on the page and the tab is one click away.
+    href: "/dashboard/ai/outreach",
   },
-];
+  {
+    id: "github",
+    title: "Import from GitHub",
+    description: "Turn your repos into project entries",
+    icon: Github,
+    gradient: "from-slate-700 to-slate-900",
+    hoverGradient: "from-slate-800 to-black",
+    href: null, // opens the resume picker instead of navigating
+  },
+] as const;
 
 export default function QuickActions() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [showResumePicker, setShowResumePicker] = useState(false);
+  // True when "Create New Resume" was reached via the GitHub tile's picker
+  // rather than the plain "Create New Resume" tile — tells
+  // handleCreateResume to land on the Projects tab with the import modal
+  // open instead of the default builder URL.
+  const [pendingGithubImport, setPendingGithubImport] = useState(false);
   const { createNewResume } = useResumeStore();
   const router = useRouter();
-  const { user, isLoaded, isSignedIn } = useUser();
-  const handleAction = (action: string) => {
-    switch (action) {
-      case "create":
-        setShowTemplateModal(true);
-        break;
-      case "import":
-        break;
-      case "letter":
-        break;
-      default:
-        break;
+  const { user } = useUser();
+
+  const handleClick = (id: string, href: string | null) => {
+    if (id === "github") {
+      setShowResumePicker(true);
+      return;
+    }
+    if (href) {
+      router.push(href);
+    } else {
+      setPendingGithubImport(false);
+      setShowTemplateModal(true);
     }
   };
 
   const handleCreateResume = async (templateId: string) => {
     try {
       const newResume = await createNewResume(templateId, user?.id || "");
-      router.push(`/builder/${newResume.id}`);
+      if (pendingGithubImport) {
+        setPendingGithubImport(false);
+        router.push(`/builder/${newResume.id}?tab=projects&importGithub=1`);
+      } else {
+        router.push(`/builder/${newResume.id}`);
+      }
     } catch (error) {
       console.error("Failed to create resume from template:", error);
       toast.error("Failed to create resume. Please try again.");
@@ -71,7 +101,7 @@ export default function QuickActions() {
         <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {actions.map((action, index) => {
           const Icon = action.icon;
           return (
@@ -79,7 +109,7 @@ export default function QuickActions() {
               key={action.title}
               className="group relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
               style={{ animationDelay: `${index * 100}ms` }}
-              onClick={() => handleAction(action.action)}
+              onClick={() => handleClick(action.id, action.href)}
             >
               <div
                 className={`
@@ -123,10 +153,27 @@ export default function QuickActions() {
           );
         })}
       </div>
+
       <TemplateSelectionModal
         open={showTemplateModal}
         onClose={() => setShowTemplateModal(false)}
         onSelect={handleCreateResume}
+      />
+
+      <ResumePickerDialog
+        open={showResumePicker}
+        onOpenChange={setShowResumePicker}
+        title="Import from GitHub"
+        description="Choose which resume to add GitHub projects to."
+        onSelectResume={(id) => {
+          setShowResumePicker(false);
+          router.push(`/builder/${id}?tab=projects&importGithub=1`);
+        }}
+        onCreateNew={() => {
+          setShowResumePicker(false);
+          setPendingGithubImport(true);
+          setShowTemplateModal(true);
+        }}
       />
     </div>
   );

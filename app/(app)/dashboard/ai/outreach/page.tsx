@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Linkedin,
@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import type { AppResume } from "@/types/resume";
+import AddToTrackerPrompt from "@/components/shared/AddToTrackerPrompt";
 
 const TONES = ["Professional", "Friendly", "Direct"];
 
@@ -113,6 +114,26 @@ const initialTabState: Record<TabId, TabState> = {
   coverLetter: { status: "idle", result: null },
 };
 
+// The "Track this application?" suggestion, scoped per tab so switching
+// tabs never carries a stale suggestion from a different generation, and
+// `nonce` forces a fresh AddToTrackerPrompt mount on every new generation
+// (so a dismissal only suppresses that one generation's prompt, never the
+// next regenerate's).
+interface TrackerSuggestion {
+  companyName: string;
+  roleTitle: string;
+  jobDescription: string;
+  nonce: number;
+}
+
+const initialTrackerSuggestions: Record<TabId, TrackerSuggestion | null> = {
+  connect: null,
+  referral: null,
+  followup: null,
+  coldEmail: null,
+  coverLetter: null,
+};
+
 export default function AIOutreachPage() {
   // Resume selector — real saved resumes for the signed-in user, not sample data.
   const [resumes, setResumes] = useState<AppResume[]>([]);
@@ -135,6 +156,16 @@ export default function AIOutreachPage() {
   const [activeTab, setActiveTab] = useState<TabId>("connect");
   const [tabState, setTabState] =
     useState<Record<TabId, TabState>>(initialTabState);
+
+  const [trackerSuggestions, setTrackerSuggestions] = useState<
+    Record<TabId, TrackerSuggestion | null>
+  >(initialTrackerSuggestions);
+  const trackerNonceRef = useRef(0);
+  // Company/role extracted per unique JD text — avoids re-hitting
+  // /api/ai/extract-job-identity on every regenerate of the same JD.
+  const jdIdentityCache = useRef<Map<string, { companyName: string; roleTitle: string }>>(
+    new Map(),
+  );
 
   // Cold Email tab's own settings — scoped to that tab, not the shared panel.
   const [emailType, setEmailType] = useState("job");
@@ -204,6 +235,62 @@ export default function AIOutreachPage() {
     setTimeout(() => setCopied(null), 2000);
   };
 
+  // Only called after a successful generation. Manual Input mode already
+  // has a structured, user-typed company — no AI needed. JD mode calls the
+  // dedicated extraction endpoint (not the generation prompt itself, which
+  // for the LinkedIn tabs returns plain text) and shows nothing if no
+  // company name comes back confidently.
+  const suggestTrackerEntry = async (tab: TabId) => {
+    let companyName = "";
+    let roleTitle = "";
+
+    if (inputMode === "manual") {
+      companyName = manualInputs.company.trim();
+      roleTitle = manualInputs.targetRole.trim();
+    } else {
+      const jd = jobDescription.trim();
+      if (jd) {
+        const cached = jdIdentityCache.current.get(jd);
+        if (cached) {
+          companyName = cached.companyName;
+          roleTitle = cached.roleTitle;
+        } else {
+          try {
+            const res = await fetch("/api/ai/extract-job-identity", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ jobDescription: jd }),
+            });
+            const data = await res.json();
+            if (res.ok && data?.result) {
+              companyName = data.result.companyName ?? "";
+              roleTitle = data.result.roleTitle ?? "";
+              jdIdentityCache.current.set(jd, { companyName, roleTitle });
+            }
+          } catch {
+            // Extraction failing just means no prompt — never guess.
+          }
+        }
+      }
+    }
+
+    if (!companyName) {
+      setTrackerSuggestions((prev) => ({ ...prev, [tab]: null }));
+      return;
+    }
+
+    trackerNonceRef.current += 1;
+    setTrackerSuggestions((prev) => ({
+      ...prev,
+      [tab]: {
+        companyName,
+        roleTitle,
+        jobDescription: jobDescription.trim(),
+        nonce: trackerNonceRef.current,
+      },
+    }));
+  };
+
   const runGeneration = async (tab: TabId) => {
     if (!selectedResume) return;
 
@@ -255,6 +342,7 @@ export default function AIOutreachPage() {
         ...prev,
         [tab]: { status: "success", result: data.result },
       }));
+      void suggestTrackerEntry(tab);
     } catch (err) {
       setTabState((prev) => ({
         ...prev,
@@ -576,6 +664,19 @@ export default function AIOutreachPage() {
                   </div>
                 )}
               </>
+            )}
+
+            {selectedResume && trackerSuggestions[activeTab] && (
+              <AddToTrackerPrompt
+                key={`${activeTab}-${trackerSuggestions[activeTab]!.nonce}`}
+                source="outreach"
+                companyName={trackerSuggestions[activeTab]!.companyName}
+                roleTitle={trackerSuggestions[activeTab]!.roleTitle}
+                jobDescription={trackerSuggestions[activeTab]!.jobDescription}
+                onDismiss={() =>
+                  setTrackerSuggestions((prev) => ({ ...prev, [activeTab]: null }))
+                }
+              />
             )}
           </div>
         </div>

@@ -7,6 +7,7 @@ import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
 import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
+import ATSScoreButton from "@/components/builder/ATSScoreButton";
 
 /* ============================================================================
  * LaTeX editing mode — DISABLED HERE, NOT DELETED.
@@ -433,6 +434,7 @@ export default function BuilderPage({
       </div>
 
       <AIOptimizeButton />
+      <ATSScoreButton resumeId={currentResume?.id ?? null} />
     </div>
   );
 }

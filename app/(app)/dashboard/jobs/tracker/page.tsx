@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   Briefcase,
   Plus,
@@ -18,7 +19,11 @@ import {
   MessageSquare,
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from "lucide-react";
+import AddApplicationModal, {
+  type ApplicationRecord,
+} from "@/components/dashboard/AddApplicationModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -29,12 +34,29 @@ interface Application {
   status: string;
   appliedDate: string | null;
   updatedDate: string;
-  matchScore: number;
+  matchScore: number | null;
   tags: string[];
-  location: string;
-  salary: string;
-  notes: string;
-  url: string;
+  location: string | null;
+  salary: string | null;
+  notes: string | null;
+  url: string | null;
+}
+
+function mapApplication(row: ApplicationRecord): Application {
+  return {
+    id: row.id,
+    company: row.company,
+    role: row.role,
+    status: row.status,
+    appliedDate: row.appliedDate,
+    updatedDate: row.updatedAt,
+    matchScore: row.matchScore,
+    tags: row.tags,
+    location: row.location,
+    salary: row.salary,
+    notes: row.notes,
+    url: row.url,
+  };
 }
 
 interface Column {
@@ -52,121 +74,6 @@ const COLUMNS: Column[] = [
   { id: "interview", label: "Interview", color: "yellow", icon: MessageSquare },
   { id: "offer", label: "Offer", color: "green", icon: CheckCircle2 },
   { id: "rejected", label: "Rejected", color: "red", icon: XCircle },
-];
-
-const SAMPLE_APPLICATIONS: Application[] = [
-  {
-    id: "1",
-    company: "Google",
-    role: "Senior Full Stack Developer",
-    status: "interview",
-    appliedDate: "2024-02-10",
-    updatedDate: "2024-02-15",
-    matchScore: 92,
-    tags: ["Remote", "Full-time"],
-    location: "Mountain View, CA",
-    salary: "$180k - $220k",
-    notes: "Phone screen scheduled for Friday 3 PM",
-    url: "https://careers.google.com/job/123",
-  },
-  {
-    id: "2",
-    company: "Meta",
-    role: "Frontend Engineer",
-    status: "applied",
-    appliedDate: "2024-02-15",
-    updatedDate: "2024-02-15",
-    matchScore: 78,
-    tags: ["Hybrid", "Full-time"],
-    location: "Menlo Park, CA",
-    salary: "$160k - $200k",
-    notes: "",
-    url: "https://meta.com/careers/job/456",
-  },
-  {
-    id: "3",
-    company: "Netflix",
-    role: "Senior React Developer",
-    status: "applied",
-    appliedDate: "2024-02-12",
-    updatedDate: "2024-02-14",
-    matchScore: 85,
-    tags: ["Remote", "Full-time"],
-    location: "Los Gatos, CA",
-    salary: "$190k - $240k",
-    notes: "Hiring manager: Sarah Chen",
-    url: "https://netflix.com/jobs/789",
-  },
-  {
-    id: "4",
-    company: "Stripe",
-    role: "Full Stack Engineer",
-    status: "wishlist",
-    appliedDate: null,
-    updatedDate: "2024-02-16",
-    matchScore: 88,
-    tags: ["Remote", "Full-time"],
-    location: "San Francisco, CA",
-    salary: "$170k - $210k",
-    notes: "Wait for referral from John",
-    url: "https://stripe.com/jobs/101",
-  },
-  {
-    id: "5",
-    company: "Airbnb",
-    role: "Software Engineer",
-    status: "offer",
-    appliedDate: "2024-01-20",
-    updatedDate: "2024-02-18",
-    matchScore: 90,
-    tags: ["Hybrid", "Full-time"],
-    location: "San Francisco, CA",
-    salary: "$175k - $215k",
-    notes: "Offer received! Deadline: Feb 25",
-    url: "https://airbnb.com/careers/202",
-  },
-  {
-    id: "6",
-    company: "Amazon",
-    role: "SDE II",
-    status: "rejected",
-    appliedDate: "2024-02-01",
-    updatedDate: "2024-02-08",
-    matchScore: 72,
-    tags: ["Onsite", "Full-time"],
-    location: "Seattle, WA",
-    salary: "$150k - $180k",
-    notes: "Rejected after phone screen",
-    url: "https://amazon.jobs/303",
-  },
-  {
-    id: "7",
-    company: "Uber",
-    role: "Senior Engineer",
-    status: "interview",
-    appliedDate: "2024-02-05",
-    updatedDate: "2024-02-17",
-    matchScore: 81,
-    tags: ["Hybrid", "Full-time"],
-    location: "San Francisco, CA",
-    salary: "$165k - $200k",
-    notes: "Final round next Tuesday",
-    url: "https://uber.com/careers/404",
-  },
-  {
-    id: "8",
-    company: "Microsoft",
-    role: "Software Engineer II",
-    status: "applied",
-    appliedDate: "2024-02-14",
-    updatedDate: "2024-02-14",
-    matchScore: 76,
-    tags: ["Hybrid", "Full-time"],
-    location: "Redmond, WA",
-    salary: "$155k - $190k",
-    notes: "",
-    url: "https://microsoft.com/jobs/505",
-  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -310,7 +217,7 @@ function AppCard({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            window.open(app.url, "_blank");
+            if (app.url) window.open(app.url, "_blank");
           }}
           className="flex-1 flex items-center justify-center gap-1 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 transition-colors cursor-pointer border-none bg-transparent"
         >
@@ -331,11 +238,42 @@ function AppCard({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function ApplicationTracker() {
-  const [applications, setApplications] =
-    useState<Application[]>(SAMPLE_APPLICATIONS);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<Application | null>(null);
   const [draggedCard, setDraggedCard] = useState<Application | null>(null);
   const [activeTab, setActiveTab] = useState<string>("applied");
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/applications");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || "Failed to load applications");
+        if (!cancelled) {
+          setApplications(
+            (data as ApplicationRecord[]).map(mapApplication),
+          );
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLoadError(
+            err instanceof Error ? err.message : "Failed to load applications",
+          );
+        }
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const stats = {
     total: applications.length,
@@ -375,17 +313,36 @@ export default function ApplicationTracker() {
   ) => {
     e.preventDefault();
     if (draggedCard && draggedCard.status !== newStatus) {
+      const cardId = draggedCard.id;
+      const previousStatus = draggedCard.status;
       setApplications((apps) =>
         apps.map((app) =>
-          app.id === draggedCard.id
+          app.id === cardId
             ? {
                 ...app,
                 status: newStatus,
-                updatedDate: new Date().toISOString().split("T")[0],
+                updatedDate: new Date().toISOString(),
               }
             : app,
         ),
       );
+
+      fetch(`/api/applications/${cardId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      })
+        .then(async (res) => {
+          if (!res.ok) throw new Error("Failed to save stage change");
+        })
+        .catch(() => {
+          toast.error("Failed to save stage change — reverting.");
+          setApplications((apps) =>
+            apps.map((app) =>
+              app.id === cardId ? { ...app, status: previousStatus } : app,
+            ),
+          );
+        });
     }
     setDraggedCard(null);
   };
@@ -421,7 +378,10 @@ export default function ApplicationTracker() {
             <button className="sm:hidden p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-gray-300 transition-all cursor-pointer">
               <Filter className="w-4 h-4" />
             </button>
-            <button className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-200 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer border-none">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-200 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer border-none"
+            >
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Add Application</span>
               <span className="sm:hidden">Add</span>
@@ -482,6 +442,17 @@ export default function ApplicationTracker() {
         </div>
       </div>
 
+      {isLoading ? (
+        <div className="flex items-center justify-center py-24 text-gray-400">
+          <Loader2 className="w-6 h-6 animate-spin mr-2" />
+          Loading applications...
+        </div>
+      ) : loadError ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center bg-white rounded-xl border border-red-100">
+          <p className="text-sm text-red-600 font-medium">{loadError}</p>
+        </div>
+      ) : (
+        <>
       {/* ── MOBILE VIEW: Tabbed single-column ── */}
       <div className="block lg:hidden">
         {/* Tab navigation */}
@@ -625,6 +596,8 @@ export default function ApplicationTracker() {
           );
         })}
       </div>
+        </>
+      )}
 
       {/* ── Detail Modal ── */}
       {selectedCard && (
@@ -695,11 +668,15 @@ export default function ApplicationTracker() {
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                     Match Score
                   </p>
-                  <span
-                    className={`inline-block px-3 py-1 text-sm rounded-lg font-semibold border ${getMatchScoreColor(selectedCard.matchScore)}`}
-                  >
-                    {selectedCard.matchScore}%
-                  </span>
+                  {selectedCard.matchScore != null ? (
+                    <span
+                      className={`inline-block px-3 py-1 text-sm rounded-lg font-semibold border ${getMatchScoreColor(selectedCard.matchScore)}`}
+                    >
+                      {selectedCard.matchScore}%
+                    </span>
+                  ) : (
+                    <span className="text-sm text-gray-400">—</span>
+                  )}
                 </div>
               </div>
 
@@ -708,7 +685,7 @@ export default function ApplicationTracker() {
                   Notes
                 </p>
                 <textarea
-                  defaultValue={selectedCard.notes}
+                  defaultValue={selectedCard.notes ?? ""}
                   placeholder="Add notes about this application..."
                   className="w-full h-24 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
                 />
@@ -716,7 +693,7 @@ export default function ApplicationTracker() {
 
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <button
-                  onClick={() => window.open(selectedCard.url, "_blank")}
+                  onClick={() => selectedCard.url && window.open(selectedCard.url, "_blank")}
                   className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-gray-200 bg-white text-gray-700 text-sm font-medium hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
                 >
                   <ExternalLink className="w-4 h-4" /> View Job Posting
@@ -729,6 +706,14 @@ export default function ApplicationTracker() {
           </div>
         </div>
       )}
+
+      <AddApplicationModal
+        open={showAddModal}
+        onOpenChange={setShowAddModal}
+        onCreated={(created) =>
+          setApplications((apps) => [mapApplication(created), ...apps])
+        }
+      />
     </div>
   );
 }

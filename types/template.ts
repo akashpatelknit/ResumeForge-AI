@@ -20,4 +20,7 @@ export interface Template {
   rating: number;
   usageCount: number;
   bestFor: string[];
+  // Filler entry for the gallery grid — not selectable yet. Renders as a
+  // locked/muted card instead of the real thumbnail + preview flow.
+  comingSoon?: boolean;
 }

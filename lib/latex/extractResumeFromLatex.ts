@@ -55,13 +55,13 @@ Rules:
 - If a field genuinely isn't present in the document, use an empty string "" or empty array [], never omit the key or use null (except endDate as noted above).
 - Do not invent content that isn't in the source.`;
 
-// Deliberately omits isFavorite/thumbnail/atsScore — those aren't
-// recoverable from LaTeX text, and returning them (even as defaults) would
-// invite callers to blindly overwrite unrelated existing resume state
-// instead of merging just the extracted content fields.
+// Deliberately omits isFavorite/isArchived/thumbnail/atsScore — those
+// aren't recoverable from LaTeX text, and returning them (even as
+// defaults) would invite callers to blindly overwrite unrelated existing
+// resume state instead of merging just the extracted content fields.
 export type ExtractedResumeFields = Omit<
   ResumeData,
-  "isFavorite" | "thumbnail" | "atsScore"
+  "isFavorite" | "isArchived" | "thumbnail" | "atsScore"
 >;
 
 export async function extractResumeFromLatex(

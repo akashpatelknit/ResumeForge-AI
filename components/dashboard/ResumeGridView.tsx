@@ -1,12 +1,13 @@
 import React from "react";
 import ResumeCard from "./ResumeCard";
-import { Resume } from "@/types/resume";
+import type { AppResume } from "@/types/resume";
 
 interface ResumeGridViewProps {
-  resumes: Resume[];
+  resumes: AppResume[];
   selectedResumes: string[];
   onToggleSelect: (id: string) => void;
   onToggleFavorite: (id: string) => void;
+  onRefresh?: () => void;
 }
 
 export default function ResumeGridView({
@@ -14,6 +15,7 @@ export default function ResumeGridView({
   selectedResumes,
   onToggleSelect,
   onToggleFavorite,
+  onRefresh,
 }: ResumeGridViewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -28,6 +30,7 @@ export default function ResumeGridView({
             isSelected={selectedResumes.includes(resume.id)}
             onToggleSelect={onToggleSelect}
             onToggleFavorite={onToggleFavorite}
+            onRefresh={onRefresh}
           />
         </div>
       ))}
