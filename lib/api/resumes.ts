@@ -1,5 +1,6 @@
 import { Resume } from "@/types/resume";
 import { toast } from "sonner";
+import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
 
 interface SaveResumeParams {
   id?: string;
@@ -32,10 +33,7 @@ export async function saveResume(data: SaveResumeParams) {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Failed to save resume");
-    }
+    await assertOkOrShowUpgrade(response, "Failed to save resume");
 
     const savedResume = await response.json();
     toast.success(
@@ -43,6 +41,7 @@ export async function saveResume(data: SaveResumeParams) {
     );
     return savedResume;
   } catch (error) {
+    if (error instanceof UpgradeRequiredError) throw error;
     const message =
       error instanceof Error ? error.message : "Failed to save resume";
     toast.error(message);

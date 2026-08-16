@@ -178,6 +178,58 @@ exports.Prisma.UserPreferencesScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  razorpaySubscriptionId: 'razorpaySubscriptionId',
+  razorpayCustomerId: 'razorpayCustomerId',
+  status: 'status',
+  currentPeriodEnd: 'currentPeriodEnd',
+  trialEndsAt: 'trialEndsAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserStatusScalarFieldEnum = {
+  userId: 'userId',
+  isBlocked: 'isBlocked',
+  blockedAt: 'blockedAt',
+  blockedReason: 'blockedReason',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlanConfigScalarFieldEnum = {
+  id: 'id',
+  proPriceInr: 'proPriceInr',
+  freeResumeLimit: 'freeResumeLimit',
+  freeAiGenerationLimit: 'freeAiGenerationLimit',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TemplateMetaScalarFieldEnum = {
+  templateId: 'templateId',
+  isPro: 'isPro',
+  isActive: 'isActive',
+  isFeatured: 'isFeatured',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UsageCounterScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  month: 'month',
+  aiGenerationsUsed: 'aiGenerationsUsed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -207,14 +259,25 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  trialing: 'trialing',
+  active: 'active',
+  past_due: 'past_due',
+  cancelled: 'cancelled'
+};
 
 exports.Prisma.ModelName = {
   Resume: 'Resume',
   CoverLetter: 'CoverLetter',
   ResumeAnalytics: 'ResumeAnalytics',
   JobApplication: 'JobApplication',
-  UserPreferences: 'UserPreferences'
+  UserPreferences: 'UserPreferences',
+  Subscription: 'Subscription',
+  Admin: 'Admin',
+  UserStatus: 'UserStatus',
+  PlanConfig: 'PlanConfig',
+  TemplateMeta: 'TemplateMeta',
+  UsageCounter: 'UsageCounter'
 };
 
 /**

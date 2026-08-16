@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthModal } from "@/components/auth/AuthModal";
 import "./globals.css";
 import "./index.css";
 
@@ -210,6 +211,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster richColors position="top-right" />
+          <AuthModal />
         </body>
       </html>
     </ClerkProvider>

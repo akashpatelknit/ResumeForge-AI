@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Reorder, useDragControls } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,7 +23,7 @@ interface ProjectsSectionProps {
 export default function ProjectsSection({
   autoOpenGithubImport = false,
 }: ProjectsSectionProps) {
-  const { currentResume, addProject, updateProject, deleteProject } =
+  const { currentResume, addProject, updateProject, deleteProject, reorderProjects } =
     useResumeStore();
   const [newTechnology, setNewTechnology] = useState<{ [key: string]: string }>(
     {},
@@ -124,247 +125,294 @@ export default function ProjectsSection({
           </Button>
         </div>
       ) : (
-        <div className="space-y-6">
+        <Reorder.Group
+          as="div"
+          axis="y"
+          values={currentResume.projects}
+          onReorder={reorderProjects}
+          className="space-y-6"
+        >
           {currentResume.projects.map((project, index) => (
-            <div
+            <ProjectEntry
               key={project.id}
-              className="p-6 border rounded-lg space-y-4 bg-white shadow-sm"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <GripVertical className="w-5 h-5 text-gray-400" />
-                  <h4 className="font-medium">Project {index + 1}</h4>
-                </div>
-                <Button
-                  onClick={() => deleteProject(project.id)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4">
-                <div className="space-y-1">
-                  <Label htmlFor={`name-${project.id}`}>Project Name *</Label>
-                  <Input
-                    id={`name-${project.id}`}
-                    value={project.name}
-                    onChange={(e) =>
-                      updateProject(project.id, { name: e.target.value })
-                    }
-                    placeholder="E-commerce Platform"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <Label htmlFor={`description-${project.id}`}>
-                    Description *
-                  </Label>
-                  <Textarea
-                    id={`description-${project.id}`}
-                    value={project.description}
-                    onChange={(e) =>
-                      updateProject(project.id, { description: e.target.value })
-                    }
-                    placeholder="Brief overview of the project..."
-                    rows={3}
-                    className="resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <Label htmlFor={`link-${project.id}`}>
-                      Live Demo Link (Optional)
-                    </Label>
-                    <Input
-                      id={`link-${project.id}`}
-                      value={project.link || ""}
-                      onChange={(e) =>
-                        updateProject(project.id, { link: e.target.value })
-                      }
-                      placeholder="https://example.com"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label htmlFor={`github-${project.id}`}>
-                      GitHub Link (Optional)
-                    </Label>
-                    <Input
-                      id={`github-${project.id}`}
-                      value={project.github || ""}
-                      onChange={(e) =>
-                        updateProject(project.id, { github: e.target.value })
-                      }
-                      placeholder="https://github.com/username/repo"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <Label>Technologies Used</Label>
-                  <div className="flex flex-wrap gap-2 mt-2 min-h-10 p-2 border rounded-md bg-gray-50">
-                    {Array.isArray(project.technologies) &&
-                    project.technologies.length === 0 ? (
-                      <span className="text-sm text-gray-400">
-                        No technologies added yet
-                      </span>
-                    ) : (
-                      Array.isArray(project.technologies) &&
-                      project.technologies.map((tech, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="secondary"
-                          className="pl-3 pr-1 py-1 gap-1"
-                        >
-                          {tech}
-                          <Button
-                            onClick={() =>
-                              handleDeleteTechnology(project.id, idx)
-                            }
-                            variant="ghost"
-                            size="sm"
-                            className="h-4 w-4 p-0 hover:bg-transparent"
-                          >
-                            <X className="w-3 h-3" />
-                          </Button>
-                        </Badge>
-                      ))
-                    )}
-                  </div>
-
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      value={newTechnology[project.id] || ""}
-                      onChange={(e) =>
-                        setNewTechnology({
-                          ...newTechnology,
-                          [project.id]: e.target.value,
-                        })
-                      }
-                      placeholder="Add a technology..."
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleAddTechnology(project.id);
-                        }
-                      }}
-                    />
-                    <Button
-                      onClick={() => handleAddTechnology(project.id)}
-                      size="sm"
-                      variant="outline"
-                    >
-                      Add
-                    </Button>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label>Key Highlights</Label>
-                    <GenerateWithAI<string[]>
-                      endpoint="/api/ai/generate-highlights"
-                      title="Generate Key Highlights"
-                      description={
-                        project.highlights?.length
-                          ? "Paste project notes or a description — or leave blank to rewrite your existing highlights"
-                          : "Paste project notes, README content, or a rough description"
-                      }
-                      placeholder="e.g. built a rate limiter using Redis and Lua scripting, handled high concurrency, tested with k6..."
-                      buildBody={(rawInput) => ({
-                        rawInput,
-                        existingHighlights: project.highlights,
-                        projectName: project.name,
-                        techStack: project.technologies,
-                      })}
-                      parseResult={(json) =>
-                        (json as { highlights: string[] }).highlights
-                      }
-                      renderPreview={(highlights) => (
-                        <ul className="space-y-1 rounded-md border bg-gray-50 p-3">
-                          {highlights.map((highlight, i) => (
-                            <li key={i} className="text-sm text-gray-800">
-                              • {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      onUse={(highlights, rawInput) =>
-                        updateProject(project.id, {
-                          // Blank rawInput means the model rewrote the
-                          // existing highlights, not extracted new ones —
-                          // replace rather than duplicate rephrasings.
-                          highlights: rawInput.trim()
-                            ? [...(project.highlights || []), ...highlights]
-                            : highlights,
-                        })
-                      }
-                      isInputValid={(rawInput) =>
-                        !!rawInput.trim() || !!project.highlights?.length
-                      }
-                      emptyInputHint="Add project notes above — there are no existing highlights to rewrite yet."
-                      idleLabel={(rawInput) =>
-                        rawInput.trim() ? "Generate" : "Rewrite existing highlights"
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2 mt-2">
-                    {Array.isArray(project.highlights) &&
-                      project.highlights.map((highlight, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2 p-2 bg-gray-50 rounded"
-                        >
-                          <span className="text-sm flex-1">• {highlight}</span>
-                          <Button
-                            onClick={() =>
-                              handleDeleteHighlight(project.id, idx)
-                            }
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      ))}
-                  </div>
-
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      value={newHighlight[project.id] || ""}
-                      onChange={(e) =>
-                        setNewHighlight({
-                          ...newHighlight,
-                          [project.id]: e.target.value,
-                        })
-                      }
-                      placeholder="Add a highlight..."
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleAddHighlight(project.id);
-                        }
-                      }}
-                    />
-                    <Button
-                      onClick={() => handleAddHighlight(project.id)}
-                      size="sm"
-                      variant="outline"
-                    >
-                      Add
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+              project={project}
+              index={index}
+              updateProject={updateProject}
+              deleteProject={deleteProject}
+              newTechnologyValue={newTechnology[project.id] || ""}
+              onNewTechnologyChange={(value) =>
+                setNewTechnology({ ...newTechnology, [project.id]: value })
+              }
+              onAddTechnology={() => handleAddTechnology(project.id)}
+              onDeleteTechnology={(idx) => handleDeleteTechnology(project.id, idx)}
+              newHighlightValue={newHighlight[project.id] || ""}
+              onNewHighlightChange={(value) =>
+                setNewHighlight({ ...newHighlight, [project.id]: value })
+              }
+              onAddHighlight={() => handleAddHighlight(project.id)}
+              onDeleteHighlight={(idx) => handleDeleteHighlight(project.id, idx)}
+            />
           ))}
-        </div>
+        </Reorder.Group>
       )}
     </div>
+  );
+}
+
+interface ProjectEntryProps {
+  project: Project;
+  index: number;
+  updateProject: (id: string, updates: Partial<Project>) => void;
+  deleteProject: (id: string) => void;
+  newTechnologyValue: string;
+  onNewTechnologyChange: (value: string) => void;
+  onAddTechnology: () => void;
+  onDeleteTechnology: (index: number) => void;
+  newHighlightValue: string;
+  onNewHighlightChange: (value: string) => void;
+  onAddHighlight: () => void;
+  onDeleteHighlight: (index: number) => void;
+}
+
+// Extracted so useDragControls (a hook) can be called per-entry — it can't
+// live inside the .map() callback above since the number of entries
+// changes across renders, which would break the Rules of Hooks.
+function ProjectEntry({
+  project,
+  index,
+  updateProject,
+  deleteProject,
+  newTechnologyValue,
+  onNewTechnologyChange,
+  onAddTechnology,
+  onDeleteTechnology,
+  newHighlightValue,
+  onNewHighlightChange,
+  onAddHighlight,
+  onDeleteHighlight,
+}: ProjectEntryProps) {
+  const dragControls = useDragControls();
+
+  return (
+    <Reorder.Item
+      value={project}
+      as="div"
+      dragListener={false}
+      dragControls={dragControls}
+      className="p-6 border rounded-lg space-y-4 bg-white shadow-sm"
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-2">
+          <GripVertical
+            className="w-5 h-5 cursor-grab touch-none text-gray-400 active:cursor-grabbing"
+            onPointerDown={(e) => dragControls.start(e)}
+          />
+          <h4 className="font-medium">Project {index + 1}</h4>
+        </div>
+        <Button
+          onClick={() => deleteProject(project.id)}
+          variant="ghost"
+          size="sm"
+          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        <div className="space-y-1">
+          <Label htmlFor={`name-${project.id}`}>Project Name *</Label>
+          <Input
+            id={`name-${project.id}`}
+            value={project.name}
+            onChange={(e) =>
+              updateProject(project.id, { name: e.target.value })
+            }
+            placeholder="E-commerce Platform"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor={`description-${project.id}`}>
+            Description *
+          </Label>
+          <Textarea
+            id={`description-${project.id}`}
+            value={project.description}
+            onChange={(e) =>
+              updateProject(project.id, { description: e.target.value })
+            }
+            placeholder="Brief overview of the project..."
+            rows={3}
+            className="resize-none"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Label htmlFor={`link-${project.id}`}>
+              Live Demo Link (Optional)
+            </Label>
+            <Input
+              id={`link-${project.id}`}
+              value={project.link || ""}
+              onChange={(e) =>
+                updateProject(project.id, { link: e.target.value })
+              }
+              placeholder="https://example.com"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <Label htmlFor={`github-${project.id}`}>
+              GitHub Link (Optional)
+            </Label>
+            <Input
+              id={`github-${project.id}`}
+              value={project.github || ""}
+              onChange={(e) =>
+                updateProject(project.id, { github: e.target.value })
+              }
+              placeholder="https://github.com/username/repo"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <Label>Technologies Used</Label>
+          <div className="flex flex-wrap gap-2 mt-2 min-h-10 p-2 border rounded-md bg-gray-50">
+            {Array.isArray(project.technologies) &&
+            project.technologies.length === 0 ? (
+              <span className="text-sm text-gray-400">
+                No technologies added yet
+              </span>
+            ) : (
+              Array.isArray(project.technologies) &&
+              project.technologies.map((tech, idx) => (
+                <Badge
+                  key={idx}
+                  variant="secondary"
+                  className="pl-3 pr-1 py-1 gap-1"
+                >
+                  {tech}
+                  <Button
+                    onClick={() => onDeleteTechnology(idx)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-4 w-4 p-0 hover:bg-transparent"
+                  >
+                    <X className="w-3 h-3" />
+                  </Button>
+                </Badge>
+              ))
+            )}
+          </div>
+
+          <div className="flex gap-2 mt-2">
+            <Input
+              value={newTechnologyValue}
+              onChange={(e) => onNewTechnologyChange(e.target.value)}
+              placeholder="Add a technology..."
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  onAddTechnology();
+                }
+              }}
+            />
+            <Button onClick={onAddTechnology} size="sm" variant="outline">
+              Add
+            </Button>
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between">
+            <Label>Key Highlights</Label>
+            <GenerateWithAI<string[]>
+              endpoint="/api/ai/generate-highlights"
+              title="Generate Key Highlights"
+              description={
+                project.highlights?.length
+                  ? "Paste project notes or a description — or leave blank to rewrite your existing highlights"
+                  : "Paste project notes, README content, or a rough description"
+              }
+              placeholder="e.g. built a rate limiter using Redis and Lua scripting, handled high concurrency, tested with k6..."
+              buildBody={(rawInput) => ({
+                rawInput,
+                existingHighlights: project.highlights,
+                projectName: project.name,
+                techStack: project.technologies,
+              })}
+              parseResult={(json) =>
+                (json as { highlights: string[] }).highlights
+              }
+              renderPreview={(highlights) => (
+                <ul className="space-y-1 rounded-md border bg-gray-50 p-3">
+                  {highlights.map((highlight, i) => (
+                    <li key={i} className="text-sm text-gray-800">
+                      • {highlight}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              onUse={(highlights, rawInput) =>
+                updateProject(project.id, {
+                  // Blank rawInput means the model rewrote the
+                  // existing highlights, not extracted new ones —
+                  // replace rather than duplicate rephrasings.
+                  highlights: rawInput.trim()
+                    ? [...(project.highlights || []), ...highlights]
+                    : highlights,
+                })
+              }
+              isInputValid={(rawInput) =>
+                !!rawInput.trim() || !!project.highlights?.length
+              }
+              emptyInputHint="Add project notes above — there are no existing highlights to rewrite yet."
+              idleLabel={(rawInput) =>
+                rawInput.trim() ? "Generate" : "Rewrite existing highlights"
+              }
+            />
+          </div>
+          <div className="space-y-2 mt-2">
+            {Array.isArray(project.highlights) &&
+              project.highlights.map((highlight, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-2 p-2 bg-gray-50 rounded"
+                >
+                  <span className="text-sm flex-1">• {highlight}</span>
+                  <Button
+                    onClick={() => onDeleteHighlight(idx)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
+              ))}
+          </div>
+
+          <div className="flex gap-2 mt-2">
+            <Input
+              value={newHighlightValue}
+              onChange={(e) => onNewHighlightChange(e.target.value)}
+              placeholder="Add a highlight..."
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  onAddHighlight();
+                }
+              }}
+            />
+            <Button onClick={onAddHighlight} size="sm" variant="outline">
+              Add
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Reorder.Item>
   );
 }

@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
+import { Fragment } from "react";
 import { AppResume } from "@/types/resume";
+import { getEffectiveSectionOrder, type SectionKey } from "@/lib/resumeSections";
 
 /**
  * ModernTemplate — pixel-faithful port of the LaTeX resume template
@@ -289,28 +291,333 @@ const styles = StyleSheet.create({
   },
 });
 
+// ── Section renderers ─────────────────────────────────────────────────────
+// Each returns the same JSX previously inlined in a fixed sequence, or null
+// when the section has nothing to show. Pulled into standalone functions,
+// keyed by SectionKey, so the sequence they're rendered in can follow
+// resume.sectionOrder (see the bottom of this file) instead of a hardcoded
+// order in the JSX itself.
+
+// "personal" — always rendered first (see the component below), never part
+// of the reorderable set. This is just the Professional Summary; the
+// contact-info header above it is rendered unconditionally, outside of
+// sectionOrder entirely.
+function renderSummary(resume: AppResume) {
+  if (!resume.summary) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Professional Summary</Text>
+      <Text style={styles.summaryText}>{resume.summary}</Text>
+    </View>
+  );
+}
+
+function renderSkills(resume: AppResume) {
+  if ((resume.skills ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Skills Summary</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.skills ?? []).map((skill, idx) => (
+          <View key={idx} style={styles.subItem}>
+            <Text style={styles.subItemBullet}>•</Text>
+            <View style={styles.subItemTextWrap}>
+              <Text>
+                <Text style={styles.subItemLabelBold}>{skill.category}</Text>
+                <Text style={styles.subItemValue}>
+                  {": "}
+                  {(skill.items ?? []).join(", ")}
+                </Text>
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function renderExperience(resume: AppResume) {
+  if ((resume.experience ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Experience</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.experience ?? []).map((exp, idx) => (
+          <View key={idx} style={styles.subheadingItem}>
+            {/* \textbf{Company} & Location \\ */}
+            <View style={styles.subheadingTopRow}>
+              <Text style={styles.subheadingCompany}>{exp.company}</Text>
+              <Text style={styles.subheadingLocation}>{exp.location}</Text>
+            </View>
+            {/* \textit{Position} & \textit{Date} \\ */}
+            <View style={styles.subheadingBotRow}>
+              <Text style={styles.subheadingPosition}>{exp.position}</Text>
+              <Text style={styles.subheadingDate}>
+                {exp.startDate} - {exp.endDate || "Present"}
+              </Text>
+            </View>
+
+            {/* resumeItemListStart → resumeItemListEnd */}
+            <View style={styles.itemList}>
+              {(exp.achievements ?? []).map((achievement, i) => {
+                const text =
+                  typeof achievement === "string" ? achievement : String(achievement ?? "");
+
+                // Split on first ":" — only treat as titled if label ≤ 40 chars
+                const colonIdx = text.indexOf(":");
+                const hasTitle = colonIdx > 0 && colonIdx <= 40;
+                const title = hasTitle ? text.slice(0, colonIdx) : null;
+                const desc = hasTitle ? text.slice(colonIdx + 1).trimStart() : text;
+
+                return (
+                  <View key={i} style={styles.itemRow}>
+                    <Text style={styles.itemBullet}>•</Text>
+                    <Text style={styles.itemBodyNormal}>
+                      {hasTitle && <Text style={styles.itemBodyBold}>{title}: </Text>}
+                      {desc}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function renderProjects(resume: AppResume) {
+  if ((resume.projects ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Projects</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.projects ?? []).map((project, idx) => (
+          <View key={idx} style={styles.projectSubItem}>
+            <Text style={styles.projectBullet}>•</Text>
+            <View style={styles.projectBody}>
+              {/* Bold first arg: Name + inline link labels */}
+              <View style={styles.projectNameRow}>
+                <Text style={styles.projectNameBold}>{project.name}</Text>
+                {project.github && (
+                  <Link src={project.github} style={styles.projectLinkText}>
+                    {" "}
+                    [GitHub]
+                  </Link>
+                )}
+                {project.link && (
+                  <Link src={project.link} style={styles.projectLinkText}>
+                    {" "}
+                    [Live]
+                  </Link>
+                )}
+              </View>
+
+              {/* Normal second arg */}
+
+              {project.description && <Text style={styles.projectDesc}>{project.description}</Text>}
+
+              {/* \textbullet~ highlight lines */}
+              {(project.highlights ?? []).map((highlight, i) => {
+                const text = typeof highlight === "string" ? highlight : String(highlight ?? "");
+                return (
+                  <View key={i} style={styles.projectBulletRow}>
+                    <Text style={styles.projectBulletMark}>•</Text>
+                    <Text style={styles.projectBulletText}>{text}</Text>
+                  </View>
+                );
+              })}
+
+              {/* \textbf{Tech Stack:} value */}
+              {(project.technologies ?? []).length > 0 && (
+                <View style={styles.techStackRow}>
+                  <Text style={styles.techStackBold}>Tech Stack: </Text>
+                  <Text style={styles.techStackValue}>{(project.technologies ?? []).join(", ")}</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function renderEducation(resume: AppResume) {
+  if ((resume.education ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Education</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.education ?? []).map((edu, idx) => (
+          <View key={idx} style={[styles.subheadingItem, styles.educationItem]}>
+            <View style={styles.subheadingTopRow}>
+              <Text style={styles.subheadingCompany}>{edu.institution}</Text>
+              <Text style={styles.subheadingLocation}>{edu.location}</Text>
+            </View>
+            <View style={styles.subheadingBotRow}>
+              <Text style={styles.subheadingPosition}>
+                {edu.degree} in {edu.field}
+              </Text>
+              <Text style={styles.subheadingDate}>
+                {edu.startDate} - {edu.endDate}
+              </Text>
+            </View>
+            {edu.gpa && <Text style={styles.gpaText}>GPA: {edu.gpa}</Text>}
+            {(edu.achievements ?? []).length > 0 && (
+              <View style={styles.itemList}>
+                {(edu.achievements ?? []).map((achievement, i) => {
+                  const text = typeof achievement === "string" ? achievement : String(achievement ?? "");
+                  return (
+                    <View key={i} style={styles.itemRow}>
+                      <Text style={styles.itemBullet}>•</Text>
+                      <Text style={styles.itemBodyNormal}>{text}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function renderAchievements(resume: AppResume) {
+  if ((resume.achievements ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Achievements</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.achievements ?? []).map((achievement, idx) => {
+          // Achievement entries are { title, description } objects (see
+          // lib/seedResumeData.ts, types/resume.ts) — fall back to
+          // treating a plain string as an untitled description for
+          // older/looser data rather than stringifying the object.
+          const label = typeof achievement === "string" ? null : achievement?.title || null;
+          const desc = typeof achievement === "string" ? achievement : achievement?.description || "";
+
+          if (!label && !desc) return null;
+
+          return (
+            <View key={idx} style={styles.subItem}>
+              <Text style={styles.subItemBullet}>•</Text>
+              <View style={styles.subItemTextWrap}>
+                <Text>
+                  {label && <Text style={styles.subItemLabelBold}>{label}: </Text>}
+                  <Text style={styles.subItemValue}>{desc}</Text>
+                </Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+function renderCertifications(resume: AppResume) {
+  if ((resume.certifications ?? []).length === 0) return null;
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Certifications</Text>
+      <View style={styles.subHeadingList}>
+        {(resume.certifications ?? []).map((cert, idx) => (
+          <View key={idx} style={styles.subItem}>
+            <Text style={styles.subItemBullet}>•</Text>
+            <View style={styles.subItemTextWrap}>
+              <Text>
+                <Text style={styles.subItemLabelBold}>{cert.name}: </Text>
+                <Text style={styles.subItemValue}>
+                  {cert.issuer} - {cert.date}
+                  {cert.credentialId ? ` (ID: ${cert.credentialId})` : ""}
+                </Text>
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function renderCustomSections(resume: AppResume) {
+  const sections = (resume.customSections ?? []).filter(
+    (section) => section.title && section.items.length > 0,
+  );
+  if (sections.length === 0) return null;
+  return (
+    <>
+      {sections.map((section) => (
+        <View key={section.id}>
+          <Text style={styles.sectionTitle}>{section.title}</Text>
+          <View style={styles.subHeadingList}>
+            {section.items.map((item) => (
+              <View key={item.id} style={styles.subheadingItem}>
+                {(item.heading || item.subheading) && (
+                  <View style={styles.subheadingTopRow}>
+                    <Text style={styles.subheadingCompany}>{item.heading}</Text>
+                    <Text style={styles.subheadingPosition}>{item.subheading}</Text>
+                  </View>
+                )}
+                {item.description && <Text style={styles.summaryText}>{item.description}</Text>}
+                {(item.bullets ?? []).length > 0 && (
+                  <View style={styles.itemList}>
+                    {item.bullets.map((bullet, i) => (
+                      <View key={i} style={styles.itemRow}>
+                        <Text style={styles.itemBullet}>•</Text>
+                        <Text style={styles.itemBodyNormal}>{bullet}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
+      ))}
+    </>
+  );
+}
+
+// Every SectionKey except "personal" — that one's rendered unconditionally
+// right after the header, never through this map, since it's locked first.
+const SECTION_RENDERERS: Record<Exclude<SectionKey, "personal">, (resume: AppResume) => React.ReactNode> = {
+  skills: renderSkills,
+  experience: renderExperience,
+  projects: renderProjects,
+  education: renderEducation,
+  achievements: renderAchievements,
+  certifications: renderCertifications,
+  custom: renderCustomSections,
+};
+
 interface LatexModernTemplateProps {
   resume: AppResume;
 }
 
 export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
+  // getEffectiveSectionOrder guarantees a complete, "personal"-first array
+  // even for resumes saved before sectionOrder existed — see
+  // lib/resumeSections.ts.
+  const order = getEffectiveSectionOrder(resume.sectionOrder);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* ================================================================
-            HEADING
+            HEADING — always first, never reorderable (it's the identity
+            block, not a "section").
             Row 1: \textbf{{\LARGE Name}}            Email: \href{mailto:...}{...}
             Row 2: \href{...}{LinkedIn: ...}          Mobile:~~~...
             Row 3: \href{...}{Github:  ...}
         ================================================================ */}
         <View style={styles.headerRow1}>
-          <Text style={styles.name}>
-            {resume.personalInfo.fullName || "Your Name"}
-          </Text>
-          <Link
-            src={`mailto:${resume.personalInfo.email || ""}`}
-            style={styles.headerEmailLink}
-          >
+          <Text style={styles.name}>{resume.personalInfo.fullName || "Your Name"}</Text>
+          <Link src={`mailto:${resume.personalInfo.email || ""}`} style={styles.headerEmailLink}>
             Email: {resume.personalInfo.email || "your.email@example.com"}
           </Link>
         </View>
@@ -318,10 +625,7 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
         <View style={styles.headerRow2}>
           <View style={styles.headerLeft}>
             {resume.personalInfo.linkedin ? (
-              <Link
-                src={resume.personalInfo.linkedin}
-                style={styles.headerLink}
-              >
+              <Link src={resume.personalInfo.linkedin} style={styles.headerLink}>
                 LinkedIn: {resume.personalInfo.linkedin}
               </Link>
             ) : (
@@ -347,369 +651,15 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
           </View>
         )}
 
-        {/* ================================================================
-            PROFESSIONAL SUMMARY
-            \vspace{-5pt}
-            \section{Professional Summary}
-            \vspace{2pt}
-            text
-        ================================================================ */}
-        {resume.summary && (
-          <View>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
-            <Text style={styles.summaryText}>{resume.summary}</Text>
-          </View>
-        )}
+        {/* "personal" section (Professional Summary) — locked first,
+            rendered outside the sectionOrder loop below. */}
+        {renderSummary(resume)}
 
-        {/* ================================================================
-            SKILLS SUMMARY
-            \section{Skills Summary}
-            \resumeSubHeadingListStart
-              \resumeSubItem{Label}{value}
-            \resumeSubHeadingListEnd
-            \vspace{-5pt}
-        ================================================================ */}
-        {(resume.skills ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Skills Summary</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.skills ?? []).map((skill, idx) => (
-                <View key={idx} style={styles.subItem}>
-                  <Text style={styles.subItemBullet}>•</Text>
-                  <View style={styles.subItemTextWrap}>
-                    <Text>
-                      <Text style={styles.subItemLabelBold}>
-                        {skill.category}
-                      </Text>
-                      <Text style={styles.subItemValue}>
-                        {": "}
-                        {(skill.items ?? []).join(", ")}
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            EXPERIENCE
-            \vspace{-5pt}
-            \section{Experience}
-            \resumeSubHeadingListStart
-              \resumeSubheading{Co}{Loc}{Pos}{Date}
-              \resumeItemListStart
-                \resumeItem{Title}{desc}
-              \resumeItemListEnd
-              \vspace{0pt}
-            \resumeSubHeadingListEnd
-        ================================================================ */}
-        {(resume.experience ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.experience ?? []).map((exp, idx) => (
-                <View key={idx} style={styles.subheadingItem}>
-                  {/* \textbf{Company} & Location \\ */}
-                  <View style={styles.subheadingTopRow}>
-                    <Text style={styles.subheadingCompany}>{exp.company}</Text>
-                    <Text style={styles.subheadingLocation}>
-                      {exp.location}
-                    </Text>
-                  </View>
-                  {/* \textit{Position} & \textit{Date} \\ */}
-                  <View style={styles.subheadingBotRow}>
-                    <Text style={styles.subheadingPosition}>
-                      {exp.position}
-                    </Text>
-                    <Text style={styles.subheadingDate}>
-                      {exp.startDate} - {exp.endDate || "Present"}
-                    </Text>
-                  </View>
-
-                  {/* resumeItemListStart → resumeItemListEnd */}
-                  <View style={styles.itemList}>
-                    {(exp.achievements ?? []).map((achievement, i) => {
-                      const text =
-                        typeof achievement === "string"
-                          ? achievement
-                          : String(achievement ?? "");
-
-                      // Split on first ":" — only treat as titled if label ≤ 40 chars
-                      const colonIdx = text.indexOf(":");
-                      const hasTitle = colonIdx > 0 && colonIdx <= 40;
-                      const title = hasTitle ? text.slice(0, colonIdx) : null;
-                      const desc = hasTitle
-                        ? text.slice(colonIdx + 1).trimStart()
-                        : text;
-
-                      return (
-                        <View key={i} style={styles.itemRow}>
-                          <Text style={styles.itemBullet}>•</Text>
-                          <Text style={styles.itemBodyNormal}>
-                            {hasTitle && (
-                              <Text style={styles.itemBodyBold}>{title}: </Text>
-                            )}
-                            {desc}
-                          </Text>
-                        </View>
-                      );
-                    })}
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            PROJECTS
-            \vspace{-5pt}
-            \section{Projects}
-            \resumeSubHeadingListStart
-              \resumeSubItem{Name [GitHub] [Live]}{
-                description \\
-                \textbullet~ highlight \\
-                \textbf{Tech Stack:} value
-              }
-              \vspace{5pt}
-            \resumeSubHeadingListEnd
-        ================================================================ */}
-        {(resume.projects ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Projects</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.projects ?? []).map((project, idx) => (
-                <View key={idx} style={styles.projectSubItem}>
-                  <Text style={styles.projectBullet}>•</Text>
-                  <View style={styles.projectBody}>
-                    {/* Bold first arg: Name + inline link labels */}
-                    <View style={styles.projectNameRow}>
-                      <Text style={styles.projectNameBold}>{project.name}</Text>
-                      {project.github && (
-                        <Link
-                          src={project.github}
-                          style={styles.projectLinkText}
-                        >
-                          {" "}
-                          [GitHub]
-                        </Link>
-                      )}
-                      {project.link && (
-                        <Link src={project.link} style={styles.projectLinkText}>
-                          {" "}
-                          [Live]
-                        </Link>
-                      )}
-                    </View>
-
-                    {/* Normal second arg */}
-
-                    {project.description && (
-                      <Text style={styles.projectDesc}>
-                        {project.description}
-                      </Text>
-                    )}
-
-                    {/* \textbullet~ highlight lines */}
-                    {(project.highlights ?? []).map((highlight, i) => {
-                      const text =
-                        typeof highlight === "string"
-                          ? highlight
-                          : String(highlight ?? "");
-                      return (
-                        <View key={i} style={styles.projectBulletRow}>
-                          <Text style={styles.projectBulletMark}>•</Text>
-                          <Text style={styles.projectBulletText}>{text}</Text>
-                        </View>
-                      );
-                    })}
-
-                    {/* \textbf{Tech Stack:} value */}
-                    {(project.technologies ?? []).length > 0 && (
-                      <View style={styles.techStackRow}>
-                        <Text style={styles.techStackBold}>Tech Stack: </Text>
-                        <Text style={styles.techStackValue}>
-                          {(project.technologies ?? []).join(", ")}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            EDUCATION  (not in original LaTeX sample — kept for AppResume type)
-            Uses same \resumeSubheading pattern
-        ================================================================ */}
-        {(resume.education ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Education</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.education ?? []).map((edu, idx) => (
-                <View
-                  key={idx}
-                  style={[styles.subheadingItem, styles.educationItem]}
-                >
-                  <View style={styles.subheadingTopRow}>
-                    <Text style={styles.subheadingCompany}>
-                      {edu.institution}
-                    </Text>
-                    <Text style={styles.subheadingLocation}>
-                      {edu.location}
-                    </Text>
-                  </View>
-                  <View style={styles.subheadingBotRow}>
-                    <Text style={styles.subheadingPosition}>
-                      {edu.degree} in {edu.field}
-                    </Text>
-                    <Text style={styles.subheadingDate}>
-                      {edu.startDate} - {edu.endDate}
-                    </Text>
-                  </View>
-                  {edu.gpa && (
-                    <Text style={styles.gpaText}>GPA: {edu.gpa}</Text>
-                  )}
-                  {(edu.achievements ?? []).length > 0 && (
-                    <View style={styles.itemList}>
-                      {(edu.achievements ?? []).map((achievement, i) => {
-                        const text =
-                          typeof achievement === "string"
-                            ? achievement
-                            : String(achievement ?? "");
-                        return (
-                          <View key={i} style={styles.itemRow}>
-                            <Text style={styles.itemBullet}>•</Text>
-                            <Text style={styles.itemBodyNormal}>{text}</Text>
-                          </View>
-                        );
-                      })}
-                    </View>
-                  )}
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            ACHIEVEMENTS
-            \section{Achievements}
-            \resumeSubHeadingListStart
-              \resumeSubItem{Label}{description}   ← same format as Skills
-            \resumeSubHeadingListEnd
-        ================================================================ */}
-        {(resume.achievements ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Achievements</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.achievements ?? []).map((achievement, idx) => {
-                // Achievement entries are { title, description } objects
-                // (see lib/seedResumeData.ts, types/resume.ts) — fall back
-                // to treating a plain string as an untitled description for
-                // older/looser data rather than stringifying the object.
-                const label =
-                  typeof achievement === "string" ? null : achievement?.title || null;
-                const desc =
-                  typeof achievement === "string"
-                    ? achievement
-                    : achievement?.description || "";
-
-                if (!label && !desc) return null;
-
-                return (
-                  <View key={idx} style={styles.subItem}>
-                    <Text style={styles.subItemBullet}>•</Text>
-                    <View style={styles.subItemTextWrap}>
-                      <Text>
-                        {label && (
-                          <Text style={styles.subItemLabelBold}>{label}: </Text>
-                        )}
-                        <Text style={styles.subItemValue}>{desc}</Text>
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            CERTIFICATIONS  (not in original LaTeX sample — kept for AppResume type)
-            Uses resumeSubItem format: • BOLD name: issuer - date
-        ================================================================ */}
-        {(resume.certifications ?? []).length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Certifications</Text>
-            <View style={styles.subHeadingList}>
-              {(resume.certifications ?? []).map((cert, idx) => (
-                <View key={idx} style={styles.subItem}>
-                  <Text style={styles.subItemBullet}>•</Text>
-                  <View style={styles.subItemTextWrap}>
-                    <Text>
-                      <Text style={styles.subItemLabelBold}>{cert.name}: </Text>
-                      <Text style={styles.subItemValue}>
-                        {cert.issuer} - {cert.date}
-                        {cert.credentialId ? ` (ID: ${cert.credentialId})` : ""}
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ================================================================
-            CUSTOM SECTIONS — user-defined sections beyond the fixed set
-            (Publications, Volunteer Work, Awards, etc.). Same visual
-            vocabulary as everywhere else: bold heading, italic subheading,
-            paragraph, bullet list.
-        ================================================================ */}
-        {(resume.customSections ?? [])
-          .filter((section) => section.title && section.items.length > 0)
-          .map((section) => (
-            <View key={section.id}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              <View style={styles.subHeadingList}>
-                {section.items.map((item) => (
-                  <View key={item.id} style={styles.subheadingItem}>
-                    {(item.heading || item.subheading) && (
-                      <View style={styles.subheadingTopRow}>
-                        <Text style={styles.subheadingCompany}>
-                          {item.heading}
-                        </Text>
-                        <Text style={styles.subheadingPosition}>
-                          {item.subheading}
-                        </Text>
-                      </View>
-                    )}
-                    {item.description && (
-                      <Text style={styles.summaryText}>
-                        {item.description}
-                      </Text>
-                    )}
-                    {(item.bullets ?? []).length > 0 && (
-                      <View style={styles.itemList}>
-                        {item.bullets.map((bullet, i) => (
-                          <View key={i} style={styles.itemRow}>
-                            <Text style={styles.itemBullet}>•</Text>
-                            <Text style={styles.itemBodyNormal}>
-                              {bullet}
-                            </Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
-                  </View>
-                ))}
-              </View>
-            </View>
+        {/* Everything else, in the user's chosen (or default) order. */}
+        {order
+          .filter((key): key is Exclude<SectionKey, "personal"> => key !== "personal")
+          .map((key) => (
+            <Fragment key={key}>{SECTION_RENDERERS[key](resume)}</Fragment>
           ))}
       </Page>
     </Document>

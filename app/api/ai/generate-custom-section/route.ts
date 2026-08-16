@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateCustomSection } from "@/lib/ai/generateCustomSection";
+import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -8,6 +9,9 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const gate = await checkAiGate(userId);
+  if (!gate.allowed) return gate.response;
 
   let body: unknown;
   try {
@@ -68,6 +72,7 @@ export async function POST(request: NextRequest) {
       existingEntry,
       sectionTitle,
     });
+    await recordAiGeneration(userId, gate.plan);
     return NextResponse.json(entry);
   } catch (error) {
     console.error("Failed to generate custom section entry:", error);

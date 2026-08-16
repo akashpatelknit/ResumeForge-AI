@@ -1,5 +1,6 @@
 import { Resume as PrismaResume } from "@/app/generated/prisma/client";
 import { AppResume, ResumeData } from "@/types/resume";
+import { getEffectiveSectionOrder } from "@/lib/resumeSections";
 
 // Resumes created before a field existed in ResumeData (customSections is
 // the newest example) simply don't have that key in their stored `data`
@@ -30,6 +31,10 @@ export function mapResumeFromDB(r: PrismaResume): AppResume {
     certifications: data.certifications ?? [],
     languages: data.languages ?? [],
     customSections: data.customSections ?? [],
+    // Sanitized (complete, deduped, "personal"-first) even if the stored
+    // value is missing (pre-dates this field) or stale — see
+    // lib/resumeSections.ts.
+    sectionOrder: getEffectiveSectionOrder(data.sectionOrder),
     isFavorite: data.isFavorite ?? false,
     isArchived: data.isArchived ?? false,
     thumbnail: data.thumbnail ?? "",

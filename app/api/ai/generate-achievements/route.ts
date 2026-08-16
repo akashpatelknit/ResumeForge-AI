@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateAchievements } from "@/lib/ai/generateAchievements";
+import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -8,6 +9,9 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const gate = await checkAiGate(userId);
+  if (!gate.allowed) return gate.response;
 
   let body: unknown;
   try {
@@ -45,6 +49,7 @@ export async function POST(request: NextRequest) {
       role,
       company,
     });
+    await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ achievements });
   } catch (error) {
     console.error("Failed to generate achievements:", error);

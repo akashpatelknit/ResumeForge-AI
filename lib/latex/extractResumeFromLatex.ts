@@ -55,13 +55,16 @@ Rules:
 - If a field genuinely isn't present in the document, use an empty string "" or empty array [], never omit the key or use null (except endDate as noted above).
 - Do not invent content that isn't in the source.`;
 
-// Deliberately omits isFavorite/isArchived/thumbnail/atsScore — those
-// aren't recoverable from LaTeX text, and returning them (even as
+// Deliberately omits isFavorite/isArchived/thumbnail/atsScore/sectionOrder
+// — those aren't recoverable from LaTeX text, and returning them (even as
 // defaults) would invite callers to blindly overwrite unrelated existing
-// resume state instead of merging just the extracted content fields.
+// resume state instead of merging just the extracted content fields. This
+// matters especially for sectionOrder: the disabled LaTeX-mode sync
+// (`{...currentResume, ...result}`) would otherwise silently wipe out a
+// user's manually dragged section order every time they sync from LaTeX.
 export type ExtractedResumeFields = Omit<
   ResumeData,
-  "isFavorite" | "isArchived" | "thumbnail" | "atsScore"
+  "isFavorite" | "isArchived" | "thumbnail" | "atsScore" | "sectionOrder"
 >;
 
 export async function extractResumeFromLatex(

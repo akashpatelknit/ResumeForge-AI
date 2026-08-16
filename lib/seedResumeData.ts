@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { DEFAULT_SECTION_ORDER } from "@/lib/resumeSections";
 
 // Seed content used when a new resume is created from a template.
 // Each templateId gets content tailored to the roles it's designed for
@@ -106,6 +107,7 @@ const modernSeed: ResumeData = {
   ],
   languages: ["English (Fluent)"],
   customSections: [],
+  sectionOrder: DEFAULT_SECTION_ORDER,
   isFavorite: false,
   isArchived: false,
   thumbnail: "",
@@ -183,6 +185,7 @@ const professionalSeed: ResumeData = {
   certifications: [],
   languages: ["English (Native)"],
   customSections: [],
+  sectionOrder: DEFAULT_SECTION_ORDER,
   isFavorite: false,
   isArchived: false,
   thumbnail: "",
@@ -248,6 +251,7 @@ const classicSeed: ResumeData = {
   certifications: [],
   languages: ["English (Native)"],
   customSections: [],
+  sectionOrder: DEFAULT_SECTION_ORDER,
   isFavorite: false,
   isArchived: false,
   thumbnail: "",

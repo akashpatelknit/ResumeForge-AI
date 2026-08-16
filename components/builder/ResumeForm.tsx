@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Reorder, useDragControls } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,39 @@ import SkillsSection from "./sections/SkillsSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import CustomSectionsSection from "./sections/CustomSectionsSection";
 import { useResumeStore } from "@/store/resumeStore";
-import { Loader2 } from "lucide-react";
+import { Loader2, GripVertical } from "lucide-react";
+import { getReorderableOrder, SECTION_LABELS, type SectionKey } from "@/lib/resumeSections";
+
+// A single reorderable tab trigger. Dragging is deliberately confined to
+// the GripVertical handle (via useDragControls + dragListener={false})
+// rather than the whole tab — otherwise a plain click to switch tabs and a
+// drag-to-reorder gesture would be indistinguishable.
+//
+// The handle is a SIBLING of TabsTrigger, absolutely positioned over its
+// left edge — not a descendant. Radix's Trigger is a real <button> with
+// its own pointer/focus handling (roving tabindex), and nesting the
+// handle inside it let Radix's own pointerdown handling win the race
+// before framer-motion's drag gesture could start, so dragging silently
+// did nothing. Overlaying it as a sibling means the browser's hit-test
+// routes the pointerdown straight to the handle, never touching the
+// button underneath.
+function ReorderableSectionTab({ sectionKey }: { sectionKey: SectionKey }) {
+  const controls = useDragControls();
+
+  return (
+    <Reorder.Item value={sectionKey} as="div" dragListener={false} dragControls={controls} className="relative flex-1">
+      <TabsTrigger value={sectionKey} className="w-full pl-5">
+        {SECTION_LABELS[sectionKey]}
+      </TabsTrigger>
+      <span
+        className="absolute top-1/2 left-1 z-10 -translate-y-1/2 cursor-grab touch-none text-muted-foreground active:cursor-grabbing"
+        onPointerDown={(e) => controls.start(e)}
+      >
+        <GripVertical className="h-3.5 w-3.5" />
+      </span>
+    </Reorder.Item>
+  );
+}
 
 // Reads ?tab=projects&importGithub=1 (set by the dashboard's "Import from
 // GitHub" quick action — see components/dashboard/QuickActions.tsx) so the
@@ -28,9 +61,16 @@ function useInitialTabState() {
 }
 
 function ResumeFormContent() {
-  const { currentResume, saveResume } = useResumeStore();
+  const { currentResume, saveResume, updateSectionOrder } = useResumeStore();
   const [isSaving, setIsSaving] = useState(false);
   const { initialTab, autoOpenGithubImport } = useInitialTabState();
+
+  // "Personal" is intentionally excluded — it's locked first, not part of
+  // the draggable set. See lib/resumeSections.ts.
+  const reorderableTabs = useMemo(
+    () => getReorderableOrder(currentResume?.sectionOrder),
+    [currentResume?.sectionOrder],
+  );
 
   const handleSave = async () => {
     if (!currentResume) return;
@@ -47,13 +87,19 @@ function ResumeFormContent() {
     <div className="space-y-4">
       <Card className="p-6">
         <Tabs defaultValue={initialTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="flex w-full gap-1">
             <TabsTrigger value="personal">Personal</TabsTrigger>
-            <TabsTrigger value="experience">Experience</TabsTrigger>
-            <TabsTrigger value="education">Education</TabsTrigger>
-            <TabsTrigger value="skills">Skills</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="custom">Custom</TabsTrigger>
+            <Reorder.Group
+              as="div"
+              axis="x"
+              values={reorderableTabs}
+              onReorder={(newOrder) => updateSectionOrder(newOrder)}
+              className="flex flex-5 gap-1"
+            >
+              {reorderableTabs.map((key) => (
+                <ReorderableSectionTab key={key} sectionKey={key} />
+              ))}
+            </Reorder.Group>
           </TabsList>
 
           <TabsContent value="personal" className="space-y-4 mt-4">

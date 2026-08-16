@@ -38,6 +38,55 @@ export type JobApplication = $Result.DefaultSelection<Prisma.$JobApplicationPayl
  * 
  */
 export type UserPreferences = $Result.DefaultSelection<Prisma.$UserPreferencesPayload>
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
+/**
+ * Model Admin
+ * 
+ */
+export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
+/**
+ * Model UserStatus
+ * 
+ */
+export type UserStatus = $Result.DefaultSelection<Prisma.$UserStatusPayload>
+/**
+ * Model PlanConfig
+ * 
+ */
+export type PlanConfig = $Result.DefaultSelection<Prisma.$PlanConfigPayload>
+/**
+ * Model TemplateMeta
+ * 
+ */
+export type TemplateMeta = $Result.DefaultSelection<Prisma.$TemplateMetaPayload>
+/**
+ * Model UsageCounter
+ * 
+ */
+export type UsageCounter = $Result.DefaultSelection<Prisma.$UsageCounterPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const SubscriptionStatus: {
+  trialing: 'trialing',
+  active: 'active',
+  past_due: 'past_due',
+  cancelled: 'cancelled'
+};
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+}
+
+export type SubscriptionStatus = $Enums.SubscriptionStatus
+
+export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -205,6 +254,66 @@ export class PrismaClient<
     * ```
     */
   get userPreferences(): Prisma.UserPreferencesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subscription`: Exposes CRUD operations for the **Subscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Subscriptions
+    * const subscriptions = await prisma.subscription.findMany()
+    * ```
+    */
+  get subscription(): Prisma.SubscriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.admin`: Exposes CRUD operations for the **Admin** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Admins
+    * const admins = await prisma.admin.findMany()
+    * ```
+    */
+  get admin(): Prisma.AdminDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userStatus`: Exposes CRUD operations for the **UserStatus** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserStatuses
+    * const userStatuses = await prisma.userStatus.findMany()
+    * ```
+    */
+  get userStatus(): Prisma.UserStatusDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.planConfig`: Exposes CRUD operations for the **PlanConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlanConfigs
+    * const planConfigs = await prisma.planConfig.findMany()
+    * ```
+    */
+  get planConfig(): Prisma.PlanConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.templateMeta`: Exposes CRUD operations for the **TemplateMeta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TemplateMetas
+    * const templateMetas = await prisma.templateMeta.findMany()
+    * ```
+    */
+  get templateMeta(): Prisma.TemplateMetaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.usageCounter`: Exposes CRUD operations for the **UsageCounter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UsageCounters
+    * const usageCounters = await prisma.usageCounter.findMany()
+    * ```
+    */
+  get usageCounter(): Prisma.UsageCounterDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -643,7 +752,13 @@ export namespace Prisma {
     CoverLetter: 'CoverLetter',
     ResumeAnalytics: 'ResumeAnalytics',
     JobApplication: 'JobApplication',
-    UserPreferences: 'UserPreferences'
+    UserPreferences: 'UserPreferences',
+    Subscription: 'Subscription',
+    Admin: 'Admin',
+    UserStatus: 'UserStatus',
+    PlanConfig: 'PlanConfig',
+    TemplateMeta: 'TemplateMeta',
+    UsageCounter: 'UsageCounter'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -659,7 +774,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences"
+      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1033,6 +1148,450 @@ export namespace Prisma {
           }
         }
       }
+      Subscription: {
+        payload: Prisma.$SubscriptionPayload<ExtArgs>
+        fields: Prisma.SubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.SubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.SubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.SubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.SubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.SubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          update: {
+            args: Prisma.SubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubscriptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.SubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubscription>
+          }
+          groupBy: {
+            args: Prisma.SubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Admin: {
+        payload: Prisma.$AdminPayload<ExtArgs>
+        fields: Prisma.AdminFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          findMany: {
+            args: Prisma.AdminFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>[]
+          }
+          create: {
+            args: Prisma.AdminCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          createMany: {
+            args: Prisma.AdminCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          update: {
+            args: Prisma.AdminUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdmin>
+          }
+          groupBy: {
+            args: Prisma.AdminGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserStatus: {
+        payload: Prisma.$UserStatusPayload<ExtArgs>
+        fields: Prisma.UserStatusFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserStatusFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserStatusFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          findFirst: {
+            args: Prisma.UserStatusFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserStatusFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          findMany: {
+            args: Prisma.UserStatusFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>[]
+          }
+          create: {
+            args: Prisma.UserStatusCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          createMany: {
+            args: Prisma.UserStatusCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserStatusCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>[]
+          }
+          delete: {
+            args: Prisma.UserStatusDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          update: {
+            args: Prisma.UserStatusUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserStatusDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserStatusUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserStatusUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserStatusUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserStatusPayload>
+          }
+          aggregate: {
+            args: Prisma.UserStatusAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserStatus>
+          }
+          groupBy: {
+            args: Prisma.UserStatusGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserStatusGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserStatusCountArgs<ExtArgs>
+            result: $Utils.Optional<UserStatusCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlanConfig: {
+        payload: Prisma.$PlanConfigPayload<ExtArgs>
+        fields: Prisma.PlanConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlanConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlanConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.PlanConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlanConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          findMany: {
+            args: Prisma.PlanConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>[]
+          }
+          create: {
+            args: Prisma.PlanConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          createMany: {
+            args: Prisma.PlanConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlanConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.PlanConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          update: {
+            args: Prisma.PlanConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlanConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlanConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlanConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlanConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlanConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.PlanConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlanConfig>
+          }
+          groupBy: {
+            args: Prisma.PlanConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlanConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlanConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<PlanConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      TemplateMeta: {
+        payload: Prisma.$TemplateMetaPayload<ExtArgs>
+        fields: Prisma.TemplateMetaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TemplateMetaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TemplateMetaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          findFirst: {
+            args: Prisma.TemplateMetaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TemplateMetaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          findMany: {
+            args: Prisma.TemplateMetaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>[]
+          }
+          create: {
+            args: Prisma.TemplateMetaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          createMany: {
+            args: Prisma.TemplateMetaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TemplateMetaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>[]
+          }
+          delete: {
+            args: Prisma.TemplateMetaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          update: {
+            args: Prisma.TemplateMetaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          deleteMany: {
+            args: Prisma.TemplateMetaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TemplateMetaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TemplateMetaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>[]
+          }
+          upsert: {
+            args: Prisma.TemplateMetaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateMetaPayload>
+          }
+          aggregate: {
+            args: Prisma.TemplateMetaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTemplateMeta>
+          }
+          groupBy: {
+            args: Prisma.TemplateMetaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TemplateMetaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TemplateMetaCountArgs<ExtArgs>
+            result: $Utils.Optional<TemplateMetaCountAggregateOutputType> | number
+          }
+        }
+      }
+      UsageCounter: {
+        payload: Prisma.$UsageCounterPayload<ExtArgs>
+        fields: Prisma.UsageCounterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UsageCounterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UsageCounterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          findFirst: {
+            args: Prisma.UsageCounterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UsageCounterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          findMany: {
+            args: Prisma.UsageCounterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+          }
+          create: {
+            args: Prisma.UsageCounterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          createMany: {
+            args: Prisma.UsageCounterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UsageCounterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+          }
+          delete: {
+            args: Prisma.UsageCounterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          update: {
+            args: Prisma.UsageCounterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          deleteMany: {
+            args: Prisma.UsageCounterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UsageCounterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UsageCounterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+          }
+          upsert: {
+            args: Prisma.UsageCounterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+          }
+          aggregate: {
+            args: Prisma.UsageCounterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUsageCounter>
+          }
+          groupBy: {
+            args: Prisma.UsageCounterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UsageCounterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UsageCounterCountArgs<ExtArgs>
+            result: $Utils.Optional<UsageCounterCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1146,6 +1705,12 @@ export namespace Prisma {
     resumeAnalytics?: ResumeAnalyticsOmit
     jobApplication?: JobApplicationOmit
     userPreferences?: UserPreferencesOmit
+    subscription?: SubscriptionOmit
+    admin?: AdminOmit
+    userStatus?: UserStatusOmit
+    planConfig?: PlanConfigOmit
+    templateMeta?: TemplateMetaOmit
+    usageCounter?: UsageCounterOmit
   }
 
   /* Types for Logging */
@@ -6722,6 +7287,6104 @@ export namespace Prisma {
 
 
   /**
+   * Model Subscription
+   */
+
+  export type AggregateSubscription = {
+    _count: SubscriptionCountAggregateOutputType | null
+    _min: SubscriptionMinAggregateOutputType | null
+    _max: SubscriptionMaxAggregateOutputType | null
+  }
+
+  export type SubscriptionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    razorpaySubscriptionId: string | null
+    razorpayCustomerId: string | null
+    status: $Enums.SubscriptionStatus | null
+    currentPeriodEnd: Date | null
+    trialEndsAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubscriptionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    razorpaySubscriptionId: string | null
+    razorpayCustomerId: string | null
+    status: $Enums.SubscriptionStatus | null
+    currentPeriodEnd: Date | null
+    trialEndsAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubscriptionCountAggregateOutputType = {
+    id: number
+    userId: number
+    razorpaySubscriptionId: number
+    razorpayCustomerId: number
+    status: number
+    currentPeriodEnd: number
+    trialEndsAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SubscriptionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    razorpaySubscriptionId?: true
+    razorpayCustomerId?: true
+    status?: true
+    currentPeriodEnd?: true
+    trialEndsAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubscriptionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    razorpaySubscriptionId?: true
+    razorpayCustomerId?: true
+    status?: true
+    currentPeriodEnd?: true
+    trialEndsAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubscriptionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    razorpaySubscriptionId?: true
+    razorpayCustomerId?: true
+    status?: true
+    currentPeriodEnd?: true
+    trialEndsAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscription to aggregate.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Subscriptions
+    **/
+    _count?: true | SubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubscriptionMaxAggregateInputType
+  }
+
+  export type GetSubscriptionAggregateType<T extends SubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubscription[P]>
+      : GetScalarType<T[P], AggregateSubscription[P]>
+  }
+
+
+
+
+  export type SubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithAggregationInput | SubscriptionOrderByWithAggregationInput[]
+    by: SubscriptionScalarFieldEnum[] | SubscriptionScalarFieldEnum
+    having?: SubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubscriptionCountAggregateInputType | true
+    _min?: SubscriptionMinAggregateInputType
+    _max?: SubscriptionMaxAggregateInputType
+  }
+
+  export type SubscriptionGroupByOutputType = {
+    id: string
+    userId: string
+    razorpaySubscriptionId: string | null
+    razorpayCustomerId: string | null
+    status: $Enums.SubscriptionStatus
+    currentPeriodEnd: Date | null
+    trialEndsAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SubscriptionCountAggregateOutputType | null
+    _min: SubscriptionMinAggregateOutputType | null
+    _max: SubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetSubscriptionGroupByPayload<T extends SubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], SubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    razorpaySubscriptionId?: boolean
+    razorpayCustomerId?: boolean
+    status?: boolean
+    currentPeriodEnd?: boolean
+    trialEndsAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    razorpaySubscriptionId?: boolean
+    razorpayCustomerId?: boolean
+    status?: boolean
+    currentPeriodEnd?: boolean
+    trialEndsAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    razorpaySubscriptionId?: boolean
+    razorpayCustomerId?: boolean
+    status?: boolean
+    currentPeriodEnd?: boolean
+    trialEndsAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    razorpaySubscriptionId?: boolean
+    razorpayCustomerId?: boolean
+    status?: boolean
+    currentPeriodEnd?: boolean
+    trialEndsAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "razorpaySubscriptionId" | "razorpayCustomerId" | "status" | "currentPeriodEnd" | "trialEndsAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+
+  export type $SubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Subscription"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      razorpaySubscriptionId: string | null
+      razorpayCustomerId: string | null
+      status: $Enums.SubscriptionStatus
+      currentPeriodEnd: Date | null
+      trialEndsAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["subscription"]>
+    composites: {}
+  }
+
+  type SubscriptionGetPayload<S extends boolean | null | undefined | SubscriptionDefaultArgs> = $Result.GetResult<Prisma.$SubscriptionPayload, S>
+
+  type SubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubscriptionCountAggregateInputType | true
+    }
+
+  export interface SubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Subscription'], meta: { name: 'Subscription' } }
+    /**
+     * Find zero or one Subscription that matches the filter.
+     * @param {SubscriptionFindUniqueArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubscriptionFindUniqueArgs>(args: SelectSubset<T, SubscriptionFindUniqueArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Subscription that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubscriptionFindUniqueOrThrowArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, SubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindFirstArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubscriptionFindFirstArgs>(args?: SelectSubset<T, SubscriptionFindFirstArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindFirstOrThrowArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, SubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Subscriptions
+     * const subscriptions = await prisma.subscription.findMany()
+     * 
+     * // Get first 10 Subscriptions
+     * const subscriptions = await prisma.subscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubscriptionFindManyArgs>(args?: SelectSubset<T, SubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Subscription.
+     * @param {SubscriptionCreateArgs} args - Arguments to create a Subscription.
+     * @example
+     * // Create one Subscription
+     * const Subscription = await prisma.subscription.create({
+     *   data: {
+     *     // ... data to create a Subscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubscriptionCreateArgs>(args: SelectSubset<T, SubscriptionCreateArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Subscriptions.
+     * @param {SubscriptionCreateManyArgs} args - Arguments to create many Subscriptions.
+     * @example
+     * // Create many Subscriptions
+     * const subscription = await prisma.subscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubscriptionCreateManyArgs>(args?: SelectSubset<T, SubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Subscriptions and returns the data saved in the database.
+     * @param {SubscriptionCreateManyAndReturnArgs} args - Arguments to create many Subscriptions.
+     * @example
+     * // Create many Subscriptions
+     * const subscription = await prisma.subscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Subscriptions and only return the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, SubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Subscription.
+     * @param {SubscriptionDeleteArgs} args - Arguments to delete one Subscription.
+     * @example
+     * // Delete one Subscription
+     * const Subscription = await prisma.subscription.delete({
+     *   where: {
+     *     // ... filter to delete one Subscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubscriptionDeleteArgs>(args: SelectSubset<T, SubscriptionDeleteArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Subscription.
+     * @param {SubscriptionUpdateArgs} args - Arguments to update one Subscription.
+     * @example
+     * // Update one Subscription
+     * const subscription = await prisma.subscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubscriptionUpdateArgs>(args: SelectSubset<T, SubscriptionUpdateArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Subscriptions.
+     * @param {SubscriptionDeleteManyArgs} args - Arguments to filter Subscriptions to delete.
+     * @example
+     * // Delete a few Subscriptions
+     * const { count } = await prisma.subscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubscriptionDeleteManyArgs>(args?: SelectSubset<T, SubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Subscriptions
+     * const subscription = await prisma.subscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubscriptionUpdateManyArgs>(args: SelectSubset<T, SubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subscriptions and returns the data updated in the database.
+     * @param {SubscriptionUpdateManyAndReturnArgs} args - Arguments to update many Subscriptions.
+     * @example
+     * // Update many Subscriptions
+     * const subscription = await prisma.subscription.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Subscriptions and only return the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubscriptionUpdateManyAndReturnArgs>(args: SelectSubset<T, SubscriptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Subscription.
+     * @param {SubscriptionUpsertArgs} args - Arguments to update or create a Subscription.
+     * @example
+     * // Update or create a Subscription
+     * const subscription = await prisma.subscription.upsert({
+     *   create: {
+     *     // ... data to create a Subscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Subscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubscriptionUpsertArgs>(args: SelectSubset<T, SubscriptionUpsertArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCountArgs} args - Arguments to filter Subscriptions to count.
+     * @example
+     * // Count the number of Subscriptions
+     * const count = await prisma.subscription.count({
+     *   where: {
+     *     // ... the filter for the Subscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubscriptionCountArgs>(
+      args?: Subset<T, SubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Subscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubscriptionAggregateArgs>(args: Subset<T, SubscriptionAggregateArgs>): Prisma.PrismaPromise<GetSubscriptionAggregateType<T>>
+
+    /**
+     * Group by Subscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: SubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Subscription model
+   */
+  readonly fields: SubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Subscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Subscription model
+   */
+  interface SubscriptionFieldRefs {
+    readonly id: FieldRef<"Subscription", 'String'>
+    readonly userId: FieldRef<"Subscription", 'String'>
+    readonly razorpaySubscriptionId: FieldRef<"Subscription", 'String'>
+    readonly razorpayCustomerId: FieldRef<"Subscription", 'String'>
+    readonly status: FieldRef<"Subscription", 'SubscriptionStatus'>
+    readonly currentPeriodEnd: FieldRef<"Subscription", 'DateTime'>
+    readonly trialEndsAt: FieldRef<"Subscription", 'DateTime'>
+    readonly createdAt: FieldRef<"Subscription", 'DateTime'>
+    readonly updatedAt: FieldRef<"Subscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Subscription findUnique
+   */
+  export type SubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription findUniqueOrThrow
+   */
+  export type SubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription findFirst
+   */
+  export type SubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription findFirstOrThrow
+   */
+  export type SubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription findMany
+   */
+  export type SubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription create
+   */
+  export type SubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Subscription.
+     */
+    data: XOR<SubscriptionCreateInput, SubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * Subscription createMany
+   */
+  export type SubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Subscriptions.
+     */
+    data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Subscription createManyAndReturn
+   */
+  export type SubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Subscriptions.
+     */
+    data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Subscription update
+   */
+  export type SubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Subscription.
+     */
+    data: XOR<SubscriptionUpdateInput, SubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which Subscription to update.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription updateMany
+   */
+  export type SubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Subscriptions.
+     */
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Subscriptions to update
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscription updateManyAndReturn
+   */
+  export type SubscriptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to update Subscriptions.
+     */
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Subscriptions to update
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscription upsert
+   */
+  export type SubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Subscription to update in case it exists.
+     */
+    where: SubscriptionWhereUniqueInput
+    /**
+     * In case the Subscription found by the `where` argument doesn't exist, create a new Subscription with this data.
+     */
+    create: XOR<SubscriptionCreateInput, SubscriptionUncheckedCreateInput>
+    /**
+     * In case the Subscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubscriptionUpdateInput, SubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * Subscription delete
+   */
+  export type SubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter which Subscription to delete.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription deleteMany
+   */
+  export type SubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscriptions to delete
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscription without action
+   */
+  export type SubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Admin
+   */
+
+  export type AggregateAdmin = {
+    _count: AdminCountAggregateOutputType | null
+    _min: AdminMinAggregateOutputType | null
+    _max: AdminMaxAggregateOutputType | null
+  }
+
+  export type AdminMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    passwordHash: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    passwordHash: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminCountAggregateOutputType = {
+    id: number
+    email: number
+    passwordHash: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AdminMinAggregateInputType = {
+    id?: true
+    email?: true
+    passwordHash?: true
+    createdAt?: true
+  }
+
+  export type AdminMaxAggregateInputType = {
+    id?: true
+    email?: true
+    passwordHash?: true
+    createdAt?: true
+  }
+
+  export type AdminCountAggregateInputType = {
+    id?: true
+    email?: true
+    passwordHash?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AdminAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Admin to aggregate.
+     */
+    where?: AdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admins to fetch.
+     */
+    orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Admins
+    **/
+    _count?: true | AdminCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminMaxAggregateInputType
+  }
+
+  export type GetAdminAggregateType<T extends AdminAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdmin]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdmin[P]>
+      : GetScalarType<T[P], AggregateAdmin[P]>
+  }
+
+
+
+
+  export type AdminGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminWhereInput
+    orderBy?: AdminOrderByWithAggregationInput | AdminOrderByWithAggregationInput[]
+    by: AdminScalarFieldEnum[] | AdminScalarFieldEnum
+    having?: AdminScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminCountAggregateInputType | true
+    _min?: AdminMinAggregateInputType
+    _max?: AdminMaxAggregateInputType
+  }
+
+  export type AdminGroupByOutputType = {
+    id: string
+    email: string
+    passwordHash: string
+    createdAt: Date
+    _count: AdminCountAggregateOutputType | null
+    _min: AdminMinAggregateOutputType | null
+    _max: AdminMaxAggregateOutputType | null
+  }
+
+  type GetAdminGroupByPayload<T extends AdminGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    passwordHash?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["admin"]>
+
+  export type AdminSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    passwordHash?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["admin"]>
+
+  export type AdminSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    passwordHash?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["admin"]>
+
+  export type AdminSelectScalar = {
+    id?: boolean
+    email?: boolean
+    passwordHash?: boolean
+    createdAt?: boolean
+  }
+
+  export type AdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["admin"]>
+
+  export type $AdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Admin"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      passwordHash: string
+      createdAt: Date
+    }, ExtArgs["result"]["admin"]>
+    composites: {}
+  }
+
+  type AdminGetPayload<S extends boolean | null | undefined | AdminDefaultArgs> = $Result.GetResult<Prisma.$AdminPayload, S>
+
+  type AdminCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminCountAggregateInputType | true
+    }
+
+  export interface AdminDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Admin'], meta: { name: 'Admin' } }
+    /**
+     * Find zero or one Admin that matches the filter.
+     * @param {AdminFindUniqueArgs} args - Arguments to find a Admin
+     * @example
+     * // Get one Admin
+     * const admin = await prisma.admin.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminFindUniqueArgs>(args: SelectSubset<T, AdminFindUniqueArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Admin that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminFindUniqueOrThrowArgs} args - Arguments to find a Admin
+     * @example
+     * // Get one Admin
+     * const admin = await prisma.admin.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admin that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminFindFirstArgs} args - Arguments to find a Admin
+     * @example
+     * // Get one Admin
+     * const admin = await prisma.admin.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminFindFirstArgs>(args?: SelectSubset<T, AdminFindFirstArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admin that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminFindFirstOrThrowArgs} args - Arguments to find a Admin
+     * @example
+     * // Get one Admin
+     * const admin = await prisma.admin.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Admins that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Admins
+     * const admins = await prisma.admin.findMany()
+     * 
+     * // Get first 10 Admins
+     * const admins = await prisma.admin.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminWithIdOnly = await prisma.admin.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminFindManyArgs>(args?: SelectSubset<T, AdminFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Admin.
+     * @param {AdminCreateArgs} args - Arguments to create a Admin.
+     * @example
+     * // Create one Admin
+     * const Admin = await prisma.admin.create({
+     *   data: {
+     *     // ... data to create a Admin
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminCreateArgs>(args: SelectSubset<T, AdminCreateArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Admins.
+     * @param {AdminCreateManyArgs} args - Arguments to create many Admins.
+     * @example
+     * // Create many Admins
+     * const admin = await prisma.admin.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminCreateManyArgs>(args?: SelectSubset<T, AdminCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Admins and returns the data saved in the database.
+     * @param {AdminCreateManyAndReturnArgs} args - Arguments to create many Admins.
+     * @example
+     * // Create many Admins
+     * const admin = await prisma.admin.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Admins and only return the `id`
+     * const adminWithIdOnly = await prisma.admin.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Admin.
+     * @param {AdminDeleteArgs} args - Arguments to delete one Admin.
+     * @example
+     * // Delete one Admin
+     * const Admin = await prisma.admin.delete({
+     *   where: {
+     *     // ... filter to delete one Admin
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminDeleteArgs>(args: SelectSubset<T, AdminDeleteArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Admin.
+     * @param {AdminUpdateArgs} args - Arguments to update one Admin.
+     * @example
+     * // Update one Admin
+     * const admin = await prisma.admin.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminUpdateArgs>(args: SelectSubset<T, AdminUpdateArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Admins.
+     * @param {AdminDeleteManyArgs} args - Arguments to filter Admins to delete.
+     * @example
+     * // Delete a few Admins
+     * const { count } = await prisma.admin.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminDeleteManyArgs>(args?: SelectSubset<T, AdminDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Admins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Admins
+     * const admin = await prisma.admin.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminUpdateManyArgs>(args: SelectSubset<T, AdminUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Admins and returns the data updated in the database.
+     * @param {AdminUpdateManyAndReturnArgs} args - Arguments to update many Admins.
+     * @example
+     * // Update many Admins
+     * const admin = await prisma.admin.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Admins and only return the `id`
+     * const adminWithIdOnly = await prisma.admin.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Admin.
+     * @param {AdminUpsertArgs} args - Arguments to update or create a Admin.
+     * @example
+     * // Update or create a Admin
+     * const admin = await prisma.admin.upsert({
+     *   create: {
+     *     // ... data to create a Admin
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Admin we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminUpsertArgs>(args: SelectSubset<T, AdminUpsertArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Admins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminCountArgs} args - Arguments to filter Admins to count.
+     * @example
+     * // Count the number of Admins
+     * const count = await prisma.admin.count({
+     *   where: {
+     *     // ... the filter for the Admins we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminCountArgs>(
+      args?: Subset<T, AdminCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Admin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminAggregateArgs>(args: Subset<T, AdminAggregateArgs>): Prisma.PrismaPromise<GetAdminAggregateType<T>>
+
+    /**
+     * Group by Admin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminGroupByArgs['orderBy'] }
+        : { orderBy?: AdminGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Admin model
+   */
+  readonly fields: AdminFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Admin.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Admin model
+   */
+  interface AdminFieldRefs {
+    readonly id: FieldRef<"Admin", 'String'>
+    readonly email: FieldRef<"Admin", 'String'>
+    readonly passwordHash: FieldRef<"Admin", 'String'>
+    readonly createdAt: FieldRef<"Admin", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Admin findUnique
+   */
+  export type AdminFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter, which Admin to fetch.
+     */
+    where: AdminWhereUniqueInput
+  }
+
+  /**
+   * Admin findUniqueOrThrow
+   */
+  export type AdminFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter, which Admin to fetch.
+     */
+    where: AdminWhereUniqueInput
+  }
+
+  /**
+   * Admin findFirst
+   */
+  export type AdminFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter, which Admin to fetch.
+     */
+    where?: AdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admins to fetch.
+     */
+    orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Admins.
+     */
+    cursor?: AdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Admins.
+     */
+    distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
+  }
+
+  /**
+   * Admin findFirstOrThrow
+   */
+  export type AdminFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter, which Admin to fetch.
+     */
+    where?: AdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admins to fetch.
+     */
+    orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Admins.
+     */
+    cursor?: AdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Admins.
+     */
+    distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
+  }
+
+  /**
+   * Admin findMany
+   */
+  export type AdminFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter, which Admins to fetch.
+     */
+    where?: AdminWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admins to fetch.
+     */
+    orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Admins.
+     */
+    cursor?: AdminWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admins.
+     */
+    skip?: number
+    distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
+  }
+
+  /**
+   * Admin create
+   */
+  export type AdminCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Admin.
+     */
+    data: XOR<AdminCreateInput, AdminUncheckedCreateInput>
+  }
+
+  /**
+   * Admin createMany
+   */
+  export type AdminCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Admins.
+     */
+    data: AdminCreateManyInput | AdminCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Admin createManyAndReturn
+   */
+  export type AdminCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * The data used to create many Admins.
+     */
+    data: AdminCreateManyInput | AdminCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Admin update
+   */
+  export type AdminUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Admin.
+     */
+    data: XOR<AdminUpdateInput, AdminUncheckedUpdateInput>
+    /**
+     * Choose, which Admin to update.
+     */
+    where: AdminWhereUniqueInput
+  }
+
+  /**
+   * Admin updateMany
+   */
+  export type AdminUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Admins.
+     */
+    data: XOR<AdminUpdateManyMutationInput, AdminUncheckedUpdateManyInput>
+    /**
+     * Filter which Admins to update
+     */
+    where?: AdminWhereInput
+    /**
+     * Limit how many Admins to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Admin updateManyAndReturn
+   */
+  export type AdminUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * The data used to update Admins.
+     */
+    data: XOR<AdminUpdateManyMutationInput, AdminUncheckedUpdateManyInput>
+    /**
+     * Filter which Admins to update
+     */
+    where?: AdminWhereInput
+    /**
+     * Limit how many Admins to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Admin upsert
+   */
+  export type AdminUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Admin to update in case it exists.
+     */
+    where: AdminWhereUniqueInput
+    /**
+     * In case the Admin found by the `where` argument doesn't exist, create a new Admin with this data.
+     */
+    create: XOR<AdminCreateInput, AdminUncheckedCreateInput>
+    /**
+     * In case the Admin was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminUpdateInput, AdminUncheckedUpdateInput>
+  }
+
+  /**
+   * Admin delete
+   */
+  export type AdminDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Filter which Admin to delete.
+     */
+    where: AdminWhereUniqueInput
+  }
+
+  /**
+   * Admin deleteMany
+   */
+  export type AdminDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Admins to delete
+     */
+    where?: AdminWhereInput
+    /**
+     * Limit how many Admins to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Admin without action
+   */
+  export type AdminDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserStatus
+   */
+
+  export type AggregateUserStatus = {
+    _count: UserStatusCountAggregateOutputType | null
+    _min: UserStatusMinAggregateOutputType | null
+    _max: UserStatusMaxAggregateOutputType | null
+  }
+
+  export type UserStatusMinAggregateOutputType = {
+    userId: string | null
+    isBlocked: boolean | null
+    blockedAt: Date | null
+    blockedReason: string | null
+    updatedAt: Date | null
+  }
+
+  export type UserStatusMaxAggregateOutputType = {
+    userId: string | null
+    isBlocked: boolean | null
+    blockedAt: Date | null
+    blockedReason: string | null
+    updatedAt: Date | null
+  }
+
+  export type UserStatusCountAggregateOutputType = {
+    userId: number
+    isBlocked: number
+    blockedAt: number
+    blockedReason: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserStatusMinAggregateInputType = {
+    userId?: true
+    isBlocked?: true
+    blockedAt?: true
+    blockedReason?: true
+    updatedAt?: true
+  }
+
+  export type UserStatusMaxAggregateInputType = {
+    userId?: true
+    isBlocked?: true
+    blockedAt?: true
+    blockedReason?: true
+    updatedAt?: true
+  }
+
+  export type UserStatusCountAggregateInputType = {
+    userId?: true
+    isBlocked?: true
+    blockedAt?: true
+    blockedReason?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserStatusAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserStatus to aggregate.
+     */
+    where?: UserStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserStatuses to fetch.
+     */
+    orderBy?: UserStatusOrderByWithRelationInput | UserStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserStatuses
+    **/
+    _count?: true | UserStatusCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserStatusMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserStatusMaxAggregateInputType
+  }
+
+  export type GetUserStatusAggregateType<T extends UserStatusAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserStatus]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserStatus[P]>
+      : GetScalarType<T[P], AggregateUserStatus[P]>
+  }
+
+
+
+
+  export type UserStatusGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserStatusWhereInput
+    orderBy?: UserStatusOrderByWithAggregationInput | UserStatusOrderByWithAggregationInput[]
+    by: UserStatusScalarFieldEnum[] | UserStatusScalarFieldEnum
+    having?: UserStatusScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserStatusCountAggregateInputType | true
+    _min?: UserStatusMinAggregateInputType
+    _max?: UserStatusMaxAggregateInputType
+  }
+
+  export type UserStatusGroupByOutputType = {
+    userId: string
+    isBlocked: boolean
+    blockedAt: Date | null
+    blockedReason: string | null
+    updatedAt: Date
+    _count: UserStatusCountAggregateOutputType | null
+    _min: UserStatusMinAggregateOutputType | null
+    _max: UserStatusMaxAggregateOutputType | null
+  }
+
+  type GetUserStatusGroupByPayload<T extends UserStatusGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserStatusGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserStatusGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserStatusGroupByOutputType[P]>
+            : GetScalarType<T[P], UserStatusGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserStatusSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    isBlocked?: boolean
+    blockedAt?: boolean
+    blockedReason?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userStatus"]>
+
+  export type UserStatusSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    isBlocked?: boolean
+    blockedAt?: boolean
+    blockedReason?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userStatus"]>
+
+  export type UserStatusSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    isBlocked?: boolean
+    blockedAt?: boolean
+    blockedReason?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userStatus"]>
+
+  export type UserStatusSelectScalar = {
+    userId?: boolean
+    isBlocked?: boolean
+    blockedAt?: boolean
+    blockedReason?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "isBlocked" | "blockedAt" | "blockedReason" | "updatedAt", ExtArgs["result"]["userStatus"]>
+
+  export type $UserStatusPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserStatus"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      userId: string
+      isBlocked: boolean
+      blockedAt: Date | null
+      blockedReason: string | null
+      updatedAt: Date
+    }, ExtArgs["result"]["userStatus"]>
+    composites: {}
+  }
+
+  type UserStatusGetPayload<S extends boolean | null | undefined | UserStatusDefaultArgs> = $Result.GetResult<Prisma.$UserStatusPayload, S>
+
+  type UserStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserStatusFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserStatusCountAggregateInputType | true
+    }
+
+  export interface UserStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserStatus'], meta: { name: 'UserStatus' } }
+    /**
+     * Find zero or one UserStatus that matches the filter.
+     * @param {UserStatusFindUniqueArgs} args - Arguments to find a UserStatus
+     * @example
+     * // Get one UserStatus
+     * const userStatus = await prisma.userStatus.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserStatusFindUniqueArgs>(args: SelectSubset<T, UserStatusFindUniqueArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserStatus that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserStatusFindUniqueOrThrowArgs} args - Arguments to find a UserStatus
+     * @example
+     * // Get one UserStatus
+     * const userStatus = await prisma.userStatus.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, UserStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserStatus that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusFindFirstArgs} args - Arguments to find a UserStatus
+     * @example
+     * // Get one UserStatus
+     * const userStatus = await prisma.userStatus.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserStatusFindFirstArgs>(args?: SelectSubset<T, UserStatusFindFirstArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserStatus that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusFindFirstOrThrowArgs} args - Arguments to find a UserStatus
+     * @example
+     * // Get one UserStatus
+     * const userStatus = await prisma.userStatus.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, UserStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserStatuses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserStatuses
+     * const userStatuses = await prisma.userStatus.findMany()
+     * 
+     * // Get first 10 UserStatuses
+     * const userStatuses = await prisma.userStatus.findMany({ take: 10 })
+     * 
+     * // Only select the `userId`
+     * const userStatusWithUserIdOnly = await prisma.userStatus.findMany({ select: { userId: true } })
+     * 
+     */
+    findMany<T extends UserStatusFindManyArgs>(args?: SelectSubset<T, UserStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserStatus.
+     * @param {UserStatusCreateArgs} args - Arguments to create a UserStatus.
+     * @example
+     * // Create one UserStatus
+     * const UserStatus = await prisma.userStatus.create({
+     *   data: {
+     *     // ... data to create a UserStatus
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserStatusCreateArgs>(args: SelectSubset<T, UserStatusCreateArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserStatuses.
+     * @param {UserStatusCreateManyArgs} args - Arguments to create many UserStatuses.
+     * @example
+     * // Create many UserStatuses
+     * const userStatus = await prisma.userStatus.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserStatusCreateManyArgs>(args?: SelectSubset<T, UserStatusCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserStatuses and returns the data saved in the database.
+     * @param {UserStatusCreateManyAndReturnArgs} args - Arguments to create many UserStatuses.
+     * @example
+     * // Create many UserStatuses
+     * const userStatus = await prisma.userStatus.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserStatuses and only return the `userId`
+     * const userStatusWithUserIdOnly = await prisma.userStatus.createManyAndReturn({
+     *   select: { userId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserStatusCreateManyAndReturnArgs>(args?: SelectSubset<T, UserStatusCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserStatus.
+     * @param {UserStatusDeleteArgs} args - Arguments to delete one UserStatus.
+     * @example
+     * // Delete one UserStatus
+     * const UserStatus = await prisma.userStatus.delete({
+     *   where: {
+     *     // ... filter to delete one UserStatus
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserStatusDeleteArgs>(args: SelectSubset<T, UserStatusDeleteArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserStatus.
+     * @param {UserStatusUpdateArgs} args - Arguments to update one UserStatus.
+     * @example
+     * // Update one UserStatus
+     * const userStatus = await prisma.userStatus.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserStatusUpdateArgs>(args: SelectSubset<T, UserStatusUpdateArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserStatuses.
+     * @param {UserStatusDeleteManyArgs} args - Arguments to filter UserStatuses to delete.
+     * @example
+     * // Delete a few UserStatuses
+     * const { count } = await prisma.userStatus.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserStatusDeleteManyArgs>(args?: SelectSubset<T, UserStatusDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserStatuses
+     * const userStatus = await prisma.userStatus.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserStatusUpdateManyArgs>(args: SelectSubset<T, UserStatusUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserStatuses and returns the data updated in the database.
+     * @param {UserStatusUpdateManyAndReturnArgs} args - Arguments to update many UserStatuses.
+     * @example
+     * // Update many UserStatuses
+     * const userStatus = await prisma.userStatus.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserStatuses and only return the `userId`
+     * const userStatusWithUserIdOnly = await prisma.userStatus.updateManyAndReturn({
+     *   select: { userId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserStatusUpdateManyAndReturnArgs>(args: SelectSubset<T, UserStatusUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserStatus.
+     * @param {UserStatusUpsertArgs} args - Arguments to update or create a UserStatus.
+     * @example
+     * // Update or create a UserStatus
+     * const userStatus = await prisma.userStatus.upsert({
+     *   create: {
+     *     // ... data to create a UserStatus
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserStatus we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserStatusUpsertArgs>(args: SelectSubset<T, UserStatusUpsertArgs<ExtArgs>>): Prisma__UserStatusClient<$Result.GetResult<Prisma.$UserStatusPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusCountArgs} args - Arguments to filter UserStatuses to count.
+     * @example
+     * // Count the number of UserStatuses
+     * const count = await prisma.userStatus.count({
+     *   where: {
+     *     // ... the filter for the UserStatuses we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserStatusCountArgs>(
+      args?: Subset<T, UserStatusCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserStatusCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserStatusAggregateArgs>(args: Subset<T, UserStatusAggregateArgs>): Prisma.PrismaPromise<GetUserStatusAggregateType<T>>
+
+    /**
+     * Group by UserStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserStatusGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserStatusGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserStatusGroupByArgs['orderBy'] }
+        : { orderBy?: UserStatusGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserStatusGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserStatusGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserStatus model
+   */
+  readonly fields: UserStatusFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserStatus.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserStatus model
+   */
+  interface UserStatusFieldRefs {
+    readonly userId: FieldRef<"UserStatus", 'String'>
+    readonly isBlocked: FieldRef<"UserStatus", 'Boolean'>
+    readonly blockedAt: FieldRef<"UserStatus", 'DateTime'>
+    readonly blockedReason: FieldRef<"UserStatus", 'String'>
+    readonly updatedAt: FieldRef<"UserStatus", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserStatus findUnique
+   */
+  export type UserStatusFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter, which UserStatus to fetch.
+     */
+    where: UserStatusWhereUniqueInput
+  }
+
+  /**
+   * UserStatus findUniqueOrThrow
+   */
+  export type UserStatusFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter, which UserStatus to fetch.
+     */
+    where: UserStatusWhereUniqueInput
+  }
+
+  /**
+   * UserStatus findFirst
+   */
+  export type UserStatusFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter, which UserStatus to fetch.
+     */
+    where?: UserStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserStatuses to fetch.
+     */
+    orderBy?: UserStatusOrderByWithRelationInput | UserStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserStatuses.
+     */
+    cursor?: UserStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserStatuses.
+     */
+    distinct?: UserStatusScalarFieldEnum | UserStatusScalarFieldEnum[]
+  }
+
+  /**
+   * UserStatus findFirstOrThrow
+   */
+  export type UserStatusFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter, which UserStatus to fetch.
+     */
+    where?: UserStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserStatuses to fetch.
+     */
+    orderBy?: UserStatusOrderByWithRelationInput | UserStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserStatuses.
+     */
+    cursor?: UserStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserStatuses.
+     */
+    distinct?: UserStatusScalarFieldEnum | UserStatusScalarFieldEnum[]
+  }
+
+  /**
+   * UserStatus findMany
+   */
+  export type UserStatusFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter, which UserStatuses to fetch.
+     */
+    where?: UserStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserStatuses to fetch.
+     */
+    orderBy?: UserStatusOrderByWithRelationInput | UserStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserStatuses.
+     */
+    cursor?: UserStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserStatuses.
+     */
+    skip?: number
+    distinct?: UserStatusScalarFieldEnum | UserStatusScalarFieldEnum[]
+  }
+
+  /**
+   * UserStatus create
+   */
+  export type UserStatusCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * The data needed to create a UserStatus.
+     */
+    data: XOR<UserStatusCreateInput, UserStatusUncheckedCreateInput>
+  }
+
+  /**
+   * UserStatus createMany
+   */
+  export type UserStatusCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserStatuses.
+     */
+    data: UserStatusCreateManyInput | UserStatusCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserStatus createManyAndReturn
+   */
+  export type UserStatusCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserStatuses.
+     */
+    data: UserStatusCreateManyInput | UserStatusCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserStatus update
+   */
+  export type UserStatusUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * The data needed to update a UserStatus.
+     */
+    data: XOR<UserStatusUpdateInput, UserStatusUncheckedUpdateInput>
+    /**
+     * Choose, which UserStatus to update.
+     */
+    where: UserStatusWhereUniqueInput
+  }
+
+  /**
+   * UserStatus updateMany
+   */
+  export type UserStatusUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserStatuses.
+     */
+    data: XOR<UserStatusUpdateManyMutationInput, UserStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which UserStatuses to update
+     */
+    where?: UserStatusWhereInput
+    /**
+     * Limit how many UserStatuses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserStatus updateManyAndReturn
+   */
+  export type UserStatusUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * The data used to update UserStatuses.
+     */
+    data: XOR<UserStatusUpdateManyMutationInput, UserStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which UserStatuses to update
+     */
+    where?: UserStatusWhereInput
+    /**
+     * Limit how many UserStatuses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserStatus upsert
+   */
+  export type UserStatusUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * The filter to search for the UserStatus to update in case it exists.
+     */
+    where: UserStatusWhereUniqueInput
+    /**
+     * In case the UserStatus found by the `where` argument doesn't exist, create a new UserStatus with this data.
+     */
+    create: XOR<UserStatusCreateInput, UserStatusUncheckedCreateInput>
+    /**
+     * In case the UserStatus was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserStatusUpdateInput, UserStatusUncheckedUpdateInput>
+  }
+
+  /**
+   * UserStatus delete
+   */
+  export type UserStatusDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+    /**
+     * Filter which UserStatus to delete.
+     */
+    where: UserStatusWhereUniqueInput
+  }
+
+  /**
+   * UserStatus deleteMany
+   */
+  export type UserStatusDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserStatuses to delete
+     */
+    where?: UserStatusWhereInput
+    /**
+     * Limit how many UserStatuses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserStatus without action
+   */
+  export type UserStatusDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserStatus
+     */
+    select?: UserStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserStatus
+     */
+    omit?: UserStatusOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlanConfig
+   */
+
+  export type AggregatePlanConfig = {
+    _count: PlanConfigCountAggregateOutputType | null
+    _avg: PlanConfigAvgAggregateOutputType | null
+    _sum: PlanConfigSumAggregateOutputType | null
+    _min: PlanConfigMinAggregateOutputType | null
+    _max: PlanConfigMaxAggregateOutputType | null
+  }
+
+  export type PlanConfigAvgAggregateOutputType = {
+    proPriceInr: number | null
+    freeResumeLimit: number | null
+    freeAiGenerationLimit: number | null
+  }
+
+  export type PlanConfigSumAggregateOutputType = {
+    proPriceInr: number | null
+    freeResumeLimit: number | null
+    freeAiGenerationLimit: number | null
+  }
+
+  export type PlanConfigMinAggregateOutputType = {
+    id: string | null
+    proPriceInr: number | null
+    freeResumeLimit: number | null
+    freeAiGenerationLimit: number | null
+    updatedAt: Date | null
+  }
+
+  export type PlanConfigMaxAggregateOutputType = {
+    id: string | null
+    proPriceInr: number | null
+    freeResumeLimit: number | null
+    freeAiGenerationLimit: number | null
+    updatedAt: Date | null
+  }
+
+  export type PlanConfigCountAggregateOutputType = {
+    id: number
+    proPriceInr: number
+    freeResumeLimit: number
+    freeAiGenerationLimit: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlanConfigAvgAggregateInputType = {
+    proPriceInr?: true
+    freeResumeLimit?: true
+    freeAiGenerationLimit?: true
+  }
+
+  export type PlanConfigSumAggregateInputType = {
+    proPriceInr?: true
+    freeResumeLimit?: true
+    freeAiGenerationLimit?: true
+  }
+
+  export type PlanConfigMinAggregateInputType = {
+    id?: true
+    proPriceInr?: true
+    freeResumeLimit?: true
+    freeAiGenerationLimit?: true
+    updatedAt?: true
+  }
+
+  export type PlanConfigMaxAggregateInputType = {
+    id?: true
+    proPriceInr?: true
+    freeResumeLimit?: true
+    freeAiGenerationLimit?: true
+    updatedAt?: true
+  }
+
+  export type PlanConfigCountAggregateInputType = {
+    id?: true
+    proPriceInr?: true
+    freeResumeLimit?: true
+    freeAiGenerationLimit?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlanConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlanConfig to aggregate.
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlanConfigs to fetch.
+     */
+    orderBy?: PlanConfigOrderByWithRelationInput | PlanConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlanConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlanConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlanConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlanConfigs
+    **/
+    _count?: true | PlanConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlanConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlanConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlanConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlanConfigMaxAggregateInputType
+  }
+
+  export type GetPlanConfigAggregateType<T extends PlanConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlanConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlanConfig[P]>
+      : GetScalarType<T[P], AggregatePlanConfig[P]>
+  }
+
+
+
+
+  export type PlanConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlanConfigWhereInput
+    orderBy?: PlanConfigOrderByWithAggregationInput | PlanConfigOrderByWithAggregationInput[]
+    by: PlanConfigScalarFieldEnum[] | PlanConfigScalarFieldEnum
+    having?: PlanConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlanConfigCountAggregateInputType | true
+    _avg?: PlanConfigAvgAggregateInputType
+    _sum?: PlanConfigSumAggregateInputType
+    _min?: PlanConfigMinAggregateInputType
+    _max?: PlanConfigMaxAggregateInputType
+  }
+
+  export type PlanConfigGroupByOutputType = {
+    id: string
+    proPriceInr: number
+    freeResumeLimit: number
+    freeAiGenerationLimit: number
+    updatedAt: Date
+    _count: PlanConfigCountAggregateOutputType | null
+    _avg: PlanConfigAvgAggregateOutputType | null
+    _sum: PlanConfigSumAggregateOutputType | null
+    _min: PlanConfigMinAggregateOutputType | null
+    _max: PlanConfigMaxAggregateOutputType | null
+  }
+
+  type GetPlanConfigGroupByPayload<T extends PlanConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlanConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlanConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlanConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], PlanConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlanConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proPriceInr?: boolean
+    freeResumeLimit?: boolean
+    freeAiGenerationLimit?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["planConfig"]>
+
+  export type PlanConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proPriceInr?: boolean
+    freeResumeLimit?: boolean
+    freeAiGenerationLimit?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["planConfig"]>
+
+  export type PlanConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proPriceInr?: boolean
+    freeResumeLimit?: boolean
+    freeAiGenerationLimit?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["planConfig"]>
+
+  export type PlanConfigSelectScalar = {
+    id?: boolean
+    proPriceInr?: boolean
+    freeResumeLimit?: boolean
+    freeAiGenerationLimit?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlanConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "proPriceInr" | "freeResumeLimit" | "freeAiGenerationLimit" | "updatedAt", ExtArgs["result"]["planConfig"]>
+
+  export type $PlanConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlanConfig"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      proPriceInr: number
+      freeResumeLimit: number
+      freeAiGenerationLimit: number
+      updatedAt: Date
+    }, ExtArgs["result"]["planConfig"]>
+    composites: {}
+  }
+
+  type PlanConfigGetPayload<S extends boolean | null | undefined | PlanConfigDefaultArgs> = $Result.GetResult<Prisma.$PlanConfigPayload, S>
+
+  type PlanConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlanConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlanConfigCountAggregateInputType | true
+    }
+
+  export interface PlanConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlanConfig'], meta: { name: 'PlanConfig' } }
+    /**
+     * Find zero or one PlanConfig that matches the filter.
+     * @param {PlanConfigFindUniqueArgs} args - Arguments to find a PlanConfig
+     * @example
+     * // Get one PlanConfig
+     * const planConfig = await prisma.planConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlanConfigFindUniqueArgs>(args: SelectSubset<T, PlanConfigFindUniqueArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlanConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlanConfigFindUniqueOrThrowArgs} args - Arguments to find a PlanConfig
+     * @example
+     * // Get one PlanConfig
+     * const planConfig = await prisma.planConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlanConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, PlanConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlanConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigFindFirstArgs} args - Arguments to find a PlanConfig
+     * @example
+     * // Get one PlanConfig
+     * const planConfig = await prisma.planConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlanConfigFindFirstArgs>(args?: SelectSubset<T, PlanConfigFindFirstArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlanConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigFindFirstOrThrowArgs} args - Arguments to find a PlanConfig
+     * @example
+     * // Get one PlanConfig
+     * const planConfig = await prisma.planConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlanConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, PlanConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlanConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlanConfigs
+     * const planConfigs = await prisma.planConfig.findMany()
+     * 
+     * // Get first 10 PlanConfigs
+     * const planConfigs = await prisma.planConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const planConfigWithIdOnly = await prisma.planConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlanConfigFindManyArgs>(args?: SelectSubset<T, PlanConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlanConfig.
+     * @param {PlanConfigCreateArgs} args - Arguments to create a PlanConfig.
+     * @example
+     * // Create one PlanConfig
+     * const PlanConfig = await prisma.planConfig.create({
+     *   data: {
+     *     // ... data to create a PlanConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlanConfigCreateArgs>(args: SelectSubset<T, PlanConfigCreateArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlanConfigs.
+     * @param {PlanConfigCreateManyArgs} args - Arguments to create many PlanConfigs.
+     * @example
+     * // Create many PlanConfigs
+     * const planConfig = await prisma.planConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlanConfigCreateManyArgs>(args?: SelectSubset<T, PlanConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlanConfigs and returns the data saved in the database.
+     * @param {PlanConfigCreateManyAndReturnArgs} args - Arguments to create many PlanConfigs.
+     * @example
+     * // Create many PlanConfigs
+     * const planConfig = await prisma.planConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlanConfigs and only return the `id`
+     * const planConfigWithIdOnly = await prisma.planConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlanConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, PlanConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlanConfig.
+     * @param {PlanConfigDeleteArgs} args - Arguments to delete one PlanConfig.
+     * @example
+     * // Delete one PlanConfig
+     * const PlanConfig = await prisma.planConfig.delete({
+     *   where: {
+     *     // ... filter to delete one PlanConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlanConfigDeleteArgs>(args: SelectSubset<T, PlanConfigDeleteArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlanConfig.
+     * @param {PlanConfigUpdateArgs} args - Arguments to update one PlanConfig.
+     * @example
+     * // Update one PlanConfig
+     * const planConfig = await prisma.planConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlanConfigUpdateArgs>(args: SelectSubset<T, PlanConfigUpdateArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlanConfigs.
+     * @param {PlanConfigDeleteManyArgs} args - Arguments to filter PlanConfigs to delete.
+     * @example
+     * // Delete a few PlanConfigs
+     * const { count } = await prisma.planConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlanConfigDeleteManyArgs>(args?: SelectSubset<T, PlanConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlanConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlanConfigs
+     * const planConfig = await prisma.planConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlanConfigUpdateManyArgs>(args: SelectSubset<T, PlanConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlanConfigs and returns the data updated in the database.
+     * @param {PlanConfigUpdateManyAndReturnArgs} args - Arguments to update many PlanConfigs.
+     * @example
+     * // Update many PlanConfigs
+     * const planConfig = await prisma.planConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlanConfigs and only return the `id`
+     * const planConfigWithIdOnly = await prisma.planConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlanConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, PlanConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlanConfig.
+     * @param {PlanConfigUpsertArgs} args - Arguments to update or create a PlanConfig.
+     * @example
+     * // Update or create a PlanConfig
+     * const planConfig = await prisma.planConfig.upsert({
+     *   create: {
+     *     // ... data to create a PlanConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlanConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlanConfigUpsertArgs>(args: SelectSubset<T, PlanConfigUpsertArgs<ExtArgs>>): Prisma__PlanConfigClient<$Result.GetResult<Prisma.$PlanConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlanConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigCountArgs} args - Arguments to filter PlanConfigs to count.
+     * @example
+     * // Count the number of PlanConfigs
+     * const count = await prisma.planConfig.count({
+     *   where: {
+     *     // ... the filter for the PlanConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlanConfigCountArgs>(
+      args?: Subset<T, PlanConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlanConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlanConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlanConfigAggregateArgs>(args: Subset<T, PlanConfigAggregateArgs>): Prisma.PrismaPromise<GetPlanConfigAggregateType<T>>
+
+    /**
+     * Group by PlanConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlanConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlanConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlanConfigGroupByArgs['orderBy'] }
+        : { orderBy?: PlanConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlanConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlanConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlanConfig model
+   */
+  readonly fields: PlanConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlanConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlanConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlanConfig model
+   */
+  interface PlanConfigFieldRefs {
+    readonly id: FieldRef<"PlanConfig", 'String'>
+    readonly proPriceInr: FieldRef<"PlanConfig", 'Int'>
+    readonly freeResumeLimit: FieldRef<"PlanConfig", 'Int'>
+    readonly freeAiGenerationLimit: FieldRef<"PlanConfig", 'Int'>
+    readonly updatedAt: FieldRef<"PlanConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlanConfig findUnique
+   */
+  export type PlanConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlanConfig to fetch.
+     */
+    where: PlanConfigWhereUniqueInput
+  }
+
+  /**
+   * PlanConfig findUniqueOrThrow
+   */
+  export type PlanConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlanConfig to fetch.
+     */
+    where: PlanConfigWhereUniqueInput
+  }
+
+  /**
+   * PlanConfig findFirst
+   */
+  export type PlanConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlanConfig to fetch.
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlanConfigs to fetch.
+     */
+    orderBy?: PlanConfigOrderByWithRelationInput | PlanConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlanConfigs.
+     */
+    cursor?: PlanConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlanConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlanConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlanConfigs.
+     */
+    distinct?: PlanConfigScalarFieldEnum | PlanConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlanConfig findFirstOrThrow
+   */
+  export type PlanConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlanConfig to fetch.
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlanConfigs to fetch.
+     */
+    orderBy?: PlanConfigOrderByWithRelationInput | PlanConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlanConfigs.
+     */
+    cursor?: PlanConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlanConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlanConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlanConfigs.
+     */
+    distinct?: PlanConfigScalarFieldEnum | PlanConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlanConfig findMany
+   */
+  export type PlanConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlanConfigs to fetch.
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlanConfigs to fetch.
+     */
+    orderBy?: PlanConfigOrderByWithRelationInput | PlanConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlanConfigs.
+     */
+    cursor?: PlanConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlanConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlanConfigs.
+     */
+    skip?: number
+    distinct?: PlanConfigScalarFieldEnum | PlanConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlanConfig create
+   */
+  export type PlanConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PlanConfig.
+     */
+    data: XOR<PlanConfigCreateInput, PlanConfigUncheckedCreateInput>
+  }
+
+  /**
+   * PlanConfig createMany
+   */
+  export type PlanConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlanConfigs.
+     */
+    data: PlanConfigCreateManyInput | PlanConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlanConfig createManyAndReturn
+   */
+  export type PlanConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlanConfigs.
+     */
+    data: PlanConfigCreateManyInput | PlanConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlanConfig update
+   */
+  export type PlanConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PlanConfig.
+     */
+    data: XOR<PlanConfigUpdateInput, PlanConfigUncheckedUpdateInput>
+    /**
+     * Choose, which PlanConfig to update.
+     */
+    where: PlanConfigWhereUniqueInput
+  }
+
+  /**
+   * PlanConfig updateMany
+   */
+  export type PlanConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlanConfigs.
+     */
+    data: XOR<PlanConfigUpdateManyMutationInput, PlanConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which PlanConfigs to update
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * Limit how many PlanConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlanConfig updateManyAndReturn
+   */
+  export type PlanConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update PlanConfigs.
+     */
+    data: XOR<PlanConfigUpdateManyMutationInput, PlanConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which PlanConfigs to update
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * Limit how many PlanConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlanConfig upsert
+   */
+  export type PlanConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PlanConfig to update in case it exists.
+     */
+    where: PlanConfigWhereUniqueInput
+    /**
+     * In case the PlanConfig found by the `where` argument doesn't exist, create a new PlanConfig with this data.
+     */
+    create: XOR<PlanConfigCreateInput, PlanConfigUncheckedCreateInput>
+    /**
+     * In case the PlanConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlanConfigUpdateInput, PlanConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * PlanConfig delete
+   */
+  export type PlanConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+    /**
+     * Filter which PlanConfig to delete.
+     */
+    where: PlanConfigWhereUniqueInput
+  }
+
+  /**
+   * PlanConfig deleteMany
+   */
+  export type PlanConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlanConfigs to delete
+     */
+    where?: PlanConfigWhereInput
+    /**
+     * Limit how many PlanConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlanConfig without action
+   */
+  export type PlanConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlanConfig
+     */
+    select?: PlanConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlanConfig
+     */
+    omit?: PlanConfigOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TemplateMeta
+   */
+
+  export type AggregateTemplateMeta = {
+    _count: TemplateMetaCountAggregateOutputType | null
+    _min: TemplateMetaMinAggregateOutputType | null
+    _max: TemplateMetaMaxAggregateOutputType | null
+  }
+
+  export type TemplateMetaMinAggregateOutputType = {
+    templateId: string | null
+    isPro: boolean | null
+    isActive: boolean | null
+    isFeatured: boolean | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateMetaMaxAggregateOutputType = {
+    templateId: string | null
+    isPro: boolean | null
+    isActive: boolean | null
+    isFeatured: boolean | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateMetaCountAggregateOutputType = {
+    templateId: number
+    isPro: number
+    isActive: number
+    isFeatured: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TemplateMetaMinAggregateInputType = {
+    templateId?: true
+    isPro?: true
+    isActive?: true
+    isFeatured?: true
+    updatedAt?: true
+  }
+
+  export type TemplateMetaMaxAggregateInputType = {
+    templateId?: true
+    isPro?: true
+    isActive?: true
+    isFeatured?: true
+    updatedAt?: true
+  }
+
+  export type TemplateMetaCountAggregateInputType = {
+    templateId?: true
+    isPro?: true
+    isActive?: true
+    isFeatured?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TemplateMetaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemplateMeta to aggregate.
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateMetas to fetch.
+     */
+    orderBy?: TemplateMetaOrderByWithRelationInput | TemplateMetaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TemplateMetaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateMetas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateMetas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TemplateMetas
+    **/
+    _count?: true | TemplateMetaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TemplateMetaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TemplateMetaMaxAggregateInputType
+  }
+
+  export type GetTemplateMetaAggregateType<T extends TemplateMetaAggregateArgs> = {
+        [P in keyof T & keyof AggregateTemplateMeta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTemplateMeta[P]>
+      : GetScalarType<T[P], AggregateTemplateMeta[P]>
+  }
+
+
+
+
+  export type TemplateMetaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateMetaWhereInput
+    orderBy?: TemplateMetaOrderByWithAggregationInput | TemplateMetaOrderByWithAggregationInput[]
+    by: TemplateMetaScalarFieldEnum[] | TemplateMetaScalarFieldEnum
+    having?: TemplateMetaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TemplateMetaCountAggregateInputType | true
+    _min?: TemplateMetaMinAggregateInputType
+    _max?: TemplateMetaMaxAggregateInputType
+  }
+
+  export type TemplateMetaGroupByOutputType = {
+    templateId: string
+    isPro: boolean
+    isActive: boolean
+    isFeatured: boolean
+    updatedAt: Date
+    _count: TemplateMetaCountAggregateOutputType | null
+    _min: TemplateMetaMinAggregateOutputType | null
+    _max: TemplateMetaMaxAggregateOutputType | null
+  }
+
+  type GetTemplateMetaGroupByPayload<T extends TemplateMetaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TemplateMetaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TemplateMetaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TemplateMetaGroupByOutputType[P]>
+            : GetScalarType<T[P], TemplateMetaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TemplateMetaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    templateId?: boolean
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["templateMeta"]>
+
+  export type TemplateMetaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    templateId?: boolean
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["templateMeta"]>
+
+  export type TemplateMetaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    templateId?: boolean
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["templateMeta"]>
+
+  export type TemplateMetaSelectScalar = {
+    templateId?: boolean
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TemplateMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"templateId" | "isPro" | "isActive" | "isFeatured" | "updatedAt", ExtArgs["result"]["templateMeta"]>
+
+  export type $TemplateMetaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TemplateMeta"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      templateId: string
+      isPro: boolean
+      isActive: boolean
+      isFeatured: boolean
+      updatedAt: Date
+    }, ExtArgs["result"]["templateMeta"]>
+    composites: {}
+  }
+
+  type TemplateMetaGetPayload<S extends boolean | null | undefined | TemplateMetaDefaultArgs> = $Result.GetResult<Prisma.$TemplateMetaPayload, S>
+
+  type TemplateMetaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TemplateMetaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TemplateMetaCountAggregateInputType | true
+    }
+
+  export interface TemplateMetaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TemplateMeta'], meta: { name: 'TemplateMeta' } }
+    /**
+     * Find zero or one TemplateMeta that matches the filter.
+     * @param {TemplateMetaFindUniqueArgs} args - Arguments to find a TemplateMeta
+     * @example
+     * // Get one TemplateMeta
+     * const templateMeta = await prisma.templateMeta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TemplateMetaFindUniqueArgs>(args: SelectSubset<T, TemplateMetaFindUniqueArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TemplateMeta that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TemplateMetaFindUniqueOrThrowArgs} args - Arguments to find a TemplateMeta
+     * @example
+     * // Get one TemplateMeta
+     * const templateMeta = await prisma.templateMeta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TemplateMetaFindUniqueOrThrowArgs>(args: SelectSubset<T, TemplateMetaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemplateMeta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaFindFirstArgs} args - Arguments to find a TemplateMeta
+     * @example
+     * // Get one TemplateMeta
+     * const templateMeta = await prisma.templateMeta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TemplateMetaFindFirstArgs>(args?: SelectSubset<T, TemplateMetaFindFirstArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemplateMeta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaFindFirstOrThrowArgs} args - Arguments to find a TemplateMeta
+     * @example
+     * // Get one TemplateMeta
+     * const templateMeta = await prisma.templateMeta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TemplateMetaFindFirstOrThrowArgs>(args?: SelectSubset<T, TemplateMetaFindFirstOrThrowArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TemplateMetas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TemplateMetas
+     * const templateMetas = await prisma.templateMeta.findMany()
+     * 
+     * // Get first 10 TemplateMetas
+     * const templateMetas = await prisma.templateMeta.findMany({ take: 10 })
+     * 
+     * // Only select the `templateId`
+     * const templateMetaWithTemplateIdOnly = await prisma.templateMeta.findMany({ select: { templateId: true } })
+     * 
+     */
+    findMany<T extends TemplateMetaFindManyArgs>(args?: SelectSubset<T, TemplateMetaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TemplateMeta.
+     * @param {TemplateMetaCreateArgs} args - Arguments to create a TemplateMeta.
+     * @example
+     * // Create one TemplateMeta
+     * const TemplateMeta = await prisma.templateMeta.create({
+     *   data: {
+     *     // ... data to create a TemplateMeta
+     *   }
+     * })
+     * 
+     */
+    create<T extends TemplateMetaCreateArgs>(args: SelectSubset<T, TemplateMetaCreateArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TemplateMetas.
+     * @param {TemplateMetaCreateManyArgs} args - Arguments to create many TemplateMetas.
+     * @example
+     * // Create many TemplateMetas
+     * const templateMeta = await prisma.templateMeta.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TemplateMetaCreateManyArgs>(args?: SelectSubset<T, TemplateMetaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TemplateMetas and returns the data saved in the database.
+     * @param {TemplateMetaCreateManyAndReturnArgs} args - Arguments to create many TemplateMetas.
+     * @example
+     * // Create many TemplateMetas
+     * const templateMeta = await prisma.templateMeta.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TemplateMetas and only return the `templateId`
+     * const templateMetaWithTemplateIdOnly = await prisma.templateMeta.createManyAndReturn({
+     *   select: { templateId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TemplateMetaCreateManyAndReturnArgs>(args?: SelectSubset<T, TemplateMetaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TemplateMeta.
+     * @param {TemplateMetaDeleteArgs} args - Arguments to delete one TemplateMeta.
+     * @example
+     * // Delete one TemplateMeta
+     * const TemplateMeta = await prisma.templateMeta.delete({
+     *   where: {
+     *     // ... filter to delete one TemplateMeta
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TemplateMetaDeleteArgs>(args: SelectSubset<T, TemplateMetaDeleteArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TemplateMeta.
+     * @param {TemplateMetaUpdateArgs} args - Arguments to update one TemplateMeta.
+     * @example
+     * // Update one TemplateMeta
+     * const templateMeta = await prisma.templateMeta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TemplateMetaUpdateArgs>(args: SelectSubset<T, TemplateMetaUpdateArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TemplateMetas.
+     * @param {TemplateMetaDeleteManyArgs} args - Arguments to filter TemplateMetas to delete.
+     * @example
+     * // Delete a few TemplateMetas
+     * const { count } = await prisma.templateMeta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TemplateMetaDeleteManyArgs>(args?: SelectSubset<T, TemplateMetaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemplateMetas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TemplateMetas
+     * const templateMeta = await prisma.templateMeta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TemplateMetaUpdateManyArgs>(args: SelectSubset<T, TemplateMetaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemplateMetas and returns the data updated in the database.
+     * @param {TemplateMetaUpdateManyAndReturnArgs} args - Arguments to update many TemplateMetas.
+     * @example
+     * // Update many TemplateMetas
+     * const templateMeta = await prisma.templateMeta.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TemplateMetas and only return the `templateId`
+     * const templateMetaWithTemplateIdOnly = await prisma.templateMeta.updateManyAndReturn({
+     *   select: { templateId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TemplateMetaUpdateManyAndReturnArgs>(args: SelectSubset<T, TemplateMetaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TemplateMeta.
+     * @param {TemplateMetaUpsertArgs} args - Arguments to update or create a TemplateMeta.
+     * @example
+     * // Update or create a TemplateMeta
+     * const templateMeta = await prisma.templateMeta.upsert({
+     *   create: {
+     *     // ... data to create a TemplateMeta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TemplateMeta we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TemplateMetaUpsertArgs>(args: SelectSubset<T, TemplateMetaUpsertArgs<ExtArgs>>): Prisma__TemplateMetaClient<$Result.GetResult<Prisma.$TemplateMetaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TemplateMetas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaCountArgs} args - Arguments to filter TemplateMetas to count.
+     * @example
+     * // Count the number of TemplateMetas
+     * const count = await prisma.templateMeta.count({
+     *   where: {
+     *     // ... the filter for the TemplateMetas we want to count
+     *   }
+     * })
+    **/
+    count<T extends TemplateMetaCountArgs>(
+      args?: Subset<T, TemplateMetaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TemplateMetaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TemplateMeta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TemplateMetaAggregateArgs>(args: Subset<T, TemplateMetaAggregateArgs>): Prisma.PrismaPromise<GetTemplateMetaAggregateType<T>>
+
+    /**
+     * Group by TemplateMeta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateMetaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TemplateMetaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TemplateMetaGroupByArgs['orderBy'] }
+        : { orderBy?: TemplateMetaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TemplateMetaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTemplateMetaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TemplateMeta model
+   */
+  readonly fields: TemplateMetaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TemplateMeta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TemplateMetaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TemplateMeta model
+   */
+  interface TemplateMetaFieldRefs {
+    readonly templateId: FieldRef<"TemplateMeta", 'String'>
+    readonly isPro: FieldRef<"TemplateMeta", 'Boolean'>
+    readonly isActive: FieldRef<"TemplateMeta", 'Boolean'>
+    readonly isFeatured: FieldRef<"TemplateMeta", 'Boolean'>
+    readonly updatedAt: FieldRef<"TemplateMeta", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TemplateMeta findUnique
+   */
+  export type TemplateMetaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter, which TemplateMeta to fetch.
+     */
+    where: TemplateMetaWhereUniqueInput
+  }
+
+  /**
+   * TemplateMeta findUniqueOrThrow
+   */
+  export type TemplateMetaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter, which TemplateMeta to fetch.
+     */
+    where: TemplateMetaWhereUniqueInput
+  }
+
+  /**
+   * TemplateMeta findFirst
+   */
+  export type TemplateMetaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter, which TemplateMeta to fetch.
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateMetas to fetch.
+     */
+    orderBy?: TemplateMetaOrderByWithRelationInput | TemplateMetaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemplateMetas.
+     */
+    cursor?: TemplateMetaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateMetas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateMetas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemplateMetas.
+     */
+    distinct?: TemplateMetaScalarFieldEnum | TemplateMetaScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateMeta findFirstOrThrow
+   */
+  export type TemplateMetaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter, which TemplateMeta to fetch.
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateMetas to fetch.
+     */
+    orderBy?: TemplateMetaOrderByWithRelationInput | TemplateMetaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemplateMetas.
+     */
+    cursor?: TemplateMetaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateMetas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateMetas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemplateMetas.
+     */
+    distinct?: TemplateMetaScalarFieldEnum | TemplateMetaScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateMeta findMany
+   */
+  export type TemplateMetaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter, which TemplateMetas to fetch.
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateMetas to fetch.
+     */
+    orderBy?: TemplateMetaOrderByWithRelationInput | TemplateMetaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TemplateMetas.
+     */
+    cursor?: TemplateMetaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateMetas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateMetas.
+     */
+    skip?: number
+    distinct?: TemplateMetaScalarFieldEnum | TemplateMetaScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateMeta create
+   */
+  export type TemplateMetaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TemplateMeta.
+     */
+    data: XOR<TemplateMetaCreateInput, TemplateMetaUncheckedCreateInput>
+  }
+
+  /**
+   * TemplateMeta createMany
+   */
+  export type TemplateMetaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TemplateMetas.
+     */
+    data: TemplateMetaCreateManyInput | TemplateMetaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TemplateMeta createManyAndReturn
+   */
+  export type TemplateMetaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * The data used to create many TemplateMetas.
+     */
+    data: TemplateMetaCreateManyInput | TemplateMetaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TemplateMeta update
+   */
+  export type TemplateMetaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TemplateMeta.
+     */
+    data: XOR<TemplateMetaUpdateInput, TemplateMetaUncheckedUpdateInput>
+    /**
+     * Choose, which TemplateMeta to update.
+     */
+    where: TemplateMetaWhereUniqueInput
+  }
+
+  /**
+   * TemplateMeta updateMany
+   */
+  export type TemplateMetaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TemplateMetas.
+     */
+    data: XOR<TemplateMetaUpdateManyMutationInput, TemplateMetaUncheckedUpdateManyInput>
+    /**
+     * Filter which TemplateMetas to update
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * Limit how many TemplateMetas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemplateMeta updateManyAndReturn
+   */
+  export type TemplateMetaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * The data used to update TemplateMetas.
+     */
+    data: XOR<TemplateMetaUpdateManyMutationInput, TemplateMetaUncheckedUpdateManyInput>
+    /**
+     * Filter which TemplateMetas to update
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * Limit how many TemplateMetas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemplateMeta upsert
+   */
+  export type TemplateMetaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TemplateMeta to update in case it exists.
+     */
+    where: TemplateMetaWhereUniqueInput
+    /**
+     * In case the TemplateMeta found by the `where` argument doesn't exist, create a new TemplateMeta with this data.
+     */
+    create: XOR<TemplateMetaCreateInput, TemplateMetaUncheckedCreateInput>
+    /**
+     * In case the TemplateMeta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TemplateMetaUpdateInput, TemplateMetaUncheckedUpdateInput>
+  }
+
+  /**
+   * TemplateMeta delete
+   */
+  export type TemplateMetaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+    /**
+     * Filter which TemplateMeta to delete.
+     */
+    where: TemplateMetaWhereUniqueInput
+  }
+
+  /**
+   * TemplateMeta deleteMany
+   */
+  export type TemplateMetaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemplateMetas to delete
+     */
+    where?: TemplateMetaWhereInput
+    /**
+     * Limit how many TemplateMetas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemplateMeta without action
+   */
+  export type TemplateMetaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateMeta
+     */
+    select?: TemplateMetaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateMeta
+     */
+    omit?: TemplateMetaOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UsageCounter
+   */
+
+  export type AggregateUsageCounter = {
+    _count: UsageCounterCountAggregateOutputType | null
+    _avg: UsageCounterAvgAggregateOutputType | null
+    _sum: UsageCounterSumAggregateOutputType | null
+    _min: UsageCounterMinAggregateOutputType | null
+    _max: UsageCounterMaxAggregateOutputType | null
+  }
+
+  export type UsageCounterAvgAggregateOutputType = {
+    aiGenerationsUsed: number | null
+  }
+
+  export type UsageCounterSumAggregateOutputType = {
+    aiGenerationsUsed: number | null
+  }
+
+  export type UsageCounterMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    month: string | null
+    aiGenerationsUsed: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UsageCounterMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    month: string | null
+    aiGenerationsUsed: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UsageCounterCountAggregateOutputType = {
+    id: number
+    userId: number
+    month: number
+    aiGenerationsUsed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UsageCounterAvgAggregateInputType = {
+    aiGenerationsUsed?: true
+  }
+
+  export type UsageCounterSumAggregateInputType = {
+    aiGenerationsUsed?: true
+  }
+
+  export type UsageCounterMinAggregateInputType = {
+    id?: true
+    userId?: true
+    month?: true
+    aiGenerationsUsed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UsageCounterMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    month?: true
+    aiGenerationsUsed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UsageCounterCountAggregateInputType = {
+    id?: true
+    userId?: true
+    month?: true
+    aiGenerationsUsed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UsageCounterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UsageCounter to aggregate.
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsageCounters to fetch.
+     */
+    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UsageCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsageCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsageCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UsageCounters
+    **/
+    _count?: true | UsageCounterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UsageCounterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UsageCounterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UsageCounterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UsageCounterMaxAggregateInputType
+  }
+
+  export type GetUsageCounterAggregateType<T extends UsageCounterAggregateArgs> = {
+        [P in keyof T & keyof AggregateUsageCounter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUsageCounter[P]>
+      : GetScalarType<T[P], AggregateUsageCounter[P]>
+  }
+
+
+
+
+  export type UsageCounterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UsageCounterWhereInput
+    orderBy?: UsageCounterOrderByWithAggregationInput | UsageCounterOrderByWithAggregationInput[]
+    by: UsageCounterScalarFieldEnum[] | UsageCounterScalarFieldEnum
+    having?: UsageCounterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UsageCounterCountAggregateInputType | true
+    _avg?: UsageCounterAvgAggregateInputType
+    _sum?: UsageCounterSumAggregateInputType
+    _min?: UsageCounterMinAggregateInputType
+    _max?: UsageCounterMaxAggregateInputType
+  }
+
+  export type UsageCounterGroupByOutputType = {
+    id: string
+    userId: string
+    month: string
+    aiGenerationsUsed: number
+    createdAt: Date
+    updatedAt: Date
+    _count: UsageCounterCountAggregateOutputType | null
+    _avg: UsageCounterAvgAggregateOutputType | null
+    _sum: UsageCounterSumAggregateOutputType | null
+    _min: UsageCounterMinAggregateOutputType | null
+    _max: UsageCounterMaxAggregateOutputType | null
+  }
+
+  type GetUsageCounterGroupByPayload<T extends UsageCounterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UsageCounterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UsageCounterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UsageCounterGroupByOutputType[P]>
+            : GetScalarType<T[P], UsageCounterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UsageCounterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    month?: boolean
+    aiGenerationsUsed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["usageCounter"]>
+
+  export type UsageCounterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    month?: boolean
+    aiGenerationsUsed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["usageCounter"]>
+
+  export type UsageCounterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    month?: boolean
+    aiGenerationsUsed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["usageCounter"]>
+
+  export type UsageCounterSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    month?: boolean
+    aiGenerationsUsed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UsageCounterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "month" | "aiGenerationsUsed" | "createdAt" | "updatedAt", ExtArgs["result"]["usageCounter"]>
+
+  export type $UsageCounterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UsageCounter"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      month: string
+      aiGenerationsUsed: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["usageCounter"]>
+    composites: {}
+  }
+
+  type UsageCounterGetPayload<S extends boolean | null | undefined | UsageCounterDefaultArgs> = $Result.GetResult<Prisma.$UsageCounterPayload, S>
+
+  type UsageCounterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UsageCounterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UsageCounterCountAggregateInputType | true
+    }
+
+  export interface UsageCounterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UsageCounter'], meta: { name: 'UsageCounter' } }
+    /**
+     * Find zero or one UsageCounter that matches the filter.
+     * @param {UsageCounterFindUniqueArgs} args - Arguments to find a UsageCounter
+     * @example
+     * // Get one UsageCounter
+     * const usageCounter = await prisma.usageCounter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UsageCounterFindUniqueArgs>(args: SelectSubset<T, UsageCounterFindUniqueArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UsageCounter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UsageCounterFindUniqueOrThrowArgs} args - Arguments to find a UsageCounter
+     * @example
+     * // Get one UsageCounter
+     * const usageCounter = await prisma.usageCounter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UsageCounterFindUniqueOrThrowArgs>(args: SelectSubset<T, UsageCounterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UsageCounter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterFindFirstArgs} args - Arguments to find a UsageCounter
+     * @example
+     * // Get one UsageCounter
+     * const usageCounter = await prisma.usageCounter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UsageCounterFindFirstArgs>(args?: SelectSubset<T, UsageCounterFindFirstArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UsageCounter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterFindFirstOrThrowArgs} args - Arguments to find a UsageCounter
+     * @example
+     * // Get one UsageCounter
+     * const usageCounter = await prisma.usageCounter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UsageCounterFindFirstOrThrowArgs>(args?: SelectSubset<T, UsageCounterFindFirstOrThrowArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UsageCounters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UsageCounters
+     * const usageCounters = await prisma.usageCounter.findMany()
+     * 
+     * // Get first 10 UsageCounters
+     * const usageCounters = await prisma.usageCounter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const usageCounterWithIdOnly = await prisma.usageCounter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UsageCounterFindManyArgs>(args?: SelectSubset<T, UsageCounterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UsageCounter.
+     * @param {UsageCounterCreateArgs} args - Arguments to create a UsageCounter.
+     * @example
+     * // Create one UsageCounter
+     * const UsageCounter = await prisma.usageCounter.create({
+     *   data: {
+     *     // ... data to create a UsageCounter
+     *   }
+     * })
+     * 
+     */
+    create<T extends UsageCounterCreateArgs>(args: SelectSubset<T, UsageCounterCreateArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UsageCounters.
+     * @param {UsageCounterCreateManyArgs} args - Arguments to create many UsageCounters.
+     * @example
+     * // Create many UsageCounters
+     * const usageCounter = await prisma.usageCounter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UsageCounterCreateManyArgs>(args?: SelectSubset<T, UsageCounterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UsageCounters and returns the data saved in the database.
+     * @param {UsageCounterCreateManyAndReturnArgs} args - Arguments to create many UsageCounters.
+     * @example
+     * // Create many UsageCounters
+     * const usageCounter = await prisma.usageCounter.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UsageCounters and only return the `id`
+     * const usageCounterWithIdOnly = await prisma.usageCounter.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UsageCounterCreateManyAndReturnArgs>(args?: SelectSubset<T, UsageCounterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UsageCounter.
+     * @param {UsageCounterDeleteArgs} args - Arguments to delete one UsageCounter.
+     * @example
+     * // Delete one UsageCounter
+     * const UsageCounter = await prisma.usageCounter.delete({
+     *   where: {
+     *     // ... filter to delete one UsageCounter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UsageCounterDeleteArgs>(args: SelectSubset<T, UsageCounterDeleteArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UsageCounter.
+     * @param {UsageCounterUpdateArgs} args - Arguments to update one UsageCounter.
+     * @example
+     * // Update one UsageCounter
+     * const usageCounter = await prisma.usageCounter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UsageCounterUpdateArgs>(args: SelectSubset<T, UsageCounterUpdateArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UsageCounters.
+     * @param {UsageCounterDeleteManyArgs} args - Arguments to filter UsageCounters to delete.
+     * @example
+     * // Delete a few UsageCounters
+     * const { count } = await prisma.usageCounter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UsageCounterDeleteManyArgs>(args?: SelectSubset<T, UsageCounterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UsageCounters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UsageCounters
+     * const usageCounter = await prisma.usageCounter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UsageCounterUpdateManyArgs>(args: SelectSubset<T, UsageCounterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UsageCounters and returns the data updated in the database.
+     * @param {UsageCounterUpdateManyAndReturnArgs} args - Arguments to update many UsageCounters.
+     * @example
+     * // Update many UsageCounters
+     * const usageCounter = await prisma.usageCounter.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UsageCounters and only return the `id`
+     * const usageCounterWithIdOnly = await prisma.usageCounter.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UsageCounterUpdateManyAndReturnArgs>(args: SelectSubset<T, UsageCounterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UsageCounter.
+     * @param {UsageCounterUpsertArgs} args - Arguments to update or create a UsageCounter.
+     * @example
+     * // Update or create a UsageCounter
+     * const usageCounter = await prisma.usageCounter.upsert({
+     *   create: {
+     *     // ... data to create a UsageCounter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UsageCounter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UsageCounterUpsertArgs>(args: SelectSubset<T, UsageCounterUpsertArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UsageCounters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterCountArgs} args - Arguments to filter UsageCounters to count.
+     * @example
+     * // Count the number of UsageCounters
+     * const count = await prisma.usageCounter.count({
+     *   where: {
+     *     // ... the filter for the UsageCounters we want to count
+     *   }
+     * })
+    **/
+    count<T extends UsageCounterCountArgs>(
+      args?: Subset<T, UsageCounterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UsageCounterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UsageCounter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UsageCounterAggregateArgs>(args: Subset<T, UsageCounterAggregateArgs>): Prisma.PrismaPromise<GetUsageCounterAggregateType<T>>
+
+    /**
+     * Group by UsageCounter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsageCounterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UsageCounterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UsageCounterGroupByArgs['orderBy'] }
+        : { orderBy?: UsageCounterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UsageCounterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUsageCounterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UsageCounter model
+   */
+  readonly fields: UsageCounterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UsageCounter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UsageCounterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UsageCounter model
+   */
+  interface UsageCounterFieldRefs {
+    readonly id: FieldRef<"UsageCounter", 'String'>
+    readonly userId: FieldRef<"UsageCounter", 'String'>
+    readonly month: FieldRef<"UsageCounter", 'String'>
+    readonly aiGenerationsUsed: FieldRef<"UsageCounter", 'Int'>
+    readonly createdAt: FieldRef<"UsageCounter", 'DateTime'>
+    readonly updatedAt: FieldRef<"UsageCounter", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UsageCounter findUnique
+   */
+  export type UsageCounterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter, which UsageCounter to fetch.
+     */
+    where: UsageCounterWhereUniqueInput
+  }
+
+  /**
+   * UsageCounter findUniqueOrThrow
+   */
+  export type UsageCounterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter, which UsageCounter to fetch.
+     */
+    where: UsageCounterWhereUniqueInput
+  }
+
+  /**
+   * UsageCounter findFirst
+   */
+  export type UsageCounterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter, which UsageCounter to fetch.
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsageCounters to fetch.
+     */
+    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UsageCounters.
+     */
+    cursor?: UsageCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsageCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsageCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UsageCounters.
+     */
+    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+  }
+
+  /**
+   * UsageCounter findFirstOrThrow
+   */
+  export type UsageCounterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter, which UsageCounter to fetch.
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsageCounters to fetch.
+     */
+    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UsageCounters.
+     */
+    cursor?: UsageCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsageCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsageCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UsageCounters.
+     */
+    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+  }
+
+  /**
+   * UsageCounter findMany
+   */
+  export type UsageCounterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter, which UsageCounters to fetch.
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsageCounters to fetch.
+     */
+    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UsageCounters.
+     */
+    cursor?: UsageCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsageCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsageCounters.
+     */
+    skip?: number
+    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+  }
+
+  /**
+   * UsageCounter create
+   */
+  export type UsageCounterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * The data needed to create a UsageCounter.
+     */
+    data: XOR<UsageCounterCreateInput, UsageCounterUncheckedCreateInput>
+  }
+
+  /**
+   * UsageCounter createMany
+   */
+  export type UsageCounterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UsageCounters.
+     */
+    data: UsageCounterCreateManyInput | UsageCounterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UsageCounter createManyAndReturn
+   */
+  export type UsageCounterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * The data used to create many UsageCounters.
+     */
+    data: UsageCounterCreateManyInput | UsageCounterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UsageCounter update
+   */
+  export type UsageCounterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * The data needed to update a UsageCounter.
+     */
+    data: XOR<UsageCounterUpdateInput, UsageCounterUncheckedUpdateInput>
+    /**
+     * Choose, which UsageCounter to update.
+     */
+    where: UsageCounterWhereUniqueInput
+  }
+
+  /**
+   * UsageCounter updateMany
+   */
+  export type UsageCounterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UsageCounters.
+     */
+    data: XOR<UsageCounterUpdateManyMutationInput, UsageCounterUncheckedUpdateManyInput>
+    /**
+     * Filter which UsageCounters to update
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * Limit how many UsageCounters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UsageCounter updateManyAndReturn
+   */
+  export type UsageCounterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * The data used to update UsageCounters.
+     */
+    data: XOR<UsageCounterUpdateManyMutationInput, UsageCounterUncheckedUpdateManyInput>
+    /**
+     * Filter which UsageCounters to update
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * Limit how many UsageCounters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UsageCounter upsert
+   */
+  export type UsageCounterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * The filter to search for the UsageCounter to update in case it exists.
+     */
+    where: UsageCounterWhereUniqueInput
+    /**
+     * In case the UsageCounter found by the `where` argument doesn't exist, create a new UsageCounter with this data.
+     */
+    create: XOR<UsageCounterCreateInput, UsageCounterUncheckedCreateInput>
+    /**
+     * In case the UsageCounter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UsageCounterUpdateInput, UsageCounterUncheckedUpdateInput>
+  }
+
+  /**
+   * UsageCounter delete
+   */
+  export type UsageCounterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+    /**
+     * Filter which UsageCounter to delete.
+     */
+    where: UsageCounterWhereUniqueInput
+  }
+
+  /**
+   * UsageCounter deleteMany
+   */
+  export type UsageCounterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UsageCounters to delete
+     */
+    where?: UsageCounterWhereInput
+    /**
+     * Limit how many UsageCounters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UsageCounter without action
+   */
+  export type UsageCounterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsageCounter
+     */
+    select?: UsageCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsageCounter
+     */
+    omit?: UsageCounterOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6806,6 +13469,76 @@ export namespace Prisma {
   };
 
   export type UserPreferencesScalarFieldEnum = (typeof UserPreferencesScalarFieldEnum)[keyof typeof UserPreferencesScalarFieldEnum]
+
+
+  export const SubscriptionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    razorpaySubscriptionId: 'razorpaySubscriptionId',
+    razorpayCustomerId: 'razorpayCustomerId',
+    status: 'status',
+    currentPeriodEnd: 'currentPeriodEnd',
+    trialEndsAt: 'trialEndsAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+  export const AdminScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    passwordHash: 'passwordHash',
+    createdAt: 'createdAt'
+  };
+
+  export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
+  export const UserStatusScalarFieldEnum: {
+    userId: 'userId',
+    isBlocked: 'isBlocked',
+    blockedAt: 'blockedAt',
+    blockedReason: 'blockedReason',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserStatusScalarFieldEnum = (typeof UserStatusScalarFieldEnum)[keyof typeof UserStatusScalarFieldEnum]
+
+
+  export const PlanConfigScalarFieldEnum: {
+    id: 'id',
+    proPriceInr: 'proPriceInr',
+    freeResumeLimit: 'freeResumeLimit',
+    freeAiGenerationLimit: 'freeAiGenerationLimit',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlanConfigScalarFieldEnum = (typeof PlanConfigScalarFieldEnum)[keyof typeof PlanConfigScalarFieldEnum]
+
+
+  export const TemplateMetaScalarFieldEnum: {
+    templateId: 'templateId',
+    isPro: 'isPro',
+    isActive: 'isActive',
+    isFeatured: 'isFeatured',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TemplateMetaScalarFieldEnum = (typeof TemplateMetaScalarFieldEnum)[keyof typeof TemplateMetaScalarFieldEnum]
+
+
+  export const UsageCounterScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    month: 'month',
+    aiGenerationsUsed: 'aiGenerationsUsed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UsageCounterScalarFieldEnum = (typeof UsageCounterScalarFieldEnum)[keyof typeof UsageCounterScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6914,6 +13647,27 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SubscriptionStatus'
+   */
+  export type EnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SubscriptionStatus[]'
+   */
+  export type ListEnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7296,6 +14050,343 @@ export namespace Prisma {
     preferences?: JsonWithAggregatesFilter<"UserPreferences">
     createdAt?: DateTimeWithAggregatesFilter<"UserPreferences"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserPreferences"> | Date | string
+  }
+
+  export type SubscriptionWhereInput = {
+    AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    OR?: SubscriptionWhereInput[]
+    NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    id?: UuidFilter<"Subscription"> | string
+    userId?: StringFilter<"Subscription"> | string
+    razorpaySubscriptionId?: StringNullableFilter<"Subscription"> | string | null
+    razorpayCustomerId?: StringNullableFilter<"Subscription"> | string | null
+    status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
+    currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    trialEndsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+  }
+
+  export type SubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    razorpaySubscriptionId?: SortOrderInput | SortOrder
+    razorpayCustomerId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    currentPeriodEnd?: SortOrderInput | SortOrder
+    trialEndsAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    razorpaySubscriptionId?: string
+    AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    OR?: SubscriptionWhereInput[]
+    NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    razorpayCustomerId?: StringNullableFilter<"Subscription"> | string | null
+    status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
+    currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    trialEndsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+  }, "id" | "userId" | "razorpaySubscriptionId">
+
+  export type SubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    razorpaySubscriptionId?: SortOrderInput | SortOrder
+    razorpayCustomerId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    currentPeriodEnd?: SortOrderInput | SortOrder
+    trialEndsAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SubscriptionCountOrderByAggregateInput
+    _max?: SubscriptionMaxOrderByAggregateInput
+    _min?: SubscriptionMinOrderByAggregateInput
+  }
+
+  export type SubscriptionScalarWhereWithAggregatesInput = {
+    AND?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
+    OR?: SubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Subscription"> | string
+    userId?: StringWithAggregatesFilter<"Subscription"> | string
+    razorpaySubscriptionId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    razorpayCustomerId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    status?: EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
+    currentPeriodEnd?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    trialEndsAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  }
+
+  export type AdminWhereInput = {
+    AND?: AdminWhereInput | AdminWhereInput[]
+    OR?: AdminWhereInput[]
+    NOT?: AdminWhereInput | AdminWhereInput[]
+    id?: UuidFilter<"Admin"> | string
+    email?: StringFilter<"Admin"> | string
+    passwordHash?: StringFilter<"Admin"> | string
+    createdAt?: DateTimeFilter<"Admin"> | Date | string
+  }
+
+  export type AdminOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    passwordHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: AdminWhereInput | AdminWhereInput[]
+    OR?: AdminWhereInput[]
+    NOT?: AdminWhereInput | AdminWhereInput[]
+    passwordHash?: StringFilter<"Admin"> | string
+    createdAt?: DateTimeFilter<"Admin"> | Date | string
+  }, "id" | "email">
+
+  export type AdminOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    passwordHash?: SortOrder
+    createdAt?: SortOrder
+    _count?: AdminCountOrderByAggregateInput
+    _max?: AdminMaxOrderByAggregateInput
+    _min?: AdminMinOrderByAggregateInput
+  }
+
+  export type AdminScalarWhereWithAggregatesInput = {
+    AND?: AdminScalarWhereWithAggregatesInput | AdminScalarWhereWithAggregatesInput[]
+    OR?: AdminScalarWhereWithAggregatesInput[]
+    NOT?: AdminScalarWhereWithAggregatesInput | AdminScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Admin"> | string
+    email?: StringWithAggregatesFilter<"Admin"> | string
+    passwordHash?: StringWithAggregatesFilter<"Admin"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
+  }
+
+  export type UserStatusWhereInput = {
+    AND?: UserStatusWhereInput | UserStatusWhereInput[]
+    OR?: UserStatusWhereInput[]
+    NOT?: UserStatusWhereInput | UserStatusWhereInput[]
+    userId?: StringFilter<"UserStatus"> | string
+    isBlocked?: BoolFilter<"UserStatus"> | boolean
+    blockedAt?: DateTimeNullableFilter<"UserStatus"> | Date | string | null
+    blockedReason?: StringNullableFilter<"UserStatus"> | string | null
+    updatedAt?: DateTimeFilter<"UserStatus"> | Date | string
+  }
+
+  export type UserStatusOrderByWithRelationInput = {
+    userId?: SortOrder
+    isBlocked?: SortOrder
+    blockedAt?: SortOrderInput | SortOrder
+    blockedReason?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserStatusWhereUniqueInput = Prisma.AtLeast<{
+    userId?: string
+    AND?: UserStatusWhereInput | UserStatusWhereInput[]
+    OR?: UserStatusWhereInput[]
+    NOT?: UserStatusWhereInput | UserStatusWhereInput[]
+    isBlocked?: BoolFilter<"UserStatus"> | boolean
+    blockedAt?: DateTimeNullableFilter<"UserStatus"> | Date | string | null
+    blockedReason?: StringNullableFilter<"UserStatus"> | string | null
+    updatedAt?: DateTimeFilter<"UserStatus"> | Date | string
+  }, "userId">
+
+  export type UserStatusOrderByWithAggregationInput = {
+    userId?: SortOrder
+    isBlocked?: SortOrder
+    blockedAt?: SortOrderInput | SortOrder
+    blockedReason?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    _count?: UserStatusCountOrderByAggregateInput
+    _max?: UserStatusMaxOrderByAggregateInput
+    _min?: UserStatusMinOrderByAggregateInput
+  }
+
+  export type UserStatusScalarWhereWithAggregatesInput = {
+    AND?: UserStatusScalarWhereWithAggregatesInput | UserStatusScalarWhereWithAggregatesInput[]
+    OR?: UserStatusScalarWhereWithAggregatesInput[]
+    NOT?: UserStatusScalarWhereWithAggregatesInput | UserStatusScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"UserStatus"> | string
+    isBlocked?: BoolWithAggregatesFilter<"UserStatus"> | boolean
+    blockedAt?: DateTimeNullableWithAggregatesFilter<"UserStatus"> | Date | string | null
+    blockedReason?: StringNullableWithAggregatesFilter<"UserStatus"> | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"UserStatus"> | Date | string
+  }
+
+  export type PlanConfigWhereInput = {
+    AND?: PlanConfigWhereInput | PlanConfigWhereInput[]
+    OR?: PlanConfigWhereInput[]
+    NOT?: PlanConfigWhereInput | PlanConfigWhereInput[]
+    id?: StringFilter<"PlanConfig"> | string
+    proPriceInr?: IntFilter<"PlanConfig"> | number
+    freeResumeLimit?: IntFilter<"PlanConfig"> | number
+    freeAiGenerationLimit?: IntFilter<"PlanConfig"> | number
+    updatedAt?: DateTimeFilter<"PlanConfig"> | Date | string
+  }
+
+  export type PlanConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlanConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PlanConfigWhereInput | PlanConfigWhereInput[]
+    OR?: PlanConfigWhereInput[]
+    NOT?: PlanConfigWhereInput | PlanConfigWhereInput[]
+    proPriceInr?: IntFilter<"PlanConfig"> | number
+    freeResumeLimit?: IntFilter<"PlanConfig"> | number
+    freeAiGenerationLimit?: IntFilter<"PlanConfig"> | number
+    updatedAt?: DateTimeFilter<"PlanConfig"> | Date | string
+  }, "id">
+
+  export type PlanConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlanConfigCountOrderByAggregateInput
+    _avg?: PlanConfigAvgOrderByAggregateInput
+    _max?: PlanConfigMaxOrderByAggregateInput
+    _min?: PlanConfigMinOrderByAggregateInput
+    _sum?: PlanConfigSumOrderByAggregateInput
+  }
+
+  export type PlanConfigScalarWhereWithAggregatesInput = {
+    AND?: PlanConfigScalarWhereWithAggregatesInput | PlanConfigScalarWhereWithAggregatesInput[]
+    OR?: PlanConfigScalarWhereWithAggregatesInput[]
+    NOT?: PlanConfigScalarWhereWithAggregatesInput | PlanConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlanConfig"> | string
+    proPriceInr?: IntWithAggregatesFilter<"PlanConfig"> | number
+    freeResumeLimit?: IntWithAggregatesFilter<"PlanConfig"> | number
+    freeAiGenerationLimit?: IntWithAggregatesFilter<"PlanConfig"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"PlanConfig"> | Date | string
+  }
+
+  export type TemplateMetaWhereInput = {
+    AND?: TemplateMetaWhereInput | TemplateMetaWhereInput[]
+    OR?: TemplateMetaWhereInput[]
+    NOT?: TemplateMetaWhereInput | TemplateMetaWhereInput[]
+    templateId?: StringFilter<"TemplateMeta"> | string
+    isPro?: BoolFilter<"TemplateMeta"> | boolean
+    isActive?: BoolFilter<"TemplateMeta"> | boolean
+    isFeatured?: BoolFilter<"TemplateMeta"> | boolean
+    updatedAt?: DateTimeFilter<"TemplateMeta"> | Date | string
+  }
+
+  export type TemplateMetaOrderByWithRelationInput = {
+    templateId?: SortOrder
+    isPro?: SortOrder
+    isActive?: SortOrder
+    isFeatured?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateMetaWhereUniqueInput = Prisma.AtLeast<{
+    templateId?: string
+    AND?: TemplateMetaWhereInput | TemplateMetaWhereInput[]
+    OR?: TemplateMetaWhereInput[]
+    NOT?: TemplateMetaWhereInput | TemplateMetaWhereInput[]
+    isPro?: BoolFilter<"TemplateMeta"> | boolean
+    isActive?: BoolFilter<"TemplateMeta"> | boolean
+    isFeatured?: BoolFilter<"TemplateMeta"> | boolean
+    updatedAt?: DateTimeFilter<"TemplateMeta"> | Date | string
+  }, "templateId">
+
+  export type TemplateMetaOrderByWithAggregationInput = {
+    templateId?: SortOrder
+    isPro?: SortOrder
+    isActive?: SortOrder
+    isFeatured?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TemplateMetaCountOrderByAggregateInput
+    _max?: TemplateMetaMaxOrderByAggregateInput
+    _min?: TemplateMetaMinOrderByAggregateInput
+  }
+
+  export type TemplateMetaScalarWhereWithAggregatesInput = {
+    AND?: TemplateMetaScalarWhereWithAggregatesInput | TemplateMetaScalarWhereWithAggregatesInput[]
+    OR?: TemplateMetaScalarWhereWithAggregatesInput[]
+    NOT?: TemplateMetaScalarWhereWithAggregatesInput | TemplateMetaScalarWhereWithAggregatesInput[]
+    templateId?: StringWithAggregatesFilter<"TemplateMeta"> | string
+    isPro?: BoolWithAggregatesFilter<"TemplateMeta"> | boolean
+    isActive?: BoolWithAggregatesFilter<"TemplateMeta"> | boolean
+    isFeatured?: BoolWithAggregatesFilter<"TemplateMeta"> | boolean
+    updatedAt?: DateTimeWithAggregatesFilter<"TemplateMeta"> | Date | string
+  }
+
+  export type UsageCounterWhereInput = {
+    AND?: UsageCounterWhereInput | UsageCounterWhereInput[]
+    OR?: UsageCounterWhereInput[]
+    NOT?: UsageCounterWhereInput | UsageCounterWhereInput[]
+    id?: UuidFilter<"UsageCounter"> | string
+    userId?: StringFilter<"UsageCounter"> | string
+    month?: StringFilter<"UsageCounter"> | string
+    aiGenerationsUsed?: IntFilter<"UsageCounter"> | number
+    createdAt?: DateTimeFilter<"UsageCounter"> | Date | string
+    updatedAt?: DateTimeFilter<"UsageCounter"> | Date | string
+  }
+
+  export type UsageCounterOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    month?: SortOrder
+    aiGenerationsUsed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsageCounterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_month?: UsageCounterUserIdMonthCompoundUniqueInput
+    AND?: UsageCounterWhereInput | UsageCounterWhereInput[]
+    OR?: UsageCounterWhereInput[]
+    NOT?: UsageCounterWhereInput | UsageCounterWhereInput[]
+    userId?: StringFilter<"UsageCounter"> | string
+    month?: StringFilter<"UsageCounter"> | string
+    aiGenerationsUsed?: IntFilter<"UsageCounter"> | number
+    createdAt?: DateTimeFilter<"UsageCounter"> | Date | string
+    updatedAt?: DateTimeFilter<"UsageCounter"> | Date | string
+  }, "id" | "userId_month">
+
+  export type UsageCounterOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    month?: SortOrder
+    aiGenerationsUsed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UsageCounterCountOrderByAggregateInput
+    _avg?: UsageCounterAvgOrderByAggregateInput
+    _max?: UsageCounterMaxOrderByAggregateInput
+    _min?: UsageCounterMinOrderByAggregateInput
+    _sum?: UsageCounterSumOrderByAggregateInput
+  }
+
+  export type UsageCounterScalarWhereWithAggregatesInput = {
+    AND?: UsageCounterScalarWhereWithAggregatesInput | UsageCounterScalarWhereWithAggregatesInput[]
+    OR?: UsageCounterScalarWhereWithAggregatesInput[]
+    NOT?: UsageCounterScalarWhereWithAggregatesInput | UsageCounterScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"UsageCounter"> | string
+    userId?: StringWithAggregatesFilter<"UsageCounter"> | string
+    month?: StringWithAggregatesFilter<"UsageCounter"> | string
+    aiGenerationsUsed?: IntWithAggregatesFilter<"UsageCounter"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"UsageCounter"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UsageCounter"> | Date | string
   }
 
   export type ResumeCreateInput = {
@@ -7706,6 +14797,370 @@ export namespace Prisma {
   export type UserPreferencesUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     preferences?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCreateInput = {
+    id?: string
+    userId: string
+    razorpaySubscriptionId?: string | null
+    razorpayCustomerId?: string | null
+    status?: $Enums.SubscriptionStatus
+    currentPeriodEnd?: Date | string | null
+    trialEndsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    razorpaySubscriptionId?: string | null
+    razorpayCustomerId?: string | null
+    status?: $Enums.SubscriptionStatus
+    currentPeriodEnd?: Date | string | null
+    trialEndsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    razorpaySubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    razorpaySubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCreateManyInput = {
+    id?: string
+    userId: string
+    razorpaySubscriptionId?: string | null
+    razorpayCustomerId?: string | null
+    status?: $Enums.SubscriptionStatus
+    currentPeriodEnd?: Date | string | null
+    trialEndsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    razorpaySubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    razorpaySubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminCreateInput = {
+    id?: string
+    email: string
+    passwordHash: string
+    createdAt?: Date | string
+  }
+
+  export type AdminUncheckedCreateInput = {
+    id?: string
+    email: string
+    passwordHash: string
+    createdAt?: Date | string
+  }
+
+  export type AdminUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminCreateManyInput = {
+    id?: string
+    email: string
+    passwordHash: string
+    createdAt?: Date | string
+  }
+
+  export type AdminUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserStatusCreateInput = {
+    userId: string
+    isBlocked?: boolean
+    blockedAt?: Date | string | null
+    blockedReason?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type UserStatusUncheckedCreateInput = {
+    userId: string
+    isBlocked?: boolean
+    blockedAt?: Date | string | null
+    blockedReason?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type UserStatusUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserStatusUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserStatusCreateManyInput = {
+    userId: string
+    isBlocked?: boolean
+    blockedAt?: Date | string | null
+    blockedReason?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type UserStatusUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserStatusUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    blockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    blockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlanConfigCreateInput = {
+    id?: string
+    proPriceInr?: number
+    freeResumeLimit?: number
+    freeAiGenerationLimit?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlanConfigUncheckedCreateInput = {
+    id?: string
+    proPriceInr?: number
+    freeResumeLimit?: number
+    freeAiGenerationLimit?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlanConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proPriceInr?: IntFieldUpdateOperationsInput | number
+    freeResumeLimit?: IntFieldUpdateOperationsInput | number
+    freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlanConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proPriceInr?: IntFieldUpdateOperationsInput | number
+    freeResumeLimit?: IntFieldUpdateOperationsInput | number
+    freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlanConfigCreateManyInput = {
+    id?: string
+    proPriceInr?: number
+    freeResumeLimit?: number
+    freeAiGenerationLimit?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlanConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proPriceInr?: IntFieldUpdateOperationsInput | number
+    freeResumeLimit?: IntFieldUpdateOperationsInput | number
+    freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlanConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proPriceInr?: IntFieldUpdateOperationsInput | number
+    freeResumeLimit?: IntFieldUpdateOperationsInput | number
+    freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateMetaCreateInput = {
+    templateId: string
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type TemplateMetaUncheckedCreateInput = {
+    templateId: string
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type TemplateMetaUpdateInput = {
+    templateId?: StringFieldUpdateOperationsInput | string
+    isPro?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateMetaUncheckedUpdateInput = {
+    templateId?: StringFieldUpdateOperationsInput | string
+    isPro?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateMetaCreateManyInput = {
+    templateId: string
+    isPro?: boolean
+    isActive?: boolean
+    isFeatured?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type TemplateMetaUpdateManyMutationInput = {
+    templateId?: StringFieldUpdateOperationsInput | string
+    isPro?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateMetaUncheckedUpdateManyInput = {
+    templateId?: StringFieldUpdateOperationsInput | string
+    isPro?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsageCounterCreateInput = {
+    id?: string
+    userId: string
+    month: string
+    aiGenerationsUsed?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsageCounterUncheckedCreateInput = {
+    id?: string
+    userId: string
+    month: string
+    aiGenerationsUsed?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsageCounterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsageCounterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsageCounterCreateManyInput = {
+    id?: string
+    userId: string
+    month: string
+    aiGenerationsUsed?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsageCounterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsageCounterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8217,6 +15672,244 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubscriptionStatusFilter<$PrismaModel> | $Enums.SubscriptionStatus
+  }
+
+  export type SubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    razorpaySubscriptionId?: SortOrder
+    razorpayCustomerId?: SortOrder
+    status?: SortOrder
+    currentPeriodEnd?: SortOrder
+    trialEndsAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    razorpaySubscriptionId?: SortOrder
+    razorpayCustomerId?: SortOrder
+    status?: SortOrder
+    currentPeriodEnd?: SortOrder
+    trialEndsAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    razorpaySubscriptionId?: SortOrder
+    razorpayCustomerId?: SortOrder
+    status?: SortOrder
+    currentPeriodEnd?: SortOrder
+    trialEndsAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumSubscriptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubscriptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubscriptionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+  }
+
+  export type AdminCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    passwordHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    passwordHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    passwordHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type UserStatusCountOrderByAggregateInput = {
+    userId?: SortOrder
+    isBlocked?: SortOrder
+    blockedAt?: SortOrder
+    blockedReason?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserStatusMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    isBlocked?: SortOrder
+    blockedAt?: SortOrder
+    blockedReason?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserStatusMinOrderByAggregateInput = {
+    userId?: SortOrder
+    isBlocked?: SortOrder
+    blockedAt?: SortOrder
+    blockedReason?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type PlanConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlanConfigAvgOrderByAggregateInput = {
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+  }
+
+  export type PlanConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlanConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlanConfigSumOrderByAggregateInput = {
+    proPriceInr?: SortOrder
+    freeResumeLimit?: SortOrder
+    freeAiGenerationLimit?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type TemplateMetaCountOrderByAggregateInput = {
+    templateId?: SortOrder
+    isPro?: SortOrder
+    isActive?: SortOrder
+    isFeatured?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateMetaMaxOrderByAggregateInput = {
+    templateId?: SortOrder
+    isPro?: SortOrder
+    isActive?: SortOrder
+    isFeatured?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateMetaMinOrderByAggregateInput = {
+    templateId?: SortOrder
+    isPro?: SortOrder
+    isActive?: SortOrder
+    isFeatured?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsageCounterUserIdMonthCompoundUniqueInput = {
+    userId: string
+    month: string
+  }
+
+  export type UsageCounterCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    month?: SortOrder
+    aiGenerationsUsed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsageCounterAvgOrderByAggregateInput = {
+    aiGenerationsUsed?: SortOrder
+  }
+
+  export type UsageCounterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    month?: SortOrder
+    aiGenerationsUsed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsageCounterMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    month?: SortOrder
+    aiGenerationsUsed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsageCounterSumOrderByAggregateInput = {
+    aiGenerationsUsed?: SortOrder
+  }
+
   export type CoverLetterCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -8360,6 +16053,22 @@ export namespace Prisma {
   export type JobApplicationUpdatetagsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SubscriptionStatus
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -8617,6 +16326,63 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubscriptionStatusFilter<$PrismaModel> | $Enums.SubscriptionStatus
+  }
+
+  export type NestedEnumSubscriptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubscriptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubscriptionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type CoverLetterCreateWithoutResumeInput = {

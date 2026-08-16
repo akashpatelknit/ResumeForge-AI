@@ -89,3 +89,96 @@ model UserPreferences {
 
   @@map("user_preferences")
 }
+
+enum SubscriptionStatus {
+  trialing
+  active
+  past_due
+  cancelled
+}
+
+model Subscription {
+  id                     String             @id @default(uuid()) @db.Uuid
+  userId                 String             @unique @map("user_id")
+  razorpaySubscriptionId String?            @unique @map("razorpay_subscription_id")
+  razorpayCustomerId     String?            @map("razorpay_customer_id")
+  status                 SubscriptionStatus @default(trialing)
+  currentPeriodEnd       DateTime?          @map("current_period_end") @db.Timestamptz(6)
+  trialEndsAt            DateTime?          @map("trial_ends_at") @db.Timestamptz(6)
+  createdAt              DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("subscriptions")
+}
+
+// Single-row table (there will only ever be one Admin) backing the
+// standalone admin dashboard's own login (app/api/admin/login/route.ts).
+// Deliberately has no relation to Clerk's User — admin auth is a fully
+// separate system, see lib/admin/session.ts.
+model Admin {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("admins")
+}
+
+// Keyed by Clerk's userId (not a relation — Clerk owns that identity, this
+// table only tracks the one flag the admin dashboard needs to enforce).
+// Absence of a row means "not blocked" — only written when an admin
+// actually blocks someone, see app/api/admin/users/[userId]/block/route.ts.
+model UserStatus {
+  userId        String    @id @map("user_id")
+  isBlocked     Boolean   @default(false) @map("is_blocked")
+  blockedAt     DateTime? @map("blocked_at") @db.Timestamptz(6)
+  blockedReason String?   @map("blocked_reason")
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("user_status")
+}
+
+// Single-row table (id is always the literal "singleton") holding the
+// values that used to be hardcoded constants (FREE_RESUME_LIMIT,
+// FREE_AI_GENERATION_LIMIT) so the admin Plans & Pricing screen can change
+// them without a deploy. See lib/subscription/planConfig.ts.
+model PlanConfig {
+  id                    String   @id @default("singleton")
+  proPriceInr           Int      @default(149) @map("pro_price_inr")
+  freeResumeLimit       Int      @default(3) @map("free_resume_limit")
+  freeAiGenerationLimit Int      @default(15) @map("free_ai_generation_limit")
+  updatedAt             DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("plan_config")
+}
+
+// Admin-managed overlay on top of the static template registry
+// (config/templates.ts) — keyed by that file's Template.id. Metadata only
+// (see lib/admin/templates.ts); the consumer-facing template selector does
+// not currently read this table, see the admin Templates page for why.
+model TemplateMeta {
+  templateId String   @id @map("template_id")
+  isPro      Boolean  @default(false) @map("is_pro")
+  isActive   Boolean  @default(true) @map("is_active")
+  isFeatured Boolean  @default(false) @map("is_featured")
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("template_meta")
+}
+
+// One row per user per calendar month (e.g. "2026-08") — resets naturally
+// by simply starting a new row rather than a scheduled job zeroing a
+// counter. Only free-tier usage is ever recorded here (see
+// lib/subscription/checkUsageLimit.ts) since it exists purely to enforce
+// the free-tier AI generation cap.
+model UsageCounter {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @map("user_id")
+  month             String
+  aiGenerationsUsed Int      @default(0) @map("ai_generations_used")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([userId, month])
+  @@map("usage_counters")
+}

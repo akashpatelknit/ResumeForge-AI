@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 import { Sparkles, BarChart2, AlertCircle, RefreshCw } from "lucide-react";
 import ATSScoreCard from "./ATSScoreCard";
-import type { AnalyzeJdResult } from "@/lib/ai/generateAnalyzeJd";
+import type { AnalyzeJdResult, AtsSuggestion } from "@/lib/ai/generateAnalyzeJd";
+import { applyAtsSuggestion, type ApplySuggestionResult } from "@/lib/ats/applySuggestion";
+import { useResumeStore } from "@/store/resumeStore";
 
 interface JobDescriptionAnalyzerProps {
   // The resume to analyze against — the real currently-selected/open resume,
@@ -21,6 +24,9 @@ export default function JobDescriptionAnalyzer({
   resumeId,
   layout = "split",
 }: JobDescriptionAnalyzerProps) {
+  const { userId } = useAuth();
+  const { currentResume, loadResume, saveResume, addSkill, updateSkill, updateExperience, updateProject } =
+    useResumeStore();
   const [jobDescription, setJobDescription] = useState("");
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -32,6 +38,35 @@ export default function JobDescriptionAnalyzer({
   const canAnalyze = !!resumeId && jobDescription.trim().length > 0;
   const isRegenerating = status === "loading" && result !== null;
 
+  // This component is mounted in two places (see ATSScoreButton.tsx, used
+  // inside the builder where the store's currentResume already IS this
+  // resume; and the standalone Job Analyzer dashboard page, which picks a
+  // resume independently of the store). Applying a suggestion has to go
+  // through the same resumeStore mutators the rest of the builder uses —
+  // so keep the store's currentResume in sync with whichever resume this
+  // component is analyzing, in both places, rather than only working in one.
+  useEffect(() => {
+    if (!resumeId || !userId) return;
+    if (currentResume?.id === resumeId) return;
+    loadResume(resumeId, userId);
+    // Only re-sync when the target resumeId changes — not on every
+    // currentResume update (that would re-fetch on every keystroke-driven
+    // store write, e.g. right after applying a suggestion).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeId, userId]);
+
+  const handleApplySuggestion = (suggestion: AtsSuggestion): ApplySuggestionResult => {
+    if (!currentResume || currentResume.id !== resumeId) {
+      return { ok: false, message: "Resume isn't loaded yet — try again in a moment." };
+    }
+    return applyAtsSuggestion(suggestion, currentResume, {
+      addSkill,
+      updateSkill,
+      updateExperience,
+      updateProject,
+    });
+  };
+
   const runAnalysis = async () => {
     if (!resumeId || !jobDescription.trim()) return;
 
@@ -39,6 +74,18 @@ export default function JobDescriptionAnalyzer({
     setError(null);
 
     try {
+      // /api/ai/analyze-jd re-reads the resume from the database, not from
+      // client state — this app has no background autosave (hooks/useAutoSave.ts
+      // exists but isn't wired into the builder), so without this, hitting
+      // "Re-analyze" right after applying a suggestion would analyze the
+      // resume as it was *before* that change. Only meaningful once the
+      // store is actually holding this resume; on the very first analysis
+      // (or if the sync effect above hasn't caught up yet) there's nothing
+      // of this resume's to save, so skip it rather than block on a no-op.
+      if (currentResume?.id === resumeId) {
+        await saveResume();
+      }
+
       const res = await fetch("/api/ai/analyze-jd", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -172,6 +219,7 @@ export default function JobDescriptionAnalyzer({
           previousScore={previousScore}
           onRegenerate={runAnalysis}
           isRegenerating={isRegenerating}
+          onApplySuggestion={handleApplySuggestion}
         />
       </>
     );

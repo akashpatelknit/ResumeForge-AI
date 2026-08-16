@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
 import {
   Sparkles,
   Loader2,
@@ -278,10 +279,8 @@ export default function TailorResumeModal({
         }),
       });
 
+      await assertOkOrShowUpgrade(res, "Failed to save tailored resume");
       const newResume = await res.json();
-      if (!res.ok) {
-        throw new Error(newResume?.error || "Failed to save tailored resume");
-      }
 
       toast.success("Tailored resume saved as a new resume.");
       suggestTrackerEntry({
@@ -292,6 +291,7 @@ export default function TailorResumeModal({
       onOpenChange(false);
       router.push(`/builder/${newResume.id}`);
     } catch (err) {
+      if (err instanceof UpgradeRequiredError) return;
       toast.error(
         err instanceof Error ? err.message : "Failed to save tailored resume",
       );

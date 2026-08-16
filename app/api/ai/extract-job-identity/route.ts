@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { extractJobIdentity } from "@/lib/ai/extractJobIdentity";
+import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 
 // Identifies a company name/role title from a pasted job description —
 // used only to decide whether the "Track this application?" prompt on the
@@ -11,6 +12,9 @@ export async function POST(req: Request) {
   if (!userId) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const gate = await checkAiGate(userId);
+  if (!gate.allowed) return gate.response;
 
   try {
     const body = await req.json();
@@ -25,6 +29,7 @@ export async function POST(req: Request) {
     }
 
     const result = await extractJobIdentity(jobDescription);
+    await recordAiGeneration(userId, gate.plan);
     return Response.json({ result });
   } catch (error) {
     console.error("Failed to extract job identity:", error);

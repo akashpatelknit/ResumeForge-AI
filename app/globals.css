@@ -38,6 +38,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-upload: var(--brand-upload);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -80,6 +84,18 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Global brand accent tokens — the purple/blue/pink identity used for
+     gradient text/accents across the product. Additive on top of the
+     existing neutral --background/--foreground/--border/--muted-foreground
+     tokens above (which already resolve to near-white/near-black/light-gray
+     and didn't need changing). Defined once here so any page can reference
+     them via the bg-brand-, text-brand- and border-brand- utilities instead
+     of hardcoding hex values. */
+  --brand-purple: #7c3aed;
+  --brand-blue: #4f46e5;
+  --brand-pink: #ec4899;
+  --brand-upload: #faf5ff;
 }
 
 .dark {
@@ -150,6 +166,229 @@
   }
   .card-hover {
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Landing-page-specific gradient, using the --brand-* tokens above.
+     Deliberately separate from .text-gradient/.bg-gradient-hero (which
+     stay untouched, unchanged colors, for every page already using them). */
+  .text-gradient-landing {
+    background: linear-gradient(
+      90deg,
+      var(--brand-purple) 0%,
+      var(--brand-blue) 55%,
+      var(--brand-pink) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Dropzone signature motion — a slow idle float and a scanning sweep
+     used only while a resume is being read, so it reads as purposeful
+     ("reading" the document) rather than decorative. */
+  .animate-float-gentle {
+    animation: float-gentle 3.6s ease-in-out infinite;
+  }
+  .animate-scan-line {
+    animation: scan-line 1.8s ease-in-out infinite;
+  }
+  .animate-shimmer {
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  /* Hero motion system — slow, low-amplitude ambient life for the first
+     viewport (headline gradient drift, background blobs, illustration
+     glow/particles/icons). Every animation here is transform/opacity/
+     filter only, and every one is disabled under prefers-reduced-motion
+     below. */
+  .animate-gradient-shift {
+    background-size: 200% auto;
+    animation: gradient-shift 7s ease-in-out infinite;
+  }
+  .animate-ambient-drift-a {
+    animation: ambient-drift-a 16s ease-in-out infinite;
+  }
+  .animate-ambient-drift-b {
+    animation: ambient-drift-b 20s ease-in-out infinite;
+  }
+  .animate-ambient-drift-c {
+    animation: ambient-drift-c 18s ease-in-out infinite;
+  }
+  .animate-glow-breathe {
+    animation: glow-breathe 6s ease-in-out infinite;
+  }
+  .animate-hero-icon-float {
+    animation: hero-icon-float 3.5s ease-in-out infinite;
+  }
+  .animate-hero-icon-float-x {
+    animation: hero-icon-float-x 4s ease-in-out infinite;
+  }
+  .animate-hero-icon-rotate {
+    animation: hero-icon-rotate 4.2s ease-in-out infinite;
+  }
+  .animate-hero-particle {
+    animation: hero-particle 6s ease-in-out infinite;
+  }
+  .animate-hero-sparkle {
+    animation: hero-sparkle-twinkle 3.2s ease-in-out infinite;
+  }
+}
+
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes ambient-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(24px, -18px) scale(1.06);
+  }
+}
+
+@keyframes ambient-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-20px, 14px) scale(1.05);
+  }
+}
+
+@keyframes ambient-drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(16px, 18px) scale(1.04);
+  }
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-icon-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes hero-icon-float-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes hero-icon-rotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes hero-particle {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translate(var(--particle-x, 6px), var(--particle-y, -8px));
+    opacity: 0.5;
+  }
+}
+
+@keyframes hero-sparkle-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: rotate(10deg) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-shift {
+    background-size: 100% auto;
+    animation: none;
+  }
+  .animate-ambient-drift-a,
+  .animate-ambient-drift-b,
+  .animate-ambient-drift-c,
+  .animate-glow-breathe,
+  .animate-hero-icon-float,
+  .animate-hero-icon-float-x,
+  .animate-hero-icon-rotate,
+  .animate-hero-particle,
+  .animate-hero-sparkle {
+    animation: none;
   }
 }
 

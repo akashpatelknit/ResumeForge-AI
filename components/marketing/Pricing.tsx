@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -8,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
+import { motion } from "framer-motion";
 
 const tiers = [
   {
@@ -63,44 +66,62 @@ const Pricing = () => (
         </p>
       </div>
 
-      <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl items-start gap-6 lg:grid-cols-3">
         {tiers.map((tier) => (
-          <Card
+          <motion.div
             key={tier.name}
-            className={`relative flex flex-col ${tier.popular ? "border-primary shadow-lg shadow-primary/10 scale-105" : "border"}`}
+            whileHover={{ y: tier.popular ? -10 : -6 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            className={tier.popular ? "lg:-mt-4 lg:mb-4" : ""}
           >
-            {tier.popular && (
-              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-hero text-white border-0 px-4">
-                Most Popular
-              </Badge>
-            )}
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xl">{tier.name}</CardTitle>
-              <CardDescription>{tier.description}</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-extrabold">{tier.price}</span>
-                {tier.period && (
-                  <span className="text-muted-foreground">{tier.period}</span>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col gap-4">
-              <ul className="flex-1 space-y-3">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm">
-                    <Check className="h-4 w-4 text-[hsl(142,71%,45%)]" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                className={`w-full mt-4 ${tier.popular ? "bg-gradient-hero text-white hover:opacity-90" : ""}`}
-                variant={tier.popular ? "default" : "outline"}
+            <div
+              className={
+                tier.popular
+                  ? "rounded-xl bg-gradient-hero p-[1.5px] shadow-xl shadow-purple-500/20"
+                  : ""
+              }
+            >
+              <Card
+                className={`relative flex h-full flex-col transition-shadow duration-300 ${
+                  tier.popular
+                    ? "border-0 bg-gradient-hero-soft shadow-none hover:shadow-2xl hover:shadow-purple-500/10"
+                    : "border hover:border-purple-300/60 hover:shadow-lg"
+                }`}
               >
-                {tier.cta}
-              </Button>
-            </CardContent>
-          </Card>
+                {tier.popular && (
+                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-hero text-white border-0 px-4 shadow-md">
+                    Most Popular
+                  </Badge>
+                )}
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-xl">{tier.name}</CardTitle>
+                  <CardDescription>{tier.description}</CardDescription>
+                  <div className="mt-4">
+                    <span className="text-4xl font-extrabold">{tier.price}</span>
+                    {tier.period && (
+                      <span className="text-muted-foreground">{tier.period}</span>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col gap-4">
+                  <ul className="flex-1 space-y-3">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm">
+                        <Check className="h-4 w-4 text-[hsl(142,71%,45%)]" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className={`w-full mt-4 transition-transform duration-200 active:scale-[0.98] ${tier.popular ? "bg-gradient-hero text-white hover:opacity-90 hover:scale-[1.02]" : "hover:scale-[1.02]"}`}
+                    variant={tier.popular ? "default" : "outline"}
+                  >
+                    {tier.cta}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
         ))}
       </div>
     </div>

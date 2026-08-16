@@ -94,6 +94,11 @@ export interface ResumeData {
   certifications: Certification[];
   languages: string[];
   customSections: CustomSection[];
+  // Ordered section keys (see lib/resumeSections.ts for the canonical
+  // SectionKey union and default). Always a complete, "personal"-first
+  // array once it passes through mapResumeFromDB — templates and the
+  // builder's tab UI both render off this rather than a hardcoded order.
+  sectionOrder: string[];
   isFavorite: boolean;
   // Soft-hide from the default resume list — lives in the `data` JSON blob
   // rather than a dedicated Prisma column, so no migration is needed.

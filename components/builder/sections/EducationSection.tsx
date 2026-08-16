@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { MonthYearPicker } from "@/components/ui/month-year-picker";
 import { useResumeStore } from "@/store/resumeStore";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 import { Education } from "@/types/resume";
@@ -147,26 +148,20 @@ export default function EducationSection() {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="space-y-1">
                     <Label htmlFor={`startDate-${edu.id}`}>Start Date *</Label>
-                    <Input
+                    <MonthYearPicker
                       id={`startDate-${edu.id}`}
-                      type="month"
                       value={edu.startDate}
-                      onChange={(e) =>
-                        updateEducation(edu.id, { startDate: e.target.value })
-                      }
+                      onChange={(value) => updateEducation(edu.id, { startDate: value })}
                     />
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor={`endDate-${edu.id}`}>
                       End Date *
                     </Label>
-                    <Input
+                    <MonthYearPicker
                       id={`endDate-${edu.id}`}
-                      type="month"
                       value={edu.endDate}
-                      onChange={(e) =>
-                        updateEducation(edu.id, { endDate: e.target.value })
-                      }
+                      onChange={(value) => updateEducation(edu.id, { endDate: value })}
                     />
                   </div>
                 </div>

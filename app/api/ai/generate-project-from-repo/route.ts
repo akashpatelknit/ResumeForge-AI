@@ -2,12 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { fetchReadme } from "@/lib/github";
 import { generateProjectFromRepo } from "@/lib/ai/generateProjectFromRepo";
+import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const gate = await checkAiGate(userId);
+  if (!gate.allowed) return gate.response;
 
   let body: unknown;
   try {
@@ -52,6 +56,7 @@ export async function POST(request: NextRequest) {
       topics,
       readme,
     });
+    await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Failed to generate project from repo:", error);

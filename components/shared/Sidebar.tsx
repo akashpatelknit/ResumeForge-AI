@@ -22,9 +22,13 @@ import {
   MessageSquare,
   BookOpen,
   Star,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useSubscriptionStatus } from "@/hooks/useSubscriptionStatus";
+import { openRazorpayCheckout } from "@/lib/razorpayCheckout";
 
 interface NavChild {
   name: string;
@@ -94,7 +98,33 @@ const navigation: NavItem[] = [
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>(["Resumes"]);
+  const [isUpgrading, setIsUpgrading] = useState(false);
   const pathname = usePathname();
+  const { data: subscription, refresh: refreshSubscription } = useSubscriptionStatus();
+
+  const handleUpgrade = async () => {
+    setIsUpgrading(true);
+    try {
+      const res = await fetch("/api/subscription/create", { method: "POST" });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || "Failed to start checkout");
+
+      await openRazorpayCheckout({
+        subscriptionId: body.subscriptionId,
+        keyId: body.keyId,
+        prefill: body.prefill,
+        onSuccess: () => {
+          toast.success("Payment submitted — activating your subscription…");
+          setTimeout(() => void refreshSubscription(), 2500);
+          setIsUpgrading(false);
+        },
+        onDismiss: () => setIsUpgrading(false),
+      });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to start checkout");
+      setIsUpgrading(false);
+    }
+  };
 
   const toggleSection = (name: string) => {
     setOpenSections((prev) =>
@@ -265,27 +295,40 @@ export default function Sidebar() {
             })}
           </nav>
 
-          {/* Upgrade CTA */}
-          <div className="p-4 border-t border-gray-100 shrink-0">
-            <div className="bg-linear-to-br from-blue-600 via-purple-600 to-purple-700 rounded-2xl p-4 text-white relative overflow-hidden">
-              {/* Decorative blob */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10" />
-              <div className="relative">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-wider">
-                    Pro
-                  </span>
+          {/* Upgrade CTA — only for free-tier users; Pro users see nothing
+              here (no hosted portal link needed in the sidebar, that lives
+              in Settings > Billing). */}
+          {subscription && subscription.plan === "free" && (
+            <div className="p-4 border-t border-gray-100 shrink-0">
+              <div className="bg-linear-to-br from-blue-600 via-purple-600 to-purple-700 rounded-2xl p-4 text-white relative overflow-hidden">
+                {/* Decorative blob */}
+                <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10" />
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <Zap className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-wider">
+                      Pro
+                    </span>
+                  </div>
+                  <p className="text-sm font-medium mb-1.5 leading-relaxed opacity-90">
+                    Unlock unlimited resumes & AI tools
+                  </p>
+                  <p className="text-xs mb-3 opacity-75">
+                    {subscription.aiGenerations.used}/{subscription.aiGenerations.limit} AI generations used this
+                    month
+                  </p>
+                  <Button
+                    onClick={handleUpgrade}
+                    disabled={isUpgrading}
+                    className="w-full bg-white text-blue-700 hover:bg-gray-50 font-semibold shadow-lg text-sm cursor-pointer"
+                  >
+                    {isUpgrading && <Loader2 className="w-4 h-4 animate-spin" />}
+                    Upgrade Now
+                  </Button>
                 </div>
-                <p className="text-sm font-medium mb-3 leading-relaxed opacity-90">
-                  Unlock unlimited resumes & AI tools
-                </p>
-                <Button className="w-full bg-white text-blue-700 hover:bg-gray-50 font-semibold shadow-lg text-sm cursor-pointer">
-                  Upgrade Now
-                </Button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
     </>

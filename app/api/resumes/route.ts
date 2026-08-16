@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getResumes, createResume } from "@/lib/db/resumes";
+import { checkResumeCreationGate } from "@/lib/subscription/checkResumeLimit";
 
 // GET all resumes
 export async function GET() {
@@ -29,6 +30,11 @@ export async function POST(request: NextRequest) {
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const gate = await checkResumeCreationGate(userId);
+    if (!gate.allowed) {
+      return gate.response;
     }
 
     const body = await request.json();

@@ -61,7 +61,7 @@ export default function ResumeListView({
   onRefresh,
 }: ResumeListViewProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
   const totalPages = Math.ceil(resumes.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
@@ -147,13 +147,6 @@ export default function ResumeListView({
                   {/* Resume Title & Preview */}
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-16 rounded overflow-hidden shadow-sm ring-1 ring-gray-200 shrink-0">
-                        <img
-                          src={resume.thumbnail}
-                          alt={resume.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-gray-900 truncate group-hover:text-purple-600 transition-colors">
@@ -259,7 +252,9 @@ export default function ResumeListView({
               resumes
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-gray-500 whitespace-nowrap">Rows per page:</span>
+              <span className="text-gray-500 whitespace-nowrap">
+                Rows per page:
+              </span>
               <Select
                 value={String(pageSize)}
                 onValueChange={handlePageSizeChange}

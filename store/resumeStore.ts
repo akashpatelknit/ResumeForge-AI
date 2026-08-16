@@ -12,6 +12,8 @@ import {
 
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { getSeedResumeData } from "@/lib/seedResumeData";
+import { assertOkOrShowUpgrade } from "@/lib/subscription/upgradeToast";
+import { applyReorderedSections, getEffectiveSectionOrder, type SectionKey } from "@/lib/resumeSections";
 
 interface ResumeStore {
   currentResume: AppResume | null;
@@ -54,6 +56,14 @@ interface ResumeStore {
   addProject: (project: Resume["projects"][0]) => void;
   updateProject: (id: string, updates: Partial<Resume["projects"][0]>) => void;
   deleteProject: (id: string) => void;
+  reorderExperience: (newOrder: Experience[]) => void;
+  reorderProjects: (newOrder: Project[]) => void;
+
+  // Section-level reordering — see lib/resumeSections.ts. Takes the newly
+  // dragged order of just the reorderable tabs (Experience/Education/
+  // Skills/Projects/Custom); "personal" and the non-tab sections
+  // (achievements/certifications) are merged back in untouched.
+  updateSectionOrder: (newReorderableOrder: SectionKey[]) => void;
 
   // Custom sections — user-defined sections beyond the fixed set
   addCustomSection: (title: string) => void;
@@ -124,6 +134,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
             certifications: currentResume.certifications,
             languages: currentResume.languages,
             customSections: currentResume.customSections,
+            sectionOrder: currentResume.sectionOrder,
             isFavorite: currentResume.isFavorite,
             isArchived: currentResume.isArchived,
             thumbnail: currentResume.thumbnail,
@@ -161,10 +172,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
         }),
       });
 
-      if (!res.ok) {
-        const error = await res.json().catch(() => ({}));
-        throw new Error(error.error || "Failed to create resume");
-      }
+      await assertOkOrShowUpgrade(res, "Failed to create resume");
 
       const newResume = await res.json();
       const mapped = mapResumeFromDB(newResume);
@@ -382,6 +390,33 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
           }
         : null,
     })),
+
+  reorderExperience: (newOrder: Experience[]) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? { ...state.currentResume, experience: newOrder, updatedAt: new Date() }
+        : null,
+    })),
+
+  reorderProjects: (newOrder: Project[]) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? { ...state.currentResume, projects: newOrder, updatedAt: new Date() }
+        : null,
+    })),
+
+  updateSectionOrder: (newReorderableOrder: SectionKey[]) =>
+    set((state) => {
+      if (!state.currentResume) return {};
+      const fullOrder = getEffectiveSectionOrder(state.currentResume.sectionOrder);
+      return {
+        currentResume: {
+          ...state.currentResume,
+          sectionOrder: applyReorderedSections(fullOrder, newReorderableOrder),
+          updatedAt: new Date(),
+        },
+      };
+    }),
 
   // Custom sections methods
   addCustomSection: (title: string) =>

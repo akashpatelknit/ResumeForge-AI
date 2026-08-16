@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { pdf } from "@react-pdf/renderer";
 import { getTemplateComponent } from "@/components/pdf/template";
 import type { AppResume } from "@/types/resume";
+import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
 
 // Builds the same `data` shape store/resumeStore.ts's saveResume() sends —
 // the PUT route replaces the whole `data` JSON column, so every field has
@@ -81,12 +82,12 @@ export function useResumeActions(resume: AppResume, onRefresh?: () => void) {
           data: toResumeData(resume),
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Failed to duplicate");
+      await assertOkOrShowUpgrade(res, "Failed to duplicate");
 
       toast.success("Resume duplicated.");
       onRefresh?.();
     } catch (error) {
+      if (error instanceof UpgradeRequiredError) return;
       console.error("Failed to duplicate resume:", error);
       toast.error("Failed to duplicate resume. Please try again.");
     } finally {
