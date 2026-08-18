@@ -238,3 +238,71 @@ model QuickApplyEntry {
   @@index([userId])
   @@map("quick_apply_entries")
 }
+
+enum JobSource {
+  greenhouse
+  manual
+}
+
+// Job Discovery is a live-fetch feature (Greenhouse's public API, cached in
+// Redis — see lib/jobs/greenhouseClient.ts) — this table is deliberately
+// NOT a bulk store of every job seen. A row only exists once a user acts on
+// a job (bookmark / queue) or types one in manually. externalJobId is the
+// Greenhouse numeric job id (as a string) for source=greenhouse, and always
+// null for source=manual — the unique constraint below relies on Postgres
+// treating each NULL as distinct, so multiple manual rows per user never
+// collide on it.
+// Outreach type/status naming intentionally mirrors the existing frontend
+// mock types in components/outreach/outreachData.ts (OutreachType /
+// OutreachStatus) so the Cold Outreach Dashboard's badges/filters keep
+// working unmodified — "quick_apply" here maps to that file's "quickApply"
+// at the API boundary (app/api/outreach/queue/route.ts), since Prisma enum
+// values can't contain a bare camelCase word the same way TS unions can but
+// this schema otherwise uses snake_case for multi-word enum values.
+enum OutreachType {
+  cold
+  general
+  referral
+  quick_apply
+}
+
+enum OutreachStatus {
+  draft
+  generated
+  approved
+  scheduled
+  sent
+  replied
+  bounced
+}
+
+model SavedJob {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @map("user_id")
+  source         JobSource
+  externalJobId  String?   @map("external_job_id")
+  company        String
+  jobTitle       String    @map("job_title")
+  location       String?
+  jobDescription String    @map("job_description")
+  requisitionId  String?   @map("requisition_id")
+  contactEmails  String[]  @default([]) @map("contact_emails")
+  isBookmarked   Boolean   @default(false) @map("is_bookmarked")
+  isQueued       Boolean   @default(false) @map("is_queued")
+  addedAt        DateTime  @default(now()) @map("added_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Cold Outreach Dashboard fields — null until the job is actually queued
+  // (outreachStatus/lastActivityAt) or until the user picks a type via the
+  // Generate & Review panel (outreachType), which this pass doesn't wire
+  // saving for (that panel stays mock per an earlier, still-standing scope
+  // boundary) — so outreachType can legitimately stay null indefinitely.
+  outreachType      OutreachType?   @map("outreach_type")
+  outreachStatus    OutreachStatus? @map("outreach_status")
+  scheduledSendTime DateTime?       @map("scheduled_send_time") @db.Timestamptz(6)
+  lastActivityAt    DateTime?       @map("last_activity_at") @db.Timestamptz(6)
+
+  @@unique([userId, externalJobId])
+  @@index([userId])
+  @@map("saved_jobs")
+}

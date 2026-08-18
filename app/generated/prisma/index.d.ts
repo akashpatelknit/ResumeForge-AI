@@ -78,6 +78,11 @@ export type GmailAccount = $Result.DefaultSelection<Prisma.$GmailAccountPayload>
  * 
  */
 export type QuickApplyEntry = $Result.DefaultSelection<Prisma.$QuickApplyEntryPayload>
+/**
+ * Model SavedJob
+ * 
+ */
+export type SavedJob = $Result.DefaultSelection<Prisma.$SavedJobPayload>
 
 /**
  * Enums
@@ -102,6 +107,37 @@ export const QuickApplyStatus: {
 
 export type QuickApplyStatus = (typeof QuickApplyStatus)[keyof typeof QuickApplyStatus]
 
+
+export const JobSource: {
+  greenhouse: 'greenhouse',
+  manual: 'manual'
+};
+
+export type JobSource = (typeof JobSource)[keyof typeof JobSource]
+
+
+export const OutreachType: {
+  cold: 'cold',
+  general: 'general',
+  referral: 'referral',
+  quick_apply: 'quick_apply'
+};
+
+export type OutreachType = (typeof OutreachType)[keyof typeof OutreachType]
+
+
+export const OutreachStatus: {
+  draft: 'draft',
+  generated: 'generated',
+  approved: 'approved',
+  scheduled: 'scheduled',
+  sent: 'sent',
+  replied: 'replied',
+  bounced: 'bounced'
+};
+
+export type OutreachStatus = (typeof OutreachStatus)[keyof typeof OutreachStatus]
+
 }
 
 export type SubscriptionStatus = $Enums.SubscriptionStatus
@@ -111,6 +147,18 @@ export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
 export type QuickApplyStatus = $Enums.QuickApplyStatus
 
 export const QuickApplyStatus: typeof $Enums.QuickApplyStatus
+
+export type JobSource = $Enums.JobSource
+
+export const JobSource: typeof $Enums.JobSource
+
+export type OutreachType = $Enums.OutreachType
+
+export const OutreachType: typeof $Enums.OutreachType
+
+export type OutreachStatus = $Enums.OutreachStatus
+
+export const OutreachStatus: typeof $Enums.OutreachStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -358,6 +406,16 @@ export class PrismaClient<
     * ```
     */
   get quickApplyEntry(): Prisma.QuickApplyEntryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.savedJob`: Exposes CRUD operations for the **SavedJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SavedJobs
+    * const savedJobs = await prisma.savedJob.findMany()
+    * ```
+    */
+  get savedJob(): Prisma.SavedJobDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -804,7 +862,8 @@ export namespace Prisma {
     TemplateMeta: 'TemplateMeta',
     UsageCounter: 'UsageCounter',
     GmailAccount: 'GmailAccount',
-    QuickApplyEntry: 'QuickApplyEntry'
+    QuickApplyEntry: 'QuickApplyEntry',
+    SavedJob: 'SavedJob'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -820,7 +879,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry"
+      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry" | "savedJob"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1786,6 +1845,80 @@ export namespace Prisma {
           }
         }
       }
+      SavedJob: {
+        payload: Prisma.$SavedJobPayload<ExtArgs>
+        fields: Prisma.SavedJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SavedJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SavedJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          findFirst: {
+            args: Prisma.SavedJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SavedJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          findMany: {
+            args: Prisma.SavedJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>[]
+          }
+          create: {
+            args: Prisma.SavedJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          createMany: {
+            args: Prisma.SavedJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SavedJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>[]
+          }
+          delete: {
+            args: Prisma.SavedJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          update: {
+            args: Prisma.SavedJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.SavedJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SavedJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SavedJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.SavedJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedJobPayload>
+          }
+          aggregate: {
+            args: Prisma.SavedJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSavedJob>
+          }
+          groupBy: {
+            args: Prisma.SavedJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SavedJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SavedJobCountArgs<ExtArgs>
+            result: $Utils.Optional<SavedJobCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1907,6 +2040,7 @@ export namespace Prisma {
     usageCounter?: UsageCounterOmit
     gmailAccount?: GmailAccountOmit
     quickApplyEntry?: QuickApplyEntryOmit
+    savedJob?: SavedJobOmit
   }
 
   /* Types for Logging */
@@ -15827,6 +15961,1166 @@ export namespace Prisma {
 
 
   /**
+   * Model SavedJob
+   */
+
+  export type AggregateSavedJob = {
+    _count: SavedJobCountAggregateOutputType | null
+    _min: SavedJobMinAggregateOutputType | null
+    _max: SavedJobMaxAggregateOutputType | null
+  }
+
+  export type SavedJobMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    source: $Enums.JobSource | null
+    externalJobId: string | null
+    company: string | null
+    jobTitle: string | null
+    location: string | null
+    jobDescription: string | null
+    requisitionId: string | null
+    isBookmarked: boolean | null
+    isQueued: boolean | null
+    addedAt: Date | null
+    updatedAt: Date | null
+    outreachType: $Enums.OutreachType | null
+    outreachStatus: $Enums.OutreachStatus | null
+    scheduledSendTime: Date | null
+    lastActivityAt: Date | null
+  }
+
+  export type SavedJobMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    source: $Enums.JobSource | null
+    externalJobId: string | null
+    company: string | null
+    jobTitle: string | null
+    location: string | null
+    jobDescription: string | null
+    requisitionId: string | null
+    isBookmarked: boolean | null
+    isQueued: boolean | null
+    addedAt: Date | null
+    updatedAt: Date | null
+    outreachType: $Enums.OutreachType | null
+    outreachStatus: $Enums.OutreachStatus | null
+    scheduledSendTime: Date | null
+    lastActivityAt: Date | null
+  }
+
+  export type SavedJobCountAggregateOutputType = {
+    id: number
+    userId: number
+    source: number
+    externalJobId: number
+    company: number
+    jobTitle: number
+    location: number
+    jobDescription: number
+    requisitionId: number
+    contactEmails: number
+    isBookmarked: number
+    isQueued: number
+    addedAt: number
+    updatedAt: number
+    outreachType: number
+    outreachStatus: number
+    scheduledSendTime: number
+    lastActivityAt: number
+    _all: number
+  }
+
+
+  export type SavedJobMinAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    externalJobId?: true
+    company?: true
+    jobTitle?: true
+    location?: true
+    jobDescription?: true
+    requisitionId?: true
+    isBookmarked?: true
+    isQueued?: true
+    addedAt?: true
+    updatedAt?: true
+    outreachType?: true
+    outreachStatus?: true
+    scheduledSendTime?: true
+    lastActivityAt?: true
+  }
+
+  export type SavedJobMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    externalJobId?: true
+    company?: true
+    jobTitle?: true
+    location?: true
+    jobDescription?: true
+    requisitionId?: true
+    isBookmarked?: true
+    isQueued?: true
+    addedAt?: true
+    updatedAt?: true
+    outreachType?: true
+    outreachStatus?: true
+    scheduledSendTime?: true
+    lastActivityAt?: true
+  }
+
+  export type SavedJobCountAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    externalJobId?: true
+    company?: true
+    jobTitle?: true
+    location?: true
+    jobDescription?: true
+    requisitionId?: true
+    contactEmails?: true
+    isBookmarked?: true
+    isQueued?: true
+    addedAt?: true
+    updatedAt?: true
+    outreachType?: true
+    outreachStatus?: true
+    scheduledSendTime?: true
+    lastActivityAt?: true
+    _all?: true
+  }
+
+  export type SavedJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedJob to aggregate.
+     */
+    where?: SavedJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedJobs to fetch.
+     */
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SavedJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SavedJobs
+    **/
+    _count?: true | SavedJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SavedJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SavedJobMaxAggregateInputType
+  }
+
+  export type GetSavedJobAggregateType<T extends SavedJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateSavedJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSavedJob[P]>
+      : GetScalarType<T[P], AggregateSavedJob[P]>
+  }
+
+
+
+
+  export type SavedJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedJobWhereInput
+    orderBy?: SavedJobOrderByWithAggregationInput | SavedJobOrderByWithAggregationInput[]
+    by: SavedJobScalarFieldEnum[] | SavedJobScalarFieldEnum
+    having?: SavedJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SavedJobCountAggregateInputType | true
+    _min?: SavedJobMinAggregateInputType
+    _max?: SavedJobMaxAggregateInputType
+  }
+
+  export type SavedJobGroupByOutputType = {
+    id: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId: string | null
+    company: string
+    jobTitle: string
+    location: string | null
+    jobDescription: string
+    requisitionId: string | null
+    contactEmails: string[]
+    isBookmarked: boolean
+    isQueued: boolean
+    addedAt: Date
+    updatedAt: Date
+    outreachType: $Enums.OutreachType | null
+    outreachStatus: $Enums.OutreachStatus | null
+    scheduledSendTime: Date | null
+    lastActivityAt: Date | null
+    _count: SavedJobCountAggregateOutputType | null
+    _min: SavedJobMinAggregateOutputType | null
+    _max: SavedJobMaxAggregateOutputType | null
+  }
+
+  type GetSavedJobGroupByPayload<T extends SavedJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SavedJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SavedJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SavedJobGroupByOutputType[P]>
+            : GetScalarType<T[P], SavedJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SavedJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    externalJobId?: boolean
+    company?: boolean
+    jobTitle?: boolean
+    location?: boolean
+    jobDescription?: boolean
+    requisitionId?: boolean
+    contactEmails?: boolean
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: boolean
+    updatedAt?: boolean
+    outreachType?: boolean
+    outreachStatus?: boolean
+    scheduledSendTime?: boolean
+    lastActivityAt?: boolean
+  }, ExtArgs["result"]["savedJob"]>
+
+  export type SavedJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    externalJobId?: boolean
+    company?: boolean
+    jobTitle?: boolean
+    location?: boolean
+    jobDescription?: boolean
+    requisitionId?: boolean
+    contactEmails?: boolean
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: boolean
+    updatedAt?: boolean
+    outreachType?: boolean
+    outreachStatus?: boolean
+    scheduledSendTime?: boolean
+    lastActivityAt?: boolean
+  }, ExtArgs["result"]["savedJob"]>
+
+  export type SavedJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    externalJobId?: boolean
+    company?: boolean
+    jobTitle?: boolean
+    location?: boolean
+    jobDescription?: boolean
+    requisitionId?: boolean
+    contactEmails?: boolean
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: boolean
+    updatedAt?: boolean
+    outreachType?: boolean
+    outreachStatus?: boolean
+    scheduledSendTime?: boolean
+    lastActivityAt?: boolean
+  }, ExtArgs["result"]["savedJob"]>
+
+  export type SavedJobSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    externalJobId?: boolean
+    company?: boolean
+    jobTitle?: boolean
+    location?: boolean
+    jobDescription?: boolean
+    requisitionId?: boolean
+    contactEmails?: boolean
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: boolean
+    updatedAt?: boolean
+    outreachType?: boolean
+    outreachStatus?: boolean
+    scheduledSendTime?: boolean
+    lastActivityAt?: boolean
+  }
+
+  export type SavedJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "externalJobId" | "company" | "jobTitle" | "location" | "jobDescription" | "requisitionId" | "contactEmails" | "isBookmarked" | "isQueued" | "addedAt" | "updatedAt" | "outreachType" | "outreachStatus" | "scheduledSendTime" | "lastActivityAt", ExtArgs["result"]["savedJob"]>
+
+  export type $SavedJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SavedJob"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      source: $Enums.JobSource
+      externalJobId: string | null
+      company: string
+      jobTitle: string
+      location: string | null
+      jobDescription: string
+      requisitionId: string | null
+      contactEmails: string[]
+      isBookmarked: boolean
+      isQueued: boolean
+      addedAt: Date
+      updatedAt: Date
+      outreachType: $Enums.OutreachType | null
+      outreachStatus: $Enums.OutreachStatus | null
+      scheduledSendTime: Date | null
+      lastActivityAt: Date | null
+    }, ExtArgs["result"]["savedJob"]>
+    composites: {}
+  }
+
+  type SavedJobGetPayload<S extends boolean | null | undefined | SavedJobDefaultArgs> = $Result.GetResult<Prisma.$SavedJobPayload, S>
+
+  type SavedJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SavedJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SavedJobCountAggregateInputType | true
+    }
+
+  export interface SavedJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SavedJob'], meta: { name: 'SavedJob' } }
+    /**
+     * Find zero or one SavedJob that matches the filter.
+     * @param {SavedJobFindUniqueArgs} args - Arguments to find a SavedJob
+     * @example
+     * // Get one SavedJob
+     * const savedJob = await prisma.savedJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SavedJobFindUniqueArgs>(args: SelectSubset<T, SavedJobFindUniqueArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SavedJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SavedJobFindUniqueOrThrowArgs} args - Arguments to find a SavedJob
+     * @example
+     * // Get one SavedJob
+     * const savedJob = await prisma.savedJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SavedJobFindUniqueOrThrowArgs>(args: SelectSubset<T, SavedJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobFindFirstArgs} args - Arguments to find a SavedJob
+     * @example
+     * // Get one SavedJob
+     * const savedJob = await prisma.savedJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SavedJobFindFirstArgs>(args?: SelectSubset<T, SavedJobFindFirstArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobFindFirstOrThrowArgs} args - Arguments to find a SavedJob
+     * @example
+     * // Get one SavedJob
+     * const savedJob = await prisma.savedJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SavedJobFindFirstOrThrowArgs>(args?: SelectSubset<T, SavedJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SavedJobs
+     * const savedJobs = await prisma.savedJob.findMany()
+     * 
+     * // Get first 10 SavedJobs
+     * const savedJobs = await prisma.savedJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const savedJobWithIdOnly = await prisma.savedJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SavedJobFindManyArgs>(args?: SelectSubset<T, SavedJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SavedJob.
+     * @param {SavedJobCreateArgs} args - Arguments to create a SavedJob.
+     * @example
+     * // Create one SavedJob
+     * const SavedJob = await prisma.savedJob.create({
+     *   data: {
+     *     // ... data to create a SavedJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends SavedJobCreateArgs>(args: SelectSubset<T, SavedJobCreateArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SavedJobs.
+     * @param {SavedJobCreateManyArgs} args - Arguments to create many SavedJobs.
+     * @example
+     * // Create many SavedJobs
+     * const savedJob = await prisma.savedJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SavedJobCreateManyArgs>(args?: SelectSubset<T, SavedJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SavedJobs and returns the data saved in the database.
+     * @param {SavedJobCreateManyAndReturnArgs} args - Arguments to create many SavedJobs.
+     * @example
+     * // Create many SavedJobs
+     * const savedJob = await prisma.savedJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SavedJobs and only return the `id`
+     * const savedJobWithIdOnly = await prisma.savedJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SavedJobCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SavedJob.
+     * @param {SavedJobDeleteArgs} args - Arguments to delete one SavedJob.
+     * @example
+     * // Delete one SavedJob
+     * const SavedJob = await prisma.savedJob.delete({
+     *   where: {
+     *     // ... filter to delete one SavedJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SavedJobDeleteArgs>(args: SelectSubset<T, SavedJobDeleteArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SavedJob.
+     * @param {SavedJobUpdateArgs} args - Arguments to update one SavedJob.
+     * @example
+     * // Update one SavedJob
+     * const savedJob = await prisma.savedJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SavedJobUpdateArgs>(args: SelectSubset<T, SavedJobUpdateArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SavedJobs.
+     * @param {SavedJobDeleteManyArgs} args - Arguments to filter SavedJobs to delete.
+     * @example
+     * // Delete a few SavedJobs
+     * const { count } = await prisma.savedJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SavedJobDeleteManyArgs>(args?: SelectSubset<T, SavedJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SavedJobs
+     * const savedJob = await prisma.savedJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SavedJobUpdateManyArgs>(args: SelectSubset<T, SavedJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedJobs and returns the data updated in the database.
+     * @param {SavedJobUpdateManyAndReturnArgs} args - Arguments to update many SavedJobs.
+     * @example
+     * // Update many SavedJobs
+     * const savedJob = await prisma.savedJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SavedJobs and only return the `id`
+     * const savedJobWithIdOnly = await prisma.savedJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SavedJobUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SavedJob.
+     * @param {SavedJobUpsertArgs} args - Arguments to update or create a SavedJob.
+     * @example
+     * // Update or create a SavedJob
+     * const savedJob = await prisma.savedJob.upsert({
+     *   create: {
+     *     // ... data to create a SavedJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SavedJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SavedJobUpsertArgs>(args: SelectSubset<T, SavedJobUpsertArgs<ExtArgs>>): Prisma__SavedJobClient<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SavedJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobCountArgs} args - Arguments to filter SavedJobs to count.
+     * @example
+     * // Count the number of SavedJobs
+     * const count = await prisma.savedJob.count({
+     *   where: {
+     *     // ... the filter for the SavedJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends SavedJobCountArgs>(
+      args?: Subset<T, SavedJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SavedJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SavedJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SavedJobAggregateArgs>(args: Subset<T, SavedJobAggregateArgs>): Prisma.PrismaPromise<GetSavedJobAggregateType<T>>
+
+    /**
+     * Group by SavedJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SavedJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SavedJobGroupByArgs['orderBy'] }
+        : { orderBy?: SavedJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SavedJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSavedJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SavedJob model
+   */
+  readonly fields: SavedJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SavedJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SavedJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SavedJob model
+   */
+  interface SavedJobFieldRefs {
+    readonly id: FieldRef<"SavedJob", 'String'>
+    readonly userId: FieldRef<"SavedJob", 'String'>
+    readonly source: FieldRef<"SavedJob", 'JobSource'>
+    readonly externalJobId: FieldRef<"SavedJob", 'String'>
+    readonly company: FieldRef<"SavedJob", 'String'>
+    readonly jobTitle: FieldRef<"SavedJob", 'String'>
+    readonly location: FieldRef<"SavedJob", 'String'>
+    readonly jobDescription: FieldRef<"SavedJob", 'String'>
+    readonly requisitionId: FieldRef<"SavedJob", 'String'>
+    readonly contactEmails: FieldRef<"SavedJob", 'String[]'>
+    readonly isBookmarked: FieldRef<"SavedJob", 'Boolean'>
+    readonly isQueued: FieldRef<"SavedJob", 'Boolean'>
+    readonly addedAt: FieldRef<"SavedJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"SavedJob", 'DateTime'>
+    readonly outreachType: FieldRef<"SavedJob", 'OutreachType'>
+    readonly outreachStatus: FieldRef<"SavedJob", 'OutreachStatus'>
+    readonly scheduledSendTime: FieldRef<"SavedJob", 'DateTime'>
+    readonly lastActivityAt: FieldRef<"SavedJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SavedJob findUnique
+   */
+  export type SavedJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter, which SavedJob to fetch.
+     */
+    where: SavedJobWhereUniqueInput
+  }
+
+  /**
+   * SavedJob findUniqueOrThrow
+   */
+  export type SavedJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter, which SavedJob to fetch.
+     */
+    where: SavedJobWhereUniqueInput
+  }
+
+  /**
+   * SavedJob findFirst
+   */
+  export type SavedJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter, which SavedJob to fetch.
+     */
+    where?: SavedJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedJobs to fetch.
+     */
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedJobs.
+     */
+    cursor?: SavedJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedJobs.
+     */
+    distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * SavedJob findFirstOrThrow
+   */
+  export type SavedJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter, which SavedJob to fetch.
+     */
+    where?: SavedJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedJobs to fetch.
+     */
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedJobs.
+     */
+    cursor?: SavedJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedJobs.
+     */
+    distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * SavedJob findMany
+   */
+  export type SavedJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter, which SavedJobs to fetch.
+     */
+    where?: SavedJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedJobs to fetch.
+     */
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SavedJobs.
+     */
+    cursor?: SavedJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedJobs.
+     */
+    skip?: number
+    distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * SavedJob create
+   */
+  export type SavedJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SavedJob.
+     */
+    data: XOR<SavedJobCreateInput, SavedJobUncheckedCreateInput>
+  }
+
+  /**
+   * SavedJob createMany
+   */
+  export type SavedJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SavedJobs.
+     */
+    data: SavedJobCreateManyInput | SavedJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedJob createManyAndReturn
+   */
+  export type SavedJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many SavedJobs.
+     */
+    data: SavedJobCreateManyInput | SavedJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedJob update
+   */
+  export type SavedJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SavedJob.
+     */
+    data: XOR<SavedJobUpdateInput, SavedJobUncheckedUpdateInput>
+    /**
+     * Choose, which SavedJob to update.
+     */
+    where: SavedJobWhereUniqueInput
+  }
+
+  /**
+   * SavedJob updateMany
+   */
+  export type SavedJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SavedJobs.
+     */
+    data: XOR<SavedJobUpdateManyMutationInput, SavedJobUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedJobs to update
+     */
+    where?: SavedJobWhereInput
+    /**
+     * Limit how many SavedJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedJob updateManyAndReturn
+   */
+  export type SavedJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * The data used to update SavedJobs.
+     */
+    data: XOR<SavedJobUpdateManyMutationInput, SavedJobUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedJobs to update
+     */
+    where?: SavedJobWhereInput
+    /**
+     * Limit how many SavedJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedJob upsert
+   */
+  export type SavedJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SavedJob to update in case it exists.
+     */
+    where: SavedJobWhereUniqueInput
+    /**
+     * In case the SavedJob found by the `where` argument doesn't exist, create a new SavedJob with this data.
+     */
+    create: XOR<SavedJobCreateInput, SavedJobUncheckedCreateInput>
+    /**
+     * In case the SavedJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SavedJobUpdateInput, SavedJobUncheckedUpdateInput>
+  }
+
+  /**
+   * SavedJob delete
+   */
+  export type SavedJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Filter which SavedJob to delete.
+     */
+    where: SavedJobWhereUniqueInput
+  }
+
+  /**
+   * SavedJob deleteMany
+   */
+  export type SavedJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedJobs to delete
+     */
+    where?: SavedJobWhereInput
+    /**
+     * Limit how many SavedJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedJob without action
+   */
+  export type SavedJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16017,6 +17311,30 @@ export namespace Prisma {
   export type QuickApplyEntryScalarFieldEnum = (typeof QuickApplyEntryScalarFieldEnum)[keyof typeof QuickApplyEntryScalarFieldEnum]
 
 
+  export const SavedJobScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    source: 'source',
+    externalJobId: 'externalJobId',
+    company: 'company',
+    jobTitle: 'jobTitle',
+    location: 'location',
+    jobDescription: 'jobDescription',
+    requisitionId: 'requisitionId',
+    contactEmails: 'contactEmails',
+    isBookmarked: 'isBookmarked',
+    isQueued: 'isQueued',
+    addedAt: 'addedAt',
+    updatedAt: 'updatedAt',
+    outreachType: 'outreachType',
+    outreachStatus: 'outreachStatus',
+    scheduledSendTime: 'scheduledSendTime',
+    lastActivityAt: 'lastActivityAt'
+  };
+
+  export type SavedJobScalarFieldEnum = (typeof SavedJobScalarFieldEnum)[keyof typeof SavedJobScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -16158,6 +17476,48 @@ export namespace Prisma {
    * Reference to a field of type 'QuickApplyStatus[]'
    */
   export type ListEnumQuickApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobSource'
+   */
+  export type EnumJobSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobSource'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobSource[]'
+   */
+  export type ListEnumJobSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobSource[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'OutreachType'
+   */
+  export type EnumOutreachTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachType'>
+    
+
+
+  /**
+   * Reference to a field of type 'OutreachType[]'
+   */
+  export type ListEnumOutreachTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'OutreachStatus'
+   */
+  export type EnumOutreachStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'OutreachStatus[]'
+   */
+  export type ListEnumOutreachStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutreachStatus[]'>
     
 
 
@@ -17047,6 +18407,124 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
     sentAt?: DateTimeNullableWithAggregatesFilter<"QuickApplyEntry"> | Date | string | null
+  }
+
+  export type SavedJobWhereInput = {
+    AND?: SavedJobWhereInput | SavedJobWhereInput[]
+    OR?: SavedJobWhereInput[]
+    NOT?: SavedJobWhereInput | SavedJobWhereInput[]
+    id?: UuidFilter<"SavedJob"> | string
+    userId?: StringFilter<"SavedJob"> | string
+    source?: EnumJobSourceFilter<"SavedJob"> | $Enums.JobSource
+    externalJobId?: StringNullableFilter<"SavedJob"> | string | null
+    company?: StringFilter<"SavedJob"> | string
+    jobTitle?: StringFilter<"SavedJob"> | string
+    location?: StringNullableFilter<"SavedJob"> | string | null
+    jobDescription?: StringFilter<"SavedJob"> | string
+    requisitionId?: StringNullableFilter<"SavedJob"> | string | null
+    contactEmails?: StringNullableListFilter<"SavedJob">
+    isBookmarked?: BoolFilter<"SavedJob"> | boolean
+    isQueued?: BoolFilter<"SavedJob"> | boolean
+    addedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    updatedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    outreachType?: EnumOutreachTypeNullableFilter<"SavedJob"> | $Enums.OutreachType | null
+    outreachStatus?: EnumOutreachStatusNullableFilter<"SavedJob"> | $Enums.OutreachStatus | null
+    scheduledSendTime?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    lastActivityAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+  }
+
+  export type SavedJobOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    externalJobId?: SortOrderInput | SortOrder
+    company?: SortOrder
+    jobTitle?: SortOrder
+    location?: SortOrderInput | SortOrder
+    jobDescription?: SortOrder
+    requisitionId?: SortOrderInput | SortOrder
+    contactEmails?: SortOrder
+    isBookmarked?: SortOrder
+    isQueued?: SortOrder
+    addedAt?: SortOrder
+    updatedAt?: SortOrder
+    outreachType?: SortOrderInput | SortOrder
+    outreachStatus?: SortOrderInput | SortOrder
+    scheduledSendTime?: SortOrderInput | SortOrder
+    lastActivityAt?: SortOrderInput | SortOrder
+  }
+
+  export type SavedJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_externalJobId?: SavedJobUserIdExternalJobIdCompoundUniqueInput
+    AND?: SavedJobWhereInput | SavedJobWhereInput[]
+    OR?: SavedJobWhereInput[]
+    NOT?: SavedJobWhereInput | SavedJobWhereInput[]
+    userId?: StringFilter<"SavedJob"> | string
+    source?: EnumJobSourceFilter<"SavedJob"> | $Enums.JobSource
+    externalJobId?: StringNullableFilter<"SavedJob"> | string | null
+    company?: StringFilter<"SavedJob"> | string
+    jobTitle?: StringFilter<"SavedJob"> | string
+    location?: StringNullableFilter<"SavedJob"> | string | null
+    jobDescription?: StringFilter<"SavedJob"> | string
+    requisitionId?: StringNullableFilter<"SavedJob"> | string | null
+    contactEmails?: StringNullableListFilter<"SavedJob">
+    isBookmarked?: BoolFilter<"SavedJob"> | boolean
+    isQueued?: BoolFilter<"SavedJob"> | boolean
+    addedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    updatedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    outreachType?: EnumOutreachTypeNullableFilter<"SavedJob"> | $Enums.OutreachType | null
+    outreachStatus?: EnumOutreachStatusNullableFilter<"SavedJob"> | $Enums.OutreachStatus | null
+    scheduledSendTime?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    lastActivityAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+  }, "id" | "userId_externalJobId">
+
+  export type SavedJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    externalJobId?: SortOrderInput | SortOrder
+    company?: SortOrder
+    jobTitle?: SortOrder
+    location?: SortOrderInput | SortOrder
+    jobDescription?: SortOrder
+    requisitionId?: SortOrderInput | SortOrder
+    contactEmails?: SortOrder
+    isBookmarked?: SortOrder
+    isQueued?: SortOrder
+    addedAt?: SortOrder
+    updatedAt?: SortOrder
+    outreachType?: SortOrderInput | SortOrder
+    outreachStatus?: SortOrderInput | SortOrder
+    scheduledSendTime?: SortOrderInput | SortOrder
+    lastActivityAt?: SortOrderInput | SortOrder
+    _count?: SavedJobCountOrderByAggregateInput
+    _max?: SavedJobMaxOrderByAggregateInput
+    _min?: SavedJobMinOrderByAggregateInput
+  }
+
+  export type SavedJobScalarWhereWithAggregatesInput = {
+    AND?: SavedJobScalarWhereWithAggregatesInput | SavedJobScalarWhereWithAggregatesInput[]
+    OR?: SavedJobScalarWhereWithAggregatesInput[]
+    NOT?: SavedJobScalarWhereWithAggregatesInput | SavedJobScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"SavedJob"> | string
+    userId?: StringWithAggregatesFilter<"SavedJob"> | string
+    source?: EnumJobSourceWithAggregatesFilter<"SavedJob"> | $Enums.JobSource
+    externalJobId?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    company?: StringWithAggregatesFilter<"SavedJob"> | string
+    jobTitle?: StringWithAggregatesFilter<"SavedJob"> | string
+    location?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    jobDescription?: StringWithAggregatesFilter<"SavedJob"> | string
+    requisitionId?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    contactEmails?: StringNullableListFilter<"SavedJob">
+    isBookmarked?: BoolWithAggregatesFilter<"SavedJob"> | boolean
+    isQueued?: BoolWithAggregatesFilter<"SavedJob"> | boolean
+    addedAt?: DateTimeWithAggregatesFilter<"SavedJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SavedJob"> | Date | string
+    outreachType?: EnumOutreachTypeNullableWithAggregatesFilter<"SavedJob"> | $Enums.OutreachType | null
+    outreachStatus?: EnumOutreachStatusNullableWithAggregatesFilter<"SavedJob"> | $Enums.OutreachStatus | null
+    scheduledSendTime?: DateTimeNullableWithAggregatesFilter<"SavedJob"> | Date | string | null
+    lastActivityAt?: DateTimeNullableWithAggregatesFilter<"SavedJob"> | Date | string | null
   }
 
   export type ResumeCreateInput = {
@@ -18024,6 +19502,153 @@ export namespace Prisma {
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type SavedJobCreateInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+  }
+
+  export type SavedJobUncheckedCreateInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+  }
+
+  export type SavedJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SavedJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SavedJobCreateManyInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+  }
+
+  export type SavedJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SavedJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -18880,6 +20505,123 @@ export namespace Prisma {
     _max?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
   }
 
+  export type EnumJobSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobSource | EnumJobSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobSourceFilter<$PrismaModel> | $Enums.JobSource
+  }
+
+  export type EnumOutreachTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachType | EnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachTypeNullableFilter<$PrismaModel> | $Enums.OutreachType | null
+  }
+
+  export type EnumOutreachStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachStatus | EnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachStatusNullableFilter<$PrismaModel> | $Enums.OutreachStatus | null
+  }
+
+  export type SavedJobUserIdExternalJobIdCompoundUniqueInput = {
+    userId: string
+    externalJobId: string
+  }
+
+  export type SavedJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    externalJobId?: SortOrder
+    company?: SortOrder
+    jobTitle?: SortOrder
+    location?: SortOrder
+    jobDescription?: SortOrder
+    requisitionId?: SortOrder
+    contactEmails?: SortOrder
+    isBookmarked?: SortOrder
+    isQueued?: SortOrder
+    addedAt?: SortOrder
+    updatedAt?: SortOrder
+    outreachType?: SortOrder
+    outreachStatus?: SortOrder
+    scheduledSendTime?: SortOrder
+    lastActivityAt?: SortOrder
+  }
+
+  export type SavedJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    externalJobId?: SortOrder
+    company?: SortOrder
+    jobTitle?: SortOrder
+    location?: SortOrder
+    jobDescription?: SortOrder
+    requisitionId?: SortOrder
+    isBookmarked?: SortOrder
+    isQueued?: SortOrder
+    addedAt?: SortOrder
+    updatedAt?: SortOrder
+    outreachType?: SortOrder
+    outreachStatus?: SortOrder
+    scheduledSendTime?: SortOrder
+    lastActivityAt?: SortOrder
+  }
+
+  export type SavedJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    externalJobId?: SortOrder
+    company?: SortOrder
+    jobTitle?: SortOrder
+    location?: SortOrder
+    jobDescription?: SortOrder
+    requisitionId?: SortOrder
+    isBookmarked?: SortOrder
+    isQueued?: SortOrder
+    addedAt?: SortOrder
+    updatedAt?: SortOrder
+    outreachType?: SortOrder
+    outreachStatus?: SortOrder
+    scheduledSendTime?: SortOrder
+    lastActivityAt?: SortOrder
+  }
+
+  export type EnumJobSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobSource | EnumJobSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobSourceWithAggregatesFilter<$PrismaModel> | $Enums.JobSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobSourceFilter<$PrismaModel>
+    _max?: NestedEnumJobSourceFilter<$PrismaModel>
+  }
+
+  export type EnumOutreachTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachType | EnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.OutreachType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumOutreachTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumOutreachTypeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumOutreachStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachStatus | EnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.OutreachStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
+  }
+
   export type CoverLetterCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -19099,6 +20841,27 @@ export namespace Prisma {
     upsert?: ResumeUpsertWithoutQuickApplyEntriesInput
     connect?: ResumeWhereUniqueInput
     update?: XOR<XOR<ResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput, ResumeUpdateWithoutQuickApplyEntriesInput>, ResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+  }
+
+  export type SavedJobCreatecontactEmailsInput = {
+    set: string[]
+  }
+
+  export type EnumJobSourceFieldUpdateOperationsInput = {
+    set?: $Enums.JobSource
+  }
+
+  export type SavedJobUpdatecontactEmailsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableEnumOutreachTypeFieldUpdateOperationsInput = {
+    set?: $Enums.OutreachType | null
+  }
+
+  export type NullableEnumOutreachStatusFieldUpdateOperationsInput = {
+    set?: $Enums.OutreachStatus | null
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -19430,6 +21193,57 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
     _max?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumJobSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobSource | EnumJobSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobSourceFilter<$PrismaModel> | $Enums.JobSource
+  }
+
+  export type NestedEnumOutreachTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachType | EnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachTypeNullableFilter<$PrismaModel> | $Enums.OutreachType | null
+  }
+
+  export type NestedEnumOutreachStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachStatus | EnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachStatusNullableFilter<$PrismaModel> | $Enums.OutreachStatus | null
+  }
+
+  export type NestedEnumJobSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobSource | EnumJobSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobSource[] | ListEnumJobSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobSourceWithAggregatesFilter<$PrismaModel> | $Enums.JobSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobSourceFilter<$PrismaModel>
+    _max?: NestedEnumJobSourceFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOutreachTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachType | EnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachType[] | ListEnumOutreachTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.OutreachType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumOutreachTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumOutreachTypeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOutreachStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OutreachStatus | EnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.OutreachStatus[] | ListEnumOutreachStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumOutreachStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.OutreachStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
   }
 
   export type CoverLetterCreateWithoutResumeInput = {

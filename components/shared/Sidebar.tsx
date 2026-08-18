@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -20,6 +20,10 @@ import {
   Columns3,
   ListChecks,
   Mail,
+  Search,
+  Package,
+  ArrowRight,
+  Send,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -60,6 +64,8 @@ const navigation: NavItem[] = [
     ],
   },
   { name: "Cold Outreach", icon: Mail, href: "/dashboard/outreach" },
+  { name: "Outreach History", icon: Send, href: "/dashboard/outreach/history" },
+  { name: "Job Discovery", icon: Search, href: "/dashboard/jobs/discover" },
   {
     name: "AI Tools",
     icon: Bot,
@@ -94,8 +100,29 @@ export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>(["Resumes"]);
   const [isUpgrading, setIsUpgrading] = useState(false);
+  const [queueCount, setQueueCount] = useState<number | null>(null);
   const pathname = usePathname();
   const { data: subscription, refresh: refreshSubscription } = useSubscriptionStatus();
+
+  // Refetches whenever the route changes so bookmarking/queueing a job on
+  // the Job Discovery page updates this count without a full page reload —
+  // cheap (a single COUNT query via /api/jobs/queue-count), not the full
+  // live-fetch-from-Greenhouse discover endpoint.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/jobs/queue-count");
+        const data = await res.json();
+        if (!cancelled && res.ok) setQueueCount(data.count);
+      } catch {
+        // Non-fatal — the widget just stays hidden if this fails.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
 
   const handleUpgrade = async () => {
     setIsUpgrading(true);
@@ -129,6 +156,22 @@ export default function Sidebar() {
 
   const isChildActive = (children: NavChild[]) =>
     children.some((child) => pathname.startsWith(child.href));
+
+  // Nested single-link routes (e.g. "/dashboard/outreach/history" living
+  // under "/dashboard/outreach") both satisfy a naive pathname.startsWith
+  // check against their parent's href, so a plain per-item startsWith would
+  // light up both "Cold Outreach" and "Outreach History" at once. Instead,
+  // find the single-link href that most specifically matches the current
+  // route (exact match, or a "/"-bounded prefix) and only that item is
+  // active.
+  const activeSingleHref = navigation
+    .filter((item): item is NavItem & { href: string } => !item.children && !!item.href)
+    .reduce<string | null>((best, item) => {
+      const matches = pathname === item.href || pathname.startsWith(`${item.href}/`);
+      if (!matches) return best;
+      if (!best || item.href.length > best.length) return item.href;
+      return best;
+    }, null);
 
   return (
     <>
@@ -205,10 +248,7 @@ export default function Sidebar() {
 
               // Single link
               if (!item.children) {
-                const isActive =
-                  item.href === "/dashboard"
-                    ? pathname === "/dashboard"
-                    : pathname.startsWith(item.href!);
+                const isActive = item.href === activeSingleHref;
 
                 return (
                   <Link
@@ -289,6 +329,35 @@ export default function Sidebar() {
               );
             })}
           </nav>
+
+          {/* Queue widget — real count of this user's isQueued=true
+              SavedJob rows (Job Discovery). Hidden until the first fetch
+              resolves rather than flashing "0 jobs" on every page load. */}
+          {queueCount !== null && (
+            <div className="px-4 pb-2 shrink-0">
+              <div className="rounded-2xl border border-purple-100 bg-purple-50/60 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-purple text-white shadow-sm">
+                    <Package className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-500">Queue</p>
+                    <p className="text-lg font-bold leading-tight text-gray-900">
+                      {queueCount} {queueCount === 1 ? "job" : "jobs"}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/dashboard/jobs/discover"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-purple hover:underline"
+                >
+                  View Queue
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </div>
+          )}
 
           {/* Upgrade CTA — only for free-tier users; Pro users see nothing
               here (no hosted portal link needed in the sidebar, that lives

@@ -53,7 +53,25 @@ export function CompanyLogo({ company, size = "sm" }: { company: string; size?: 
   );
 }
 
-export function OutreachTypeBadge({ type, className }: { type: OutreachType; className?: string }) {
+// `type` accepts null for real (not mock) rows on the Cold Outreach
+// Dashboard whose outreachType hasn't been chosen yet (nullable until set
+// via the Generate & Review panel — see prisma/schema.prisma's SavedJob
+// comment) — every other existing call site only ever passes a real
+// OutreachType, so this is purely additive.
+export function OutreachTypeBadge({ type, className }: { type: OutreachType | null; className?: string }) {
+  if (type === null) {
+    return (
+      <span
+        className={cn(
+          "inline-flex w-fit items-center rounded-full bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-400 whitespace-nowrap",
+          className,
+        )}
+      >
+        Not set
+      </span>
+    );
+  }
+
   const style = OUTREACH_TYPE_STYLES[type];
   return (
     <span

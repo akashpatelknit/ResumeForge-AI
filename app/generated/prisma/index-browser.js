@@ -258,6 +258,27 @@ exports.Prisma.QuickApplyEntryScalarFieldEnum = {
   sentAt: 'sentAt'
 };
 
+exports.Prisma.SavedJobScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  source: 'source',
+  externalJobId: 'externalJobId',
+  company: 'company',
+  jobTitle: 'jobTitle',
+  location: 'location',
+  jobDescription: 'jobDescription',
+  requisitionId: 'requisitionId',
+  contactEmails: 'contactEmails',
+  isBookmarked: 'isBookmarked',
+  isQueued: 'isQueued',
+  addedAt: 'addedAt',
+  updatedAt: 'updatedAt',
+  outreachType: 'outreachType',
+  outreachStatus: 'outreachStatus',
+  scheduledSendTime: 'scheduledSendTime',
+  lastActivityAt: 'lastActivityAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -301,6 +322,28 @@ exports.QuickApplyStatus = exports.$Enums.QuickApplyStatus = {
   failed: 'failed'
 };
 
+exports.JobSource = exports.$Enums.JobSource = {
+  greenhouse: 'greenhouse',
+  manual: 'manual'
+};
+
+exports.OutreachType = exports.$Enums.OutreachType = {
+  cold: 'cold',
+  general: 'general',
+  referral: 'referral',
+  quick_apply: 'quick_apply'
+};
+
+exports.OutreachStatus = exports.$Enums.OutreachStatus = {
+  draft: 'draft',
+  generated: 'generated',
+  approved: 'approved',
+  scheduled: 'scheduled',
+  sent: 'sent',
+  replied: 'replied',
+  bounced: 'bounced'
+};
+
 exports.Prisma.ModelName = {
   Resume: 'Resume',
   CoverLetter: 'CoverLetter',
@@ -314,7 +357,8 @@ exports.Prisma.ModelName = {
   TemplateMeta: 'TemplateMeta',
   UsageCounter: 'UsageCounter',
   GmailAccount: 'GmailAccount',
-  QuickApplyEntry: 'QuickApplyEntry'
+  QuickApplyEntry: 'QuickApplyEntry',
+  SavedJob: 'SavedJob'
 };
 
 /**

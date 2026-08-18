@@ -17,7 +17,11 @@ export interface OutreachEntry {
   id: string;
   company: string;
   role: string;
-  outreachType: OutreachType;
+  // Nullable for real (SavedJob-backed) entries whose type hasn't been
+  // chosen yet in the Generate & Review panel — MOCK_OUTREACH_ENTRIES below
+  // always sets a real value, so this only ever reads as null for rows
+  // coming from GET /api/outreach/queue.
+  outreachType: OutreachType | null;
   jobId: string | null;
   emails: string[];
   status: OutreachStatus;

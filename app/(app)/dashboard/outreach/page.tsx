@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import {
   Calendar,
   ChevronDown,
+  Loader2,
   Mail,
   MoreVertical,
   Search,
@@ -36,7 +37,6 @@ import {
 import { NumberedPagination } from "@/components/admin/NumberedPagination";
 import { CompanyLogo, OUTREACH_TYPE_STYLES, OutreachTypeBadge, StatusBadge } from "@/components/outreach/OutreachBadges";
 import {
-  MOCK_OUTREACH_ENTRIES,
   OUTREACH_TYPE_LABELS,
   STATUS_LABELS,
   type OutreachEntry,
@@ -49,8 +49,24 @@ import { QuickApplyModal } from "@/components/outreach/QuickApplyModal";
 const OUTREACH_TYPES: OutreachType[] = ["cold", "general", "referral", "quickApply"];
 const STATUSES: OutreachStatus[] = ["approved", "generated", "scheduled", "sent", "replied", "bounced", "draft"];
 const PAGE_SIZE_OPTIONS = [10, 25, 50];
+const DATE_FILTER_OPTIONS = [
+  { value: "0", label: "Any Time" },
+  { value: "1", label: "Today" },
+  { value: "7", label: "This Week" },
+  { value: "30", label: "This Month" },
+];
 
 const notWiredYet = () => toast.info("Not wired up yet — coming in a follow-up pass.");
+
+function formatDateTime(iso: string | null): string | null {
+  if (!iso) return null;
+  return new Date(iso).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
 
 function StatCardOutreach({
   label,
@@ -70,11 +86,23 @@ function StatCardOutreach({
   );
 }
 
+interface QueueStats {
+  sentToday: number;
+  repliesThisWeek: number;
+  bounceRate: number;
+  scheduledCount: number;
+}
+
 export default function ColdOutreachPage() {
+  const [entries, setEntries] = useState<OutreachEntry[]>([]);
+  const [stats, setStats] = useState<QueueStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<OutreachStatus | "all">("all");
   const [companyFilter, setCompanyFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<OutreachType | "all">("all");
+  const [dateFilter, setDateFilter] = useState("0");
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -83,17 +111,52 @@ export default function ColdOutreachPage() {
   const [quickApplyOpen, setQuickApplyOpen] = useState(false);
   const [quickApplyKey, setQuickApplyKey] = useState(0);
 
+  // The Dashboard's only data source is a user's own queued SavedJob rows
+  // (GET /api/outreach/queue) — never raw Job Discovery listings, since
+  // this is where real outreach emails get generated/scheduled from. A
+  // user's own queue is expected to be small (dozens, not thousands), so
+  // it's fetched whole and filtered/paginated client-side below, same as
+  // this page already did against mock data.
+  const fetchQueue = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/outreach/queue");
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to load your outreach queue.");
+        return;
+      }
+      setEntries(data.entries);
+      setStats(data.stats);
+    } catch (error) {
+      console.error("Failed to load outreach queue:", error);
+      toast.error("Network error loading your outreach queue.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchQueue();
+  }, [fetchQueue]);
+
   const companies = useMemo(
-    () => Array.from(new Set(MOCK_OUTREACH_ENTRIES.map((e) => e.company))).sort(),
-    [],
+    () => Array.from(new Set(entries.map((e) => e.company))).sort(),
+    [entries],
   );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return MOCK_OUTREACH_ENTRIES.filter((e) => {
+    const dateWithinDays = Number(dateFilter) || 0;
+    const cutoff = dateWithinDays > 0 ? Date.now() - dateWithinDays * 24 * 60 * 60 * 1000 : 0;
+
+    return entries.filter((e) => {
       if (statusFilter !== "all" && e.status !== statusFilter) return false;
       if (companyFilter !== "all" && e.company !== companyFilter) return false;
       if (typeFilter !== "all" && e.outreachType !== typeFilter) return false;
+      if (dateWithinDays > 0) {
+        if (!e.lastActivity || new Date(e.lastActivity).getTime() < cutoff) return false;
+      }
       if (!q) return true;
       return (
         e.company.toLowerCase().includes(q) ||
@@ -101,7 +164,7 @@ export default function ColdOutreachPage() {
         e.emails.some((email) => email.toLowerCase().includes(q))
       );
     });
-  }, [search, statusFilter, companyFilter, typeFilter]);
+  }, [entries, search, statusFilter, companyFilter, typeFilter, dateFilter]);
 
   const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -156,6 +219,32 @@ export default function ColdOutreachPage() {
       lastActivity: null,
     });
     setPanelOpen(true);
+  }
+
+  async function removeFromQueue(entry: OutreachEntry) {
+    try {
+      const res = await fetch("/api/jobs/unsave", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ savedJobId: entry.id, action: "queue" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to remove this job from your queue.");
+        return;
+      }
+      toast.success("Removed from queue.");
+      setSelected((prev) => {
+        if (!prev.has(entry.id)) return prev;
+        const next = new Set(prev);
+        next.delete(entry.id);
+        return next;
+      });
+      await fetchQueue();
+    } catch (error) {
+      console.error("Failed to remove from queue:", error);
+      toast.error("Network error — please try again.");
+    }
   }
 
   return (
@@ -219,41 +308,37 @@ export default function ColdOutreachPage() {
         </div>
       </div>
 
-      {/* Stats strip */}
+      {/* Stats strip — real counts from the same queued rows above, not
+          mock numbers. The "/ 15" daily cap and its progress bar stay a
+          static placeholder: the actual cap lives in Send Scheduler
+          settings, which is explicitly still mock (out of scope here).
+          "vs last week" trend arrows from the original mock are dropped
+          entirely rather than faked — there's no historical snapshot to
+          compute a real delta from yet. */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCardOutreach
           label="Sent Today"
-          value="8 / 15"
+          value={`${stats?.sentToday ?? 0} / 15`}
           footer={
             <div className="mt-3">
               <p className="mb-1.5 text-xs text-gray-400">Daily cap</p>
-              <Progress value={53} className="h-1.5" />
+              <Progress value={Math.min(100, ((stats?.sentToday ?? 0) / 15) * 100)} className="h-1.5" />
             </div>
           }
         />
         <StatCardOutreach
           label="Replies This Week"
-          value="6"
-          footer={
-            <p className="mt-2 text-xs">
-              <span className="font-medium text-emerald-600">↑ 20%</span>{" "}
-              <span className="text-gray-400">vs last week</span>
-            </p>
-          }
+          value={String(stats?.repliesThisWeek ?? 0)}
+          footer={<p className="mt-2 text-xs text-gray-400">Last 7 days</p>}
         />
         <StatCardOutreach
           label="Bounce Rate"
-          value="2.4%"
-          footer={
-            <p className="mt-2 text-xs">
-              <span className="font-medium text-emerald-600">↓ 0.8%</span>{" "}
-              <span className="text-gray-400">vs last week</span>
-            </p>
-          }
+          value={`${stats?.bounceRate ?? 0}%`}
+          footer={<p className="mt-2 text-xs text-gray-400">Of sent + replied + bounced</p>}
         />
         <StatCardOutreach
           label="Scheduled"
-          value="12"
+          value={String(stats?.scheduledCount ?? 0)}
           footer={<p className="mt-2 text-xs text-gray-400">Queued to send</p>}
         />
       </div>
@@ -315,15 +400,30 @@ export default function ColdOutreachPage() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <button
-            type="button"
-            onClick={notWiredYet}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            <Calendar className="h-3.5 w-3.5 text-gray-400" />
-            Date
-            <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <Calendar className="h-3.5 w-3.5 text-gray-400" />
+                Date
+                {dateFilter !== "0" && (
+                  <span className="rounded-full bg-purple-100 px-1.5 py-0.5 text-[10px] font-semibold text-brand-purple">1</span>
+                )}
+                <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-44">
+              <DropdownMenuRadioGroup value={dateFilter} onValueChange={setDateFilter}>
+                {DATE_FILTER_OPTIONS.map((opt) => (
+                  <DropdownMenuRadioItem key={opt.value} className="cursor-pointer" value={opt.value}>
+                    {opt.label}
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -397,7 +497,12 @@ export default function ColdOutreachPage() {
         </div>
       )}
 
-      {total === 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white py-20 text-sm text-gray-400 shadow-sm">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Loading your outreach queue...
+        </div>
+      ) : total === 0 ? (
         <EmptyState onNew={openPanelForNew} />
       ) : (
         <>
@@ -455,8 +560,8 @@ export default function ColdOutreachPage() {
                       <td className="px-4 py-3.5">
                         <StatusBadge status={entry.status} />
                       </td>
-                      <td className="px-4 py-3.5 text-gray-500">{entry.scheduledSendTime ?? "—"}</td>
-                      <td className="px-4 py-3.5 text-gray-500">{entry.lastActivity ?? "—"}</td>
+                      <td className="px-4 py-3.5 text-gray-500">{formatDateTime(entry.scheduledSendTime) ?? "—"}</td>
+                      <td className="px-4 py-3.5 text-gray-500">{formatDateTime(entry.lastActivity) ?? "—"}</td>
                       <td className="px-4 py-3.5 text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -475,8 +580,8 @@ export default function ColdOutreachPage() {
                             <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
                               Duplicate
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
-                              Delete
+                            <DropdownMenuItem className="cursor-pointer text-red-600" onClick={() => removeFromQueue(entry)}>
+                              Remove from Queue
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -576,8 +681,8 @@ export default function ColdOutreachPage() {
                 <div className="space-y-1 border-t border-gray-100 pt-2.5 text-xs text-gray-500">
                   <p className="truncate">{entry.emails[0]}</p>
                   <div className="flex items-center justify-between">
-                    <span>Scheduled: {entry.scheduledSendTime ?? "—"}</span>
-                    <span>Last activity: {entry.lastActivity ?? "—"}</span>
+                    <span>Scheduled: {formatDateTime(entry.scheduledSendTime) ?? "—"}</span>
+                    <span>Last activity: {formatDateTime(entry.lastActivity) ?? "—"}</span>
                   </div>
                 </div>
               </button>

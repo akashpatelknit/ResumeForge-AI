@@ -15,7 +15,10 @@ import {
   type OutreachType,
 } from "@/components/outreach/outreachData";
 
-const OUTREACH_TYPES: OutreachType[] = ["cold", "general", "referral", "quickApply"];
+// Quick Apply now has its own dedicated flow (components/outreach/
+// QuickApplyModal.tsx, with real generate/send wiring) — it's deliberately
+// left out of this panel's segmented control so it isn't offered twice.
+const OUTREACH_TYPES: OutreachType[] = ["cold", "general", "referral"];
 const TONES = ["Formal", "Casual", "Friendly"] as const;
 const LENGTHS = ["Short", "Medium", "Detailed"] as const;
 
@@ -58,7 +61,12 @@ export function GenerateEmailPanel({
   // parent remounts this component (key={entry.id}) whenever a different
   // row's panel opens, so a fresh initial state per entry is all that's
   // needed instead of an effect that re-derives state on every prop change.
-  const [outreachType, setOutreachType] = useState<OutreachType>(entry?.outreachType ?? "cold");
+  // A row whose type is "quickApply" (still a valid table/badge category on
+  // the dashboard) has no tab here anymore — fall back to "cold" rather
+  // than initializing to a value none of the segmented buttons represent.
+  const [outreachType, setOutreachType] = useState<OutreachType>(
+    entry?.outreachType && OUTREACH_TYPES.includes(entry.outreachType) ? entry.outreachType : "cold",
+  );
   const [emails, setEmails] = useState<string[]>(entry?.emails ?? []);
   const [jobId, setJobId] = useState(entry?.jobId ?? "");
   const [summaryOpen, setSummaryOpen] = useState(false);

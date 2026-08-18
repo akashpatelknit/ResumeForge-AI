@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthModal } from "@/components/auth/AuthModal";
+import { QueryProvider } from "@/components/providers/QueryProvider";
 import "./globals.css";
 import "./index.css";
 
@@ -209,9 +210,11 @@ export default function RootLayout({
           className="min-h-screen bg-background font-sans antialiased"
           suppressHydrationWarning
         >
-          {children}
-          <Toaster richColors position="top-right" />
-          <AuthModal />
+          <QueryProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+            <AuthModal />
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
