@@ -68,6 +68,16 @@ export type TemplateMeta = $Result.DefaultSelection<Prisma.$TemplateMetaPayload>
  * 
  */
 export type UsageCounter = $Result.DefaultSelection<Prisma.$UsageCounterPayload>
+/**
+ * Model GmailAccount
+ * 
+ */
+export type GmailAccount = $Result.DefaultSelection<Prisma.$GmailAccountPayload>
+/**
+ * Model QuickApplyEntry
+ * 
+ */
+export type QuickApplyEntry = $Result.DefaultSelection<Prisma.$QuickApplyEntryPayload>
 
 /**
  * Enums
@@ -82,11 +92,25 @@ export namespace $Enums {
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
+
+export const QuickApplyStatus: {
+  draft: 'draft',
+  generated: 'generated',
+  sent: 'sent',
+  failed: 'failed'
+};
+
+export type QuickApplyStatus = (typeof QuickApplyStatus)[keyof typeof QuickApplyStatus]
+
 }
 
 export type SubscriptionStatus = $Enums.SubscriptionStatus
 
 export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
+
+export type QuickApplyStatus = $Enums.QuickApplyStatus
+
+export const QuickApplyStatus: typeof $Enums.QuickApplyStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -314,6 +338,26 @@ export class PrismaClient<
     * ```
     */
   get usageCounter(): Prisma.UsageCounterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.gmailAccount`: Exposes CRUD operations for the **GmailAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GmailAccounts
+    * const gmailAccounts = await prisma.gmailAccount.findMany()
+    * ```
+    */
+  get gmailAccount(): Prisma.GmailAccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.quickApplyEntry`: Exposes CRUD operations for the **QuickApplyEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuickApplyEntries
+    * const quickApplyEntries = await prisma.quickApplyEntry.findMany()
+    * ```
+    */
+  get quickApplyEntry(): Prisma.QuickApplyEntryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -758,7 +802,9 @@ export namespace Prisma {
     UserStatus: 'UserStatus',
     PlanConfig: 'PlanConfig',
     TemplateMeta: 'TemplateMeta',
-    UsageCounter: 'UsageCounter'
+    UsageCounter: 'UsageCounter',
+    GmailAccount: 'GmailAccount',
+    QuickApplyEntry: 'QuickApplyEntry'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -774,7 +820,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter"
+      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1592,6 +1638,154 @@ export namespace Prisma {
           }
         }
       }
+      GmailAccount: {
+        payload: Prisma.$GmailAccountPayload<ExtArgs>
+        fields: Prisma.GmailAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GmailAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GmailAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.GmailAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GmailAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          findMany: {
+            args: Prisma.GmailAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>[]
+          }
+          create: {
+            args: Prisma.GmailAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          createMany: {
+            args: Prisma.GmailAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GmailAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.GmailAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          update: {
+            args: Prisma.GmailAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.GmailAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GmailAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GmailAccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.GmailAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GmailAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.GmailAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGmailAccount>
+          }
+          groupBy: {
+            args: Prisma.GmailAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GmailAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GmailAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<GmailAccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      QuickApplyEntry: {
+        payload: Prisma.$QuickApplyEntryPayload<ExtArgs>
+        fields: Prisma.QuickApplyEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuickApplyEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuickApplyEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.QuickApplyEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuickApplyEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          findMany: {
+            args: Prisma.QuickApplyEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>[]
+          }
+          create: {
+            args: Prisma.QuickApplyEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          createMany: {
+            args: Prisma.QuickApplyEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuickApplyEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.QuickApplyEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          update: {
+            args: Prisma.QuickApplyEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuickApplyEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuickApplyEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuickApplyEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuickApplyEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuickApplyEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.QuickApplyEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuickApplyEntry>
+          }
+          groupBy: {
+            args: Prisma.QuickApplyEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuickApplyEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuickApplyEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<QuickApplyEntryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1711,6 +1905,8 @@ export namespace Prisma {
     planConfig?: PlanConfigOmit
     templateMeta?: TemplateMetaOmit
     usageCounter?: UsageCounterOmit
+    gmailAccount?: GmailAccountOmit
+    quickApplyEntry?: QuickApplyEntryOmit
   }
 
   /* Types for Logging */
@@ -1793,11 +1989,13 @@ export namespace Prisma {
   export type ResumeCountOutputType = {
     coverLetters: number
     analytics: number
+    quickApplyEntries: number
   }
 
   export type ResumeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coverLetters?: boolean | ResumeCountOutputTypeCountCoverLettersArgs
     analytics?: boolean | ResumeCountOutputTypeCountAnalyticsArgs
+    quickApplyEntries?: boolean | ResumeCountOutputTypeCountQuickApplyEntriesArgs
   }
 
   // Custom InputTypes
@@ -1823,6 +2021,13 @@ export namespace Prisma {
    */
   export type ResumeCountOutputTypeCountAnalyticsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ResumeAnalyticsWhereInput
+  }
+
+  /**
+   * ResumeCountOutputType without action
+   */
+  export type ResumeCountOutputTypeCountQuickApplyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuickApplyEntryWhereInput
   }
 
 
@@ -2016,6 +2221,7 @@ export namespace Prisma {
     updatedAt?: boolean
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
+    quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resume"]>
 
@@ -2056,6 +2262,7 @@ export namespace Prisma {
   export type ResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
+    quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ResumeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2066,6 +2273,7 @@ export namespace Prisma {
     objects: {
       coverLetters: Prisma.$CoverLetterPayload<ExtArgs>[]
       analytics: Prisma.$ResumeAnalyticsPayload<ExtArgs>[]
+      quickApplyEntries: Prisma.$QuickApplyEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2472,6 +2680,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     coverLetters<T extends Resume$coverLettersArgs<ExtArgs> = {}>(args?: Subset<T, Resume$coverLettersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoverLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     analytics<T extends Resume$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$analyticsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResumeAnalyticsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    quickApplyEntries<T extends Resume$quickApplyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Resume$quickApplyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2942,6 +3151,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ResumeAnalyticsScalarFieldEnum | ResumeAnalyticsScalarFieldEnum[]
+  }
+
+  /**
+   * Resume.quickApplyEntries
+   */
+  export type Resume$quickApplyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    where?: QuickApplyEntryWhereInput
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    cursor?: QuickApplyEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
   }
 
   /**
@@ -13385,6 +13618,2215 @@ export namespace Prisma {
 
 
   /**
+   * Model GmailAccount
+   */
+
+  export type AggregateGmailAccount = {
+    _count: GmailAccountCountAggregateOutputType | null
+    _min: GmailAccountMinAggregateOutputType | null
+    _max: GmailAccountMaxAggregateOutputType | null
+  }
+
+  export type GmailAccountMinAggregateOutputType = {
+    userId: string | null
+    email: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    tokenExpiresAt: Date | null
+    connectedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GmailAccountMaxAggregateOutputType = {
+    userId: string | null
+    email: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    tokenExpiresAt: Date | null
+    connectedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GmailAccountCountAggregateOutputType = {
+    userId: number
+    email: number
+    accessToken: number
+    refreshToken: number
+    tokenExpiresAt: number
+    connectedAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GmailAccountMinAggregateInputType = {
+    userId?: true
+    email?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    connectedAt?: true
+    updatedAt?: true
+  }
+
+  export type GmailAccountMaxAggregateInputType = {
+    userId?: true
+    email?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    connectedAt?: true
+    updatedAt?: true
+  }
+
+  export type GmailAccountCountAggregateInputType = {
+    userId?: true
+    email?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    connectedAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GmailAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GmailAccount to aggregate.
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GmailAccounts to fetch.
+     */
+    orderBy?: GmailAccountOrderByWithRelationInput | GmailAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GmailAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GmailAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GmailAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GmailAccounts
+    **/
+    _count?: true | GmailAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GmailAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GmailAccountMaxAggregateInputType
+  }
+
+  export type GetGmailAccountAggregateType<T extends GmailAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateGmailAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGmailAccount[P]>
+      : GetScalarType<T[P], AggregateGmailAccount[P]>
+  }
+
+
+
+
+  export type GmailAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GmailAccountWhereInput
+    orderBy?: GmailAccountOrderByWithAggregationInput | GmailAccountOrderByWithAggregationInput[]
+    by: GmailAccountScalarFieldEnum[] | GmailAccountScalarFieldEnum
+    having?: GmailAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GmailAccountCountAggregateInputType | true
+    _min?: GmailAccountMinAggregateInputType
+    _max?: GmailAccountMaxAggregateInputType
+  }
+
+  export type GmailAccountGroupByOutputType = {
+    userId: string
+    email: string
+    accessToken: string
+    refreshToken: string
+    tokenExpiresAt: Date
+    connectedAt: Date
+    updatedAt: Date
+    _count: GmailAccountCountAggregateOutputType | null
+    _min: GmailAccountMinAggregateOutputType | null
+    _max: GmailAccountMaxAggregateOutputType | null
+  }
+
+  type GetGmailAccountGroupByPayload<T extends GmailAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GmailAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GmailAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GmailAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], GmailAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GmailAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    email?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    connectedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["gmailAccount"]>
+
+  export type GmailAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    email?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    connectedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["gmailAccount"]>
+
+  export type GmailAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    email?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    connectedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["gmailAccount"]>
+
+  export type GmailAccountSelectScalar = {
+    userId?: boolean
+    email?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    connectedAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GmailAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "email" | "accessToken" | "refreshToken" | "tokenExpiresAt" | "connectedAt" | "updatedAt", ExtArgs["result"]["gmailAccount"]>
+
+  export type $GmailAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GmailAccount"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      userId: string
+      email: string
+      accessToken: string
+      refreshToken: string
+      tokenExpiresAt: Date
+      connectedAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["gmailAccount"]>
+    composites: {}
+  }
+
+  type GmailAccountGetPayload<S extends boolean | null | undefined | GmailAccountDefaultArgs> = $Result.GetResult<Prisma.$GmailAccountPayload, S>
+
+  type GmailAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GmailAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GmailAccountCountAggregateInputType | true
+    }
+
+  export interface GmailAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GmailAccount'], meta: { name: 'GmailAccount' } }
+    /**
+     * Find zero or one GmailAccount that matches the filter.
+     * @param {GmailAccountFindUniqueArgs} args - Arguments to find a GmailAccount
+     * @example
+     * // Get one GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GmailAccountFindUniqueArgs>(args: SelectSubset<T, GmailAccountFindUniqueArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GmailAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GmailAccountFindUniqueOrThrowArgs} args - Arguments to find a GmailAccount
+     * @example
+     * // Get one GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GmailAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, GmailAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GmailAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountFindFirstArgs} args - Arguments to find a GmailAccount
+     * @example
+     * // Get one GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GmailAccountFindFirstArgs>(args?: SelectSubset<T, GmailAccountFindFirstArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GmailAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountFindFirstOrThrowArgs} args - Arguments to find a GmailAccount
+     * @example
+     * // Get one GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GmailAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, GmailAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GmailAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GmailAccounts
+     * const gmailAccounts = await prisma.gmailAccount.findMany()
+     * 
+     * // Get first 10 GmailAccounts
+     * const gmailAccounts = await prisma.gmailAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `userId`
+     * const gmailAccountWithUserIdOnly = await prisma.gmailAccount.findMany({ select: { userId: true } })
+     * 
+     */
+    findMany<T extends GmailAccountFindManyArgs>(args?: SelectSubset<T, GmailAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GmailAccount.
+     * @param {GmailAccountCreateArgs} args - Arguments to create a GmailAccount.
+     * @example
+     * // Create one GmailAccount
+     * const GmailAccount = await prisma.gmailAccount.create({
+     *   data: {
+     *     // ... data to create a GmailAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends GmailAccountCreateArgs>(args: SelectSubset<T, GmailAccountCreateArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GmailAccounts.
+     * @param {GmailAccountCreateManyArgs} args - Arguments to create many GmailAccounts.
+     * @example
+     * // Create many GmailAccounts
+     * const gmailAccount = await prisma.gmailAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GmailAccountCreateManyArgs>(args?: SelectSubset<T, GmailAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GmailAccounts and returns the data saved in the database.
+     * @param {GmailAccountCreateManyAndReturnArgs} args - Arguments to create many GmailAccounts.
+     * @example
+     * // Create many GmailAccounts
+     * const gmailAccount = await prisma.gmailAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GmailAccounts and only return the `userId`
+     * const gmailAccountWithUserIdOnly = await prisma.gmailAccount.createManyAndReturn({
+     *   select: { userId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GmailAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, GmailAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GmailAccount.
+     * @param {GmailAccountDeleteArgs} args - Arguments to delete one GmailAccount.
+     * @example
+     * // Delete one GmailAccount
+     * const GmailAccount = await prisma.gmailAccount.delete({
+     *   where: {
+     *     // ... filter to delete one GmailAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GmailAccountDeleteArgs>(args: SelectSubset<T, GmailAccountDeleteArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GmailAccount.
+     * @param {GmailAccountUpdateArgs} args - Arguments to update one GmailAccount.
+     * @example
+     * // Update one GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GmailAccountUpdateArgs>(args: SelectSubset<T, GmailAccountUpdateArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GmailAccounts.
+     * @param {GmailAccountDeleteManyArgs} args - Arguments to filter GmailAccounts to delete.
+     * @example
+     * // Delete a few GmailAccounts
+     * const { count } = await prisma.gmailAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GmailAccountDeleteManyArgs>(args?: SelectSubset<T, GmailAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GmailAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GmailAccounts
+     * const gmailAccount = await prisma.gmailAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GmailAccountUpdateManyArgs>(args: SelectSubset<T, GmailAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GmailAccounts and returns the data updated in the database.
+     * @param {GmailAccountUpdateManyAndReturnArgs} args - Arguments to update many GmailAccounts.
+     * @example
+     * // Update many GmailAccounts
+     * const gmailAccount = await prisma.gmailAccount.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GmailAccounts and only return the `userId`
+     * const gmailAccountWithUserIdOnly = await prisma.gmailAccount.updateManyAndReturn({
+     *   select: { userId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GmailAccountUpdateManyAndReturnArgs>(args: SelectSubset<T, GmailAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GmailAccount.
+     * @param {GmailAccountUpsertArgs} args - Arguments to update or create a GmailAccount.
+     * @example
+     * // Update or create a GmailAccount
+     * const gmailAccount = await prisma.gmailAccount.upsert({
+     *   create: {
+     *     // ... data to create a GmailAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GmailAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GmailAccountUpsertArgs>(args: SelectSubset<T, GmailAccountUpsertArgs<ExtArgs>>): Prisma__GmailAccountClient<$Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GmailAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountCountArgs} args - Arguments to filter GmailAccounts to count.
+     * @example
+     * // Count the number of GmailAccounts
+     * const count = await prisma.gmailAccount.count({
+     *   where: {
+     *     // ... the filter for the GmailAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends GmailAccountCountArgs>(
+      args?: Subset<T, GmailAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GmailAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GmailAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GmailAccountAggregateArgs>(args: Subset<T, GmailAccountAggregateArgs>): Prisma.PrismaPromise<GetGmailAccountAggregateType<T>>
+
+    /**
+     * Group by GmailAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GmailAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GmailAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GmailAccountGroupByArgs['orderBy'] }
+        : { orderBy?: GmailAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GmailAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGmailAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GmailAccount model
+   */
+  readonly fields: GmailAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GmailAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GmailAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GmailAccount model
+   */
+  interface GmailAccountFieldRefs {
+    readonly userId: FieldRef<"GmailAccount", 'String'>
+    readonly email: FieldRef<"GmailAccount", 'String'>
+    readonly accessToken: FieldRef<"GmailAccount", 'String'>
+    readonly refreshToken: FieldRef<"GmailAccount", 'String'>
+    readonly tokenExpiresAt: FieldRef<"GmailAccount", 'DateTime'>
+    readonly connectedAt: FieldRef<"GmailAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"GmailAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GmailAccount findUnique
+   */
+  export type GmailAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which GmailAccount to fetch.
+     */
+    where: GmailAccountWhereUniqueInput
+  }
+
+  /**
+   * GmailAccount findUniqueOrThrow
+   */
+  export type GmailAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which GmailAccount to fetch.
+     */
+    where: GmailAccountWhereUniqueInput
+  }
+
+  /**
+   * GmailAccount findFirst
+   */
+  export type GmailAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which GmailAccount to fetch.
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GmailAccounts to fetch.
+     */
+    orderBy?: GmailAccountOrderByWithRelationInput | GmailAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GmailAccounts.
+     */
+    cursor?: GmailAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GmailAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GmailAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GmailAccounts.
+     */
+    distinct?: GmailAccountScalarFieldEnum | GmailAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GmailAccount findFirstOrThrow
+   */
+  export type GmailAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which GmailAccount to fetch.
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GmailAccounts to fetch.
+     */
+    orderBy?: GmailAccountOrderByWithRelationInput | GmailAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GmailAccounts.
+     */
+    cursor?: GmailAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GmailAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GmailAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GmailAccounts.
+     */
+    distinct?: GmailAccountScalarFieldEnum | GmailAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GmailAccount findMany
+   */
+  export type GmailAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which GmailAccounts to fetch.
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GmailAccounts to fetch.
+     */
+    orderBy?: GmailAccountOrderByWithRelationInput | GmailAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GmailAccounts.
+     */
+    cursor?: GmailAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GmailAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GmailAccounts.
+     */
+    skip?: number
+    distinct?: GmailAccountScalarFieldEnum | GmailAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GmailAccount create
+   */
+  export type GmailAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * The data needed to create a GmailAccount.
+     */
+    data: XOR<GmailAccountCreateInput, GmailAccountUncheckedCreateInput>
+  }
+
+  /**
+   * GmailAccount createMany
+   */
+  export type GmailAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GmailAccounts.
+     */
+    data: GmailAccountCreateManyInput | GmailAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GmailAccount createManyAndReturn
+   */
+  export type GmailAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many GmailAccounts.
+     */
+    data: GmailAccountCreateManyInput | GmailAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GmailAccount update
+   */
+  export type GmailAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * The data needed to update a GmailAccount.
+     */
+    data: XOR<GmailAccountUpdateInput, GmailAccountUncheckedUpdateInput>
+    /**
+     * Choose, which GmailAccount to update.
+     */
+    where: GmailAccountWhereUniqueInput
+  }
+
+  /**
+   * GmailAccount updateMany
+   */
+  export type GmailAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GmailAccounts.
+     */
+    data: XOR<GmailAccountUpdateManyMutationInput, GmailAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which GmailAccounts to update
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * Limit how many GmailAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GmailAccount updateManyAndReturn
+   */
+  export type GmailAccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * The data used to update GmailAccounts.
+     */
+    data: XOR<GmailAccountUpdateManyMutationInput, GmailAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which GmailAccounts to update
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * Limit how many GmailAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GmailAccount upsert
+   */
+  export type GmailAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * The filter to search for the GmailAccount to update in case it exists.
+     */
+    where: GmailAccountWhereUniqueInput
+    /**
+     * In case the GmailAccount found by the `where` argument doesn't exist, create a new GmailAccount with this data.
+     */
+    create: XOR<GmailAccountCreateInput, GmailAccountUncheckedCreateInput>
+    /**
+     * In case the GmailAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GmailAccountUpdateInput, GmailAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * GmailAccount delete
+   */
+  export type GmailAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+    /**
+     * Filter which GmailAccount to delete.
+     */
+    where: GmailAccountWhereUniqueInput
+  }
+
+  /**
+   * GmailAccount deleteMany
+   */
+  export type GmailAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GmailAccounts to delete
+     */
+    where?: GmailAccountWhereInput
+    /**
+     * Limit how many GmailAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GmailAccount without action
+   */
+  export type GmailAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GmailAccount
+     */
+    select?: GmailAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GmailAccount
+     */
+    omit?: GmailAccountOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model QuickApplyEntry
+   */
+
+  export type AggregateQuickApplyEntry = {
+    _count: QuickApplyEntryCountAggregateOutputType | null
+    _min: QuickApplyEntryMinAggregateOutputType | null
+    _max: QuickApplyEntryMaxAggregateOutputType | null
+  }
+
+  export type QuickApplyEntryMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    recipientEmail: string | null
+    companyName: string | null
+    roleTitle: string | null
+    pastedContext: string | null
+    resumeId: string | null
+    generatedSubject: string | null
+    generatedBody: string | null
+    status: $Enums.QuickApplyStatus | null
+    gmailMessageId: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sentAt: Date | null
+  }
+
+  export type QuickApplyEntryMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    recipientEmail: string | null
+    companyName: string | null
+    roleTitle: string | null
+    pastedContext: string | null
+    resumeId: string | null
+    generatedSubject: string | null
+    generatedBody: string | null
+    status: $Enums.QuickApplyStatus | null
+    gmailMessageId: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sentAt: Date | null
+  }
+
+  export type QuickApplyEntryCountAggregateOutputType = {
+    id: number
+    userId: number
+    recipientEmail: number
+    companyName: number
+    roleTitle: number
+    pastedContext: number
+    resumeId: number
+    generatedSubject: number
+    generatedBody: number
+    status: number
+    gmailMessageId: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    sentAt: number
+    _all: number
+  }
+
+
+  export type QuickApplyEntryMinAggregateInputType = {
+    id?: true
+    userId?: true
+    recipientEmail?: true
+    companyName?: true
+    roleTitle?: true
+    pastedContext?: true
+    resumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    status?: true
+    gmailMessageId?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+  }
+
+  export type QuickApplyEntryMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    recipientEmail?: true
+    companyName?: true
+    roleTitle?: true
+    pastedContext?: true
+    resumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    status?: true
+    gmailMessageId?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+  }
+
+  export type QuickApplyEntryCountAggregateInputType = {
+    id?: true
+    userId?: true
+    recipientEmail?: true
+    companyName?: true
+    roleTitle?: true
+    pastedContext?: true
+    resumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    status?: true
+    gmailMessageId?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+    _all?: true
+  }
+
+  export type QuickApplyEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuickApplyEntry to aggregate.
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuickApplyEntries to fetch.
+     */
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuickApplyEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuickApplyEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuickApplyEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuickApplyEntries
+    **/
+    _count?: true | QuickApplyEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuickApplyEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuickApplyEntryMaxAggregateInputType
+  }
+
+  export type GetQuickApplyEntryAggregateType<T extends QuickApplyEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuickApplyEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuickApplyEntry[P]>
+      : GetScalarType<T[P], AggregateQuickApplyEntry[P]>
+  }
+
+
+
+
+  export type QuickApplyEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuickApplyEntryWhereInput
+    orderBy?: QuickApplyEntryOrderByWithAggregationInput | QuickApplyEntryOrderByWithAggregationInput[]
+    by: QuickApplyEntryScalarFieldEnum[] | QuickApplyEntryScalarFieldEnum
+    having?: QuickApplyEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuickApplyEntryCountAggregateInputType | true
+    _min?: QuickApplyEntryMinAggregateInputType
+    _max?: QuickApplyEntryMaxAggregateInputType
+  }
+
+  export type QuickApplyEntryGroupByOutputType = {
+    id: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext: string | null
+    resumeId: string
+    generatedSubject: string | null
+    generatedBody: string | null
+    status: $Enums.QuickApplyStatus
+    gmailMessageId: string | null
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    sentAt: Date | null
+    _count: QuickApplyEntryCountAggregateOutputType | null
+    _min: QuickApplyEntryMinAggregateOutputType | null
+    _max: QuickApplyEntryMaxAggregateOutputType | null
+  }
+
+  type GetQuickApplyEntryGroupByPayload<T extends QuickApplyEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuickApplyEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuickApplyEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuickApplyEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], QuickApplyEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuickApplyEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    recipientEmail?: boolean
+    companyName?: boolean
+    roleTitle?: boolean
+    pastedContext?: boolean
+    resumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    status?: boolean
+    gmailMessageId?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quickApplyEntry"]>
+
+  export type QuickApplyEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    recipientEmail?: boolean
+    companyName?: boolean
+    roleTitle?: boolean
+    pastedContext?: boolean
+    resumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    status?: boolean
+    gmailMessageId?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quickApplyEntry"]>
+
+  export type QuickApplyEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    recipientEmail?: boolean
+    companyName?: boolean
+    roleTitle?: boolean
+    pastedContext?: boolean
+    resumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    status?: boolean
+    gmailMessageId?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quickApplyEntry"]>
+
+  export type QuickApplyEntrySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    recipientEmail?: boolean
+    companyName?: boolean
+    roleTitle?: boolean
+    pastedContext?: boolean
+    resumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    status?: boolean
+    gmailMessageId?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+  }
+
+  export type QuickApplyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "recipientEmail" | "companyName" | "roleTitle" | "pastedContext" | "resumeId" | "generatedSubject" | "generatedBody" | "status" | "gmailMessageId" | "errorMessage" | "createdAt" | "updatedAt" | "sentAt", ExtArgs["result"]["quickApplyEntry"]>
+  export type QuickApplyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }
+  export type QuickApplyEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }
+  export type QuickApplyEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+  }
+
+  export type $QuickApplyEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuickApplyEntry"
+    objects: {
+      resume: Prisma.$ResumePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      recipientEmail: string
+      companyName: string
+      roleTitle: string
+      pastedContext: string | null
+      resumeId: string
+      generatedSubject: string | null
+      generatedBody: string | null
+      status: $Enums.QuickApplyStatus
+      gmailMessageId: string | null
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+      sentAt: Date | null
+    }, ExtArgs["result"]["quickApplyEntry"]>
+    composites: {}
+  }
+
+  type QuickApplyEntryGetPayload<S extends boolean | null | undefined | QuickApplyEntryDefaultArgs> = $Result.GetResult<Prisma.$QuickApplyEntryPayload, S>
+
+  type QuickApplyEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuickApplyEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuickApplyEntryCountAggregateInputType | true
+    }
+
+  export interface QuickApplyEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuickApplyEntry'], meta: { name: 'QuickApplyEntry' } }
+    /**
+     * Find zero or one QuickApplyEntry that matches the filter.
+     * @param {QuickApplyEntryFindUniqueArgs} args - Arguments to find a QuickApplyEntry
+     * @example
+     * // Get one QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuickApplyEntryFindUniqueArgs>(args: SelectSubset<T, QuickApplyEntryFindUniqueArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuickApplyEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuickApplyEntryFindUniqueOrThrowArgs} args - Arguments to find a QuickApplyEntry
+     * @example
+     * // Get one QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuickApplyEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, QuickApplyEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuickApplyEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryFindFirstArgs} args - Arguments to find a QuickApplyEntry
+     * @example
+     * // Get one QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuickApplyEntryFindFirstArgs>(args?: SelectSubset<T, QuickApplyEntryFindFirstArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuickApplyEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryFindFirstOrThrowArgs} args - Arguments to find a QuickApplyEntry
+     * @example
+     * // Get one QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuickApplyEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, QuickApplyEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuickApplyEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuickApplyEntries
+     * const quickApplyEntries = await prisma.quickApplyEntry.findMany()
+     * 
+     * // Get first 10 QuickApplyEntries
+     * const quickApplyEntries = await prisma.quickApplyEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const quickApplyEntryWithIdOnly = await prisma.quickApplyEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends QuickApplyEntryFindManyArgs>(args?: SelectSubset<T, QuickApplyEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuickApplyEntry.
+     * @param {QuickApplyEntryCreateArgs} args - Arguments to create a QuickApplyEntry.
+     * @example
+     * // Create one QuickApplyEntry
+     * const QuickApplyEntry = await prisma.quickApplyEntry.create({
+     *   data: {
+     *     // ... data to create a QuickApplyEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuickApplyEntryCreateArgs>(args: SelectSubset<T, QuickApplyEntryCreateArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuickApplyEntries.
+     * @param {QuickApplyEntryCreateManyArgs} args - Arguments to create many QuickApplyEntries.
+     * @example
+     * // Create many QuickApplyEntries
+     * const quickApplyEntry = await prisma.quickApplyEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuickApplyEntryCreateManyArgs>(args?: SelectSubset<T, QuickApplyEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuickApplyEntries and returns the data saved in the database.
+     * @param {QuickApplyEntryCreateManyAndReturnArgs} args - Arguments to create many QuickApplyEntries.
+     * @example
+     * // Create many QuickApplyEntries
+     * const quickApplyEntry = await prisma.quickApplyEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuickApplyEntries and only return the `id`
+     * const quickApplyEntryWithIdOnly = await prisma.quickApplyEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuickApplyEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, QuickApplyEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuickApplyEntry.
+     * @param {QuickApplyEntryDeleteArgs} args - Arguments to delete one QuickApplyEntry.
+     * @example
+     * // Delete one QuickApplyEntry
+     * const QuickApplyEntry = await prisma.quickApplyEntry.delete({
+     *   where: {
+     *     // ... filter to delete one QuickApplyEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuickApplyEntryDeleteArgs>(args: SelectSubset<T, QuickApplyEntryDeleteArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuickApplyEntry.
+     * @param {QuickApplyEntryUpdateArgs} args - Arguments to update one QuickApplyEntry.
+     * @example
+     * // Update one QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuickApplyEntryUpdateArgs>(args: SelectSubset<T, QuickApplyEntryUpdateArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuickApplyEntries.
+     * @param {QuickApplyEntryDeleteManyArgs} args - Arguments to filter QuickApplyEntries to delete.
+     * @example
+     * // Delete a few QuickApplyEntries
+     * const { count } = await prisma.quickApplyEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuickApplyEntryDeleteManyArgs>(args?: SelectSubset<T, QuickApplyEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuickApplyEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuickApplyEntries
+     * const quickApplyEntry = await prisma.quickApplyEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuickApplyEntryUpdateManyArgs>(args: SelectSubset<T, QuickApplyEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuickApplyEntries and returns the data updated in the database.
+     * @param {QuickApplyEntryUpdateManyAndReturnArgs} args - Arguments to update many QuickApplyEntries.
+     * @example
+     * // Update many QuickApplyEntries
+     * const quickApplyEntry = await prisma.quickApplyEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuickApplyEntries and only return the `id`
+     * const quickApplyEntryWithIdOnly = await prisma.quickApplyEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuickApplyEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, QuickApplyEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuickApplyEntry.
+     * @param {QuickApplyEntryUpsertArgs} args - Arguments to update or create a QuickApplyEntry.
+     * @example
+     * // Update or create a QuickApplyEntry
+     * const quickApplyEntry = await prisma.quickApplyEntry.upsert({
+     *   create: {
+     *     // ... data to create a QuickApplyEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuickApplyEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuickApplyEntryUpsertArgs>(args: SelectSubset<T, QuickApplyEntryUpsertArgs<ExtArgs>>): Prisma__QuickApplyEntryClient<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuickApplyEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryCountArgs} args - Arguments to filter QuickApplyEntries to count.
+     * @example
+     * // Count the number of QuickApplyEntries
+     * const count = await prisma.quickApplyEntry.count({
+     *   where: {
+     *     // ... the filter for the QuickApplyEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuickApplyEntryCountArgs>(
+      args?: Subset<T, QuickApplyEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuickApplyEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuickApplyEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuickApplyEntryAggregateArgs>(args: Subset<T, QuickApplyEntryAggregateArgs>): Prisma.PrismaPromise<GetQuickApplyEntryAggregateType<T>>
+
+    /**
+     * Group by QuickApplyEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuickApplyEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuickApplyEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuickApplyEntryGroupByArgs['orderBy'] }
+        : { orderBy?: QuickApplyEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuickApplyEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuickApplyEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuickApplyEntry model
+   */
+  readonly fields: QuickApplyEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuickApplyEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuickApplyEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    resume<T extends ResumeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResumeDefaultArgs<ExtArgs>>): Prisma__ResumeClient<$Result.GetResult<Prisma.$ResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuickApplyEntry model
+   */
+  interface QuickApplyEntryFieldRefs {
+    readonly id: FieldRef<"QuickApplyEntry", 'String'>
+    readonly userId: FieldRef<"QuickApplyEntry", 'String'>
+    readonly recipientEmail: FieldRef<"QuickApplyEntry", 'String'>
+    readonly companyName: FieldRef<"QuickApplyEntry", 'String'>
+    readonly roleTitle: FieldRef<"QuickApplyEntry", 'String'>
+    readonly pastedContext: FieldRef<"QuickApplyEntry", 'String'>
+    readonly resumeId: FieldRef<"QuickApplyEntry", 'String'>
+    readonly generatedSubject: FieldRef<"QuickApplyEntry", 'String'>
+    readonly generatedBody: FieldRef<"QuickApplyEntry", 'String'>
+    readonly status: FieldRef<"QuickApplyEntry", 'QuickApplyStatus'>
+    readonly gmailMessageId: FieldRef<"QuickApplyEntry", 'String'>
+    readonly errorMessage: FieldRef<"QuickApplyEntry", 'String'>
+    readonly createdAt: FieldRef<"QuickApplyEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"QuickApplyEntry", 'DateTime'>
+    readonly sentAt: FieldRef<"QuickApplyEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuickApplyEntry findUnique
+   */
+  export type QuickApplyEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which QuickApplyEntry to fetch.
+     */
+    where: QuickApplyEntryWhereUniqueInput
+  }
+
+  /**
+   * QuickApplyEntry findUniqueOrThrow
+   */
+  export type QuickApplyEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which QuickApplyEntry to fetch.
+     */
+    where: QuickApplyEntryWhereUniqueInput
+  }
+
+  /**
+   * QuickApplyEntry findFirst
+   */
+  export type QuickApplyEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which QuickApplyEntry to fetch.
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuickApplyEntries to fetch.
+     */
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuickApplyEntries.
+     */
+    cursor?: QuickApplyEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuickApplyEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuickApplyEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuickApplyEntries.
+     */
+    distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * QuickApplyEntry findFirstOrThrow
+   */
+  export type QuickApplyEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which QuickApplyEntry to fetch.
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuickApplyEntries to fetch.
+     */
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuickApplyEntries.
+     */
+    cursor?: QuickApplyEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuickApplyEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuickApplyEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuickApplyEntries.
+     */
+    distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * QuickApplyEntry findMany
+   */
+  export type QuickApplyEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which QuickApplyEntries to fetch.
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuickApplyEntries to fetch.
+     */
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuickApplyEntries.
+     */
+    cursor?: QuickApplyEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuickApplyEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuickApplyEntries.
+     */
+    skip?: number
+    distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * QuickApplyEntry create
+   */
+  export type QuickApplyEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a QuickApplyEntry.
+     */
+    data: XOR<QuickApplyEntryCreateInput, QuickApplyEntryUncheckedCreateInput>
+  }
+
+  /**
+   * QuickApplyEntry createMany
+   */
+  export type QuickApplyEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuickApplyEntries.
+     */
+    data: QuickApplyEntryCreateManyInput | QuickApplyEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuickApplyEntry createManyAndReturn
+   */
+  export type QuickApplyEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuickApplyEntries.
+     */
+    data: QuickApplyEntryCreateManyInput | QuickApplyEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuickApplyEntry update
+   */
+  export type QuickApplyEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a QuickApplyEntry.
+     */
+    data: XOR<QuickApplyEntryUpdateInput, QuickApplyEntryUncheckedUpdateInput>
+    /**
+     * Choose, which QuickApplyEntry to update.
+     */
+    where: QuickApplyEntryWhereUniqueInput
+  }
+
+  /**
+   * QuickApplyEntry updateMany
+   */
+  export type QuickApplyEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuickApplyEntries.
+     */
+    data: XOR<QuickApplyEntryUpdateManyMutationInput, QuickApplyEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which QuickApplyEntries to update
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * Limit how many QuickApplyEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuickApplyEntry updateManyAndReturn
+   */
+  export type QuickApplyEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update QuickApplyEntries.
+     */
+    data: XOR<QuickApplyEntryUpdateManyMutationInput, QuickApplyEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which QuickApplyEntries to update
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * Limit how many QuickApplyEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuickApplyEntry upsert
+   */
+  export type QuickApplyEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the QuickApplyEntry to update in case it exists.
+     */
+    where: QuickApplyEntryWhereUniqueInput
+    /**
+     * In case the QuickApplyEntry found by the `where` argument doesn't exist, create a new QuickApplyEntry with this data.
+     */
+    create: XOR<QuickApplyEntryCreateInput, QuickApplyEntryUncheckedCreateInput>
+    /**
+     * In case the QuickApplyEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuickApplyEntryUpdateInput, QuickApplyEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * QuickApplyEntry delete
+   */
+  export type QuickApplyEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    /**
+     * Filter which QuickApplyEntry to delete.
+     */
+    where: QuickApplyEntryWhereUniqueInput
+  }
+
+  /**
+   * QuickApplyEntry deleteMany
+   */
+  export type QuickApplyEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuickApplyEntries to delete
+     */
+    where?: QuickApplyEntryWhereInput
+    /**
+     * Limit how many QuickApplyEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuickApplyEntry without action
+   */
+  export type QuickApplyEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13541,6 +15983,40 @@ export namespace Prisma {
   export type UsageCounterScalarFieldEnum = (typeof UsageCounterScalarFieldEnum)[keyof typeof UsageCounterScalarFieldEnum]
 
 
+  export const GmailAccountScalarFieldEnum: {
+    userId: 'userId',
+    email: 'email',
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    tokenExpiresAt: 'tokenExpiresAt',
+    connectedAt: 'connectedAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GmailAccountScalarFieldEnum = (typeof GmailAccountScalarFieldEnum)[keyof typeof GmailAccountScalarFieldEnum]
+
+
+  export const QuickApplyEntryScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    recipientEmail: 'recipientEmail',
+    companyName: 'companyName',
+    roleTitle: 'roleTitle',
+    pastedContext: 'pastedContext',
+    resumeId: 'resumeId',
+    generatedSubject: 'generatedSubject',
+    generatedBody: 'generatedBody',
+    status: 'status',
+    gmailMessageId: 'gmailMessageId',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    sentAt: 'sentAt'
+  };
+
+  export type QuickApplyEntryScalarFieldEnum = (typeof QuickApplyEntryScalarFieldEnum)[keyof typeof QuickApplyEntryScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -13672,6 +16148,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'QuickApplyStatus'
+   */
+  export type EnumQuickApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'QuickApplyStatus[]'
+   */
+  export type ListEnumQuickApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -13702,6 +16192,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Resume"> | Date | string
     coverLetters?: CoverLetterListRelationFilter
     analytics?: ResumeAnalyticsListRelationFilter
+    quickApplyEntries?: QuickApplyEntryListRelationFilter
   }
 
   export type ResumeOrderByWithRelationInput = {
@@ -13715,6 +16206,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     coverLetters?: CoverLetterOrderByRelationAggregateInput
     analytics?: ResumeAnalyticsOrderByRelationAggregateInput
+    quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
   }
 
   export type ResumeWhereUniqueInput = Prisma.AtLeast<{
@@ -13731,6 +16223,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Resume"> | Date | string
     coverLetters?: CoverLetterListRelationFilter
     analytics?: ResumeAnalyticsListRelationFilter
+    quickApplyEntries?: QuickApplyEntryListRelationFilter
   }, "id">
 
   export type ResumeOrderByWithAggregationInput = {
@@ -14389,6 +16882,173 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"UsageCounter"> | Date | string
   }
 
+  export type GmailAccountWhereInput = {
+    AND?: GmailAccountWhereInput | GmailAccountWhereInput[]
+    OR?: GmailAccountWhereInput[]
+    NOT?: GmailAccountWhereInput | GmailAccountWhereInput[]
+    userId?: StringFilter<"GmailAccount"> | string
+    email?: StringFilter<"GmailAccount"> | string
+    accessToken?: StringFilter<"GmailAccount"> | string
+    refreshToken?: StringFilter<"GmailAccount"> | string
+    tokenExpiresAt?: DateTimeFilter<"GmailAccount"> | Date | string
+    connectedAt?: DateTimeFilter<"GmailAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"GmailAccount"> | Date | string
+  }
+
+  export type GmailAccountOrderByWithRelationInput = {
+    userId?: SortOrder
+    email?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    connectedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GmailAccountWhereUniqueInput = Prisma.AtLeast<{
+    userId?: string
+    AND?: GmailAccountWhereInput | GmailAccountWhereInput[]
+    OR?: GmailAccountWhereInput[]
+    NOT?: GmailAccountWhereInput | GmailAccountWhereInput[]
+    email?: StringFilter<"GmailAccount"> | string
+    accessToken?: StringFilter<"GmailAccount"> | string
+    refreshToken?: StringFilter<"GmailAccount"> | string
+    tokenExpiresAt?: DateTimeFilter<"GmailAccount"> | Date | string
+    connectedAt?: DateTimeFilter<"GmailAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"GmailAccount"> | Date | string
+  }, "userId">
+
+  export type GmailAccountOrderByWithAggregationInput = {
+    userId?: SortOrder
+    email?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    connectedAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GmailAccountCountOrderByAggregateInput
+    _max?: GmailAccountMaxOrderByAggregateInput
+    _min?: GmailAccountMinOrderByAggregateInput
+  }
+
+  export type GmailAccountScalarWhereWithAggregatesInput = {
+    AND?: GmailAccountScalarWhereWithAggregatesInput | GmailAccountScalarWhereWithAggregatesInput[]
+    OR?: GmailAccountScalarWhereWithAggregatesInput[]
+    NOT?: GmailAccountScalarWhereWithAggregatesInput | GmailAccountScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"GmailAccount"> | string
+    email?: StringWithAggregatesFilter<"GmailAccount"> | string
+    accessToken?: StringWithAggregatesFilter<"GmailAccount"> | string
+    refreshToken?: StringWithAggregatesFilter<"GmailAccount"> | string
+    tokenExpiresAt?: DateTimeWithAggregatesFilter<"GmailAccount"> | Date | string
+    connectedAt?: DateTimeWithAggregatesFilter<"GmailAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GmailAccount"> | Date | string
+  }
+
+  export type QuickApplyEntryWhereInput = {
+    AND?: QuickApplyEntryWhereInput | QuickApplyEntryWhereInput[]
+    OR?: QuickApplyEntryWhereInput[]
+    NOT?: QuickApplyEntryWhereInput | QuickApplyEntryWhereInput[]
+    id?: UuidFilter<"QuickApplyEntry"> | string
+    userId?: StringFilter<"QuickApplyEntry"> | string
+    recipientEmail?: StringFilter<"QuickApplyEntry"> | string
+    companyName?: StringFilter<"QuickApplyEntry"> | string
+    roleTitle?: StringFilter<"QuickApplyEntry"> | string
+    pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
+    gmailMessageId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    errorMessage?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
+    resume?: XOR<ResumeScalarRelationFilter, ResumeWhereInput>
+  }
+
+  export type QuickApplyEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    recipientEmail?: SortOrder
+    companyName?: SortOrder
+    roleTitle?: SortOrder
+    pastedContext?: SortOrderInput | SortOrder
+    resumeId?: SortOrder
+    generatedSubject?: SortOrderInput | SortOrder
+    generatedBody?: SortOrderInput | SortOrder
+    status?: SortOrder
+    gmailMessageId?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    resume?: ResumeOrderByWithRelationInput
+  }
+
+  export type QuickApplyEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: QuickApplyEntryWhereInput | QuickApplyEntryWhereInput[]
+    OR?: QuickApplyEntryWhereInput[]
+    NOT?: QuickApplyEntryWhereInput | QuickApplyEntryWhereInput[]
+    userId?: StringFilter<"QuickApplyEntry"> | string
+    recipientEmail?: StringFilter<"QuickApplyEntry"> | string
+    companyName?: StringFilter<"QuickApplyEntry"> | string
+    roleTitle?: StringFilter<"QuickApplyEntry"> | string
+    pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
+    gmailMessageId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    errorMessage?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
+    resume?: XOR<ResumeScalarRelationFilter, ResumeWhereInput>
+  }, "id">
+
+  export type QuickApplyEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    recipientEmail?: SortOrder
+    companyName?: SortOrder
+    roleTitle?: SortOrder
+    pastedContext?: SortOrderInput | SortOrder
+    resumeId?: SortOrder
+    generatedSubject?: SortOrderInput | SortOrder
+    generatedBody?: SortOrderInput | SortOrder
+    status?: SortOrder
+    gmailMessageId?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    _count?: QuickApplyEntryCountOrderByAggregateInput
+    _max?: QuickApplyEntryMaxOrderByAggregateInput
+    _min?: QuickApplyEntryMinOrderByAggregateInput
+  }
+
+  export type QuickApplyEntryScalarWhereWithAggregatesInput = {
+    AND?: QuickApplyEntryScalarWhereWithAggregatesInput | QuickApplyEntryScalarWhereWithAggregatesInput[]
+    OR?: QuickApplyEntryScalarWhereWithAggregatesInput[]
+    NOT?: QuickApplyEntryScalarWhereWithAggregatesInput | QuickApplyEntryScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"QuickApplyEntry"> | string
+    userId?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
+    recipientEmail?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
+    companyName?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
+    roleTitle?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
+    pastedContext?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    resumeId?: UuidWithAggregatesFilter<"QuickApplyEntry"> | string
+    generatedSubject?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    generatedBody?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    status?: EnumQuickApplyStatusWithAggregatesFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
+    gmailMessageId?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
+    sentAt?: DateTimeNullableWithAggregatesFilter<"QuickApplyEntry"> | Date | string | null
+  }
+
   export type ResumeCreateInput = {
     id?: string
     userId: string
@@ -14400,6 +17060,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateInput = {
@@ -14413,6 +17074,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUpdateInput = {
@@ -14426,6 +17088,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateInput = {
@@ -14439,6 +17102,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeCreateManyInput = {
@@ -15165,6 +17829,201 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GmailAccountCreateInput = {
+    userId: string
+    email: string
+    accessToken: string
+    refreshToken: string
+    tokenExpiresAt: Date | string
+    connectedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GmailAccountUncheckedCreateInput = {
+    userId: string
+    email: string
+    accessToken: string
+    refreshToken: string
+    tokenExpiresAt: Date | string
+    connectedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GmailAccountUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    tokenExpiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connectedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GmailAccountUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    tokenExpiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connectedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GmailAccountCreateManyInput = {
+    userId: string
+    email: string
+    accessToken: string
+    refreshToken: string
+    tokenExpiresAt: Date | string
+    connectedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GmailAccountUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    tokenExpiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connectedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GmailAccountUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    tokenExpiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connectedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuickApplyEntryCreateInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+    resume: ResumeCreateNestedOneWithoutQuickApplyEntriesInput
+  }
+
+  export type QuickApplyEntryUncheckedCreateInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    resumeId: string
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type QuickApplyEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resume?: ResumeUpdateOneRequiredWithoutQuickApplyEntriesNestedInput
+  }
+
+  export type QuickApplyEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeId?: StringFieldUpdateOperationsInput | string
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type QuickApplyEntryCreateManyInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    resumeId: string
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type QuickApplyEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type QuickApplyEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeId?: StringFieldUpdateOperationsInput | string
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15253,6 +18112,12 @@ export namespace Prisma {
     none?: ResumeAnalyticsWhereInput
   }
 
+  export type QuickApplyEntryListRelationFilter = {
+    every?: QuickApplyEntryWhereInput
+    some?: QuickApplyEntryWhereInput
+    none?: QuickApplyEntryWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -15263,6 +18128,10 @@ export namespace Prisma {
   }
 
   export type ResumeAnalyticsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type QuickApplyEntryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15910,6 +18779,107 @@ export namespace Prisma {
     aiGenerationsUsed?: SortOrder
   }
 
+  export type GmailAccountCountOrderByAggregateInput = {
+    userId?: SortOrder
+    email?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    connectedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GmailAccountMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    email?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    connectedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GmailAccountMinOrderByAggregateInput = {
+    userId?: SortOrder
+    email?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    connectedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumQuickApplyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyStatusFilter<$PrismaModel> | $Enums.QuickApplyStatus
+  }
+
+  export type QuickApplyEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    recipientEmail?: SortOrder
+    companyName?: SortOrder
+    roleTitle?: SortOrder
+    pastedContext?: SortOrder
+    resumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    status?: SortOrder
+    gmailMessageId?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type QuickApplyEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    recipientEmail?: SortOrder
+    companyName?: SortOrder
+    roleTitle?: SortOrder
+    pastedContext?: SortOrder
+    resumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    status?: SortOrder
+    gmailMessageId?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type QuickApplyEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    recipientEmail?: SortOrder
+    companyName?: SortOrder
+    roleTitle?: SortOrder
+    pastedContext?: SortOrder
+    resumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    status?: SortOrder
+    gmailMessageId?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type EnumQuickApplyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyStatusWithAggregatesFilter<$PrismaModel> | $Enums.QuickApplyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+    _max?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+  }
+
   export type CoverLetterCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -15924,6 +18894,13 @@ export namespace Prisma {
     connect?: ResumeAnalyticsWhereUniqueInput | ResumeAnalyticsWhereUniqueInput[]
   }
 
+  export type QuickApplyEntryCreateNestedManyWithoutResumeInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput> | QuickApplyEntryCreateWithoutResumeInput[] | QuickApplyEntryUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutResumeInput | QuickApplyEntryCreateOrConnectWithoutResumeInput[]
+    createMany?: QuickApplyEntryCreateManyResumeInputEnvelope
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+  }
+
   export type CoverLetterUncheckedCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -15936,6 +18913,13 @@ export namespace Prisma {
     connectOrCreate?: ResumeAnalyticsCreateOrConnectWithoutResumeInput | ResumeAnalyticsCreateOrConnectWithoutResumeInput[]
     createMany?: ResumeAnalyticsCreateManyResumeInputEnvelope
     connect?: ResumeAnalyticsWhereUniqueInput | ResumeAnalyticsWhereUniqueInput[]
+  }
+
+  export type QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput> | QuickApplyEntryCreateWithoutResumeInput[] | QuickApplyEntryUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutResumeInput | QuickApplyEntryCreateOrConnectWithoutResumeInput[]
+    createMany?: QuickApplyEntryCreateManyResumeInputEnvelope
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15978,6 +18962,20 @@ export namespace Prisma {
     deleteMany?: ResumeAnalyticsScalarWhereInput | ResumeAnalyticsScalarWhereInput[]
   }
 
+  export type QuickApplyEntryUpdateManyWithoutResumeNestedInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput> | QuickApplyEntryCreateWithoutResumeInput[] | QuickApplyEntryUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutResumeInput | QuickApplyEntryCreateOrConnectWithoutResumeInput[]
+    upsert?: QuickApplyEntryUpsertWithWhereUniqueWithoutResumeInput | QuickApplyEntryUpsertWithWhereUniqueWithoutResumeInput[]
+    createMany?: QuickApplyEntryCreateManyResumeInputEnvelope
+    set?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    disconnect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    delete?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    update?: QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput | QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput[]
+    updateMany?: QuickApplyEntryUpdateManyWithWhereWithoutResumeInput | QuickApplyEntryUpdateManyWithWhereWithoutResumeInput[]
+    deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+  }
+
   export type CoverLetterUncheckedUpdateManyWithoutResumeNestedInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -16004,6 +19002,20 @@ export namespace Prisma {
     update?: ResumeAnalyticsUpdateWithWhereUniqueWithoutResumeInput | ResumeAnalyticsUpdateWithWhereUniqueWithoutResumeInput[]
     updateMany?: ResumeAnalyticsUpdateManyWithWhereWithoutResumeInput | ResumeAnalyticsUpdateManyWithWhereWithoutResumeInput[]
     deleteMany?: ResumeAnalyticsScalarWhereInput | ResumeAnalyticsScalarWhereInput[]
+  }
+
+  export type QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput> | QuickApplyEntryCreateWithoutResumeInput[] | QuickApplyEntryUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutResumeInput | QuickApplyEntryCreateOrConnectWithoutResumeInput[]
+    upsert?: QuickApplyEntryUpsertWithWhereUniqueWithoutResumeInput | QuickApplyEntryUpsertWithWhereUniqueWithoutResumeInput[]
+    createMany?: QuickApplyEntryCreateManyResumeInputEnvelope
+    set?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    disconnect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    delete?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    update?: QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput | QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput[]
+    updateMany?: QuickApplyEntryUpdateManyWithWhereWithoutResumeInput | QuickApplyEntryUpdateManyWithWhereWithoutResumeInput[]
+    deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
   }
 
   export type ResumeCreateNestedOneWithoutCoverLettersInput = {
@@ -16069,6 +19081,24 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type ResumeCreateNestedOneWithoutQuickApplyEntriesInput = {
+    create?: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutQuickApplyEntriesInput
+    connect?: ResumeWhereUniqueInput
+  }
+
+  export type EnumQuickApplyStatusFieldUpdateOperationsInput = {
+    set?: $Enums.QuickApplyStatus
+  }
+
+  export type ResumeUpdateOneRequiredWithoutQuickApplyEntriesNestedInput = {
+    create?: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutQuickApplyEntriesInput
+    upsert?: ResumeUpsertWithoutQuickApplyEntriesInput
+    connect?: ResumeWhereUniqueInput
+    update?: XOR<XOR<ResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput, ResumeUpdateWithoutQuickApplyEntriesInput>, ResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -16385,6 +19415,23 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumQuickApplyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyStatusFilter<$PrismaModel> | $Enums.QuickApplyStatus
+  }
+
+  export type NestedEnumQuickApplyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyStatusWithAggregatesFilter<$PrismaModel> | $Enums.QuickApplyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+    _max?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+  }
+
   export type CoverLetterCreateWithoutResumeInput = {
     id?: string
     userId: string
@@ -16438,6 +19485,50 @@ export namespace Prisma {
 
   export type ResumeAnalyticsCreateManyResumeInputEnvelope = {
     data: ResumeAnalyticsCreateManyResumeInput | ResumeAnalyticsCreateManyResumeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type QuickApplyEntryCreateWithoutResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type QuickApplyEntryUncheckedCreateWithoutResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type QuickApplyEntryCreateOrConnectWithoutResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    create: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput>
+  }
+
+  export type QuickApplyEntryCreateManyResumeInputEnvelope = {
+    data: QuickApplyEntryCreateManyResumeInput | QuickApplyEntryCreateManyResumeInput[]
     skipDuplicates?: boolean
   }
 
@@ -16499,6 +19590,43 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ResumeAnalytics"> | Date | string
   }
 
+  export type QuickApplyEntryUpsertWithWhereUniqueWithoutResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    update: XOR<QuickApplyEntryUpdateWithoutResumeInput, QuickApplyEntryUncheckedUpdateWithoutResumeInput>
+    create: XOR<QuickApplyEntryCreateWithoutResumeInput, QuickApplyEntryUncheckedCreateWithoutResumeInput>
+  }
+
+  export type QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    data: XOR<QuickApplyEntryUpdateWithoutResumeInput, QuickApplyEntryUncheckedUpdateWithoutResumeInput>
+  }
+
+  export type QuickApplyEntryUpdateManyWithWhereWithoutResumeInput = {
+    where: QuickApplyEntryScalarWhereInput
+    data: XOR<QuickApplyEntryUpdateManyMutationInput, QuickApplyEntryUncheckedUpdateManyWithoutResumeInput>
+  }
+
+  export type QuickApplyEntryScalarWhereInput = {
+    AND?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+    OR?: QuickApplyEntryScalarWhereInput[]
+    NOT?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+    id?: UuidFilter<"QuickApplyEntry"> | string
+    userId?: StringFilter<"QuickApplyEntry"> | string
+    recipientEmail?: StringFilter<"QuickApplyEntry"> | string
+    companyName?: StringFilter<"QuickApplyEntry"> | string
+    roleTitle?: StringFilter<"QuickApplyEntry"> | string
+    pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
+    gmailMessageId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    errorMessage?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
+    sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
+  }
+
   export type ResumeCreateWithoutCoverLettersInput = {
     id?: string
     userId: string
@@ -16509,6 +19637,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutCoverLettersInput = {
@@ -16521,6 +19650,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutCoverLettersInput = {
@@ -16549,6 +19679,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutCoverLettersInput = {
@@ -16561,6 +19692,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeCreateWithoutAnalyticsInput = {
@@ -16573,6 +19705,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutAnalyticsInput = {
@@ -16585,6 +19718,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutAnalyticsInput = {
@@ -16613,6 +19747,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutAnalyticsInput = {
@@ -16625,6 +19760,75 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+  }
+
+  export type ResumeCreateWithoutQuickApplyEntriesInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeUncheckedCreateWithoutQuickApplyEntriesInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeCreateOrConnectWithoutQuickApplyEntriesInput = {
+    where: ResumeWhereUniqueInput
+    create: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+  }
+
+  export type ResumeUpsertWithoutQuickApplyEntriesInput = {
+    update: XOR<ResumeUpdateWithoutQuickApplyEntriesInput, ResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+    create: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    where?: ResumeWhereInput
+  }
+
+  export type ResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput = {
+    where?: ResumeWhereInput
+    data: XOR<ResumeUpdateWithoutQuickApplyEntriesInput, ResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+  }
+
+  export type ResumeUpdateWithoutQuickApplyEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+  }
+
+  export type ResumeUncheckedUpdateWithoutQuickApplyEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type CoverLetterCreateManyResumeInput = {
@@ -16643,6 +19847,23 @@ export namespace Prisma {
     eventType: string
     eventData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+  }
+
+  export type QuickApplyEntryCreateManyResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
   }
 
   export type CoverLetterUpdateWithoutResumeInput = {
@@ -16697,6 +19918,57 @@ export namespace Prisma {
     eventType?: StringFieldUpdateOperationsInput | string
     eventData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuickApplyEntryUpdateWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type QuickApplyEntryUncheckedUpdateWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type QuickApplyEntryUncheckedUpdateManyWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

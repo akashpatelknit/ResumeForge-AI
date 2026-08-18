@@ -3,8 +3,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, Bell } from "lucide-react";
-import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
+import ProfileMenu from "@/components/shared/ProfileMenu";
 import type { AppResume } from "@/types/resume";
 
 interface HeaderSummary {
@@ -143,7 +144,7 @@ export default function DashboardHeader() {
 
           {/* User Avatar Dropdown */}
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
+            <ProfileMenu />
           </SignedIn>
         </div>
       </div>

@@ -29,17 +29,21 @@ const PAGE_SIZE = 25;
 export async function getAdminUsers({
   query,
   page = 1,
+  pageSize = PAGE_SIZE,
 }: {
   query?: string;
   page?: number;
+  // Lets the Dashboard's compact preview table ask for fewer rows than the
+  // full /admin/users page without duplicating this fetch/join logic.
+  pageSize?: number;
 }): Promise<AdminUserListResult> {
   const client = await clerkClient();
-  const offset = (page - 1) * PAGE_SIZE;
+  const offset = (page - 1) * pageSize;
 
   const [{ data: clerkUsers, totalCount }] = await Promise.all([
     client.users.getUserList({
       query: query || undefined,
-      limit: PAGE_SIZE,
+      limit: pageSize,
       offset,
       orderBy: "-created_at",
     }),

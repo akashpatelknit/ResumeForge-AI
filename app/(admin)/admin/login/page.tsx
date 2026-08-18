@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2, Lock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,48 +40,74 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
-      <div className="w-full max-w-sm rounded-lg border border-slate-800 bg-slate-900 p-8">
-        <h1 className="mb-1 text-lg font-semibold text-slate-100">Admin sign in</h1>
-        <p className="mb-6 text-sm text-slate-400">ResumeForge AI internal dashboard</p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-slate-300">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="username"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border-slate-700 bg-slate-950 text-slate-100"
-            />
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex flex-col items-center gap-3 text-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br from-brand-purple to-brand-pink">
+            <Sparkles className="h-5 w-5 text-white" />
           </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="password" className="text-slate-300">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border-slate-700 bg-slate-950 text-slate-100"
-            />
+          <div>
+            <p className="text-lg font-bold text-gray-900">Admin Panel</p>
+            <p className="text-sm text-gray-500">ResumeForge AI</p>
           </div>
+        </div>
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+        <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+          <h1 className="mb-1 text-lg font-semibold text-gray-900">Admin sign in</h1>
+          <p className="mb-6 text-sm text-gray-500">Internal dashboard — authorized admins only.</p>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Signing in…" : "Sign in"}
-          </Button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-gray-700">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="username"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border-gray-200 bg-white text-gray-900 focus-visible:border-brand-purple/40 focus-visible:ring-brand-purple/10"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-gray-700">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border-gray-200 bg-white text-gray-900 focus-visible:border-brand-purple/40 focus-visible:ring-brand-purple/10"
+              />
+            </div>
+
+            {error && <p className="text-sm text-red-600">{error}</p>}
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full gap-2 bg-brand-purple text-white hover:bg-brand-purple/90"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                <>
+                  <Lock className="h-4 w-4" />
+                  Sign in
+                </>
+              )}
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );

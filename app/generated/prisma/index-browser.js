@@ -230,6 +230,34 @@ exports.Prisma.UsageCounterScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GmailAccountScalarFieldEnum = {
+  userId: 'userId',
+  email: 'email',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  connectedAt: 'connectedAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QuickApplyEntryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  recipientEmail: 'recipientEmail',
+  companyName: 'companyName',
+  roleTitle: 'roleTitle',
+  pastedContext: 'pastedContext',
+  resumeId: 'resumeId',
+  generatedSubject: 'generatedSubject',
+  generatedBody: 'generatedBody',
+  status: 'status',
+  gmailMessageId: 'gmailMessageId',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sentAt: 'sentAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -266,6 +294,13 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   cancelled: 'cancelled'
 };
 
+exports.QuickApplyStatus = exports.$Enums.QuickApplyStatus = {
+  draft: 'draft',
+  generated: 'generated',
+  sent: 'sent',
+  failed: 'failed'
+};
+
 exports.Prisma.ModelName = {
   Resume: 'Resume',
   CoverLetter: 'CoverLetter',
@@ -277,7 +312,9 @@ exports.Prisma.ModelName = {
   UserStatus: 'UserStatus',
   PlanConfig: 'PlanConfig',
   TemplateMeta: 'TemplateMeta',
-  UsageCounter: 'UsageCounter'
+  UsageCounter: 'UsageCounter',
+  GmailAccount: 'GmailAccount',
+  QuickApplyEntry: 'QuickApplyEntry'
 };
 
 /**

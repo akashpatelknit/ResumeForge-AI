@@ -14,15 +14,12 @@ import {
   Target,
   Bot,
   Linkedin,
-  Mic,
   ChevronDown,
   ChevronRight,
-  PlusCircle,
-  Briefcase,
-  MessageSquare,
-  BookOpen,
-  Star,
   Loader2,
+  Columns3,
+  ListChecks,
+  Mail,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -55,23 +52,21 @@ const navigation: NavItem[] = [
     ],
   },
   {
-    name: "Job Applications",
+    name: "Job Tracker",
     icon: Target,
     children: [
-      {
-        name: "Application Tracker",
-        href: "/dashboard/jobs/tracker",
-        icon: Briefcase,
-      },
-      { name: "ATS Score", href: "/dashboard/jobs/analyzer", icon: Target },
+      { name: "Kanban Board", href: "/dashboard/jobs/tracker", icon: Columns3 },
+      { name: "All Jobs", href: "/dashboard/jobs/all", icon: ListChecks },
     ],
   },
+  { name: "Cold Outreach", icon: Mail, href: "/dashboard/outreach" },
   {
     name: "AI Tools",
     icon: Bot,
     children: [
       { name: "AI Outreach", href: "/dashboard/ai/outreach", icon: Bot },
       { name: "LinkedIn Audit", href: "/dashboard/ai/audit", icon: Linkedin },
+      { name: "ATS Score", href: "/dashboard/jobs/analyzer", icon: Target },
     ],
   },
   // {

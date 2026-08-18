@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/admin/session";
-import { AdminNav } from "@/components/admin/AdminNav";
+import { AdminShell } from "@/components/admin/AdminShell";
 
 // Guards every route under this group (/admin, /admin/users,
 // /admin/subscriptions, /admin/plans, /admin/templates) — /admin/login is
@@ -11,10 +11,5 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
     redirect("/admin/login");
   }
 
-  return (
-    <div className="min-h-screen bg-slate-950">
-      <AdminNav email={admin.email} />
-      <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-    </div>
-  );
+  return <AdminShell email={admin.email}>{children}</AdminShell>;
 }

@@ -8,20 +8,21 @@ datasource db {
 }
 
 model Resume {
-  id           String            @id @default(uuid()) @db.Uuid
-  userId       String            @map("user_id")
-  title        String
-  templateId   String            @map("template_id")
-  data         Json
+  id                String            @id @default(uuid()) @db.Uuid
+  userId            String            @map("user_id")
+  title             String
+  templateId        String            @map("template_id")
+  data              Json
   // Raw LaTeX source for the Overleaf-style editor (app/(app)/builder/[resumeId]/latex).
   // Kept as its own column rather than a field inside `data` — it's a fundamentally
   // different kind of content (freeform text vs. structured form JSON) and doesn't
   // benefit from JSON querying. Tradeoff: needs a migration instead of being schema-free.
-  latexSource  String?           @map("latex_source")
-  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
-  coverLetters CoverLetter[]
-  analytics    ResumeAnalytics[]
+  latexSource       String?           @map("latex_source")
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  coverLetters      CoverLetter[]
+  analytics         ResumeAnalytics[]
+  quickApplyEntries QuickApplyEntry[]
 
   @@index([userId])
   @@map("resumes")
@@ -180,4 +181,60 @@ model UsageCounter {
 
   @@unique([userId, month])
   @@map("usage_counters")
+}
+
+// One Gmail account per user, connected via a separate OAuth 2.0 flow from
+// Clerk (Clerk owns login identity; this owns send-mail authorization).
+// Keyed directly by Clerk's userId — same "no Prisma User model" pattern as
+// UserStatus/UserPreferences above, not a relational FK. accessToken/
+// refreshToken are AES-256-GCM ciphertext (see lib/crypto/tokenCipher.ts),
+// never plaintext, since a DB leak would otherwise hand over live
+// send-as-this-person credentials.
+model GmailAccount {
+  userId         String   @id @map("user_id")
+  email          String
+  accessToken    String   @map("access_token")
+  refreshToken   String   @map("refresh_token")
+  tokenExpiresAt DateTime @map("token_expires_at") @db.Timestamptz(6)
+  connectedAt    DateTime @default(now()) @map("connected_at") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("gmail_accounts")
+}
+
+enum QuickApplyStatus {
+  draft
+  generated
+  sent
+  failed
+}
+
+// One row per Quick Apply attempt (components/outreach/QuickApplyModal.tsx).
+// A single row is reused across generate -> regenerate -> send for the same
+// modal session (the frontend holds the id after the first successful
+// generate/draft-save) rather than one row per click, so regenerating
+// doesn't pile up duplicates.
+model QuickApplyEntry {
+  id               String           @id @default(uuid()) @db.Uuid
+  userId           String           @map("user_id")
+  recipientEmail   String           @map("recipient_email")
+  companyName      String           @map("company_name")
+  roleTitle        String           @map("role_title")
+  pastedContext    String?          @map("pasted_context")
+  resumeId         String           @map("resume_id") @db.Uuid
+  generatedSubject String?          @map("generated_subject")
+  generatedBody    String?          @map("generated_body")
+  status           QuickApplyStatus @default(draft)
+  gmailMessageId   String?          @map("gmail_message_id")
+  // Not in the original spec — added so a "failed" row can carry *why* it
+  // failed (expired token / rate limit / invalid recipient / ...) for the
+  // frontend to show something more useful than a generic error.
+  errorMessage     String?          @map("error_message")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  sentAt           DateTime?        @map("sent_at") @db.Timestamptz(6)
+  resume           Resume           @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("quick_apply_entries")
 }

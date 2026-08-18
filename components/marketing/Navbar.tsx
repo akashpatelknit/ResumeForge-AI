@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Sparkles, Menu } from "lucide-react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useAuthModalStore } from "@/store/authModalStore";
+import ProfileMenu from "@/components/shared/ProfileMenu";
 
 const links = [
   { label: "Templates", href: "/templates" },
@@ -81,7 +82,7 @@ export default function Navbar() {
             >
               Dashboard
             </button>
-            <UserButton afterSignOutUrl="/" />
+            <ProfileMenu />
           </SignedIn>
         </div>
 
@@ -137,7 +138,7 @@ export default function Navbar() {
                   Dashboard
                 </button>
                 <div className="pt-2">
-                  <UserButton afterSignOutUrl="/" />
+                  <ProfileMenu align="start" />
                 </div>
               </SignedIn>
             </nav>
