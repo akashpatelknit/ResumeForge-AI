@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserPlan } from "@/lib/subscription/getUserPlan";
 import { checkUsageLimit } from "@/lib/subscription/checkUsageLimit";
 import { checkResumeLimit } from "@/lib/subscription/checkResumeLimit";
+import { getPlanConfig } from "@/lib/subscription/planConfig";
 
 // Clerk-authed. Read-only view of the current user's plan/usage — the
 // billing section of Settings and the sidebar's usage indicator both call
@@ -17,13 +18,18 @@ export async function GET() {
   }
 
   const plan = await getUserPlan(userId);
-  const [usage, resumes] = await Promise.all([checkUsageLimit(userId), checkResumeLimit(userId)]);
+  const [usage, resumes, planConfig] = await Promise.all([
+    checkUsageLimit(userId),
+    checkResumeLimit(userId),
+    getPlanConfig(),
+  ]);
 
   return NextResponse.json({
     plan: plan.plan,
     status: plan.status,
     trialEndsAt: plan.trialEndsAt,
     currentPeriodEnd: plan.currentPeriodEnd,
+    proPriceInr: planConfig.proPriceInr,
     aiGenerations: { used: usage.used, limit: usage.limit, remaining: usage.remaining },
     resumes: { count: resumes.count, limit: resumes.limit },
   });

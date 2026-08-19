@@ -45,8 +45,8 @@ function buildRecommendations(resumes: AppResume[]): Recommendation[] {
       title: "Boost ATS Score",
       description: `"${lowest.title}" is scoring ${lowest.atsScore ?? 0}/100 — your lowest. Run the analyzer for specific fixes.`,
       href: "/dashboard/jobs/analyzer",
-      color: "text-purple-600 bg-purple-100",
-      borderColor: "border-purple-200",
+      color: "text-green-600 bg-green-100",
+      borderColor: "border-gray-100",
     });
   }
 
@@ -62,8 +62,8 @@ function buildRecommendations(resumes: AppResume[]): Recommendation[] {
       title: "Complete Your Resume",
       description: `"${incomplete.title}" is missing ${missing} — that's often the first thing recruiters check.`,
       href: `/builder/${incomplete.id}`,
-      color: "text-blue-600 bg-blue-100",
-      borderColor: "border-blue-200",
+      color: "text-purple-600 bg-purple-100",
+      borderColor: "border-gray-100",
     });
   }
 
@@ -74,20 +74,16 @@ export default function AIInsights({ resumes, isLoading }: AIInsightsProps) {
   const recommendations = buildRecommendations(resumes);
 
   return (
-    <Card className="overflow-hidden border shadow-sm sticky top-24 p-0">
-      {/* Header with gradient */}
-      <div className="relative overflow-hidden bg-linear-to-br from-purple-600 via-purple-500 to-blue-600 p-6 text-white">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
-
-        <div className="relative">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5" />
-            <h2 className="text-lg font-bold">AI Recommendations</h2>
-          </div>
-          <p className="text-sm text-white/80">
-            Personalized tips to improve your resumes
-          </p>
+    <Card className="overflow-hidden border shadow-sm p-0">
+      {/* Header strip — gradient confined to this strip only */}
+      <div className="bg-linear-to-r from-purple-600 to-blue-600 p-6 text-white">
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkles className="w-5 h-5" />
+          <h2 className="text-lg font-bold">AI Recommendations</h2>
         </div>
+        <p className="text-sm text-white/80">
+          Personalized tips to improve your resumes
+        </p>
       </div>
 
       {/* Recommendations */}
@@ -120,7 +116,7 @@ export default function AIInsights({ resumes, isLoading }: AIInsightsProps) {
               >
                 <div className="flex items-start gap-3">
                   <div
-                    className={`p-2 rounded-lg ${rec.color} shrink-0 group-hover:scale-110 transition-transform`}
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${rec.color} group-hover:scale-110 transition-transform`}
                   >
                     <Icon className="w-4 h-4" />
                   </div>
@@ -139,9 +135,6 @@ export default function AIInsights({ resumes, isLoading }: AIInsightsProps) {
           })
         )}
       </div>
-
-      {/* Bottom decoration */}
-      <div className="h-1 bg-linear-to-r from-purple-600 via-blue-600 to-purple-600"></div>
     </Card>
   );
 }

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { AlertCircle, Lock } from "lucide-react";
+import { AlertCircle, Lock, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { clearPendingParse, loadPendingParse } from "@/lib/pendingResume";
@@ -18,9 +18,10 @@ interface ResumeDropzoneProps {
 }
 
 // Renders the shared upload state (see hooks/useResumeUpload.ts) as the
-// main dropzone card. The hero illustration's upload node drives the same
-// shared instance, so a file dropped there shows up here exactly as if it
-// had been dropped directly on this card.
+// hero's sole upload entry point — idle, uploading, error, gated, and
+// success (the parsed preview) all render here. The floating resume mockup
+// above (FloatingResumePreview) is purely illustrative and isn't wired to
+// this state at all.
 export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
   const {
     status,
@@ -41,6 +42,7 @@ export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
   const prefersReducedMotion = useReducedMotion();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const isIdle = status === "idle";
   const isGated = status === "gated";
   const isUploading = status === "uploading";
   const isError = status === "error";
@@ -56,13 +58,6 @@ export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
     load: loadPendingParse,
     clear: clearPendingParse,
   });
-
-  // The hero illustration's upload icon is the only upload entry point at
-  // rest now — this card only appears once there's something to show
-  // (progress, a result, an error, or the rate-limit gate).
-  if (status === "idle") {
-    return null;
-  }
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -89,7 +84,7 @@ export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={prefersReducedMotion ? undefined : { opacity: 0, y: -8 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="mx-auto w-full max-w-160"
+          className="mx-auto w-full max-w-190"
         >
           <div
             onDrop={handleDrop}
@@ -103,13 +98,14 @@ export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
               if (!isGated && (e.key === "Enter" || e.key === " ")) handleBrowseClick();
             }}
             className={cn(
-              "relative flex min-h-84 flex-col items-center justify-center rounded-[28px] border bg-white px-8 py-12 text-center shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-colors duration-200",
+              "relative flex flex-col items-center justify-center rounded-[28px] border bg-white text-center shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-200",
+              isIdle ? "gap-3 px-8 py-5 sm:flex-row sm:gap-5" : "min-h-84 px-8 py-12",
               !isGated && !isUploading && "cursor-pointer",
               isError
                 ? "border-destructive/40"
                 : showActiveDrag
-                  ? "border-brand-purple bg-brand-upload"
-                  : "border-[#E5E5E5]",
+                  ? "scale-[1.005] border-brand-purple bg-brand-upload"
+                  : "border-[#E5E5E5] hover:border-brand-purple/30 hover:shadow-[0_14px_45px_rgba(0,0,0,0.05)]",
             )}
           >
             <input
@@ -120,6 +116,23 @@ export default function ResumeDropzone({ upload }: ResumeDropzoneProps) {
               onChange={handleInputChange}
               disabled={isGated || isUploading}
             />
+
+            {isIdle && (
+              <>
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-brand-purple to-brand-blue">
+                  <Upload className="h-5 w-5 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-foreground">Drop your resume here</h2>
+                  <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+                    PDF or DOCX <span className="mx-0.5">·</span> or{" "}
+                    <span className="font-medium text-foreground underline underline-offset-2">
+                      click to browse
+                    </span>
+                  </p>
+                </div>
+              </>
+            )}
 
             {isUploading && <LoadingResume />}
 

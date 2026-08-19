@@ -92,7 +92,7 @@ const navigation: NavItem[] = [
   //     { name: "STAR Generator", href: "/dashboard/interview/star", icon: Star },
   //   ],
   // },
-  { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
+  // { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 

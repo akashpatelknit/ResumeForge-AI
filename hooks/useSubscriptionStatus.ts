@@ -10,6 +10,7 @@ export interface SubscriptionStatusResponse {
   status: SubscriptionStatusValue;
   trialEndsAt: string | null;
   currentPeriodEnd: string | null;
+  proPriceInr: number;
   aiGenerations: { used: number; limit: number; remaining: number };
   resumes: { count: number; limit: number };
 }

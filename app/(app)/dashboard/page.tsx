@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentResumes from "@/components/dashboard/RecentResumes";
 import AIInsights from "@/components/dashboard/AIInsights";
+import OutreachActivity from "@/components/dashboard/OutreachActivity";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import type { AppResume } from "@/types/resume";
 
@@ -117,7 +118,10 @@ export default function DashboardPage() {
           />
         </div>
 
-        <AIInsights resumes={active} isLoading={isLoading} />
+        <div className="space-y-4">
+          <OutreachActivity />
+          <AIInsights resumes={active} isLoading={isLoading} />
+        </div>
       </div>
     </>
   );
