@@ -13,18 +13,24 @@ function getExtension(filename: string): string {
   return filename.split(".").pop()?.toLowerCase() ?? "";
 }
 
+// unpdf ships its own serverless-optimized PDF.js build with browser-only
+// code (canvas, DOMMatrix, etc.) stripped out — unlike pdf-parse, which
+// pulls in @napi-rs/canvas as a native-binary polyfill source for those
+// APIs. That native binary is resolved via a runtime require() keyed off
+// process.platform/arch, which Vercel's static file tracer can't follow,
+// so it silently got dropped from the deployed function ("Cannot find
+// module '@napi-rs/canvas'" in production logs, working fine locally
+// where the matching binary is already on disk). unpdf has zero
+// dependencies and needs no such polyfill for text extraction.
 async function extractFromPdf(buffer: Buffer): Promise<string> {
-  let parser: InstanceType<Awaited<typeof import("pdf-parse")>["PDFParse"]> | undefined;
   try {
-    const { PDFParse } = await import("pdf-parse");
-    parser = new PDFParse({ data: buffer });
-    const result = await parser.getText();
-    return result.text;
+    const { extractText, getDocumentProxy } = await import("unpdf");
+    const pdf = await getDocumentProxy(new Uint8Array(buffer));
+    const { text } = await extractText(pdf, { mergePages: true });
+    return text;
   } catch (error) {
     console.error("PDF extraction failed:", error);
     throw new ResumeFileError("Could not read this PDF — it may be corrupt or password-protected.");
-  } finally {
-    await parser?.destroy();
   }
 }
 

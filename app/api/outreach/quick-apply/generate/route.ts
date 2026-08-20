@@ -11,8 +11,8 @@ import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import { isValidEmailFormat, looksLikeGibberish } from "@/lib/validation/textSanity";
 import { prisma } from "@/lib/prisma";
 
-// extractUploadedResumeText → extractResumeText needs Node APIs (Buffer,
-// pdf-parse) — not available on the edge runtime.
+// extractUploadedResumeText → extractResumeText needs Node's Buffer API —
+// not available on the edge runtime.
 export const runtime = "nodejs";
 
 // Resolves the "Resume to Attach" selection into (a) a ResumeContext for the

@@ -10,7 +10,9 @@ import {
   incrementParseCount,
 } from "@/lib/rateLimit/anonymousParseQuota";
 
-// pdf-parse and mammoth need Node APIs (Buffer, fs) — not available on the edge runtime.
+// mammoth (DOCX extraction) needs Node APIs (Buffer, fs) — not available on
+// the edge runtime. unpdf itself would run on edge, but this route serves
+// both file types.
 export const runtime = "nodejs";
 
 // Deliberately NOT behind Clerk's auth.protect() (see proxy.ts) — this route
