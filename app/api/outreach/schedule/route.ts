@@ -3,11 +3,14 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { getOrCreateOutreachSettings } from "@/lib/outreach/settings";
 import { computeOutreachSchedule, type JobToSchedule } from "@/lib/outreach/scheduling";
+import { enqueueOutreachSend } from "@/lib/queue/outreachQueue";
 
 // Statuses a job can be scheduled (or re-scheduled) from. Deliberately
 // excludes generating/sending/sent/scheduled — a job already in flight or
 // already scheduled isn't touched by a second "Approve & Schedule" call.
-const SCHEDULABLE_STATUSES = ["draft", "generated", "approved"] as const;
+// "failed" IS included — re-running Approve & Schedule is how a failed send
+// gets manually retried (there's no more cron poll to pick it back up).
+const SCHEDULABLE_STATUSES = ["draft", "generated", "approved", "failed"] as const;
 
 function dateKey(date: Date): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
@@ -118,11 +121,31 @@ export async function POST(request: NextRequest) {
           outreachStatus: "scheduled",
           scheduledSendTime,
           resumeId: job.resumeId ?? resume.id,
+          lastError: null,
           lastActivityAt: now,
         },
       });
     }),
   );
+
+  // The BullMQ delayed job is the actual send trigger now — the DB row above
+  // is just the source of truth the UI reads. If enqueueing fails partway
+  // through (e.g. Redis briefly unreachable), the rows already updated stay
+  // "scheduled" in the DB with nothing queued behind them; re-running
+  // Approve & Schedule is the recovery path (enqueueOutreachSend replaces
+  // any existing job for that id, so retrying is safe).
+  try {
+    await Promise.all(updated.map((job) => enqueueOutreachSend(job.id, job.scheduledSendTime!)));
+  } catch (error) {
+    console.error("Failed to enqueue one or more outreach sends:", error);
+    return NextResponse.json(
+      {
+        error:
+          "Jobs were scheduled but couldn't be queued for sending — the send queue may be unreachable. Try Approve & Schedule again.",
+      },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({
     scheduled: updated.map((job) => ({

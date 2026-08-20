@@ -12,8 +12,14 @@ export interface HistoryEntry {
   id: string;
   company: string;
   role: string;
-  outreachType: OutreachType;
+  // Nullable for real (SavedJob-backed) rows whose type was never set — see
+  // the same note on OutreachEntry in outreachData.ts.
+  outreachType: OutreachType | null;
   email: string;
+  // Real rows can have more than one contact email; the feed only shows
+  // the first (email above), this is just for a "+N" indicator if needed.
+  // Optional since the mock entries below don't set it.
+  emailCount?: number;
   status: HistoryStatus;
   timestamp: string;
   subject: string;

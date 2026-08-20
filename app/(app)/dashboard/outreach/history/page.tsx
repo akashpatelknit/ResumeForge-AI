@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -9,13 +9,12 @@ import {
   Calendar,
   Check,
   ChevronDown,
-  ChevronLeft,
   ChevronRight,
   Clock,
   Download,
+  Loader2,
   MessageCircle,
   Minus,
-  MoreHorizontal,
   Reply,
   Search,
   Send,
@@ -29,20 +28,50 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NumberedPagination } from "@/components/admin/NumberedPagination";
 import { CompanyLogo, OutreachTypeBadge } from "@/components/outreach/OutreachBadges";
-import {
-  HISTORY_STATUS_LABELS,
-  MOCK_HISTORY_ENTRIES,
-  type HistoryStatus,
-} from "@/components/outreach/outreachHistoryData";
+import { HISTORY_STATUS_LABELS, type HistoryEntry, type HistoryStatus } from "@/components/outreach/outreachHistoryData";
 import { OUTREACH_TYPE_LABELS, type OutreachType } from "@/components/outreach/outreachData";
 
 const notWiredYet = () => toast.info("Not wired up yet — coming in a follow-up pass.");
 
 const STATUS_FILTERS: (HistoryStatus | "all")[] = ["all", "sent", "replied", "bounced", "failed"];
 const TYPE_FILTERS: (OutreachType | "all")[] = ["all", "cold", "general", "referral", "quickApply"];
-const COMPANY_FILTERS = ["all", "Google", "Microsoft", "Amazon", "Shopify", "Atlassian", "Zomato", "Razorpay", "Swiggy", "Flipkart", "HubSpot"];
-const DATE_RANGE_FILTERS = ["This week", "Last 7 days", "Last 30 days", "This month", "All time"];
+const DATE_RANGE_FILTERS = ["All time", "This week", "Last 7 days", "Last 30 days", "This month"];
+const PAGE_SIZE = 10;
+
+function formatTimestamp(iso: string): string {
+  return new Date(iso).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function dateRangeCutoff(range: string): number {
+  const now = new Date();
+  switch (range) {
+    case "This week": {
+      const d = new Date(now);
+      const day = d.getDay();
+      const diffToMonday = day === 0 ? 6 : day - 1;
+      d.setDate(d.getDate() - diffToMonday);
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    }
+    case "Last 7 days":
+      return now.getTime() - 7 * 24 * 60 * 60 * 1000;
+    case "Last 30 days":
+      return now.getTime() - 30 * 24 * 60 * 60 * 1000;
+    case "This month": {
+      const d = new Date(now.getFullYear(), now.getMonth(), 1);
+      return d.getTime();
+    }
+    default:
+      return 0;
+  }
+}
 
 const STATUS_ICON_STYLES: Record<HistoryStatus, { bg: string; icon: typeof Check }> = {
   sent: { bg: "bg-emerald-500", icon: Check },
@@ -66,14 +95,16 @@ function StatCard({
   value,
   trend,
   trendDirection,
+  footnote,
 }: {
   icon: typeof Send;
   iconBg: string;
   iconColor: string;
   label: string;
   value: string;
-  trend: string;
-  trendDirection: "up" | "down";
+  trend?: string;
+  trendDirection?: "up" | "down";
+  footnote?: string;
 }) {
   const TrendIcon = trendDirection === "up" ? ArrowUp : ArrowDown;
   return (
@@ -83,10 +114,14 @@ function StatCard({
       </div>
       <p className="text-sm text-gray-500">{label}</p>
       <p className="mt-1 text-2xl font-bold text-gray-900">{value}</p>
-      <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-emerald-600">
-        <TrendIcon className="h-3 w-3" />
-        {trend} vs May 7 – May 13
-      </p>
+      {trend && trendDirection ? (
+        <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-emerald-600">
+          <TrendIcon className="h-3 w-3" />
+          {trend}
+        </p>
+      ) : footnote ? (
+        <p className="mt-1.5 text-xs text-gray-400">{footnote}</p>
+      ) : null}
     </div>
   );
 }
@@ -121,14 +156,78 @@ function FilterButton({
   );
 }
 
+interface HistoryStats {
+  totalSent: number;
+  replyRate: number;
+  bounceRate: number;
+}
+
 export default function OutreachHistoryPage() {
+  const [entries, setEntries] = useState<HistoryEntry[]>([]);
+  const [stats, setStats] = useState<HistoryStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [statusFilter, setStatusFilter] = useState<HistoryStatus | "all">("all");
   const [companyFilter, setCompanyFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState<OutreachType | "all">("all");
-  const [dateRangeFilter, setDateRangeFilter] = useState("Last 7 days");
+  const [dateRangeFilter, setDateRangeFilter] = useState("All time");
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+
+  // Same "fetch a user's own history whole, filter/paginate client-side"
+  // pattern as the Cold Outreach Dashboard (GET /api/outreach/queue) — a
+  // user's own outreach history is dozens to low hundreds of rows, not the
+  // volume that would need a paginated API contract.
+  const fetchHistory = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/outreach/history");
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to load your outreach history.");
+        return;
+      }
+      setEntries(data.entries);
+      setStats(data.stats);
+    } catch (error) {
+      console.error("Failed to load outreach history:", error);
+      toast.error("Network error loading your outreach history.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchHistory();
+  }, [fetchHistory]);
+
+  const companies = useMemo(() => Array.from(new Set(entries.map((e) => e.company))).sort(), [entries]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const cutoff = dateRangeCutoff(dateRangeFilter);
+
+    return entries.filter((e) => {
+      if (statusFilter !== "all" && e.status !== statusFilter) return false;
+      if (companyFilter !== "all" && e.company !== companyFilter) return false;
+      if (typeFilter !== "all" && e.outreachType !== typeFilter) return false;
+      if (cutoff > 0 && new Date(e.timestamp).getTime() < cutoff) return false;
+      if (!q) return true;
+      return (
+        e.company.toLowerCase().includes(q) ||
+        e.role.toLowerCase().includes(q) ||
+        e.email.toLowerCase().includes(q)
+      );
+    });
+  }, [entries, search, statusFilter, companyFilter, typeFilter, dateRangeFilter]);
+
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const rangeStart = total === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(currentPage * PAGE_SIZE, total);
+  const pageRows = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function toggleExpanded(id: string) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -168,43 +267,43 @@ export default function OutreachHistoryPage() {
         </div>
       </div>
 
-      {/* Stats strip */}
+      {/* Stats strip — real counts from the same rows below. No trend
+          deltas (no historical snapshot to compare against) and no reply
+          rate/response time data yet: GmailAccount only ever requests the
+          gmail.send scope, never gmail.readonly, so there's no inbox to
+          detect a reply or bounce from — replyRate/bounceRate will
+          correctly read 0% until that's built, not faked as non-zero. */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Send}
           iconBg="bg-emerald-50"
           iconColor="text-emerald-600"
           label="Total Sent"
-          value="128"
-          trend="↑ 18%"
-          trendDirection="up"
+          value={String(stats?.totalSent ?? 0)}
         />
         <StatCard
           icon={MessageCircle}
           iconBg="bg-blue-50"
           iconColor="text-blue-600"
           label="Reply Rate"
-          value="28.1%"
-          trend="↑ 6.3%"
-          trendDirection="up"
+          value={`${stats?.replyRate ?? 0}%`}
+          footnote="Reply tracking not available yet"
         />
         <StatCard
           icon={AlertTriangle}
           iconBg="bg-red-50"
           iconColor="text-red-600"
           label="Bounce Rate"
-          value="4.7%"
-          trend="↓ 1.2%"
-          trendDirection="down"
+          value={`${stats?.bounceRate ?? 0}%`}
+          footnote="Bounce tracking not available yet"
         />
         <StatCard
           icon={Clock}
           iconBg="bg-purple-50"
           iconColor="text-brand-purple"
           label="Avg. Response Time"
-          value="1.6 days"
-          trend="↓ 0.4 days"
-          trendDirection="down"
+          value="—"
+          footnote="Requires reply tracking"
         />
       </div>
 
@@ -222,10 +321,19 @@ export default function OutreachHistoryPage() {
           </FilterButton>
 
           <FilterButton label="Company" value={companyFilter === "all" ? "All Companies" : companyFilter}>
-            <DropdownMenuRadioGroup value={companyFilter} onValueChange={setCompanyFilter}>
-              {COMPANY_FILTERS.map((c) => (
+            <DropdownMenuRadioGroup
+              value={companyFilter}
+              onValueChange={(v) => {
+                setCompanyFilter(v);
+                setPage(1);
+              }}
+            >
+              <DropdownMenuRadioItem className="cursor-pointer" value="all">
+                All Companies
+              </DropdownMenuRadioItem>
+              {companies.map((c) => (
                 <DropdownMenuRadioItem key={c} className="cursor-pointer" value={c}>
-                  {c === "all" ? "All Companies" : c}
+                  {c}
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
@@ -256,7 +364,10 @@ export default function OutreachHistoryPage() {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             placeholder="Search by company, role, or email..."
             className="h-10 w-full rounded-xl border border-gray-200 bg-white pl-9 pr-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-purple-300 focus:ring-2 focus:ring-purple-100"
           />
@@ -264,12 +375,26 @@ export default function OutreachHistoryPage() {
       </div>
 
       {/* Activity feed */}
+      {loading ? (
+        <div className="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white py-20 text-sm text-gray-400 shadow-sm">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Loading your outreach history...
+        </div>
+      ) : total === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white py-20 text-center shadow-sm">
+          <Send className="h-7 w-7 text-gray-300" />
+          <p className="text-sm font-semibold text-gray-700">No outreach history yet</p>
+          <p className="max-w-xs text-sm text-gray-400">
+            Emails you schedule and send from the Cold Outreach dashboard will show up here.
+          </p>
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
         <div className="relative">
           <div className="absolute top-0 bottom-0 left-[38px] w-px bg-gray-200" aria-hidden />
 
           <div className="divide-y divide-gray-100">
-            {MOCK_HISTORY_ENTRIES.map((entry) => {
+            {pageRows.map((entry) => {
               const { bg, icon: StatusIcon } = STATUS_ICON_STYLES[entry.status];
               const isExpanded = expandedId === entry.id;
               const isReplied = entry.status === "replied";
@@ -312,7 +437,7 @@ export default function OutreachHistoryPage() {
                       <p className={cn("text-sm font-semibold", STATUS_LABEL_COLOR[entry.status])}>
                         {HISTORY_STATUS_LABELS[entry.status]}
                       </p>
-                      <p className="text-xs text-gray-400">{entry.timestamp}</p>
+                      <p className="text-xs text-gray-400">{formatTimestamp(entry.timestamp)}</p>
                     </div>
 
                     {/* Action area + chevron */}
@@ -361,66 +486,13 @@ export default function OutreachHistoryPage() {
 
         {/* Footer */}
         <div className="flex flex-col gap-4 border-t border-gray-100 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <p className="text-sm text-gray-500">Showing 1 to 10 of 128 outreach events</p>
-
-          <button
-            type="button"
-            onClick={notWiredYet}
-            className="inline-flex cursor-pointer items-center gap-1.5 self-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            Load More
-            <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
-          </button>
-
-          <div className="flex items-center justify-center gap-1.5 lg:justify-end">
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page <= 1}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
-              aria-label="Previous page"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            {[1, 2, 3].map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setPage(p)}
-                className={cn(
-                  "inline-flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors",
-                  p === page ? "border-brand-purple bg-purple-50 text-brand-purple" : "border-gray-200 text-gray-600 hover:bg-gray-50",
-                )}
-                aria-current={p === page ? "page" : undefined}
-              >
-                {p}
-              </button>
-            ))}
-            <span className="flex h-9 w-9 items-center justify-center text-gray-400">
-              <MoreHorizontal className="h-4 w-4" />
-            </span>
-            <button
-              type="button"
-              onClick={() => setPage(13)}
-              className={cn(
-                "inline-flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors",
-                page === 13 ? "border-brand-purple bg-purple-50 text-brand-purple" : "border-gray-200 text-gray-600 hover:bg-gray-50",
-              )}
-            >
-              13
-            </button>
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.min(13, p + 1))}
-              disabled={page >= 13}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-40"
-              aria-label="Next page"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
+          <p className="text-sm text-gray-500">
+            Showing {rangeStart} to {rangeEnd} of {total} outreach events
+          </p>
+          <NumberedPagination page={currentPage} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </div>
+      )}
     </div>
   );
 }

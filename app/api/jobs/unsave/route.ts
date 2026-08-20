@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { cancelOutreachSend } from "@/lib/queue/outreachQueue";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -43,9 +44,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ deleted: true, isBookmarked: false, isQueued: false });
   }
 
+  // Pulling a job out of the queue while it has a pending scheduled send
+  // must cancel that send too — otherwise it fires later anyway, from a
+  // job the user no longer sees as queued. Only "scheduled" has anything
+  // live in the BullMQ queue to cancel; sent/failed/etc. have nothing
+  // pending. The outreachStatus reset (back to null) is what makes the
+  // dashboard stop showing a "Scheduled" badge for a now-unqueued job.
+  const wasScheduled = action === "queue" && existing.outreachStatus === "scheduled";
+  if (wasScheduled) {
+    await cancelOutreachSend(existing.id);
+  }
+
   const updated = await prisma.savedJob.update({
     where: { id: existing.id },
-    data: { isBookmarked: nextIsBookmarked, isQueued: nextIsQueued },
+    data: {
+      isBookmarked: nextIsBookmarked,
+      isQueued: nextIsQueued,
+      ...(wasScheduled ? { outreachStatus: null, scheduledSendTime: null } : {}),
+    },
   });
 
   return NextResponse.json({ deleted: false, isBookmarked: updated.isBookmarked, isQueued: updated.isQueued });
