@@ -128,23 +128,21 @@ export async function POST(request: NextRequest) {
     }),
   );
 
-  // The BullMQ delayed job is the actual send trigger now — the DB row above
-  // is just the source of truth the UI reads. If enqueueing fails partway
-  // through (e.g. Redis briefly unreachable), the rows already updated stay
-  // "scheduled" in the DB with nothing queued behind them; re-running
-  // Approve & Schedule is the recovery path (enqueueOutreachSend replaces
-  // any existing job for that id, so retrying is safe).
+  // Best-effort BullMQ enqueue, NOT a hard requirement: the DB row above
+  // (outreachStatus="scheduled" + scheduledSendTime) is what actually
+  // drives delivery today — app/api/cron/process-outreach-queue polls for
+  // exactly that, and a Cloudflare Cron Trigger hits it every minute
+  // (cloudflare/outreach-poller). BullMQ (worker/outreachWorker.ts) is an
+  // optional instant-push layer on top of that, not currently deployed
+  // anywhere (no Render/Oracle worker running yet) — so treating a Redis
+  // hiccup as fatal here would block scheduling entirely over a producer
+  // for a consumer that doesn't exist yet. Log and move on instead; once a
+  // real worker is deployed, a failed enqueue here just means that one job
+  // waits for the next poller tick instead of firing instantly.
   try {
     await Promise.all(updated.map((job) => enqueueOutreachSend(job.id, job.scheduledSendTime!)));
   } catch (error) {
-    console.error("Failed to enqueue one or more outreach sends:", error);
-    return NextResponse.json(
-      {
-        error:
-          "Jobs were scheduled but couldn't be queued for sending — the send queue may be unreachable. Try Approve & Schedule again.",
-      },
-      { status: 502 },
-    );
+    console.error("Failed to enqueue one or more outreach sends to BullMQ (non-fatal — polling backstop still covers these):", error);
   }
 
   return NextResponse.json({
