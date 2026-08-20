@@ -11,7 +11,16 @@ const nextConfig: NextConfig = {
   // directory at runtime. Bundling it into the Turbopack/webpack server
   // chunk breaks that lookup ("Cannot find module .../pdf.worker.mjs") —
   // keeping it external makes it run straight from node_modules instead.
-  serverExternalPackages: ["pdf-parse", "pdfjs-dist"],
+  //
+  // @napi-rs/canvas is pdfjs-dist's native-binary DOMMatrix/ImageData/
+  // Path2D polyfill source in Node — it's a compiled .node addon, so
+  // bundling it would break it the same way. It was previously only a
+  // transitive dependency of pdf-parse; Vercel's automatic file tracing
+  // doesn't reliably find native binaries resolved dynamically that deep,
+  // which is what caused "Cannot find module '@napi-rs/canvas'" in
+  // production. Now a direct dependency (see package.json) with its
+  // module excluded here, same as its siblings above.
+  serverExternalPackages: ["pdf-parse", "pdfjs-dist", "@napi-rs/canvas"],
 };
 
 export default nextConfig;
