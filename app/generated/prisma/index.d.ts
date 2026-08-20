@@ -18934,6 +18934,7 @@ export namespace Prisma {
     dailySendLimit: number | null
     sendWindowStart: string | null
     sendWindowEnd: string | null
+    sendWindowStartsNow: boolean | null
     weekdaysOnly: boolean | null
     jitterEnabled: boolean | null
     jitterMinSeconds: number | null
@@ -18947,6 +18948,7 @@ export namespace Prisma {
     dailySendLimit: number | null
     sendWindowStart: string | null
     sendWindowEnd: string | null
+    sendWindowStartsNow: boolean | null
     weekdaysOnly: boolean | null
     jitterEnabled: boolean | null
     jitterMinSeconds: number | null
@@ -18960,6 +18962,7 @@ export namespace Prisma {
     dailySendLimit: number
     sendWindowStart: number
     sendWindowEnd: number
+    sendWindowStartsNow: number
     weekdaysOnly: number
     jitterEnabled: number
     jitterMinSeconds: number
@@ -18987,6 +18990,7 @@ export namespace Prisma {
     dailySendLimit?: true
     sendWindowStart?: true
     sendWindowEnd?: true
+    sendWindowStartsNow?: true
     weekdaysOnly?: true
     jitterEnabled?: true
     jitterMinSeconds?: true
@@ -19000,6 +19004,7 @@ export namespace Prisma {
     dailySendLimit?: true
     sendWindowStart?: true
     sendWindowEnd?: true
+    sendWindowStartsNow?: true
     weekdaysOnly?: true
     jitterEnabled?: true
     jitterMinSeconds?: true
@@ -19013,6 +19018,7 @@ export namespace Prisma {
     dailySendLimit?: true
     sendWindowStart?: true
     sendWindowEnd?: true
+    sendWindowStartsNow?: true
     weekdaysOnly?: true
     jitterEnabled?: true
     jitterMinSeconds?: true
@@ -19113,6 +19119,7 @@ export namespace Prisma {
     dailySendLimit: number
     sendWindowStart: string
     sendWindowEnd: string
+    sendWindowStartsNow: boolean
     weekdaysOnly: boolean
     jitterEnabled: boolean
     jitterMinSeconds: number
@@ -19145,6 +19152,7 @@ export namespace Prisma {
     dailySendLimit?: boolean
     sendWindowStart?: boolean
     sendWindowEnd?: boolean
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
@@ -19158,6 +19166,7 @@ export namespace Prisma {
     dailySendLimit?: boolean
     sendWindowStart?: boolean
     sendWindowEnd?: boolean
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
@@ -19171,6 +19180,7 @@ export namespace Prisma {
     dailySendLimit?: boolean
     sendWindowStart?: boolean
     sendWindowEnd?: boolean
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
@@ -19184,6 +19194,7 @@ export namespace Prisma {
     dailySendLimit?: boolean
     sendWindowStart?: boolean
     sendWindowEnd?: boolean
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
@@ -19192,7 +19203,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOutreachSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "dailySendLimit" | "sendWindowStart" | "sendWindowEnd" | "weekdaysOnly" | "jitterEnabled" | "jitterMinSeconds" | "jitterMaxSeconds" | "createdAt" | "updatedAt", ExtArgs["result"]["userOutreachSettings"]>
+  export type UserOutreachSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "dailySendLimit" | "sendWindowStart" | "sendWindowEnd" | "sendWindowStartsNow" | "weekdaysOnly" | "jitterEnabled" | "jitterMinSeconds" | "jitterMaxSeconds" | "createdAt" | "updatedAt", ExtArgs["result"]["userOutreachSettings"]>
 
   export type $UserOutreachSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserOutreachSettings"
@@ -19202,6 +19213,7 @@ export namespace Prisma {
       dailySendLimit: number
       sendWindowStart: string
       sendWindowEnd: string
+      sendWindowStartsNow: boolean
       weekdaysOnly: boolean
       jitterEnabled: boolean
       jitterMinSeconds: number
@@ -19635,6 +19647,7 @@ export namespace Prisma {
     readonly dailySendLimit: FieldRef<"UserOutreachSettings", 'Int'>
     readonly sendWindowStart: FieldRef<"UserOutreachSettings", 'String'>
     readonly sendWindowEnd: FieldRef<"UserOutreachSettings", 'String'>
+    readonly sendWindowStartsNow: FieldRef<"UserOutreachSettings", 'Boolean'>
     readonly weekdaysOnly: FieldRef<"UserOutreachSettings", 'Boolean'>
     readonly jitterEnabled: FieldRef<"UserOutreachSettings", 'Boolean'>
     readonly jitterMinSeconds: FieldRef<"UserOutreachSettings", 'Int'>
@@ -20252,6 +20265,7 @@ export namespace Prisma {
     dailySendLimit: 'dailySendLimit',
     sendWindowStart: 'sendWindowStart',
     sendWindowEnd: 'sendWindowEnd',
+    sendWindowStartsNow: 'sendWindowStartsNow',
     weekdaysOnly: 'weekdaysOnly',
     jitterEnabled: 'jitterEnabled',
     jitterMinSeconds: 'jitterMinSeconds',
@@ -21635,6 +21649,7 @@ export namespace Prisma {
     dailySendLimit?: IntFilter<"UserOutreachSettings"> | number
     sendWindowStart?: StringFilter<"UserOutreachSettings"> | string
     sendWindowEnd?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowStartsNow?: BoolFilter<"UserOutreachSettings"> | boolean
     weekdaysOnly?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
@@ -21648,6 +21663,7 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     sendWindowStart?: SortOrder
     sendWindowEnd?: SortOrder
+    sendWindowStartsNow?: SortOrder
     weekdaysOnly?: SortOrder
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
@@ -21664,6 +21680,7 @@ export namespace Prisma {
     dailySendLimit?: IntFilter<"UserOutreachSettings"> | number
     sendWindowStart?: StringFilter<"UserOutreachSettings"> | string
     sendWindowEnd?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowStartsNow?: BoolFilter<"UserOutreachSettings"> | boolean
     weekdaysOnly?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
@@ -21677,6 +21694,7 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     sendWindowStart?: SortOrder
     sendWindowEnd?: SortOrder
+    sendWindowStartsNow?: SortOrder
     weekdaysOnly?: SortOrder
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
@@ -21698,6 +21716,7 @@ export namespace Prisma {
     dailySendLimit?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
     sendWindowStart?: StringWithAggregatesFilter<"UserOutreachSettings"> | string
     sendWindowEnd?: StringWithAggregatesFilter<"UserOutreachSettings"> | string
+    sendWindowStartsNow?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
     weekdaysOnly?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
     jitterEnabled?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
@@ -22996,6 +23015,7 @@ export namespace Prisma {
     dailySendLimit?: number
     sendWindowStart?: string
     sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: number
@@ -23009,6 +23029,7 @@ export namespace Prisma {
     dailySendLimit?: number
     sendWindowStart?: string
     sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: number
@@ -23022,6 +23043,7 @@ export namespace Prisma {
     dailySendLimit?: IntFieldUpdateOperationsInput | number
     sendWindowStart?: StringFieldUpdateOperationsInput | string
     sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
     weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
@@ -23035,6 +23057,7 @@ export namespace Prisma {
     dailySendLimit?: IntFieldUpdateOperationsInput | number
     sendWindowStart?: StringFieldUpdateOperationsInput | string
     sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
     weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
@@ -23048,6 +23071,7 @@ export namespace Prisma {
     dailySendLimit?: number
     sendWindowStart?: string
     sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
     weekdaysOnly?: boolean
     jitterEnabled?: boolean
     jitterMinSeconds?: number
@@ -23061,6 +23085,7 @@ export namespace Prisma {
     dailySendLimit?: IntFieldUpdateOperationsInput | number
     sendWindowStart?: StringFieldUpdateOperationsInput | string
     sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
     weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
@@ -23074,6 +23099,7 @@ export namespace Prisma {
     dailySendLimit?: IntFieldUpdateOperationsInput | number
     sendWindowStart?: StringFieldUpdateOperationsInput | string
     sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
     weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
@@ -24194,6 +24220,7 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     sendWindowStart?: SortOrder
     sendWindowEnd?: SortOrder
+    sendWindowStartsNow?: SortOrder
     weekdaysOnly?: SortOrder
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
@@ -24213,6 +24240,7 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     sendWindowStart?: SortOrder
     sendWindowEnd?: SortOrder
+    sendWindowStartsNow?: SortOrder
     weekdaysOnly?: SortOrder
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
@@ -24226,6 +24254,7 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     sendWindowStart?: SortOrder
     sendWindowEnd?: SortOrder
+    sendWindowStartsNow?: SortOrder
     weekdaysOnly?: SortOrder
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder

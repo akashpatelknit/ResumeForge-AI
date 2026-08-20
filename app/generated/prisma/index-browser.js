@@ -306,6 +306,7 @@ exports.Prisma.UserOutreachSettingsScalarFieldEnum = {
   dailySendLimit: 'dailySendLimit',
   sendWindowStart: 'sendWindowStart',
   sendWindowEnd: 'sendWindowEnd',
+  sendWindowStartsNow: 'sendWindowStartsNow',
   weekdaysOnly: 'weekdaysOnly',
   jitterEnabled: 'jitterEnabled',
   jitterMinSeconds: 'jitterMinSeconds',

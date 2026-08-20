@@ -59,13 +59,6 @@ const SENDING_WINDOW_PRESETS: SendingWindowPreset[] = [
   // { label: "8 PM – 11:59 PM", start: "08:00 PM", end: "11:59 PM" },
 ];
 
-function formatNowAsTime12(): string {
-  const now = new Date();
-  const period = now.getHours() < 12 ? "AM" : "PM";
-  const hour12 = now.getHours() % 12 === 0 ? 12 : now.getHours() % 12;
-  return `${String(hour12).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")} ${period}`;
-}
-
 function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="mb-4">
@@ -198,6 +191,10 @@ export default function SendSchedulerPage() {
   const [dailyLimit, setDailyLimit] = useState(15);
   const [startTime, setStartTime] = useState("09:00 AM");
   const [endTime, setEndTime] = useState("06:00 PM");
+  // Persisted separately from startTime (see schema comment on
+  // UserOutreachSettings.sendWindowStartsNow) — "Start Now" means "start
+  // immediately, every time this setting is used," not a frozen clock time.
+  const [startsNow, setStartsNow] = useState(false);
   const [activeWindowPreset, setActiveWindowPreset] = useState<string | null>("9 AM – 6 PM");
   const [weekdaysOnly, setWeekdaysOnly] = useState(true);
   const [jitterEnabled, setJitterEnabled] = useState(true);
@@ -227,12 +224,15 @@ export default function SendSchedulerPage() {
       setDailyLimit(data.dailySendLimit);
       setStartTime(data.sendWindowStart);
       setEndTime(data.sendWindowEnd);
-      // "Start Now" is never itself persisted (it's resolved to a literal
-      // clock time when clicked) — only match against the fixed presets.
-      const matched = SENDING_WINDOW_PRESETS.find(
-        (p) => p.start !== "now" && p.start === data.sendWindowStart && p.end === data.sendWindowEnd,
-      );
-      setActiveWindowPreset(matched?.label ?? null);
+      setStartsNow(data.sendWindowStartsNow);
+      if (data.sendWindowStartsNow) {
+        setActiveWindowPreset("Start Now");
+      } else {
+        const matched = SENDING_WINDOW_PRESETS.find(
+          (p) => p.start !== "now" && p.start === data.sendWindowStart && p.end === data.sendWindowEnd,
+        );
+        setActiveWindowPreset(matched?.label ?? null);
+      }
       setWeekdaysOnly(data.weekdaysOnly);
       setJitterEnabled(data.jitterEnabled);
       setJitterMinSeconds(data.jitterMinSeconds);
@@ -281,6 +281,7 @@ export default function SendSchedulerPage() {
           dailySendLimit: dailyLimit,
           sendWindowStart: startTime,
           sendWindowEnd: endTime,
+          sendWindowStartsNow: startsNow,
           weekdaysOnly,
           jitterEnabled,
           jitterMinSeconds,
@@ -344,7 +345,12 @@ export default function SendSchedulerPage() {
   const sliderPercent = ((dailyLimit - 5) / (40 - 5)) * 100;
 
   function applyWindowPreset(preset: SendingWindowPreset) {
-    setStartTime(preset.start === "now" ? formatNowAsTime12() : preset.start);
+    const isNow = preset.start === "now";
+    setStartsNow(isNow);
+    // Placeholder when isNow — ignored server-side (sendWindowStartsNow
+    // forces it to midnight on save) and never shown to the user, since the
+    // caption below renders "Now" instead of this value in that case.
+    setStartTime(isNow ? "12:00 AM" : preset.start);
     setEndTime(preset.end);
     setActiveWindowPreset(preset.label);
   }
@@ -437,7 +443,7 @@ export default function SendSchedulerPage() {
             ))}
           </div>
           <p className="mt-3 text-xs text-gray-400">
-            Window: <span className="font-medium text-gray-600">{startTime} – {endTime}</span>
+            Window: <span className="font-medium text-gray-600">{startsNow ? "Now" : startTime} – {endTime}</span>
           </p>
 
           <div className="mt-6 flex items-center justify-between gap-4 border-t border-gray-100 pt-4">

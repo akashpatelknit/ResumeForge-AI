@@ -388,6 +388,13 @@ model UserOutreachSettings {
   dailySendLimit   Int      @default(15) @map("daily_send_limit")
   sendWindowStart  String   @default("09:00") @map("send_window_start")
   sendWindowEnd    String   @default("18:00") @map("send_window_end")
+  // When true, sendWindowStart is ignored at schedule-computation time in
+  // favor of the actual current time — "Start Now" on the settings page.
+  // Deliberately NOT implemented as a one-time snapshot of the clock time
+  // into sendWindowStart: that would mean re-using a saved "Start Now"
+  // setting days later incorrectly reuses the time it was first saved at,
+  // instead of actually starting immediately each time it's used.
+  sendWindowStartsNow Boolean @default(false) @map("send_window_starts_now")
   weekdaysOnly     Boolean  @default(true) @map("weekdays_only")
   jitterEnabled    Boolean  @default(true) @map("jitter_enabled")
   jitterMinSeconds Int      @default(30) @map("jitter_min_seconds")

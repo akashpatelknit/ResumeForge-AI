@@ -9,6 +9,7 @@ function serialize(settings: Awaited<ReturnType<typeof getOrCreateOutreachSettin
     dailySendLimit: settings.dailySendLimit,
     sendWindowStart: to12Hour(settings.sendWindowStart),
     sendWindowEnd: to12Hour(settings.sendWindowEnd),
+    sendWindowStartsNow: settings.sendWindowStartsNow,
     weekdaysOnly: settings.weekdaysOnly,
     jitterEnabled: settings.jitterEnabled,
     jitterMinSeconds: settings.jitterMinSeconds,
@@ -57,10 +58,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "jitterMaxSeconds must be >= jitterMinSeconds" }, { status: 400 });
   }
 
+  // When "Start Now" is selected, the literal sendWindowStart value is
+  // irrelevant (see schema comment on sendWindowStartsNow) — normalized to
+  // midnight server-side regardless of whatever placeholder the client sent.
+  const sendWindowStartsNow = Boolean(b.sendWindowStartsNow);
+
   let sendWindowStart: string;
   let sendWindowEnd: string;
   try {
-    sendWindowStart = to24Hour(String(b.sendWindowStart));
+    sendWindowStart = sendWindowStartsNow ? "00:00" : to24Hour(String(b.sendWindowStart));
     sendWindowEnd = to24Hour(String(b.sendWindowEnd));
   } catch {
     return NextResponse.json({ error: "Invalid sending window time" }, { status: 400 });
@@ -76,6 +82,7 @@ export async function POST(request: NextRequest) {
       dailySendLimit,
       sendWindowStart,
       sendWindowEnd,
+      sendWindowStartsNow,
       weekdaysOnly,
       jitterEnabled,
       jitterMinSeconds,
@@ -85,6 +92,7 @@ export async function POST(request: NextRequest) {
       dailySendLimit,
       sendWindowStart,
       sendWindowEnd,
+      sendWindowStartsNow,
       weekdaysOnly,
       jitterEnabled,
       jitterMinSeconds,
