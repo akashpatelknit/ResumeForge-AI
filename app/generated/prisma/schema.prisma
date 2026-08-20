@@ -8,22 +8,23 @@ datasource db {
 }
 
 model Resume {
-  id                String            @id @default(uuid()) @db.Uuid
-  userId            String            @map("user_id")
-  title             String
-  templateId        String            @map("template_id")
-  data              Json
+  id                         String                 @id @default(uuid()) @db.Uuid
+  userId                     String                 @map("user_id")
+  title                      String
+  templateId                 String                 @map("template_id")
+  data                       Json
   // Raw LaTeX source for the Overleaf-style editor (app/(app)/builder/[resumeId]/latex).
   // Kept as its own column rather than a field inside `data` — it's a fundamentally
   // different kind of content (freeform text vs. structured form JSON) and doesn't
   // benefit from JSON querying. Tradeoff: needs a migration instead of being schema-free.
-  latexSource       String?           @map("latex_source")
-  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
-  coverLetters      CoverLetter[]
-  analytics         ResumeAnalytics[]
-  quickApplyEntries QuickApplyEntry[]
-  savedJobs         SavedJob[]
+  latexSource                String?                @map("latex_source")
+  createdAt                  DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                  DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
+  coverLetters               CoverLetter[]
+  analytics                  ResumeAnalytics[]
+  quickApplyEntries          QuickApplyEntry[]
+  savedJobs                  SavedJob[]
+  defaultForOutreachSettings UserOutreachSettings[]
 
   @@index([userId])
   @@map("resumes")
@@ -277,14 +278,15 @@ model QuickApplyEntry {
 // rather than a nullable-data row on Resume since the two have almost
 // nothing in common (no template, no builder form, nothing to render/edit).
 model UploadedResume {
-  id                String            @id @default(uuid()) @db.Uuid
-  userId            String            @map("user_id")
-  fileName          String            @map("file_name")
-  fileUrl           String            @map("file_url")
-  fileSizeBytes     Int               @map("file_size_bytes")
-  uploadedAt        DateTime          @default(now()) @map("uploaded_at") @db.Timestamptz(6)
-  quickApplyEntries QuickApplyEntry[]
-  savedJobs         SavedJob[]
+  id                         String                 @id @default(uuid()) @db.Uuid
+  userId                     String                 @map("user_id")
+  fileName                   String                 @map("file_name")
+  fileUrl                    String                 @map("file_url")
+  fileSizeBytes              Int                    @map("file_size_bytes")
+  uploadedAt                 DateTime               @default(now()) @map("uploaded_at") @db.Timestamptz(6)
+  quickApplyEntries          QuickApplyEntry[]
+  savedJobs                  SavedJob[]
+  defaultForOutreachSettings UserOutreachSettings[]
 
   @@index([userId])
   @@map("uploaded_resumes")
@@ -384,23 +386,36 @@ model SavedJob {
 }
 
 model UserOutreachSettings {
-  userId              String   @id @map("user_id")
-  dailySendLimit      Int      @default(15) @map("daily_send_limit")
-  sendWindowStart     String   @default("09:00") @map("send_window_start")
-  sendWindowEnd       String   @default("18:00") @map("send_window_end")
+  userId              String  @id @map("user_id")
+  dailySendLimit      Int     @default(15) @map("daily_send_limit")
+  sendWindowStart     String  @default("09:00") @map("send_window_start")
+  sendWindowEnd       String  @default("18:00") @map("send_window_end")
   // When true, sendWindowStart is ignored at schedule-computation time in
   // favor of the actual current time — "Start Now" on the settings page.
   // Deliberately NOT implemented as a one-time snapshot of the clock time
   // into sendWindowStart: that would mean re-using a saved "Start Now"
   // setting days later incorrectly reuses the time it was first saved at,
   // instead of actually starting immediately each time it's used.
-  sendWindowStartsNow Boolean  @default(false) @map("send_window_starts_now")
-  weekdaysOnly        Boolean  @default(true) @map("weekdays_only")
-  jitterEnabled       Boolean  @default(true) @map("jitter_enabled")
-  jitterMinSeconds    Int      @default(30) @map("jitter_min_seconds")
-  jitterMaxSeconds    Int      @default(300) @map("jitter_max_seconds")
-  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  sendWindowStartsNow Boolean @default(false) @map("send_window_starts_now")
+  weekdaysOnly        Boolean @default(true) @map("weekdays_only")
+  jitterEnabled       Boolean @default(true) @map("jitter_enabled")
+  jitterMinSeconds    Int     @default(30) @map("jitter_min_seconds")
+  jitterMaxSeconds    Int     @default(300) @map("jitter_max_seconds")
+
+  // Default resume attached to scheduled outreach emails — same
+  // builder-vs-uploaded choice as Quick Apply and SavedJob itself (see
+  // components/outreach/ResumeAttachPicker.tsx, reused on the Send
+  // Scheduler settings page). /api/outreach/schedule falls back to the
+  // user's most-recently-updated resume when neither is set, so this is
+  // opt-in, not a required setup step.
+  defaultResumeSourceType ResumeSourceType? @map("default_resume_source_type")
+  defaultResumeId         String?           @map("default_resume_id") @db.Uuid
+  defaultUploadedResumeId String?           @map("default_uploaded_resume_id") @db.Uuid
+  defaultResume           Resume?           @relation(fields: [defaultResumeId], references: [id], onDelete: SetNull)
+  defaultUploadedResume   UploadedResume?   @relation(fields: [defaultUploadedResumeId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@map("user_outreach_settings")
 }

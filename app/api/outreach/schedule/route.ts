@@ -56,18 +56,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No schedulable jobs found in your queue." }, { status: 400 });
   }
 
-  const resume = await prisma.resume.findFirst({
-    where: { userId },
-    orderBy: { updatedAt: "desc" },
-  });
-  if (!resume) {
-    return NextResponse.json(
-      { error: "Create a resume before scheduling outreach — it's attached to every scheduled email." },
-      { status: 400 },
-    );
+  const settings = await getOrCreateOutreachSettings(userId);
+
+  // Prefer the account-level default resume set on the Send Scheduler
+  // settings page (same builder-vs-uploaded choice Quick Apply offers);
+  // fall back to the most-recently-updated resume if none is set, or if
+  // the one that was set has since been deleted.
+  let defaultResume: { resumeSourceType: "builder" | "uploaded"; resumeId: string | null; uploadedResumeId: string | null } | null = null;
+
+  if (settings.defaultResumeSourceType === "builder" && settings.defaultResumeId) {
+    const exists = await prisma.resume.findFirst({ where: { id: settings.defaultResumeId, userId }, select: { id: true } });
+    if (exists) defaultResume = { resumeSourceType: "builder", resumeId: settings.defaultResumeId, uploadedResumeId: null };
+  } else if (settings.defaultResumeSourceType === "uploaded" && settings.defaultUploadedResumeId) {
+    const exists = await prisma.uploadedResume.findFirst({
+      where: { id: settings.defaultUploadedResumeId, userId },
+      select: { id: true },
+    });
+    if (exists) defaultResume = { resumeSourceType: "uploaded", resumeId: null, uploadedResumeId: settings.defaultUploadedResumeId };
   }
 
-  const settings = await getOrCreateOutreachSettings(userId);
+  if (!defaultResume) {
+    const fallbackResume = await prisma.resume.findFirst({ where: { userId }, orderBy: { updatedAt: "desc" } });
+    if (!fallbackResume) {
+      return NextResponse.json(
+        {
+          error:
+            "Create a resume, or set a default resume in Send Scheduler settings, before scheduling outreach — it's attached to every scheduled email.",
+        },
+        { status: 400 },
+      );
+    }
+    defaultResume = { resumeSourceType: "builder", resumeId: fallbackResume.id, uploadedResumeId: null };
+  }
 
   const now = new Date();
   const todayStart = new Date(now);
@@ -115,12 +135,25 @@ export async function POST(request: NextRequest) {
   const updated = await prisma.$transaction(
     schedulable.map((job) => {
       const scheduledSendTime = schedule.get(job.id)!;
+      // A job only ever gets its own resume pinned via a per-job override
+      // (not currently exposed in any UI — the "Review & Edit" panel's
+      // resume picker isn't wired up yet) — in practice this is always
+      // false today, so the account-level default always applies. Kept as
+      // a real check rather than always overwriting, so a future per-job
+      // override isn't silently clobbered on re-schedule.
+      const hasOwnResume = job.resumeSourceType === "uploaded" ? Boolean(job.uploadedResumeId) : Boolean(job.resumeId);
       return prisma.savedJob.update({
         where: { id: job.id },
         data: {
           outreachStatus: "scheduled",
           scheduledSendTime,
-          resumeId: job.resumeId ?? resume.id,
+          ...(hasOwnResume
+            ? {}
+            : {
+                resumeSourceType: defaultResume!.resumeSourceType,
+                resumeId: defaultResume!.resumeId,
+                uploadedResumeId: defaultResume!.uploadedResumeId,
+              }),
           lastError: null,
           lastActivityAt: now,
         },

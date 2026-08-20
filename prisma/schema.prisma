@@ -24,6 +24,7 @@ model Resume {
   analytics         ResumeAnalytics[]
   quickApplyEntries QuickApplyEntry[]
   savedJobs         SavedJob[]
+  defaultForOutreachSettings UserOutreachSettings[]
 
   @@index([userId])
   @@map("resumes")
@@ -285,6 +286,7 @@ model UploadedResume {
   uploadedAt        DateTime          @default(now()) @map("uploaded_at") @db.Timestamptz(6)
   quickApplyEntries QuickApplyEntry[]
   savedJobs         SavedJob[]
+  defaultForOutreachSettings UserOutreachSettings[]
 
   @@index([userId])
   @@map("uploaded_resumes")
@@ -399,6 +401,19 @@ model UserOutreachSettings {
   jitterEnabled    Boolean  @default(true) @map("jitter_enabled")
   jitterMinSeconds Int      @default(30) @map("jitter_min_seconds")
   jitterMaxSeconds Int      @default(300) @map("jitter_max_seconds")
+
+  // Default resume attached to scheduled outreach emails — same
+  // builder-vs-uploaded choice as Quick Apply and SavedJob itself (see
+  // components/outreach/ResumeAttachPicker.tsx, reused on the Send
+  // Scheduler settings page). /api/outreach/schedule falls back to the
+  // user's most-recently-updated resume when neither is set, so this is
+  // opt-in, not a required setup step.
+  defaultResumeSourceType ResumeSourceType? @map("default_resume_source_type")
+  defaultResumeId         String?           @map("default_resume_id") @db.Uuid
+  defaultUploadedResumeId String?           @map("default_uploaded_resume_id") @db.Uuid
+  defaultResume           Resume?           @relation(fields: [defaultResumeId], references: [id], onDelete: SetNull)
+  defaultUploadedResume   UploadedResume?   @relation(fields: [defaultUploadedResumeId], references: [id], onDelete: SetNull)
+
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 

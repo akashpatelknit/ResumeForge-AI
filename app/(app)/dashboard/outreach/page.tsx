@@ -47,18 +47,10 @@ import { GenerateEmailPanel } from "@/components/outreach/GenerateEmailPanel";
 import { QuickApplyModal } from "@/components/outreach/QuickApplyModal";
 
 const OUTREACH_TYPES: OutreachType[] = ["cold", "general", "referral", "quickApply"];
-const STATUSES: OutreachStatus[] = [
-  "approved",
-  "generated",
-  "scheduled",
-  "generating",
-  "sending",
-  "sent",
-  "replied",
-  "bounced",
-  "failed",
-  "draft",
-];
+// sent/replied/bounced/failed excluded — GET /api/outreach/queue no longer
+// returns those rows at all (they moved to Outreach History), so filtering
+// by them here would just always show an empty table.
+const STATUSES: OutreachStatus[] = ["approved", "generated", "scheduled", "generating", "sending", "draft"];
 const PAGE_SIZE_OPTIONS = [10, 25, 50];
 const DATE_FILTER_OPTIONS = [
   { value: "0", label: "Any Time" },

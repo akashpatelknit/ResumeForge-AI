@@ -29,17 +29,27 @@ export async function GET() {
     orderBy: [{ lastActivityAt: "desc" }, { addedAt: "desc" }],
   });
 
-  const entries = rows.map((row) => ({
-    id: row.id,
-    company: row.company,
-    role: row.jobTitle,
-    outreachType: toFrontendOutreachType(row.outreachType),
-    jobId: row.requisitionId,
-    emails: row.contactEmails,
-    status: row.outreachStatus ?? "draft",
-    scheduledSendTime: row.scheduledSendTime ? row.scheduledSendTime.toISOString() : null,
-    lastActivity: row.lastActivityAt ? row.lastActivityAt.toISOString() : null,
-  }));
+  // Terminal outcomes (sent/replied/bounced/failed) belong exclusively in
+  // Outreach History now (GET /api/outreach/history, same 4 statuses) — the
+  // dashboard table only shows the active pipeline (queued, generating,
+  // scheduled, etc.) so it doesn't fill up with resolved rows over time.
+  // Stats below still read from the unfiltered `rows`, not `entries` — the
+  // "Sent Today"/bounce-rate numbers need the terminal rows to count them.
+  const TERMINAL_STATUSES: PrismaOutreachStatus[] = ["sent", "replied", "bounced", "failed"];
+
+  const entries = rows
+    .filter((row) => !row.outreachStatus || !TERMINAL_STATUSES.includes(row.outreachStatus))
+    .map((row) => ({
+      id: row.id,
+      company: row.company,
+      role: row.jobTitle,
+      outreachType: toFrontendOutreachType(row.outreachType),
+      jobId: row.requisitionId,
+      emails: row.contactEmails,
+      status: row.outreachStatus ?? "draft",
+      scheduledSendTime: row.scheduledSendTime ? row.scheduledSendTime.toISOString() : null,
+      lastActivity: row.lastActivityAt ? row.lastActivityAt.toISOString() : null,
+    }));
 
   const now = Date.now();
   const todayStart = new Date();

@@ -311,6 +311,9 @@ exports.Prisma.UserOutreachSettingsScalarFieldEnum = {
   jitterEnabled: 'jitterEnabled',
   jitterMinSeconds: 'jitterMinSeconds',
   jitterMaxSeconds: 'jitterMaxSeconds',
+  defaultResumeSourceType: 'defaultResumeSourceType',
+  defaultResumeId: 'defaultResumeId',
+  defaultUploadedResumeId: 'defaultUploadedResumeId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -14,6 +14,9 @@ function serialize(settings: Awaited<ReturnType<typeof getOrCreateOutreachSettin
     jitterEnabled: settings.jitterEnabled,
     jitterMinSeconds: settings.jitterMinSeconds,
     jitterMaxSeconds: settings.jitterMaxSeconds,
+    defaultResumeSourceType: settings.defaultResumeSourceType,
+    defaultResumeId: settings.defaultResumeId,
+    defaultUploadedResumeId: settings.defaultUploadedResumeId,
   };
 }
 
@@ -75,6 +78,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Sending window end must be after start" }, { status: 400 });
   }
 
+  // Same builder-vs-uploaded shape as ResumeAttachPicker's ResumeAttachValue
+  // — null/undefined means "no default set," which /api/outreach/schedule
+  // treats as "fall back to the most-recently-updated resume."
+  const defaultResumeSourceType =
+    b.defaultResumeSourceType === "builder" || b.defaultResumeSourceType === "uploaded" ? b.defaultResumeSourceType : null;
+
+  let defaultResumeId: string | null = null;
+  let defaultUploadedResumeId: string | null = null;
+
+  if (defaultResumeSourceType === "builder") {
+    const id = typeof b.defaultResumeId === "string" ? b.defaultResumeId : "";
+    const owned = id && (await prisma.resume.findFirst({ where: { id, userId }, select: { id: true } }));
+    if (!owned) {
+      return NextResponse.json({ error: "Selected resume not found." }, { status: 400 });
+    }
+    defaultResumeId = id;
+  } else if (defaultResumeSourceType === "uploaded") {
+    const id = typeof b.defaultUploadedResumeId === "string" ? b.defaultUploadedResumeId : "";
+    const owned = id && (await prisma.uploadedResume.findFirst({ where: { id, userId }, select: { id: true } }));
+    if (!owned) {
+      return NextResponse.json({ error: "Selected uploaded resume not found." }, { status: 400 });
+    }
+    defaultUploadedResumeId = id;
+  }
+
   const settings = await prisma.userOutreachSettings.upsert({
     where: { userId },
     create: {
@@ -87,6 +115,9 @@ export async function POST(request: NextRequest) {
       jitterEnabled,
       jitterMinSeconds,
       jitterMaxSeconds,
+      defaultResumeSourceType,
+      defaultResumeId,
+      defaultUploadedResumeId,
     },
     update: {
       dailySendLimit,
@@ -97,6 +128,9 @@ export async function POST(request: NextRequest) {
       jitterEnabled,
       jitterMinSeconds,
       jitterMaxSeconds,
+      defaultResumeSourceType,
+      defaultResumeId,
+      defaultUploadedResumeId,
     },
   });
 

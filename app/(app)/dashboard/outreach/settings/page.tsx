@@ -32,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CompanyLogo, OutreachTypeBadge } from "@/components/outreach/OutreachBadges";
+import { ResumeAttachPicker, type ResumeAttachValue } from "@/components/outreach/ResumeAttachPicker";
 import type { OutreachEntry, OutreachType } from "@/components/outreach/outreachData";
 
 const notWiredYet = () => toast.info("Not wired up yet — coming in a follow-up pass.");
@@ -200,6 +201,7 @@ export default function SendSchedulerPage() {
   const [jitterEnabled, setJitterEnabled] = useState(true);
   const [jitterMinSeconds, setJitterMinSeconds] = useState(30);
   const [jitterMaxSeconds, setJitterMaxSeconds] = useState(300);
+  const [defaultResume, setDefaultResume] = useState<ResumeAttachValue | null>(null);
   const [typeLimits, setTypeLimits] = useState<Record<OutreachType, number | null>>(
     Object.fromEntries(TYPE_RULES.map((r) => [r.type, r.defaultLimit])) as Record<OutreachType, number | null>,
   );
@@ -237,6 +239,11 @@ export default function SendSchedulerPage() {
       setJitterEnabled(data.jitterEnabled);
       setJitterMinSeconds(data.jitterMinSeconds);
       setJitterMaxSeconds(data.jitterMaxSeconds);
+      if (data.defaultResumeSourceType === "builder" && data.defaultResumeId) {
+        setDefaultResume({ resumeSourceType: "builder", resumeId: data.defaultResumeId });
+      } else if (data.defaultResumeSourceType === "uploaded" && data.defaultUploadedResumeId) {
+        setDefaultResume({ resumeSourceType: "uploaded", uploadedResumeId: data.defaultUploadedResumeId });
+      }
     } catch (error) {
       console.error("Failed to load outreach settings:", error);
       toast.error("Network error loading your scheduler settings.");
@@ -286,6 +293,9 @@ export default function SendSchedulerPage() {
           jitterEnabled,
           jitterMinSeconds,
           jitterMaxSeconds,
+          defaultResumeSourceType: defaultResume?.resumeSourceType ?? null,
+          defaultResumeId: defaultResume?.resumeSourceType === "builder" ? defaultResume.resumeId : null,
+          defaultUploadedResumeId: defaultResume?.resumeSourceType === "uploaded" ? defaultResume.uploadedResumeId : null,
         }),
       });
       const data = await res.json();
@@ -454,6 +464,18 @@ export default function SendSchedulerPage() {
             <Switch checked={weekdaysOnly} onCheckedChange={setWeekdaysOnly} className={SWITCH_PURPLE} />
           </div>
         </div>
+      </div>
+
+      {/* Default Resume — same internal-vs-uploaded picker Quick Apply
+          offers, persisted as the account-wide fallback resume attached to
+          scheduled outreach emails. /api/outreach/schedule falls back to
+          your most-recently-updated resume if nothing's set here. */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        <SectionHeading
+          title="Default Resume"
+          subtitle="Attached to scheduled outreach emails unless a job has its own resume set."
+        />
+        <ResumeAttachPicker value={defaultResume} onChange={setDefaultResume} disabled={settingsLoading} />
       </div>
 
       {/* Row 2: Jitter */}

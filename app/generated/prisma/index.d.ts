@@ -2334,6 +2334,7 @@ export namespace Prisma {
     analytics: number
     quickApplyEntries: number
     savedJobs: number
+    defaultForOutreachSettings: number
   }
 
   export type ResumeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2341,6 +2342,7 @@ export namespace Prisma {
     analytics?: boolean | ResumeCountOutputTypeCountAnalyticsArgs
     quickApplyEntries?: boolean | ResumeCountOutputTypeCountQuickApplyEntriesArgs
     savedJobs?: boolean | ResumeCountOutputTypeCountSavedJobsArgs
+    defaultForOutreachSettings?: boolean | ResumeCountOutputTypeCountDefaultForOutreachSettingsArgs
   }
 
   // Custom InputTypes
@@ -2382,6 +2384,13 @@ export namespace Prisma {
     where?: SavedJobWhereInput
   }
 
+  /**
+   * ResumeCountOutputType without action
+   */
+  export type ResumeCountOutputTypeCountDefaultForOutreachSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserOutreachSettingsWhereInput
+  }
+
 
   /**
    * Count Type UploadedResumeCountOutputType
@@ -2390,11 +2399,13 @@ export namespace Prisma {
   export type UploadedResumeCountOutputType = {
     quickApplyEntries: number
     savedJobs: number
+    defaultForOutreachSettings: number
   }
 
   export type UploadedResumeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quickApplyEntries?: boolean | UploadedResumeCountOutputTypeCountQuickApplyEntriesArgs
     savedJobs?: boolean | UploadedResumeCountOutputTypeCountSavedJobsArgs
+    defaultForOutreachSettings?: boolean | UploadedResumeCountOutputTypeCountDefaultForOutreachSettingsArgs
   }
 
   // Custom InputTypes
@@ -2420,6 +2431,13 @@ export namespace Prisma {
    */
   export type UploadedResumeCountOutputTypeCountSavedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SavedJobWhereInput
+  }
+
+  /**
+   * UploadedResumeCountOutputType without action
+   */
+  export type UploadedResumeCountOutputTypeCountDefaultForOutreachSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserOutreachSettingsWhereInput
   }
 
 
@@ -2615,6 +2633,7 @@ export namespace Prisma {
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
     quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | Resume$savedJobsArgs<ExtArgs>
+    defaultForOutreachSettings?: boolean | Resume$defaultForOutreachSettingsArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resume"]>
 
@@ -2657,6 +2676,7 @@ export namespace Prisma {
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
     quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | Resume$savedJobsArgs<ExtArgs>
+    defaultForOutreachSettings?: boolean | Resume$defaultForOutreachSettingsArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ResumeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2669,6 +2689,7 @@ export namespace Prisma {
       analytics: Prisma.$ResumeAnalyticsPayload<ExtArgs>[]
       quickApplyEntries: Prisma.$QuickApplyEntryPayload<ExtArgs>[]
       savedJobs: Prisma.$SavedJobPayload<ExtArgs>[]
+      defaultForOutreachSettings: Prisma.$UserOutreachSettingsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3077,6 +3098,7 @@ export namespace Prisma {
     analytics<T extends Resume$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$analyticsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResumeAnalyticsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quickApplyEntries<T extends Resume$quickApplyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Resume$quickApplyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     savedJobs<T extends Resume$savedJobsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$savedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    defaultForOutreachSettings<T extends Resume$defaultForOutreachSettingsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$defaultForOutreachSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3595,6 +3617,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * Resume.defaultForOutreachSettings
+   */
+  export type Resume$defaultForOutreachSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    where?: UserOutreachSettingsWhereInput
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserOutreachSettingsScalarFieldEnum | UserOutreachSettingsScalarFieldEnum[]
   }
 
   /**
@@ -16552,6 +16598,7 @@ export namespace Prisma {
     uploadedAt?: boolean
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
+    defaultForOutreachSettings?: boolean | UploadedResume$defaultForOutreachSettingsArgs<ExtArgs>
     _count?: boolean | UploadedResumeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["uploadedResume"]>
 
@@ -16586,6 +16633,7 @@ export namespace Prisma {
   export type UploadedResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
+    defaultForOutreachSettings?: boolean | UploadedResume$defaultForOutreachSettingsArgs<ExtArgs>
     _count?: boolean | UploadedResumeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UploadedResumeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -16596,6 +16644,7 @@ export namespace Prisma {
     objects: {
       quickApplyEntries: Prisma.$QuickApplyEntryPayload<ExtArgs>[]
       savedJobs: Prisma.$SavedJobPayload<ExtArgs>[]
+      defaultForOutreachSettings: Prisma.$UserOutreachSettingsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17000,6 +17049,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     quickApplyEntries<T extends UploadedResume$quickApplyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, UploadedResume$quickApplyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     savedJobs<T extends UploadedResume$savedJobsArgs<ExtArgs> = {}>(args?: Subset<T, UploadedResume$savedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    defaultForOutreachSettings<T extends UploadedResume$defaultForOutreachSettingsArgs<ExtArgs> = {}>(args?: Subset<T, UploadedResume$defaultForOutreachSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17468,6 +17518,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume.defaultForOutreachSettings
+   */
+  export type UploadedResume$defaultForOutreachSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    where?: UserOutreachSettingsWhereInput
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserOutreachSettingsScalarFieldEnum | UserOutreachSettingsScalarFieldEnum[]
   }
 
   /**
@@ -18939,6 +19013,9 @@ export namespace Prisma {
     jitterEnabled: boolean | null
     jitterMinSeconds: number | null
     jitterMaxSeconds: number | null
+    defaultResumeSourceType: $Enums.ResumeSourceType | null
+    defaultResumeId: string | null
+    defaultUploadedResumeId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18953,6 +19030,9 @@ export namespace Prisma {
     jitterEnabled: boolean | null
     jitterMinSeconds: number | null
     jitterMaxSeconds: number | null
+    defaultResumeSourceType: $Enums.ResumeSourceType | null
+    defaultResumeId: string | null
+    defaultUploadedResumeId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18967,6 +19047,9 @@ export namespace Prisma {
     jitterEnabled: number
     jitterMinSeconds: number
     jitterMaxSeconds: number
+    defaultResumeSourceType: number
+    defaultResumeId: number
+    defaultUploadedResumeId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -18995,6 +19078,9 @@ export namespace Prisma {
     jitterEnabled?: true
     jitterMinSeconds?: true
     jitterMaxSeconds?: true
+    defaultResumeSourceType?: true
+    defaultResumeId?: true
+    defaultUploadedResumeId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19009,6 +19095,9 @@ export namespace Prisma {
     jitterEnabled?: true
     jitterMinSeconds?: true
     jitterMaxSeconds?: true
+    defaultResumeSourceType?: true
+    defaultResumeId?: true
+    defaultUploadedResumeId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19023,6 +19112,9 @@ export namespace Prisma {
     jitterEnabled?: true
     jitterMinSeconds?: true
     jitterMaxSeconds?: true
+    defaultResumeSourceType?: true
+    defaultResumeId?: true
+    defaultUploadedResumeId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19124,6 +19216,9 @@ export namespace Prisma {
     jitterEnabled: boolean
     jitterMinSeconds: number
     jitterMaxSeconds: number
+    defaultResumeSourceType: $Enums.ResumeSourceType | null
+    defaultResumeId: string | null
+    defaultUploadedResumeId: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserOutreachSettingsCountAggregateOutputType | null
@@ -19157,8 +19252,13 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
     jitterMaxSeconds?: boolean
+    defaultResumeSourceType?: boolean
+    defaultResumeId?: boolean
+    defaultUploadedResumeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["userOutreachSettings"]>
 
   export type UserOutreachSettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19171,8 +19271,13 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
     jitterMaxSeconds?: boolean
+    defaultResumeSourceType?: boolean
+    defaultResumeId?: boolean
+    defaultUploadedResumeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["userOutreachSettings"]>
 
   export type UserOutreachSettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19185,8 +19290,13 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
     jitterMaxSeconds?: boolean
+    defaultResumeSourceType?: boolean
+    defaultResumeId?: boolean
+    defaultUploadedResumeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["userOutreachSettings"]>
 
   export type UserOutreachSettingsSelectScalar = {
@@ -19199,15 +19309,33 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: boolean
     jitterMaxSeconds?: boolean
+    defaultResumeSourceType?: boolean
+    defaultResumeId?: boolean
+    defaultUploadedResumeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOutreachSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "dailySendLimit" | "sendWindowStart" | "sendWindowEnd" | "sendWindowStartsNow" | "weekdaysOnly" | "jitterEnabled" | "jitterMinSeconds" | "jitterMaxSeconds" | "createdAt" | "updatedAt", ExtArgs["result"]["userOutreachSettings"]>
+  export type UserOutreachSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "dailySendLimit" | "sendWindowStart" | "sendWindowEnd" | "sendWindowStartsNow" | "weekdaysOnly" | "jitterEnabled" | "jitterMinSeconds" | "jitterMaxSeconds" | "defaultResumeSourceType" | "defaultResumeId" | "defaultUploadedResumeId" | "createdAt" | "updatedAt", ExtArgs["result"]["userOutreachSettings"]>
+  export type UserOutreachSettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
+  }
+  export type UserOutreachSettingsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
+  }
+  export type UserOutreachSettingsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    defaultResume?: boolean | UserOutreachSettings$defaultResumeArgs<ExtArgs>
+    defaultUploadedResume?: boolean | UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>
+  }
 
   export type $UserOutreachSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserOutreachSettings"
-    objects: {}
+    objects: {
+      defaultResume: Prisma.$ResumePayload<ExtArgs> | null
+      defaultUploadedResume: Prisma.$UploadedResumePayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
       dailySendLimit: number
@@ -19218,6 +19346,9 @@ export namespace Prisma {
       jitterEnabled: boolean
       jitterMinSeconds: number
       jitterMaxSeconds: number
+      defaultResumeSourceType: $Enums.ResumeSourceType | null
+      defaultResumeId: string | null
+      defaultUploadedResumeId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["userOutreachSettings"]>
@@ -19614,6 +19745,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserOutreachSettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    defaultResume<T extends UserOutreachSettings$defaultResumeArgs<ExtArgs> = {}>(args?: Subset<T, UserOutreachSettings$defaultResumeArgs<ExtArgs>>): Prisma__ResumeClient<$Result.GetResult<Prisma.$ResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    defaultUploadedResume<T extends UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs> = {}>(args?: Subset<T, UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19652,6 +19785,9 @@ export namespace Prisma {
     readonly jitterEnabled: FieldRef<"UserOutreachSettings", 'Boolean'>
     readonly jitterMinSeconds: FieldRef<"UserOutreachSettings", 'Int'>
     readonly jitterMaxSeconds: FieldRef<"UserOutreachSettings", 'Int'>
+    readonly defaultResumeSourceType: FieldRef<"UserOutreachSettings", 'ResumeSourceType'>
+    readonly defaultResumeId: FieldRef<"UserOutreachSettings", 'String'>
+    readonly defaultUploadedResumeId: FieldRef<"UserOutreachSettings", 'String'>
     readonly createdAt: FieldRef<"UserOutreachSettings", 'DateTime'>
     readonly updatedAt: FieldRef<"UserOutreachSettings", 'DateTime'>
   }
@@ -19671,6 +19807,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * Filter, which UserOutreachSettings to fetch.
      */
     where: UserOutreachSettingsWhereUniqueInput
@@ -19689,6 +19829,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * Filter, which UserOutreachSettings to fetch.
      */
     where: UserOutreachSettingsWhereUniqueInput
@@ -19706,6 +19850,10 @@ export namespace Prisma {
      * Omit specific fields from the UserOutreachSettings
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
     /**
      * Filter, which UserOutreachSettings to fetch.
      */
@@ -19755,6 +19903,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * Filter, which UserOutreachSettings to fetch.
      */
     where?: UserOutreachSettingsWhereInput
@@ -19803,6 +19955,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * Filter, which UserOutreachSettings to fetch.
      */
     where?: UserOutreachSettingsWhereInput
@@ -19846,6 +20002,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * The data needed to create a UserOutreachSettings.
      */
     data: XOR<UserOutreachSettingsCreateInput, UserOutreachSettingsUncheckedCreateInput>
@@ -19879,6 +20039,10 @@ export namespace Prisma {
      */
     data: UserOutreachSettingsCreateManyInput | UserOutreachSettingsCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -19893,6 +20057,10 @@ export namespace Prisma {
      * Omit specific fields from the UserOutreachSettings
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
     /**
      * The data needed to update a UserOutreachSettings.
      */
@@ -19945,6 +20113,10 @@ export namespace Prisma {
      * Limit how many UserOutreachSettings to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -19959,6 +20131,10 @@ export namespace Prisma {
      * Omit specific fields from the UserOutreachSettings
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
     /**
      * The filter to search for the UserOutreachSettings to update in case it exists.
      */
@@ -19986,6 +20162,10 @@ export namespace Prisma {
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
+    /**
      * Filter which UserOutreachSettings to delete.
      */
     where: UserOutreachSettingsWhereUniqueInput
@@ -20006,6 +20186,44 @@ export namespace Prisma {
   }
 
   /**
+   * UserOutreachSettings.defaultResume
+   */
+  export type UserOutreachSettings$defaultResumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resume
+     */
+    select?: ResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resume
+     */
+    omit?: ResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResumeInclude<ExtArgs> | null
+    where?: ResumeWhereInput
+  }
+
+  /**
+   * UserOutreachSettings.defaultUploadedResume
+   */
+  export type UserOutreachSettings$defaultUploadedResumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    where?: UploadedResumeWhereInput
+  }
+
+  /**
    * UserOutreachSettings without action
    */
   export type UserOutreachSettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20017,6 +20235,10 @@ export namespace Prisma {
      * Omit specific fields from the UserOutreachSettings
      */
     omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserOutreachSettingsInclude<ExtArgs> | null
   }
 
 
@@ -20270,6 +20492,9 @@ export namespace Prisma {
     jitterEnabled: 'jitterEnabled',
     jitterMinSeconds: 'jitterMinSeconds',
     jitterMaxSeconds: 'jitterMaxSeconds',
+    defaultResumeSourceType: 'defaultResumeSourceType',
+    defaultResumeId: 'defaultResumeId',
+    defaultUploadedResumeId: 'defaultUploadedResumeId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20524,6 +20749,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsListRelationFilter
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
+    defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
   }
 
   export type ResumeOrderByWithRelationInput = {
@@ -20539,6 +20765,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsOrderByRelationAggregateInput
     quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
     savedJobs?: SavedJobOrderByRelationAggregateInput
+    defaultForOutreachSettings?: UserOutreachSettingsOrderByRelationAggregateInput
   }
 
   export type ResumeWhereUniqueInput = Prisma.AtLeast<{
@@ -20557,6 +20784,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsListRelationFilter
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
+    defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
   }, "id">
 
   export type ResumeOrderByWithAggregationInput = {
@@ -21417,6 +21645,7 @@ export namespace Prisma {
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
+    defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
   }
 
   export type UploadedResumeOrderByWithRelationInput = {
@@ -21428,6 +21657,7 @@ export namespace Prisma {
     uploadedAt?: SortOrder
     quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
     savedJobs?: SavedJobOrderByRelationAggregateInput
+    defaultForOutreachSettings?: UserOutreachSettingsOrderByRelationAggregateInput
   }
 
   export type UploadedResumeWhereUniqueInput = Prisma.AtLeast<{
@@ -21442,6 +21672,7 @@ export namespace Prisma {
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
+    defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
   }, "id">
 
   export type UploadedResumeOrderByWithAggregationInput = {
@@ -21654,8 +21885,13 @@ export namespace Prisma {
     jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
     jitterMaxSeconds?: IntFilter<"UserOutreachSettings"> | number
+    defaultResumeSourceType?: EnumResumeSourceTypeNullableFilter<"UserOutreachSettings"> | $Enums.ResumeSourceType | null
+    defaultResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
+    defaultUploadedResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
     createdAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
     updatedAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+    defaultResume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    defaultUploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }
 
   export type UserOutreachSettingsOrderByWithRelationInput = {
@@ -21668,8 +21904,13 @@ export namespace Prisma {
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+    defaultResumeSourceType?: SortOrderInput | SortOrder
+    defaultResumeId?: SortOrderInput | SortOrder
+    defaultUploadedResumeId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    defaultResume?: ResumeOrderByWithRelationInput
+    defaultUploadedResume?: UploadedResumeOrderByWithRelationInput
   }
 
   export type UserOutreachSettingsWhereUniqueInput = Prisma.AtLeast<{
@@ -21685,8 +21926,13 @@ export namespace Prisma {
     jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
     jitterMaxSeconds?: IntFilter<"UserOutreachSettings"> | number
+    defaultResumeSourceType?: EnumResumeSourceTypeNullableFilter<"UserOutreachSettings"> | $Enums.ResumeSourceType | null
+    defaultResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
+    defaultUploadedResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
     createdAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
     updatedAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+    defaultResume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    defaultUploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }, "userId">
 
   export type UserOutreachSettingsOrderByWithAggregationInput = {
@@ -21699,6 +21945,9 @@ export namespace Prisma {
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+    defaultResumeSourceType?: SortOrderInput | SortOrder
+    defaultResumeId?: SortOrderInput | SortOrder
+    defaultUploadedResumeId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserOutreachSettingsCountOrderByAggregateInput
@@ -21721,6 +21970,9 @@ export namespace Prisma {
     jitterEnabled?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
     jitterMinSeconds?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
     jitterMaxSeconds?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
+    defaultResumeSourceType?: EnumResumeSourceTypeNullableWithAggregatesFilter<"UserOutreachSettings"> | $Enums.ResumeSourceType | null
+    defaultResumeId?: UuidNullableWithAggregatesFilter<"UserOutreachSettings"> | string | null
+    defaultUploadedResumeId?: UuidNullableWithAggregatesFilter<"UserOutreachSettings"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"UserOutreachSettings"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UserOutreachSettings"> | Date | string
   }
@@ -21738,6 +21990,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUncheckedCreateInput = {
@@ -21753,6 +22006,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUpdateInput = {
@@ -21768,6 +22022,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateInput = {
@@ -21783,6 +22038,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeCreateManyInput = {
@@ -22740,6 +22996,7 @@ export namespace Prisma {
     uploadedAt?: Date | string
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeUncheckedCreateInput = {
@@ -22751,6 +23008,7 @@ export namespace Prisma {
     uploadedAt?: Date | string
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeUpdateInput = {
@@ -22762,6 +23020,7 @@ export namespace Prisma {
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
 
   export type UploadedResumeUncheckedUpdateInput = {
@@ -22773,6 +23032,7 @@ export namespace Prisma {
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
 
   export type UploadedResumeCreateManyInput = {
@@ -23020,8 +23280,11 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: number
     jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    defaultResume?: ResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput
+    defaultUploadedResume?: UploadedResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput
   }
 
   export type UserOutreachSettingsUncheckedCreateInput = {
@@ -23034,6 +23297,9 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: number
     jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultResumeId?: string | null
+    defaultUploadedResumeId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23048,8 +23314,11 @@ export namespace Prisma {
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
     jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    defaultResume?: ResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput
+    defaultUploadedResume?: UploadedResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput
   }
 
   export type UserOutreachSettingsUncheckedUpdateInput = {
@@ -23062,6 +23331,9 @@ export namespace Prisma {
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
     jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultUploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23076,6 +23348,9 @@ export namespace Prisma {
     jitterEnabled?: boolean
     jitterMinSeconds?: number
     jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultResumeId?: string | null
+    defaultUploadedResumeId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23090,6 +23365,7 @@ export namespace Prisma {
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
     jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23104,6 +23380,9 @@ export namespace Prisma {
     jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
     jitterMinSeconds?: IntFieldUpdateOperationsInput | number
     jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultUploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23208,6 +23487,12 @@ export namespace Prisma {
     none?: SavedJobWhereInput
   }
 
+  export type UserOutreachSettingsListRelationFilter = {
+    every?: UserOutreachSettingsWhereInput
+    some?: UserOutreachSettingsWhereInput
+    none?: UserOutreachSettingsWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -23226,6 +23511,10 @@ export namespace Prisma {
   }
 
   export type SavedJobOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOutreachSettingsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24215,6 +24504,13 @@ export namespace Prisma {
     _max?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
   }
 
+  export type EnumResumeSourceTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel> | $Enums.ResumeSourceType | null
+  }
+
   export type UserOutreachSettingsCountOrderByAggregateInput = {
     userId?: SortOrder
     dailySendLimit?: SortOrder
@@ -24225,6 +24521,9 @@ export namespace Prisma {
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+    defaultResumeSourceType?: SortOrder
+    defaultResumeId?: SortOrder
+    defaultUploadedResumeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24245,6 +24544,9 @@ export namespace Prisma {
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+    defaultResumeSourceType?: SortOrder
+    defaultResumeId?: SortOrder
+    defaultUploadedResumeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24259,6 +24561,9 @@ export namespace Prisma {
     jitterEnabled?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+    defaultResumeSourceType?: SortOrder
+    defaultResumeId?: SortOrder
+    defaultUploadedResumeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24267,6 +24572,16 @@ export namespace Prisma {
     dailySendLimit?: SortOrder
     jitterMinSeconds?: SortOrder
     jitterMaxSeconds?: SortOrder
+  }
+
+  export type EnumResumeSourceTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumResumeSourceTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ResumeSourceType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel>
   }
 
   export type CoverLetterCreateNestedManyWithoutResumeInput = {
@@ -24297,6 +24612,13 @@ export namespace Prisma {
     connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
   }
 
+  export type UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput> | UserOutreachSettingsCreateWithoutDefaultResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultResumeInputEnvelope
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+  }
+
   export type CoverLetterUncheckedCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -24323,6 +24645,13 @@ export namespace Prisma {
     connectOrCreate?: SavedJobCreateOrConnectWithoutResumeInput | SavedJobCreateOrConnectWithoutResumeInput[]
     createMany?: SavedJobCreateManyResumeInputEnvelope
     connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+  }
+
+  export type UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput> | UserOutreachSettingsCreateWithoutDefaultResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultResumeInputEnvelope
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24393,6 +24722,20 @@ export namespace Prisma {
     deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
   }
 
+  export type UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput> | UserOutreachSettingsCreateWithoutDefaultResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput[]
+    upsert?: UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultResumeInput | UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultResumeInputEnvelope
+    set?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    disconnect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    delete?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    update?: UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultResumeInput | UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultResumeInput[]
+    updateMany?: UserOutreachSettingsUpdateManyWithWhereWithoutDefaultResumeInput | UserOutreachSettingsUpdateManyWithWhereWithoutDefaultResumeInput[]
+    deleteMany?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
+  }
+
   export type CoverLetterUncheckedUpdateManyWithoutResumeNestedInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -24447,6 +24790,20 @@ export namespace Prisma {
     update?: SavedJobUpdateWithWhereUniqueWithoutResumeInput | SavedJobUpdateWithWhereUniqueWithoutResumeInput[]
     updateMany?: SavedJobUpdateManyWithWhereWithoutResumeInput | SavedJobUpdateManyWithWhereWithoutResumeInput[]
     deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput> | UserOutreachSettingsCreateWithoutDefaultResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput[]
+    upsert?: UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultResumeInput | UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultResumeInputEnvelope
+    set?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    disconnect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    delete?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    update?: UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultResumeInput | UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultResumeInput[]
+    updateMany?: UserOutreachSettingsUpdateManyWithWhereWithoutDefaultResumeInput | UserOutreachSettingsUpdateManyWithWhereWithoutDefaultResumeInput[]
+    deleteMany?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
   }
 
   export type ResumeCreateNestedOneWithoutCoverLettersInput = {
@@ -24572,6 +24929,13 @@ export namespace Prisma {
     connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
   }
 
+  export type UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput> | UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultUploadedResumeInputEnvelope
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+  }
+
   export type QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput = {
     create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
     connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
@@ -24584,6 +24948,13 @@ export namespace Prisma {
     connectOrCreate?: SavedJobCreateOrConnectWithoutUploadedResumeInput | SavedJobCreateOrConnectWithoutUploadedResumeInput[]
     createMany?: SavedJobCreateManyUploadedResumeInputEnvelope
     connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+  }
+
+  export type UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput> | UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultUploadedResumeInputEnvelope
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
   }
 
   export type QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput = {
@@ -24614,6 +24985,20 @@ export namespace Prisma {
     deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
   }
 
+  export type UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput> | UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput[]
+    upsert?: UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultUploadedResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultUploadedResumeInputEnvelope
+    set?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    disconnect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    delete?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    update?: UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultUploadedResumeInput[]
+    updateMany?: UserOutreachSettingsUpdateManyWithWhereWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpdateManyWithWhereWithoutDefaultUploadedResumeInput[]
+    deleteMany?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
+  }
+
   export type QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput = {
     create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
     connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
@@ -24640,6 +25025,20 @@ export namespace Prisma {
     update?: SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput | SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput[]
     updateMany?: SavedJobUpdateManyWithWhereWithoutUploadedResumeInput | SavedJobUpdateManyWithWhereWithoutUploadedResumeInput[]
     deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput = {
+    create?: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput> | UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput[] | UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput[]
+    connectOrCreate?: UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput | UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput[]
+    upsert?: UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultUploadedResumeInput[]
+    createMany?: UserOutreachSettingsCreateManyDefaultUploadedResumeInputEnvelope
+    set?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    disconnect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    delete?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    connect?: UserOutreachSettingsWhereUniqueInput | UserOutreachSettingsWhereUniqueInput[]
+    update?: UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultUploadedResumeInput[]
+    updateMany?: UserOutreachSettingsUpdateManyWithWhereWithoutDefaultUploadedResumeInput | UserOutreachSettingsUpdateManyWithWhereWithoutDefaultUploadedResumeInput[]
+    deleteMany?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
   }
 
   export type SavedJobCreatecontactEmailsInput = {
@@ -24702,6 +25101,42 @@ export namespace Prisma {
     delete?: UploadedResumeWhereInput | boolean
     connect?: UploadedResumeWhereUniqueInput
     update?: XOR<XOR<UploadedResumeUpdateToOneWithWhereWithoutSavedJobsInput, UploadedResumeUpdateWithoutSavedJobsInput>, UploadedResumeUncheckedUpdateWithoutSavedJobsInput>
+  }
+
+  export type ResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput = {
+    create?: XOR<ResumeCreateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput
+    connect?: ResumeWhereUniqueInput
+  }
+
+  export type UploadedResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput = {
+    create?: XOR<UploadedResumeCreateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput
+    connect?: UploadedResumeWhereUniqueInput
+  }
+
+  export type NullableEnumResumeSourceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ResumeSourceType | null
+  }
+
+  export type ResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput = {
+    create?: XOR<ResumeCreateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput
+    upsert?: ResumeUpsertWithoutDefaultForOutreachSettingsInput
+    disconnect?: ResumeWhereInput | boolean
+    delete?: ResumeWhereInput | boolean
+    connect?: ResumeWhereUniqueInput
+    update?: XOR<XOR<ResumeUpdateToOneWithWhereWithoutDefaultForOutreachSettingsInput, ResumeUpdateWithoutDefaultForOutreachSettingsInput>, ResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
+  }
+
+  export type UploadedResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput = {
+    create?: XOR<UploadedResumeCreateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput
+    upsert?: UploadedResumeUpsertWithoutDefaultForOutreachSettingsInput
+    disconnect?: UploadedResumeWhereInput | boolean
+    delete?: UploadedResumeWhereInput | boolean
+    connect?: UploadedResumeWhereUniqueInput
+    update?: XOR<XOR<UploadedResumeUpdateToOneWithWhereWithoutDefaultForOutreachSettingsInput, UploadedResumeUpdateWithoutDefaultForOutreachSettingsInput>, UploadedResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -25120,6 +25555,23 @@ export namespace Prisma {
     _max?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumResumeSourceTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel> | $Enums.ResumeSourceType | null
+  }
+
+  export type NestedEnumResumeSourceTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumResumeSourceTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ResumeSourceType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumResumeSourceTypeNullableFilter<$PrismaModel>
+  }
+
   export type CoverLetterCreateWithoutResumeInput = {
     id?: string
     userId: string
@@ -25296,6 +25748,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserOutreachSettingsCreateWithoutDefaultResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    defaultUploadedResume?: UploadedResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput
+  }
+
+  export type UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultUploadedResumeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserOutreachSettingsCreateOrConnectWithoutDefaultResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    create: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput>
+  }
+
+  export type UserOutreachSettingsCreateManyDefaultResumeInputEnvelope = {
+    data: UserOutreachSettingsCreateManyDefaultResumeInput | UserOutreachSettingsCreateManyDefaultResumeInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CoverLetterUpsertWithWhereUniqueWithoutResumeInput = {
     where: CoverLetterWhereUniqueInput
     update: XOR<CoverLetterUpdateWithoutResumeInput, CoverLetterUncheckedUpdateWithoutResumeInput>
@@ -25444,6 +25938,42 @@ export namespace Prisma {
     gmailMessageIds?: StringNullableListFilter<"SavedJob">
   }
 
+  export type UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    update: XOR<UserOutreachSettingsUpdateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedUpdateWithoutDefaultResumeInput>
+    create: XOR<UserOutreachSettingsCreateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultResumeInput>
+  }
+
+  export type UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    data: XOR<UserOutreachSettingsUpdateWithoutDefaultResumeInput, UserOutreachSettingsUncheckedUpdateWithoutDefaultResumeInput>
+  }
+
+  export type UserOutreachSettingsUpdateManyWithWhereWithoutDefaultResumeInput = {
+    where: UserOutreachSettingsScalarWhereInput
+    data: XOR<UserOutreachSettingsUpdateManyMutationInput, UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeInput>
+  }
+
+  export type UserOutreachSettingsScalarWhereInput = {
+    AND?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
+    OR?: UserOutreachSettingsScalarWhereInput[]
+    NOT?: UserOutreachSettingsScalarWhereInput | UserOutreachSettingsScalarWhereInput[]
+    userId?: StringFilter<"UserOutreachSettings"> | string
+    dailySendLimit?: IntFilter<"UserOutreachSettings"> | number
+    sendWindowStart?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowEnd?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowStartsNow?: BoolFilter<"UserOutreachSettings"> | boolean
+    weekdaysOnly?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
+    jitterMaxSeconds?: IntFilter<"UserOutreachSettings"> | number
+    defaultResumeSourceType?: EnumResumeSourceTypeNullableFilter<"UserOutreachSettings"> | $Enums.ResumeSourceType | null
+    defaultResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
+    defaultUploadedResumeId?: UuidNullableFilter<"UserOutreachSettings"> | string | null
+    createdAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+  }
+
   export type ResumeCreateWithoutCoverLettersInput = {
     id?: string
     userId: string
@@ -25456,6 +25986,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutCoverLettersInput = {
@@ -25470,6 +26001,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutCoverLettersInput = {
@@ -25500,6 +26032,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutCoverLettersInput = {
@@ -25514,6 +26047,7 @@ export namespace Prisma {
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeCreateWithoutAnalyticsInput = {
@@ -25528,6 +26062,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutAnalyticsInput = {
@@ -25542,6 +26077,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutAnalyticsInput = {
@@ -25572,6 +26108,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutAnalyticsInput = {
@@ -25586,6 +26123,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeCreateWithoutQuickApplyEntriesInput = {
@@ -25600,6 +26138,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutQuickApplyEntriesInput = {
@@ -25614,6 +26153,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutQuickApplyEntriesInput = {
@@ -25629,6 +26169,7 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput = {
@@ -25639,6 +26180,7 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeCreateOrConnectWithoutQuickApplyEntriesInput = {
@@ -25669,6 +26211,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutQuickApplyEntriesInput = {
@@ -25683,6 +26226,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type UploadedResumeUpsertWithoutQuickApplyEntriesInput = {
@@ -25704,6 +26248,7 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
 
   export type UploadedResumeUncheckedUpdateWithoutQuickApplyEntriesInput = {
@@ -25714,6 +26259,7 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
 
   export type QuickApplyEntryCreateWithoutUploadedResumeInput = {
@@ -25836,6 +26382,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    defaultResume?: ResumeCreateNestedOneWithoutDefaultForOutreachSettingsInput
+  }
+
+  export type UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultResumeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserOutreachSettingsCreateOrConnectWithoutDefaultUploadedResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    create: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput>
+  }
+
+  export type UserOutreachSettingsCreateManyDefaultUploadedResumeInputEnvelope = {
+    data: UserOutreachSettingsCreateManyDefaultUploadedResumeInput | UserOutreachSettingsCreateManyDefaultUploadedResumeInput[]
+    skipDuplicates?: boolean
+  }
+
   export type QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput = {
     where: QuickApplyEntryWhereUniqueInput
     update: XOR<QuickApplyEntryUpdateWithoutUploadedResumeInput, QuickApplyEntryUncheckedUpdateWithoutUploadedResumeInput>
@@ -25868,6 +26456,22 @@ export namespace Prisma {
     data: XOR<SavedJobUpdateManyMutationInput, SavedJobUncheckedUpdateManyWithoutUploadedResumeInput>
   }
 
+  export type UserOutreachSettingsUpsertWithWhereUniqueWithoutDefaultUploadedResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    update: XOR<UserOutreachSettingsUpdateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedUpdateWithoutDefaultUploadedResumeInput>
+    create: XOR<UserOutreachSettingsCreateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedCreateWithoutDefaultUploadedResumeInput>
+  }
+
+  export type UserOutreachSettingsUpdateWithWhereUniqueWithoutDefaultUploadedResumeInput = {
+    where: UserOutreachSettingsWhereUniqueInput
+    data: XOR<UserOutreachSettingsUpdateWithoutDefaultUploadedResumeInput, UserOutreachSettingsUncheckedUpdateWithoutDefaultUploadedResumeInput>
+  }
+
+  export type UserOutreachSettingsUpdateManyWithWhereWithoutDefaultUploadedResumeInput = {
+    where: UserOutreachSettingsScalarWhereInput
+    data: XOR<UserOutreachSettingsUpdateManyMutationInput, UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeInput>
+  }
+
   export type ResumeCreateWithoutSavedJobsInput = {
     id?: string
     userId: string
@@ -25880,6 +26484,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutSavedJobsInput = {
@@ -25894,6 +26499,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutSavedJobsInput = {
@@ -25909,6 +26515,7 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeUncheckedCreateWithoutSavedJobsInput = {
@@ -25919,6 +26526,7 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
 
   export type UploadedResumeCreateOrConnectWithoutSavedJobsInput = {
@@ -25949,6 +26557,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutSavedJobsInput = {
@@ -25963,6 +26572,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeNestedInput
   }
 
   export type UploadedResumeUpsertWithoutSavedJobsInput = {
@@ -25984,6 +26594,7 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
 
   export type UploadedResumeUncheckedUpdateWithoutSavedJobsInput = {
@@ -25994,6 +26605,143 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
+    defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
+  }
+
+  export type ResumeCreateWithoutDefaultForOutreachSettingsInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput = {
+    where: ResumeWhereUniqueInput
+    create: XOR<ResumeCreateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+  }
+
+  export type UploadedResumeCreateWithoutDefaultForOutreachSettingsInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeCreateOrConnectWithoutDefaultForOutreachSettingsInput = {
+    where: UploadedResumeWhereUniqueInput
+    create: XOR<UploadedResumeCreateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+  }
+
+  export type ResumeUpsertWithoutDefaultForOutreachSettingsInput = {
+    update: XOR<ResumeUpdateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
+    create: XOR<ResumeCreateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    where?: ResumeWhereInput
+  }
+
+  export type ResumeUpdateToOneWithWhereWithoutDefaultForOutreachSettingsInput = {
+    where?: ResumeWhereInput
+    data: XOR<ResumeUpdateWithoutDefaultForOutreachSettingsInput, ResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
+  }
+
+  export type ResumeUpdateWithoutDefaultForOutreachSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
+  }
+
+  export type ResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+  }
+
+  export type UploadedResumeUpsertWithoutDefaultForOutreachSettingsInput = {
+    update: XOR<UploadedResumeUpdateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
+    create: XOR<UploadedResumeCreateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedCreateWithoutDefaultForOutreachSettingsInput>
+    where?: UploadedResumeWhereInput
+  }
+
+  export type UploadedResumeUpdateToOneWithWhereWithoutDefaultForOutreachSettingsInput = {
+    where?: UploadedResumeWhereInput
+    data: XOR<UploadedResumeUpdateWithoutDefaultForOutreachSettingsInput, UploadedResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput>
+  }
+
+  export type UploadedResumeUpdateWithoutDefaultForOutreachSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type UploadedResumeUncheckedUpdateWithoutDefaultForOutreachSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
   }
 
   export type CoverLetterCreateManyResumeInput = {
@@ -26062,6 +26810,22 @@ export namespace Prisma {
     lastError?: string | null
     sentAt?: Date | string | null
     gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+  }
+
+  export type UserOutreachSettingsCreateManyDefaultResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultUploadedResumeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CoverLetterUpdateWithoutResumeInput = {
@@ -26268,6 +27032,54 @@ export namespace Prisma {
     gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
   }
 
+  export type UserOutreachSettingsUpdateWithoutDefaultResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    defaultUploadedResume?: UploadedResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateWithoutDefaultResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultUploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateManyWithoutDefaultResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultUploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type QuickApplyEntryCreateManyUploadedResumeInput = {
     id?: string
     userId: string
@@ -26316,6 +27128,22 @@ export namespace Prisma {
     lastError?: string | null
     sentAt?: Date | string | null
     gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+  }
+
+  export type UserOutreachSettingsCreateManyDefaultUploadedResumeInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    sendWindowStartsNow?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    defaultResumeSourceType?: $Enums.ResumeSourceType | null
+    defaultResumeId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type QuickApplyEntryUpdateWithoutUploadedResumeInput = {
@@ -26466,6 +27294,54 @@ export namespace Prisma {
     lastError?: NullableStringFieldUpdateOperationsInput | string | null
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+  }
+
+  export type UserOutreachSettingsUpdateWithoutDefaultUploadedResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    defaultResume?: ResumeUpdateOneWithoutDefaultForOutreachSettingsNestedInput
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateWithoutDefaultUploadedResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    sendWindowStartsNow?: BoolFieldUpdateOperationsInput | boolean
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    defaultResumeSourceType?: NullableEnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType | null
+    defaultResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
