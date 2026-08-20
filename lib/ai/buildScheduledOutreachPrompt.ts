@@ -1,3 +1,4 @@
+import { htmlToPlainText } from "@/lib/jobs/experienceLevel";
 import { formatCandidateContext, type ResumeContext } from "./formatResumeContext";
 
 interface BuildScheduledOutreachPromptParams {
@@ -5,6 +6,22 @@ interface BuildScheduledOutreachPromptParams {
   roleTitle: string;
   jobDescription: string;
   resumeContext: ResumeContext;
+}
+
+// Greenhouse-sourced jobs store their raw HTML content as-is in
+// SavedJob.jobDescription (app/api/jobs/save persists whatever the client
+// sends verbatim, no server-side stripping) — feeding that straight into a
+// "return ONLY valid JSON" prompt bloats tokens with markup and entities,
+// and has a real chance of throwing the model off strict-JSON output.
+// htmlToPlainText is the same stripping lib/jobs/greenhouseClient.ts uses
+// for jobDescriptionPlain elsewhere in Job Discovery — reused here rather
+// than duplicated. Also capped, same pattern as formatResumeContext.ts's
+// extracted-text truncation, since Greenhouse JDs can run long.
+const MAX_JOB_DESCRIPTION_CHARS = 6000;
+
+function sanitizeJobDescription(raw: string): string {
+  const plain = htmlToPlainText(raw);
+  return plain.length > MAX_JOB_DESCRIPTION_CHARS ? `${plain.slice(0, MAX_JOB_DESCRIPTION_CHARS)}...` : plain;
 }
 
 // Used by the "Schedule Outreach" cron sender (app/api/cron/process-outreach-queue)
@@ -21,6 +38,7 @@ export function buildScheduledOutreachPrompt({
   resumeContext,
 }: BuildScheduledOutreachPromptParams) {
   const { candidateName, block } = formatCandidateContext(resumeContext, 3);
+  const cleanJobDescription = sanitizeJobDescription(jobDescription);
 
   return `
 You are an expert career communication assistant.
@@ -34,7 +52,7 @@ description to show the email is tailored, not generic. Keep it concise
 COMPANY: ${companyName}
 ROLE: ${roleTitle}
 JOB DESCRIPTION:
-${jobDescription}
+${cleanJobDescription}
 
 CANDIDATE NAME: ${candidateName}
 ${block}

@@ -23,6 +23,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
@@ -30,30 +31,40 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { CompanyLogo, OutreachTypeBadge } from "@/components/outreach/OutreachBadges";
 import type { OutreachEntry, OutreachType } from "@/components/outreach/outreachData";
 
 const notWiredYet = () => toast.info("Not wired up yet — coming in a follow-up pass.");
 
-function timeOptions() {
-  const options: string[] = [];
-  for (let h = 0; h < 24; h++) {
-    for (const m of [0, 30]) {
-      const period = h < 12 ? "AM" : "PM";
-      const hour12 = h % 12 === 0 ? 12 : h % 12;
-      options.push(`${String(hour12).padStart(2, "0")}:${String(m).padStart(2, "0")} ${period}`);
-    }
-  }
-  return options;
+interface SendingWindowPreset {
+  label: string;
+  // "now" is resolved to the current clock time at the moment the preset is
+  // clicked — a one-time snapshot written into the same "hh:mm AM/PM" state
+  // as every other preset, not a live-updating value. UserOutreachSettings
+  // only ever stores a fixed daily start time, so "start now" means "start
+  // from whatever time it is right now, every day" once saved.
+  start: string | "now";
+  end: string;
 }
-const TIME_OPTIONS = timeOptions();
+
+const SENDING_WINDOW_PRESETS: SendingWindowPreset[] = [
+  { label: "Start Now", start: "now", end: "11:59 PM" },
+  { label: "6 AM – 9 AM", start: "06:00 AM", end: "09:00 AM" },
+  { label: "9 AM – 12 PM", start: "09:00 AM", end: "12:00 PM" },
+  { label: "9 AM – 5 PM", start: "09:00 AM", end: "05:00 PM" },
+  { label: "9 AM – 6 PM", start: "09:00 AM", end: "06:00 PM" },
+  { label: "12 PM – 5 PM", start: "12:00 PM", end: "05:00 PM" },
+  { label: "3 PM – 8 PM", start: "03:00 PM", end: "08:00 PM" },
+  { label: "6 AM – 10 PM", start: "06:00 AM", end: "10:00 PM" },
+  // { label: "8 PM – 11:59 PM", start: "08:00 PM", end: "11:59 PM" },
+];
+
+function formatNowAsTime12(): string {
+  const now = new Date();
+  const period = now.getHours() < 12 ? "AM" : "PM";
+  const hour12 = now.getHours() % 12 === 0 ? 12 : now.getHours() % 12;
+  return `${String(hour12).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")} ${period}`;
+}
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
@@ -187,6 +198,7 @@ export default function SendSchedulerPage() {
   const [dailyLimit, setDailyLimit] = useState(15);
   const [startTime, setStartTime] = useState("09:00 AM");
   const [endTime, setEndTime] = useState("06:00 PM");
+  const [activeWindowPreset, setActiveWindowPreset] = useState<string | null>("9 AM – 6 PM");
   const [weekdaysOnly, setWeekdaysOnly] = useState(true);
   const [jitterEnabled, setJitterEnabled] = useState(true);
   const [jitterMinSeconds, setJitterMinSeconds] = useState(30);
@@ -215,6 +227,12 @@ export default function SendSchedulerPage() {
       setDailyLimit(data.dailySendLimit);
       setStartTime(data.sendWindowStart);
       setEndTime(data.sendWindowEnd);
+      // "Start Now" is never itself persisted (it's resolved to a literal
+      // clock time when clicked) — only match against the fixed presets.
+      const matched = SENDING_WINDOW_PRESETS.find(
+        (p) => p.start !== "now" && p.start === data.sendWindowStart && p.end === data.sendWindowEnd,
+      );
+      setActiveWindowPreset(matched?.label ?? null);
       setWeekdaysOnly(data.weekdaysOnly);
       setJitterEnabled(data.jitterEnabled);
       setJitterMinSeconds(data.jitterMinSeconds);
@@ -325,6 +343,12 @@ export default function SendSchedulerPage() {
 
   const sliderPercent = ((dailyLimit - 5) / (40 - 5)) * 100;
 
+  function applyWindowPreset(preset: SendingWindowPreset) {
+    setStartTime(preset.start === "now" ? formatNowAsTime12() : preset.start);
+    setEndTime(preset.end);
+    setActiveWindowPreset(preset.label);
+  }
+
   return (
     <>
     <Suspense fallback={null}>
@@ -394,41 +418,27 @@ export default function SendSchedulerPage() {
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
           <SectionHeading title="Sending Window" subtitle="Set the time range during which emails will be sent." />
 
-          <div className="flex items-end gap-3">
-            <div className="flex-1">
-              <label className="mb-1.5 block text-xs font-semibold text-gray-500">Start time</label>
-              <Select value={startTime} onValueChange={setStartTime}>
-                <SelectTrigger className="h-10 w-full border-gray-200 bg-white text-sm text-gray-700">
-                  <Clock className="h-3.5 w-3.5 text-gray-400" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-64">
-                  {TIME_OPTIONS.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <span className="mb-2.5 text-gray-300">—</span>
-            <div className="flex-1">
-              <label className="mb-1.5 block text-xs font-semibold text-gray-500">End time</label>
-              <Select value={endTime} onValueChange={setEndTime}>
-                <SelectTrigger className="h-10 w-full border-gray-200 bg-white text-sm text-gray-700">
-                  <Clock className="h-3.5 w-3.5 text-gray-400" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-64">
-                  {TIME_OPTIONS.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+            {SENDING_WINDOW_PRESETS.map((preset) => (
+              <button
+                key={preset.label}
+                type="button"
+                onClick={() => applyWindowPreset(preset)}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-xl border px-2 py-2.5 text-center text-xs font-medium transition-colors",
+                  activeWindowPreset === preset.label
+                    ? "border-brand-purple bg-purple-50 text-brand-purple"
+                    : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50",
+                )}
+              >
+                <Clock className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                {preset.label}
+              </button>
+            ))}
           </div>
+          <p className="mt-3 text-xs text-gray-400">
+            Window: <span className="font-medium text-gray-600">{startTime} – {endTime}</span>
+          </p>
 
           <div className="mt-6 flex items-center justify-between gap-4 border-t border-gray-100 pt-4">
             <div>
