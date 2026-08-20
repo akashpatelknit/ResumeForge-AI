@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminSession } from "@/lib/admin/session";
 import { getPlanConfig, updatePlanConfig } from "@/lib/subscription/planConfig";
@@ -28,5 +29,8 @@ export async function PUT(request: NextRequest) {
   }
 
   const config = await updatePlanConfig(parsed.data);
+  // /pricing is statically prerendered, so without this an admin's price/limit
+  // change wouldn't show up on the public page until the next deploy.
+  revalidatePath("/pricing");
   return NextResponse.json(config);
 }

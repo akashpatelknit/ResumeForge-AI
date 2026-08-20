@@ -1,131 +1,173 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { useState } from "react";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
+import { CheckCircle2, Loader2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
-import { motion } from "framer-motion";
+import { Switch } from "@/components/ui/switch";
+import { useAuthModalStore } from "@/store/authModalStore";
+import { useSubscriptionStatus } from "@/hooks/useSubscriptionStatus";
+import { openRazorpayCheckout } from "@/lib/razorpayCheckout";
 
-const tiers = [
-  {
-    name: "Free",
-    price: "$0",
-    description: "Perfect for getting started",
-    features: ["1 resume", "3 templates", "PDF export", "Basic ATS check"],
-    cta: "Get Started Free",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: "$9",
-    period: "/month",
-    description: "Everything you need to land the job",
-    features: [
-      "Unlimited resumes",
-      "All templates",
-      "AI optimization",
-      "Cover letters",
-      "ATS scoring",
-      "Priority support",
-    ],
-    cta: "Start Pro Trial",
-    popular: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    description: "For teams and organizations",
-    features: [
-      "Everything in Pro",
-      "Team management",
-      "Custom branding",
-      "API access",
-      "Dedicated support",
-      "SSO",
-    ],
-    cta: "Contact Sales",
-    popular: false,
-  },
-];
+interface PricingProps {
+  proPriceInr: number;
+  freeResumeLimit: number;
+  freeAiGenerationLimit: number;
+}
 
-const Pricing = () => (
-  <section id="pricing" className="py-20 lg:py-32">
-    <div className="container mx-auto px-4 lg:px-6">
-      <div className="mx-auto mb-16 max-w-2xl text-center">
-        <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Simple, <span className="text-gradient">Transparent Pricing</span>
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          No hidden fees. Start free, upgrade when you're ready.
-        </p>
-      </div>
+// Feature copy for things PlanConfig doesn't store as real flags (template
+// access, PDF export, Cold Outreach automation, priority support) — the
+// numeric limits below (resumes / AI generations / price) come straight
+// from PlanConfig via props, so admin changes to those show up here without
+// a second edit.
+const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: PricingProps) => {
+  const { isLoaded, isSignedIn } = useAuth();
+  const { data } = useSubscriptionStatus();
+  const openAuthModal = useAuthModalStore((state) => state.open);
+  const [isUpgrading, setIsUpgrading] = useState(false);
 
-      <div className="mx-auto grid max-w-5xl items-start gap-6 lg:grid-cols-3">
-        {tiers.map((tier) => (
-          <motion.div
-            key={tier.name}
-            whileHover={{ y: tier.popular ? -10 : -6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className={tier.popular ? "lg:-mt-4 lg:mb-4" : ""}
+  const isPro = data?.plan === "pro" && (data.status === "active" || data.status === "trialing");
+
+  const handleYearlyClick = () => {
+    toast.info("Yearly billing is coming soon — Pro is monthly-only for now.");
+  };
+
+  const handleStartTrial = async () => {
+    if (!isSignedIn) {
+      openAuthModal("sign-up");
+      return;
+    }
+    setIsUpgrading(true);
+    try {
+      const res = await fetch("/api/subscription/create", { method: "POST" });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || "Failed to start checkout");
+
+      await openRazorpayCheckout({
+        subscriptionId: body.subscriptionId,
+        keyId: body.keyId,
+        prefill: body.prefill,
+        onSuccess: () => {
+          toast.success("Payment submitted — activating your Pro subscription…");
+          setIsUpgrading(false);
+        },
+        onDismiss: () => setIsUpgrading(false),
+      });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to start checkout");
+      setIsUpgrading(false);
+    }
+  };
+
+  const freeFeatures = [
+    `${freeResumeLimit} resumes`,
+    `${freeAiGenerationLimit} AI generations / month`,
+    "All templates",
+    "PDF export",
+  ];
+
+  const proFeatures = [
+    "Unlimited resumes",
+    "Unlimited AI generations",
+    "All templates",
+    "Cold Outreach automation",
+    "Priority support",
+  ];
+
+  return (
+    <section id="pricing" className="py-20 lg:py-32">
+      <div className="container mx-auto px-4 lg:px-6">
+        <div className="mx-auto mb-8 max-w-2xl text-center">
+          <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+            Simple, transparent pricing
+          </h1>
+          <p className="text-lg text-muted-foreground">Start free. Upgrade when you're ready.</p>
+        </div>
+
+        <div className="mb-12 flex items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-2 shadow-sm w-fit mx-auto">
+          <span className="text-sm font-semibold text-brand-purple">Monthly</span>
+          <Switch
+            checked
+            onCheckedChange={handleYearlyClick}
+            aria-label="Yearly billing (coming soon)"
+          />
+          <button
+            type="button"
+            onClick={handleYearlyClick}
+            className="text-sm text-muted-foreground cursor-not-allowed"
           >
-            <div
-              className={
-                tier.popular
-                  ? "rounded-xl bg-gradient-hero p-[1.5px] shadow-xl shadow-purple-500/20"
-                  : ""
-              }
-            >
-              <Card
-                className={`relative flex h-full flex-col transition-shadow duration-300 ${
-                  tier.popular
-                    ? "border-0 bg-gradient-hero-soft shadow-none hover:shadow-2xl hover:shadow-purple-500/10"
-                    : "border hover:border-purple-300/60 hover:shadow-lg"
-                }`}
-              >
-                {tier.popular && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-hero text-white border-0 px-4 shadow-md">
-                    Most Popular
-                  </Badge>
-                )}
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">{tier.name}</CardTitle>
-                  <CardDescription>{tier.description}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-4xl font-extrabold">{tier.price}</span>
-                    {tier.period && (
-                      <span className="text-muted-foreground">{tier.period}</span>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="flex flex-1 flex-col gap-4">
-                  <ul className="flex-1 space-y-3">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm">
-                        <Check className="h-4 w-4 text-[hsl(142,71%,45%)]" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    className={`w-full mt-4 transition-transform duration-200 active:scale-[0.98] ${tier.popular ? "bg-gradient-hero text-white hover:opacity-90 hover:scale-[1.02]" : "hover:scale-[1.02]"}`}
-                    variant={tier.popular ? "default" : "outline"}
-                  >
-                    {tier.cta}
-                  </Button>
-                </CardContent>
-              </Card>
+            Yearly
+          </button>
+        </div>
+
+        <div className="mx-auto grid max-w-3xl items-stretch gap-6 sm:grid-cols-2">
+          {/* Free */}
+          <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900">Free</h3>
+            <div className="mt-4 flex items-baseline gap-1">
+              <span className="text-4xl font-extrabold text-gray-900">₹0</span>
+              <span className="text-muted-foreground">/month</span>
             </div>
-          </motion.div>
-        ))}
+            <p className="mt-2 text-sm text-muted-foreground">Perfect for trying things out</p>
+            <div className="my-6 border-t border-gray-100" />
+            <ul className="flex-1 space-y-3">
+              {freeFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-purple" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Button asChild variant="outline" className="mt-8 w-full">
+              <Link href="/signup">Get Started</Link>
+            </Button>
+          </div>
+
+          {/* Pro */}
+          <div className="relative flex flex-col rounded-2xl border-2 border-brand-purple/60 bg-white p-8 shadow-xl shadow-purple-500/10">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-bold text-gray-900">Pro</h3>
+              <Badge className="gap-1 border-0 bg-purple-100 text-purple-700 hover:bg-purple-100">
+                <Star className="h-3 w-3 fill-current" />
+                Most Popular
+              </Badge>
+            </div>
+            <div className="mt-4 flex items-baseline gap-1">
+              <span className="text-4xl font-extrabold text-gray-900">₹{proPriceInr}</span>
+              <span className="text-muted-foreground">/month</span>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">For serious job seekers</p>
+            <div className="my-6 border-t border-gray-100" />
+            <ul className="flex-1 space-y-3">
+              {proFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-purple" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            {isPro ? (
+              <Button asChild className="mt-8 w-full bg-gradient-hero text-white hover:opacity-90">
+                <Link href="/dashboard/settings">You're on Pro</Link>
+              </Button>
+            ) : (
+              <Button
+                onClick={handleStartTrial}
+                disabled={!isLoaded || isUpgrading}
+                className="mt-8 w-full gap-2 bg-gradient-hero text-white hover:opacity-90"
+              >
+                {isUpgrading && <Loader2 className="h-4 w-4 animate-spin" />}
+                Start 7-day free trial
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Pricing;

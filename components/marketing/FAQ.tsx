@@ -5,46 +5,34 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Billing-specific FAQ shown on /pricing only (this component has no other
+// importers). Answers reflect the actual subscription implementation:
+// cancellation is immediate via /api/subscription/cancel (no refund logic
+// there), the trial is a real 7-day Razorpay `start_at` delay, and Razorpay
+// Checkout is the only payment surface (no code-level method restrictions).
 const faqs = [
   {
-    q: "Is my data secure?",
-    a: "Absolutely. We use bank-level AES-256 encryption, and your data is never shared with third parties. You can delete your account and all data at any time.",
+    q: "Can I cancel anytime?",
+    a: "Yes — cancel your Pro subscription anytime from Settings → Billing. Cancellation takes effect immediately: you keep Free-plan access and won't be charged again.",
   },
   {
-    q: "How does the AI work?",
-    a: "Our AI analyzes the job description you provide, extracts required skills and keywords, then tailors your resume content to match — ensuring maximum ATS compatibility and recruiter appeal.",
+    q: "What payment methods do you accept?",
+    a: "Payments are processed securely through Razorpay, which supports UPI, credit/debit cards, net banking, and popular wallets.",
   },
   {
-    q: "Can I edit after downloading?",
-    a: "Yes! Your resume is always editable. Come back anytime to make changes, update your experience, or optimize for a new job description.",
+    q: "Is there a free trial?",
+    a: "Yes — every Pro subscription starts with a 7-day free trial. You won't be charged until the trial ends, and you can cancel anytime before then.",
   },
   {
-    q: "What file formats are supported?",
-    a: "We support PDF (recommended for ATS), DOCX for Microsoft Word, and shareable web links you can include in applications.",
-  },
-  {
-    q: "Is there really a free plan?",
-    a: "Yes! Our free plan lets you create 1 resume with 3 templates and PDF export. No credit card required, no time limits.",
-  },
-  {
-    q: "How is this different from other resume builders?",
-    a: "Unlike generic builders, Rezlo uses artificial intelligence to tailor your resume for specific jobs, optimize for ATS systems, and enhance your bullet points — resulting in 3x more interviews on average.",
+    q: "Do you offer refunds?",
+    a: "We don't offer refunds for partial billing periods, but you can cancel anytime and you won't be charged again — there's no long-term commitment.",
   },
 ];
 
 const FAQ = () => (
-  <section className="py-20 lg:py-32 bg-gradient-hero-soft">
+  <section className="py-8 lg:py-12">
     <div className="container mx-auto px-4 lg:px-6">
-      <div className="mx-auto mb-16 max-w-2xl text-center">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Frequently Asked Questions
-        </h2>
-        <p className="text-lg text-muted-foreground">
-          Got questions? We've got answers.
-        </p>
-      </div>
-
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-3xl rounded-2xl border border-gray-200 bg-white px-6 shadow-sm">
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
