@@ -10,24 +10,25 @@ import {
   Building2,
   CheckCircle2,
   ChevronDown,
-  FileText,
+  Hash,
   Loader2,
   Mail,
   RefreshCw,
   Send,
   Sparkles,
+  UserSearch,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
-import type { AppResume } from "@/types/resume";
+import { ResumeAttachPicker, type ResumeAttachValue } from "@/components/outreach/ResumeAttachPicker";
 
 const JOB_CONTEXT_MAX = 2000;
 const EXTRACT_DEBOUNCE_MS = 800;
 
-type ExtractableField = "recipientEmail" | "companyName" | "roleTitle";
+type ExtractableField = "recipientEmail" | "companyName" | "roleTitle" | "jobId";
 type GmailStatus = "loading" | "connected" | "not_connected" | "reauth_required";
+type MessageType = "cold_application" | "referral_request";
 
 export function QuickApplyModal({
   open,
@@ -36,11 +37,8 @@ export function QuickApplyModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  // ── Resumes ──
-  const [resumes, setResumes] = useState<AppResume[]>([]);
-  const [resumesLoading, setResumesLoading] = useState(true);
-  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
-  const [resumeOpen, setResumeOpen] = useState(false);
+  // ── Resume to attach (a Rezlo Resume or an uploaded PDF) ──
+  const [resumeSelection, setResumeSelection] = useState<ResumeAttachValue | null>(null);
 
   // ── Gmail connection ──
   const [gmailStatus, setGmailStatus] = useState<GmailStatus>("loading");
@@ -50,6 +48,8 @@ export function QuickApplyModal({
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState("");
   const [jobContext, setJobContext] = useState("");
+  const [jobId, setJobId] = useState("");
+  const [messageType, setMessageType] = useState<MessageType>("cold_application");
   const [autoFilledFields, setAutoFilledFields] = useState<Set<ExtractableField>>(new Set());
   // Ref, not state — read inside the debounced extraction callback without
   // re-triggering that effect (which is keyed only on jobContext) every
@@ -73,21 +73,6 @@ export function QuickApplyModal({
 
   useEffect(() => {
     let cancelled = false;
-
-    (async () => {
-      try {
-        const res = await fetch("/api/resumes");
-        const data = await res.json();
-        if (!res.ok || !Array.isArray(data) || cancelled) return;
-        const mapped = data.map((r: unknown) => mapResumeFromDB(r as Parameters<typeof mapResumeFromDB>[0]));
-        setResumes(mapped);
-        setSelectedResumeId(mapped[0]?.id ?? null);
-      } catch (error) {
-        console.error("Failed to load resumes:", error);
-      } finally {
-        if (!cancelled) setResumesLoading(false);
-      }
-    })();
 
     (async () => {
       try {
@@ -125,6 +110,7 @@ export function QuickApplyModal({
           recipientEmail: string | null;
           companyName: string | null;
           roleTitle: string | null;
+          jobId: string | null;
         };
 
         if (result.recipientEmail && !manuallyEditedRef.current.has("recipientEmail")) {
@@ -138,6 +124,10 @@ export function QuickApplyModal({
         if (result.roleTitle && !manuallyEditedRef.current.has("roleTitle")) {
           setRole(result.roleTitle);
           setAutoFilledFields((prev) => new Set(prev).add("roleTitle"));
+        }
+        if (result.jobId && !manuallyEditedRef.current.has("jobId")) {
+          setJobId(result.jobId);
+          setAutoFilledFields((prev) => new Set(prev).add("jobId"));
         }
       } catch (error) {
         // Non-fatal — extraction is a convenience, never blocks manual entry.
@@ -159,11 +149,20 @@ export function QuickApplyModal({
     setter(value);
   }
 
-  const selectedResume = resumes.find((r) => r.id === selectedResumeId) ?? null;
+  // Referral Request only makes sense with a Job ID to reference — if one
+  // was cleared (extracted then edited away, or typed then deleted) while
+  // Referral was selected, fall back to Cold Application so the toggle
+  // never silently shows a mode it can't actually generate.
+  useEffect(() => {
+    if (messageType === "referral_request" && !jobId.trim()) {
+      setMessageType("cold_application");
+    }
+  }, [jobId, messageType]);
+
   const canGenerate =
     gmailStatus === "connected" &&
     recipientEmail.trim().length > 0 &&
-    Boolean(selectedResumeId) &&
+    Boolean(resumeSelection) &&
     !isGenerating;
 
   async function handleGenerate() {
@@ -180,7 +179,12 @@ export function QuickApplyModal({
           companyName,
           roleTitle: role,
           pastedContext: jobContext.trim() || undefined,
-          resumeId: selectedResumeId,
+          messageType,
+          jobId: jobId.trim() || undefined,
+          resumeSourceType: resumeSelection?.resumeSourceType,
+          resumeId: resumeSelection?.resumeSourceType === "builder" ? resumeSelection.resumeId : undefined,
+          uploadedResumeId:
+            resumeSelection?.resumeSourceType === "uploaded" ? resumeSelection.uploadedResumeId : undefined,
         }),
       });
       const data = await res.json();
@@ -204,7 +208,7 @@ export function QuickApplyModal({
   }
 
   async function handleSaveDraft() {
-    if (!selectedResumeId) return;
+    if (!resumeSelection) return;
     setIsSavingDraft(true);
     try {
       const res = await fetch("/api/outreach/quick-apply/draft", {
@@ -216,7 +220,12 @@ export function QuickApplyModal({
           companyName,
           roleTitle: role,
           pastedContext: jobContext.trim() || undefined,
-          resumeId: selectedResumeId,
+          messageType,
+          jobId: jobId.trim() || undefined,
+          resumeSourceType: resumeSelection.resumeSourceType,
+          resumeId: resumeSelection.resumeSourceType === "builder" ? resumeSelection.resumeId : undefined,
+          uploadedResumeId:
+            resumeSelection.resumeSourceType === "uploaded" ? resumeSelection.uploadedResumeId : undefined,
           subject: subject || undefined,
           body: body || undefined,
         }),
@@ -315,7 +324,7 @@ export function QuickApplyModal({
           )}
 
           {/* Top row */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <div className="mb-2 flex items-center gap-2">
                 <label className="text-sm font-semibold text-gray-900">
@@ -376,6 +385,27 @@ export function QuickApplyModal({
                 />
               </div>
             </div>
+
+            <div>
+              <div className="mb-2 flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-900">Job ID</label>
+                <span className="text-xs font-normal text-gray-400">(optional)</span>
+                {autoFilledFields.has("jobId") && <AutoFilledTag />}
+              </div>
+              <div className="relative">
+                <Hash className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  value={jobId}
+                  onChange={(e) => editField("jobId", e.target.value, setJobId)}
+                  placeholder="REQ-12345"
+                  className={cn(
+                    "w-full rounded-xl border py-2.5 pl-9 pr-3 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-100",
+                    autoFilledFields.has("jobId") ? "border-purple-200 bg-purple-50/40" : "border-gray-200 bg-white",
+                  )}
+                />
+              </div>
+              <p className="mt-1.5 text-xs text-gray-400">Unlocks Referral Request mode</p>
+            </div>
           </div>
 
           {/* Job post / context */}
@@ -403,44 +433,52 @@ export function QuickApplyModal({
             <label className="mb-2 block text-sm font-semibold text-gray-900">
               Resume to Attach <span className="text-red-500">*</span>
             </label>
-            <div className="relative">
+            <ResumeAttachPicker value={resumeSelection} onChange={setResumeSelection} />
+            <p className="mt-1.5 text-xs text-gray-400">This resume will be attached to the email as a PDF</p>
+          </div>
+
+          {/* Message type */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-900">Message Type</label>
+            <div className="grid grid-cols-2 gap-2 sm:max-w-md">
               <button
                 type="button"
-                onClick={() => setResumeOpen((v) => !v)}
-                disabled={resumesLoading || resumes.length === 0}
-                className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-gray-200 bg-white px-3.5 py-3 text-left hover:border-purple-200 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => setMessageType("cold_application")}
+                className={cn(
+                  "flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold transition-all",
+                  messageType === "cold_application"
+                    ? "border-brand-purple bg-purple-50 text-brand-purple shadow-sm"
+                    : "border-gray-200 bg-white text-gray-500 hover:border-purple-200 hover:text-purple-600",
+                )}
               >
-                <FileText className="h-4 w-4 shrink-0 text-gray-400" />
-                <span className="flex-1 truncate text-sm font-medium text-gray-800">
-                  {resumesLoading
-                    ? "Loading resumes..."
-                    : (selectedResume?.title ?? "No saved resumes yet")}
-                </span>
-                <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400 transition-transform", resumeOpen && "rotate-180")} />
+                <Mail className="h-4 w-4" />
+                Cold Application
               </button>
-              {resumeOpen && resumes.length > 0 && (
-                <div className="absolute left-0 right-0 top-full z-10 mt-1.5 max-h-56 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
-                  {resumes.map((resume) => (
-                    <button
-                      key={resume.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedResumeId(resume.id);
-                        setResumeOpen(false);
-                      }}
-                      className={cn(
-                        "flex w-full cursor-pointer items-center gap-2 border-none px-3.5 py-2.5 text-left text-sm transition-colors",
-                        resume.id === selectedResumeId ? "bg-purple-50 text-brand-purple" : "bg-white text-gray-700 hover:bg-gray-50",
-                      )}
-                    >
-                      <FileText className="h-3.5 w-3.5 shrink-0" />
-                      <span className="flex-1 truncate">{resume.title}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <button
+                type="button"
+                onClick={() => jobId.trim() && setMessageType("referral_request")}
+                disabled={!jobId.trim()}
+                title={
+                  jobId.trim()
+                    ? undefined
+                    : "No Job ID found in the pasted content — add one manually above, or use Cold Application"
+                }
+                className={cn(
+                  "flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50",
+                  messageType === "referral_request"
+                    ? "border-brand-purple bg-purple-50 text-brand-purple shadow-sm"
+                    : "border-gray-200 bg-white text-gray-500 hover:border-purple-200 hover:text-purple-600 disabled:hover:border-gray-200 disabled:hover:text-gray-500",
+                )}
+              >
+                <UserSearch className="h-4 w-4" />
+                Referral Request
+              </button>
             </div>
-            <p className="mt-1.5 text-xs text-gray-400">This resume will be attached to the email as a PDF</p>
+            {messageType === "referral_request" && (
+              <p className="mt-1.5 text-xs text-gray-400">
+                Uses Job ID <span className="font-medium text-gray-600">{jobId}</span> in the email.
+              </p>
+            )}
           </div>
 
           {/* Generate Email */}
@@ -539,7 +577,7 @@ export function QuickApplyModal({
             <button
               type="button"
               onClick={handleSaveDraft}
-              disabled={isSavingDraft || !selectedResumeId}
+              disabled={isSavingDraft || !resumeSelection}
               className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSavingDraft ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bookmark className="h-4 w-4" />}

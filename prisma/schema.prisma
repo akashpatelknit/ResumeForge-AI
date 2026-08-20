@@ -23,6 +23,7 @@ model Resume {
   coverLetters      CoverLetter[]
   analytics         ResumeAnalytics[]
   quickApplyEntries QuickApplyEntry[]
+  savedJobs         SavedJob[]
 
   @@index([userId])
   @@map("resumes")
@@ -209,34 +210,84 @@ enum QuickApplyStatus {
   failed
 }
 
+// Which of the two resume sources (Resume vs UploadedResume, see below) a
+// QuickApplyEntry/SavedJob row's attachment was picked from. Kept as an
+// explicit enum alongside two nullable FK columns (resumeId/uploadedResumeId
+// — exactly one set at a time, enforced at the application layer, not a DB
+// CHECK constraint) rather than collapsing to a single polymorphic id column,
+// so both sides keep a real foreign key / cascade behavior instead of one of
+// them being an unenforced loose UUID string.
+enum ResumeSourceType {
+  builder
+  uploaded
+}
+
+// Which exact template (see lib/ai/buildColdApplicationPrompt.ts /
+// buildReferralRequestPrompt.ts) the generated email followed.
+// referral_request only ever actually applies when jobId is also set —
+// generateQuickApplyEmail falls back to cold_application otherwise, but the
+// user's selected toggle position is still persisted as-is so re-opening a
+// draft shows what they had chosen.
+enum QuickApplyMessageType {
+  cold_application
+  referral_request
+}
+
 // One row per Quick Apply attempt (components/outreach/QuickApplyModal.tsx).
 // A single row is reused across generate -> regenerate -> send for the same
 // modal session (the frontend holds the id after the first successful
 // generate/draft-save) rather than one row per click, so regenerating
 // doesn't pile up duplicates.
 model QuickApplyEntry {
-  id               String           @id @default(uuid()) @db.Uuid
-  userId           String           @map("user_id")
-  recipientEmail   String           @map("recipient_email")
-  companyName      String           @map("company_name")
-  roleTitle        String           @map("role_title")
-  pastedContext    String?          @map("pasted_context")
-  resumeId         String           @map("resume_id") @db.Uuid
-  generatedSubject String?          @map("generated_subject")
-  generatedBody    String?          @map("generated_body")
-  status           QuickApplyStatus @default(draft)
-  gmailMessageId   String?          @map("gmail_message_id")
+  id               String                @id @default(uuid()) @db.Uuid
+  userId           String                @map("user_id")
+  recipientEmail   String                @map("recipient_email")
+  companyName      String                @map("company_name")
+  roleTitle        String                @map("role_title")
+  pastedContext    String?               @map("pasted_context")
+  messageType      QuickApplyMessageType @default(cold_application) @map("message_type")
+  // Extracted from pastedContext (see buildQuickApplyExtractPrompt.ts) or
+  // typed in manually — unlocks the Referral Request template when set.
+  jobId            String?               @map("job_id")
+  // Exactly one of resumeId / uploadedResumeId is set, per resumeSourceType.
+  resumeSourceType ResumeSourceType      @default(builder) @map("resume_source_type")
+  resumeId         String?               @map("resume_id") @db.Uuid
+  uploadedResumeId String?               @map("uploaded_resume_id") @db.Uuid
+  generatedSubject String?               @map("generated_subject")
+  generatedBody    String?               @map("generated_body")
+  status           QuickApplyStatus      @default(draft)
+  gmailMessageId   String?               @map("gmail_message_id")
   // Not in the original spec — added so a "failed" row can carry *why* it
   // failed (expired token / rate limit / invalid recipient / ...) for the
   // frontend to show something more useful than a generic error.
-  errorMessage     String?          @map("error_message")
-  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
-  sentAt           DateTime?        @map("sent_at") @db.Timestamptz(6)
-  resume           Resume           @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  errorMessage     String?               @map("error_message")
+  createdAt        DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
+  sentAt           DateTime?             @map("sent_at") @db.Timestamptz(6)
+  resume           Resume?               @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  uploadedResume   UploadedResume?       @relation(fields: [uploadedResumeId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("quick_apply_entries")
+}
+
+// A raw, unparsed PDF a user uploaded as an alternative to a ResumeForge-
+// built Resume (see "Resume to Attach" in QuickApplyModal/GenerateEmailPanel)
+// — no structured JSON behind it, just a stored file. Kept as its own model
+// rather than a nullable-data row on Resume since the two have almost
+// nothing in common (no template, no builder form, nothing to render/edit).
+model UploadedResume {
+  id                String            @id @default(uuid()) @db.Uuid
+  userId            String            @map("user_id")
+  fileName          String            @map("file_name")
+  fileUrl           String            @map("file_url")
+  fileSizeBytes     Int               @map("file_size_bytes")
+  uploadedAt        DateTime          @default(now()) @map("uploaded_at") @db.Timestamptz(6)
+  quickApplyEntries QuickApplyEntry[]
+  savedJobs         SavedJob[]
+
+  @@index([userId])
+  @@map("uploaded_resumes")
 }
 
 enum JobSource {
@@ -271,9 +322,12 @@ enum OutreachStatus {
   generated
   approved
   scheduled
+  generating
+  sending
   sent
   replied
   bounced
+  failed
 }
 
 model SavedJob {
@@ -302,7 +356,44 @@ model SavedJob {
   scheduledSendTime DateTime?       @map("scheduled_send_time") @db.Timestamptz(6)
   lastActivityAt    DateTime?       @map("last_activity_at") @db.Timestamptz(6)
 
+  // Schedule Outreach fields — resumeId is pinned at schedule time (the user's
+  // most-recently-updated resume) so the cron sender uses the same resume it
+  // was scheduled against, even if the user edits/creates other resumes later.
+  // resumeSourceType/uploadedResumeId mirror QuickApplyEntry's fields (see
+  // ResumeSourceType above) so the cron sender (app/api/cron/process-outreach-
+  // queue) can branch the same way — no UI currently sets uploadedResumeId
+  // here (the "Approve & Schedule" flow only ever auto-pins a builder
+  // Resume), but the cron sender still honors it if one is ever set.
+  resumeSourceType ResumeSourceType @default(builder) @map("resume_source_type")
+  resumeId         String?          @map("resume_id") @db.Uuid
+  uploadedResumeId String?          @map("uploaded_resume_id") @db.Uuid
+  generatedSubject String?          @map("generated_subject")
+  generatedBody    String?          @map("generated_body")
+  sendAttempts     Int              @default(0) @map("send_attempts")
+  lastError        String?          @map("last_error")
+  sentAt           DateTime?        @map("sent_at") @db.Timestamptz(6)
+  gmailMessageIds  String[]         @default([]) @map("gmail_message_ids")
+
+  resume         Resume?         @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+  uploadedResume UploadedResume? @relation(fields: [uploadedResumeId], references: [id], onDelete: SetNull)
+
   @@unique([userId, externalJobId])
   @@index([userId])
+  @@index([outreachStatus, scheduledSendTime])
   @@map("saved_jobs")
+}
+
+model UserOutreachSettings {
+  userId           String   @id @map("user_id")
+  dailySendLimit   Int      @default(15) @map("daily_send_limit")
+  sendWindowStart  String   @default("09:00") @map("send_window_start")
+  sendWindowEnd    String   @default("18:00") @map("send_window_end")
+  weekdaysOnly     Boolean  @default(true) @map("weekdays_only")
+  jitterEnabled    Boolean  @default(true) @map("jitter_enabled")
+  jitterMinSeconds Int      @default(30) @map("jitter_min_seconds")
+  jitterMaxSeconds Int      @default(300) @map("jitter_max_seconds")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("user_outreach_settings")
 }

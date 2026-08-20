@@ -1,7 +1,7 @@
 ### `CONTRIBUTING.md`
 
 ```markdown
-# Contributing to ResumeForge AI
+# Contributing to Rezlo
 
 Thank you for your interest in contributing! 🎉
 

@@ -76,7 +76,7 @@ export function DashboardSidebar() {
           <div className="h-8 w-8 bg-linear-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">RF</span>
           </div>
-          <div className="font-bold text-gray-900">ResumeForge</div>
+          <div className="font-bold text-gray-900">Rezlo</div>
         </div>
 
         {/* Navigation */}

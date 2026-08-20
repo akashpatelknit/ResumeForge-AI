@@ -44,7 +44,7 @@ export default function Navbar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-brand-purple via-brand-blue to-brand-pink">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
-          ResumeForge AI
+          Rezlo
         </Link>
 
         <nav className="hidden items-center gap-7 sm:flex">

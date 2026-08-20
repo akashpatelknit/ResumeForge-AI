@@ -2,13 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { getResume } from "@/lib/db/resumes";
+import { getUploadedResume } from "@/lib/db/uploadedResumes";
 
 // Not called out as one of the numbered routes in the original spec, but
 // required by it ("'Save as Draft' persists the QuickApplyEntry with
 // status 'draft'") — there was no other endpoint that could do this
 // persistence. Deliberately skips the format/gibberish validation the
 // generate endpoint applies: a draft is expected to hold incomplete or
-// not-yet-checked fields.
+// not-yet-checked fields. Unlike generate/route.ts, this never extracts
+// text from an uploaded PDF — a draft doesn't call the AI, so there's
+// nothing to feed it.
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
@@ -28,17 +31,36 @@ export async function POST(request: NextRequest) {
   const companyName = typeof b.companyName === "string" ? b.companyName.trim() : "";
   const roleTitle = typeof b.roleTitle === "string" ? b.roleTitle.trim() : "";
   const pastedContext = typeof b.pastedContext === "string" ? b.pastedContext.trim() : "";
+  const resumeSourceType: "builder" | "uploaded" = b.resumeSourceType === "uploaded" ? "uploaded" : "builder";
   const resumeId = typeof b.resumeId === "string" ? b.resumeId.trim() : "";
+  const uploadedResumeId = typeof b.uploadedResumeId === "string" ? b.uploadedResumeId.trim() : "";
+  const messageType: "cold_application" | "referral_request" =
+    b.messageType === "referral_request" ? "referral_request" : "cold_application";
+  const jobId = typeof b.jobId === "string" ? b.jobId.trim() : "";
   const subject = typeof b.subject === "string" ? b.subject.trim() : undefined;
   const emailBody = typeof b.body === "string" ? b.body.trim() : undefined;
 
-  if (!resumeId) {
-    return NextResponse.json({ error: "resumeId is required" }, { status: 400 });
-  }
+  let resolvedResumeId: string | null = null;
+  let resolvedUploadedResumeId: string | null = null;
 
-  const resumeRow = await getResume(resumeId, userId);
-  if (!resumeRow) {
-    return NextResponse.json({ error: "Resume not found" }, { status: 404 });
+  if (resumeSourceType === "uploaded") {
+    if (!uploadedResumeId) {
+      return NextResponse.json({ error: "uploadedResumeId is required" }, { status: 400 });
+    }
+    const uploaded = await getUploadedResume(uploadedResumeId, userId);
+    if (!uploaded) {
+      return NextResponse.json({ error: "Uploaded resume not found" }, { status: 404 });
+    }
+    resolvedUploadedResumeId = uploaded.id;
+  } else {
+    if (!resumeId) {
+      return NextResponse.json({ error: "resumeId is required" }, { status: 400 });
+    }
+    const resumeRow = await getResume(resumeId, userId);
+    if (!resumeRow) {
+      return NextResponse.json({ error: "Resume not found" }, { status: 404 });
+    }
+    resolvedResumeId = resumeRow.id;
   }
 
   if (entryId) {
@@ -54,7 +76,11 @@ export async function POST(request: NextRequest) {
       companyName,
       roleTitle,
       pastedContext: pastedContext || null,
-      resumeId,
+      messageType,
+      jobId: jobId || null,
+      resumeSourceType,
+      resumeId: resolvedResumeId,
+      uploadedResumeId: resolvedUploadedResumeId,
       status: "draft" as const,
       ...(subject !== undefined ? { generatedSubject: subject } : {}),
       ...(emailBody !== undefined ? { generatedBody: emailBody } : {}),

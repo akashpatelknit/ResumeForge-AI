@@ -1,17 +1,22 @@
-import Navbar from "@/components/marketing/Navbar";
-import TemplateShowcase from "@/components/marketing/TemplateShowcase";
-import FinalCTA from "@/components/marketing/CTA";
-import Footer from "@/components/marketing/Footer";
+import type { Metadata } from "next";
+import TemplatesPageClient from "@/components/marketing/TemplatesPageClient";
+import { siteConfig } from "@/config/site";
+
+export const metadata: Metadata = {
+  title: { absolute: "Resume Templates — ATS-Optimized Designs | Rezlo" },
+  description:
+    "Browse professionally designed, ATS-optimized resume templates. Pick a style and start building with Rezlo's AI-powered resume builder — free to use.",
+  alternates: {
+    canonical: `${siteConfig.url}/templates`,
+  },
+  openGraph: {
+    url: `${siteConfig.url}/templates`,
+    title: "Resume Templates — ATS-Optimized Designs | Rezlo",
+    description:
+      "Browse professionally designed, ATS-optimized resume templates. Pick a style and start building with Rezlo's AI-powered resume builder — free to use.",
+  },
+};
 
 export default function TemplatesPage() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <TemplateShowcase />
-        <FinalCTA />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <TemplatesPageClient />;
 }

@@ -3,39 +3,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
 import "./index.css";
-
-// Site configuration
-const siteConfig = {
-  name: "ResumeForge AI",
-  title: "AI Resume Builder - Create ATS-Optimized Resumes in Minutes",
-  description:
-    "Build professional, ATS-optimized resumes with AI assistance. Get hired faster with intelligent job matching, real-time PDF preview, and expert templates. Free resume builder trusted by 10,000+ job seekers.",
-  url: "https://resume-forge-ai-lilac.vercel.app", // Replace with your actual domain
-  ogImage: "https://resume-forge-ai-lilac.vercel.app/images/og-image.png", // Replace with your OG image
-  links: {
-    twitter: "https://twitter.com/resumeforgeai",
-    github: "https://github.com/yourusername/resume-builder",
-  },
-  keywords: [
-    "AI resume builder",
-    "ATS resume",
-    "professional resume",
-    "CV maker",
-    "resume templates",
-    "job application",
-    "resume optimizer",
-    "cover letter generator",
-    "resume ATS checker",
-    "free resume builder",
-    "AI job matching",
-    "career tools",
-    "resume formatting",
-    "professional CV",
-    "resume download PDF",
-  ],
-};
 
 export const metadata: Metadata = {
   // Basic metadata
@@ -48,14 +18,9 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
 
   // Author and creator
-  authors: [
-    {
-      name: "ResumeForge AI Team",
-      url: siteConfig.url,
-    },
-  ],
-  creator: "ResumeForge AI",
-  publisher: "ResumeForge AI",
+  authors: siteConfig.authors,
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
 
   // Open Graph metadata (Facebook, LinkedIn, etc.)
   openGraph: {
@@ -70,7 +35,7 @@ export const metadata: Metadata = {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "ResumeForge AI - AI-Powered Resume Builder",
+        alt: `${siteConfig.name} - AI-Powered Resume Builder`,
       },
     ],
   },
@@ -81,28 +46,9 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@resumeforgeai", // Replace with your Twitter handle
-    site: "@resumeforgeai",
+    creator: "@rezlo",
+    site: "@rezlo",
   },
-
-  // Icons and manifest
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        rel: "mask-icon",
-        url: "/safari-pinned-tab.svg",
-      },
-    ],
-  },
-  manifest: "/site.webmanifest",
 
   // Robots and indexing
   robots: {
@@ -117,24 +63,10 @@ export const metadata: Metadata = {
     },
   },
 
-  // Verification for search engines
-  verification: {
-    google: "your-google-verification-code", // Add your Google Search Console verification
-    yandex: "your-yandex-verification-code", // Optional
-    // bing: "your-bing-verification-code", // Optional
-  },
-
-  // Alternate languages (if you support multiple languages)
   alternates: {
     canonical: siteConfig.url,
-    languages: {
-      "en-US": `${siteConfig.url}/en-US`,
-      // Add more languages as needed
-      // 'es-ES': `${siteConfig.url}/es-ES`,
-    },
   },
 
-  // Category
   category: "technology",
 
   // App-specific metadata
@@ -148,9 +80,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
 
-  // Additional metadata
   other: {
-    "msapplication-TileColor": "#8b5cf6",
+    "msapplication-TileColor": "#7C3AED",
     "theme-color": "#ffffff",
   },
 };
@@ -164,46 +95,12 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <head suppressHydrationWarning>
-          {/* Additional SEO tags */}
-          <link rel="canonical" href={siteConfig.url} />
-
           {/* Preconnect to external domains for performance */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
             href="https://fonts.gstatic.com"
             crossOrigin="anonymous"
-          />
-
-          {/* Schema.org structured data */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "WebApplication",
-                name: siteConfig.name,
-                description: siteConfig.description,
-                url: siteConfig.url,
-                applicationCategory: "BusinessApplication",
-                operatingSystem: "Any",
-                offers: {
-                  "@type": "Offer",
-                  price: "0",
-                  priceCurrency: "USD",
-                },
-                aggregateRating: {
-                  "@type": "AggregateRating",
-                  ratingValue: "4.9",
-                  ratingCount: "10000",
-                },
-                author: {
-                  "@type": "Organization",
-                  name: siteConfig.name,
-                  url: siteConfig.url,
-                },
-              }),
-            }}
           />
         </head>
         <body

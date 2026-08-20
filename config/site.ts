@@ -1,16 +1,14 @@
 export const siteConfig = {
-  name: "ResumeForge AI",
+  name: "Rezlo",
   title: "AI Resume Builder - Create ATS-Optimized Resumes in Minutes",
   description:
     "Build professional, ATS-optimized resumes with AI assistance. Get hired faster with intelligent job matching, real-time PDF preview, and expert templates. Free resume builder trusted by 10,000+ job seekers.",
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://resume-forge-ai-lilac.vercel.app",
-  ogImage: `${process.env.NEXT_PUBLIC_SITE_URL || "https://resume-forge-ai-lilac.vercel.app"}/og-image.jpg`,
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app",
+  ogImage: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app"}/opengraph-image`,
   links: {
-    twitter: "https://twitter.com/resumeforgeai",
-    github: "https://github.com/yourusername/resume-builder",
-    linkedin: "https://linkedin.com/company/resumeforge",
+    twitter: "https://twitter.com/rezlo",
+    github: "https://github.com/akashpatelknit/Rezlo",
+    linkedin: "https://linkedin.com/company/rezlo",
   },
   keywords: [
     "AI resume builder",
@@ -31,8 +29,8 @@ export const siteConfig = {
   ],
   authors: [
     {
-      name: "Your Name",
-      url: "https://yourwebsite.com",
+      name: "Rezlo Team",
+      url: process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app",
     },
   ],
 };

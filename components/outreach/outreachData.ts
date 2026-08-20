@@ -9,9 +9,12 @@ export type OutreachStatus =
   | "generated"
   | "approved"
   | "scheduled"
+  | "generating"
+  | "sending"
   | "sent"
   | "replied"
-  | "bounced";
+  | "bounced"
+  | "failed";
 
 export interface OutreachEntry {
   id: string;
@@ -41,9 +44,12 @@ export const STATUS_LABELS: Record<OutreachStatus, string> = {
   generated: "Generated",
   approved: "Approved",
   scheduled: "Scheduled",
+  generating: "Generating...",
+  sending: "Sending...",
   sent: "Sent",
   replied: "Replied",
   bounced: "Bounced",
+  failed: "Failed",
 };
 
 const COMPANIES: { name: string; role: string }[] = [
@@ -213,12 +219,6 @@ function buildEntries(): OutreachEntry[] {
 }
 
 export const MOCK_OUTREACH_ENTRIES: OutreachEntry[] = buildEntries();
-
-export const MOCK_RESUMES = [
-  { id: "resume-1", name: "Akash Patel – Software Engineer Resume.pdf", aiSuggested: true },
-  { id: "resume-2", name: "Akash Patel – Full Stack Resume.pdf", aiSuggested: false },
-  { id: "resume-3", name: "Akash Patel – Backend Focus Resume.pdf", aiSuggested: false },
-];
 
 export const MOCK_JD_SUMMARY =
   "This role focuses on building and scaling backend services for Google's core infrastructure. Candidates should have 2+ years of experience with distributed systems, strong proficiency in at least one of Java/Go/C++, and a track record of shipping high-availability services. The team values ownership, clear technical communication, and a bias toward simple, maintainable solutions.";

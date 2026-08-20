@@ -38,7 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CompanyLogo, OutreachTypeBadge } from "@/components/outreach/OutreachBadges";
-import type { OutreachType } from "@/components/outreach/outreachData";
+import type { OutreachEntry, OutreachType } from "@/components/outreach/outreachData";
 
 const notWiredYet = () => toast.info("Not wired up yet — coming in a follow-up pass.");
 
@@ -119,22 +119,26 @@ const TYPE_RULES: {
   { type: "quickApply", description: "One-off applications (manual send recommended).", icon: Zap, defaultLimit: null },
 ];
 
-interface QueueRow {
-  company: string;
-  role: string;
-  outreachType: OutreachType;
-  email: string;
-  time: string;
-  relative: string;
+function formatQueueTime(iso: string): string {
+  const date = new Date(iso);
+  const now = new Date();
+  const isToday = date.toDateString() === now.toDateString();
+  const time = date.toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
+  if (isToday) return `Today, ${time}`;
+  return date.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-const QUEUE_ROWS: QueueRow[] = [
-  { company: "Google", role: "Software Engineer II", outreachType: "cold", email: "sarah.johnson@google.com", time: "Today, 10:24 AM", relative: "in 8 min" },
-  { company: "Microsoft", role: "Frontend Developer", outreachType: "general", email: "recruiter@microsoft.com", time: "Today, 10:37 AM", relative: "in 21 min" },
-  { company: "Airbnb", role: "Full Stack Engineer", outreachType: "referral", email: "talent@airbnb.com", time: "Today, 10:58 AM", relative: "in 42 min" },
-  { company: "Stripe", role: "Backend Engineer", outreachType: "cold", email: "careers@stripe.com", time: "Today, 11:21 AM", relative: "in 1h 5m" },
-  { company: "Notion", role: "Product Engineer", outreachType: "referral", email: "jobs@notion.so", time: "Today, 11:46 AM", relative: "in 1h 30m" },
-];
+function formatRelative(iso: string): string {
+  const diffMs = new Date(iso).getTime() - Date.now();
+  if (diffMs <= 0) return "due now";
+  const mins = Math.round(diffMs / 60000);
+  if (mins < 60) return `in ${mins} min`;
+  const hours = Math.floor(mins / 60);
+  const remMins = mins % 60;
+  if (hours < 24) return remMins > 0 ? `in ${hours}h ${remMins}m` : `in ${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `in ${days}d`;
+}
 
 const SWITCH_PURPLE =
   "data-[state=checked]:bg-brand-purple data-[state=unchecked]:bg-gray-200";
@@ -185,12 +189,100 @@ export default function SendSchedulerPage() {
   const [endTime, setEndTime] = useState("06:00 PM");
   const [weekdaysOnly, setWeekdaysOnly] = useState(true);
   const [jitterEnabled, setJitterEnabled] = useState(true);
+  const [jitterMinSeconds, setJitterMinSeconds] = useState(30);
+  const [jitterMaxSeconds, setJitterMaxSeconds] = useState(300);
   const [typeLimits, setTypeLimits] = useState<Record<OutreachType, number | null>>(
     Object.fromEntries(TYPE_RULES.map((r) => [r.type, r.defaultLimit])) as Record<OutreachType, number | null>,
   );
+  const [settingsLoading, setSettingsLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const [queueRows, setQueueRows] = useState<OutreachEntry[]>([]);
+  const [queueLoading, setQueueLoading] = useState(true);
 
   const [gmail, setGmail] = useState<GmailStatusState>({ status: "loading" });
   const [isDisconnecting, setIsDisconnecting] = useState(false);
+
+  const fetchSettings = useCallback(async () => {
+    setSettingsLoading(true);
+    try {
+      const res = await fetch("/api/outreach/settings");
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to load your scheduler settings.");
+        return;
+      }
+      setDailyLimit(data.dailySendLimit);
+      setStartTime(data.sendWindowStart);
+      setEndTime(data.sendWindowEnd);
+      setWeekdaysOnly(data.weekdaysOnly);
+      setJitterEnabled(data.jitterEnabled);
+      setJitterMinSeconds(data.jitterMinSeconds);
+      setJitterMaxSeconds(data.jitterMaxSeconds);
+    } catch (error) {
+      console.error("Failed to load outreach settings:", error);
+      toast.error("Network error loading your scheduler settings.");
+    } finally {
+      setSettingsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchSettings();
+  }, [fetchSettings]);
+
+  const fetchQueuePreview = useCallback(async () => {
+    setQueueLoading(true);
+    try {
+      const res = await fetch("/api/outreach/queue");
+      const data = await res.json();
+      if (!res.ok) return;
+      const scheduled = (data.entries as OutreachEntry[])
+        .filter((e) => e.status === "scheduled" && e.scheduledSendTime)
+        .sort((a, b) => new Date(a.scheduledSendTime!).getTime() - new Date(b.scheduledSendTime!).getTime())
+        .slice(0, 8);
+      setQueueRows(scheduled);
+    } catch (error) {
+      console.error("Failed to load send queue preview:", error);
+    } finally {
+      setQueueLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchQueuePreview();
+  }, [fetchQueuePreview]);
+
+  async function handleSaveSettings() {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/outreach/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dailySendLimit: dailyLimit,
+          sendWindowStart: startTime,
+          sendWindowEnd: endTime,
+          weekdaysOnly,
+          jitterEnabled,
+          jitterMinSeconds,
+          jitterMaxSeconds,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to save settings.");
+        return;
+      }
+      toast.success("Settings saved.");
+      await fetchQueuePreview();
+    } catch (error) {
+      console.error("Failed to save outreach settings:", error);
+      toast.error("Network error — please try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   // Shared by the Quick Apply modal's own Gmail check (components/outreach/
   // QuickApplyModal.tsx) — both read the same GET /api/gmail/status, so
@@ -364,9 +456,29 @@ export default function SendSchedulerPage() {
           <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5">
             <Clock className="h-4 w-4 shrink-0 text-gray-400" />
             <div>
-              <p className="text-xs text-gray-500">Typical delay</p>
-              <p className="text-sm font-bold text-gray-900">30s – 5m</p>
-              <p className="text-[11px] text-gray-400">Between each email</p>
+              <p className="mb-1 text-xs text-gray-500">Delay range (seconds)</p>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  value={jitterMinSeconds}
+                  onChange={(e) => setJitterMinSeconds(Math.max(0, Number(e.target.value) || 0))}
+                  disabled={!jitterEnabled}
+                  className="h-8 w-20 rounded-lg border border-gray-200 bg-white px-2 text-sm font-semibold text-gray-900 outline-none focus:border-purple-300 focus:ring-2 focus:ring-purple-100 disabled:opacity-50"
+                  aria-label="Minimum jitter delay in seconds"
+                />
+                <span className="text-gray-300">–</span>
+                <input
+                  type="number"
+                  min={jitterMinSeconds}
+                  value={jitterMaxSeconds}
+                  onChange={(e) => setJitterMaxSeconds(Math.max(jitterMinSeconds, Number(e.target.value) || jitterMinSeconds))}
+                  disabled={!jitterEnabled}
+                  className="h-8 w-20 rounded-lg border border-gray-200 bg-white px-2 text-sm font-semibold text-gray-900 outline-none focus:border-purple-300 focus:ring-2 focus:ring-purple-100 disabled:opacity-50"
+                  aria-label="Maximum jitter delay in seconds"
+                />
+              </div>
+              <p className="mt-1 text-[11px] text-gray-400">Between each email</p>
             </div>
           </div>
         </div>
@@ -565,65 +677,76 @@ export default function SendSchedulerPage() {
           </Link>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
-                <th className="py-2.5 pr-4 font-medium">Company</th>
-                <th className="py-2.5 pr-4 font-medium">Role</th>
-                <th className="py-2.5 pr-4 font-medium">Outreach Type</th>
-                <th className="py-2.5 pr-4 font-medium">Recipient / Email</th>
-                <th className="py-2.5 pr-4 font-medium">Estimated Send Time</th>
-                <th className="w-10 py-2.5" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {QUEUE_ROWS.map((row) => (
-                <tr key={row.company} className="hover:bg-gray-50/60">
-                  <td className="py-3.5 pr-4">
-                    <div className="flex items-center gap-2.5">
-                      <CompanyLogo company={row.company} />
-                      <span className="font-medium text-gray-900">{row.company}</span>
-                    </div>
-                  </td>
-                  <td className="py-3.5 pr-4 text-gray-600">{row.role}</td>
-                  <td className="py-3.5 pr-4">
-                    <OutreachTypeBadge type={row.outreachType} />
-                  </td>
-                  <td className="py-3.5 pr-4 text-gray-600">{row.email}</td>
-                  <td className="py-3.5 pr-4">
-                    <p className="font-semibold text-gray-900">{row.time}</p>
-                    <p className="text-xs text-gray-400">{row.relative}</p>
-                  </td>
-                  <td className="py-3.5 text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button
-                          type="button"
-                          className="cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                          aria-label={`Actions for ${row.company}`}
-                        >
-                          <MoreVertical className="h-4 w-4" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
-                          Send Now
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
-                          Reschedule
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
-                          Remove from Queue
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </td>
+        {queueLoading ? (
+          <div className="flex items-center justify-center gap-2 py-10 text-sm text-gray-400">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Loading queue...
+          </div>
+        ) : queueRows.length === 0 ? (
+          <p className="py-10 text-center text-sm text-gray-400">
+            Nothing scheduled yet. Approve &amp; Schedule jobs from the Cold Outreach dashboard.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
+                  <th className="py-2.5 pr-4 font-medium">Company</th>
+                  <th className="py-2.5 pr-4 font-medium">Role</th>
+                  <th className="py-2.5 pr-4 font-medium">Outreach Type</th>
+                  <th className="py-2.5 pr-4 font-medium">Recipient / Email</th>
+                  <th className="py-2.5 pr-4 font-medium">Estimated Send Time</th>
+                  <th className="w-10 py-2.5" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {queueRows.map((row) => (
+                  <tr key={row.id} className="hover:bg-gray-50/60">
+                    <td className="py-3.5 pr-4">
+                      <div className="flex items-center gap-2.5">
+                        <CompanyLogo company={row.company} />
+                        <span className="font-medium text-gray-900">{row.company}</span>
+                      </div>
+                    </td>
+                    <td className="py-3.5 pr-4 text-gray-600">{row.role}</td>
+                    <td className="py-3.5 pr-4">
+                      <OutreachTypeBadge type={row.outreachType} />
+                    </td>
+                    <td className="py-3.5 pr-4 text-gray-600">{row.emails[0] ?? "—"}</td>
+                    <td className="py-3.5 pr-4">
+                      <p className="font-semibold text-gray-900">{formatQueueTime(row.scheduledSendTime!)}</p>
+                      <p className="text-xs text-gray-400">{formatRelative(row.scheduledSendTime!)}</p>
+                    </td>
+                    <td className="py-3.5 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button
+                            type="button"
+                            className="cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                            aria-label={`Actions for ${row.company}`}
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                            Send Now
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                            Reschedule
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
+                            Remove from Queue
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Footer bar */}
@@ -639,10 +762,11 @@ export default function SendSchedulerPage() {
         </div>
         <button
           type="button"
-          onClick={() => toast.success("Settings saved (mock) — not wired to a backend yet.")}
-          className="inline-flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-r from-purple-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-200 hover:shadow-xl sm:w-auto"
+          onClick={handleSaveSettings}
+          disabled={saving || settingsLoading}
+          className="inline-flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-r from-purple-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-200 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
-          <CalendarCheck className="h-4 w-4" />
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
           Save Settings
         </button>
       </div>

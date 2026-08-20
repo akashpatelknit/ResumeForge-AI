@@ -36,7 +36,7 @@ const Hero = () => (
         </h1>
 
         <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-600 md:text-xl leading-relaxed">
-          Stop getting rejected by ATS systems. ResumeForge AI analyzes job
+          Stop getting rejected by ATS systems. Rezlo analyzes job
           descriptions, optimizes your content, and generates stunning resumes
           that get you hired — in minutes, not hours.
         </p>
@@ -70,7 +70,7 @@ const Hero = () => (
               <div className="h-3 w-3 rounded-full bg-yellow-500" />
               <div className="h-3 w-3 rounded-full bg-green-500" />
               <span className="ml-3 text-xs text-gray-500">
-                resumeforge.ai/editor
+                rezlo.app/editor
               </span>
             </div>
             <div className="grid grid-cols-3 gap-4 p-6 bg-white">

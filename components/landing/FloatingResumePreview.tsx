@@ -132,7 +132,7 @@ export default function FloatingResumePreview() {
           </div>
           <div className="flex flex-1 items-center gap-2 rounded-md bg-gray-50 px-3 py-1.5 text-xs text-gray-500">
             <Lock className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate">app.resumeforge.ai/resume/preview</span>
+            <span className="truncate">app.rezlo.app/resume/preview</span>
           </div>
           <RefreshCw className="h-4 w-4 shrink-0 text-gray-400" />
         </div>

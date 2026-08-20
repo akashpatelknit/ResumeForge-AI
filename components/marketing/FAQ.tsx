@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "How is this different from other resume builders?",
-    a: "Unlike generic builders, ResumeForge AI uses artificial intelligence to tailor your resume for specific jobs, optimize for ATS systems, and enhance your bullet points — resulting in 3x more interviews on average.",
+    a: "Unlike generic builders, Rezlo uses artificial intelligence to tailor your resume for specific jobs, optimize for ATS systems, and enhance your bullet points — resulting in 3x more interviews on average.",
   },
 ];
 

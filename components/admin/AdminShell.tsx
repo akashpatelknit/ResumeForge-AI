@@ -42,7 +42,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
-// "AD" from "admin@resumeforge.ai" — first two letters of the local part,
+// "AD" from "admin@rezlo.app" — first two letters of the local part,
 // or the initials either side of a . _ - separator if there is one.
 function adminInitials(email: string) {
   const local = email.split("@")[0] ?? "";
@@ -95,7 +95,7 @@ export function AdminShell({ email, children }: { email: string; children: React
           {!collapsed && (
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-gray-900">Admin Panel</p>
-              <p className="truncate text-xs text-gray-500">ResumeForge AI</p>
+              <p className="truncate text-xs text-gray-500">Rezlo</p>
             </div>
           )}
         </div>
@@ -130,7 +130,7 @@ export function AdminShell({ email, children }: { email: string; children: React
             <Sparkles className="h-4 w-4 shrink-0 text-brand-purple" />
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-gray-700">ResumeForge AI</p>
+                <p className="truncate text-xs font-semibold text-gray-700">Rezlo</p>
                 <p className="truncate text-[11px] text-gray-400">v1.0.0</p>
               </div>
             )}

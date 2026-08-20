@@ -129,7 +129,7 @@ export default function JobDescriptionAnalyzer({
         placeholder={
           "Paste the job description here...\n\ne.g. We are looking for a Senior Software Engineer with 5+ years of experience in React, TypeScript, and Node.js..."
         }
-        className="flex-1 min-h-[220px] resize-none bg-gray-50 rounded-lg border border-gray-200 p-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent leading-relaxed"
+        className="flex-1 min-h-55 resize-none bg-gray-50 rounded-lg border border-gray-200 p-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent leading-relaxed"
       />
 
       {!resumeId && (

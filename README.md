@@ -1,6 +1,6 @@
-# ResumeForge AI
+# Rezlo
 
-ResumeForge AI is a job-search toolkit for job seekers: build a resume in a structured
+Rezlo is a job-search toolkit for job seekers: build a resume in a structured
 form editor with a live PDF preview, get AI help writing and tailoring the content, track
 applications on a Kanban board, discover live job postings, and send AI-drafted outreach
 emails — from your own Gmail account — to recruiters. It's a Next.js SaaS app with Clerk
@@ -115,8 +115,8 @@ dependency audit.
 ### 1. Install
 
 ```bash
-git clone https://github.com/akashpatelknit/ResumeForge-AI.git
-cd ResumeForge-AI
+git clone https://github.com/akashpatelknit/Rezlo.git
+cd Rezlo
 npm install
 ```
 

@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { prisma } from "@/lib/prisma";
 import { getResume } from "@/lib/db/resumes";
@@ -12,6 +12,7 @@ import {
   getValidAccessToken,
 } from "@/lib/gmail/getValidAccessToken";
 import { GmailSendError, sendQuickApplyEmail } from "@/lib/gmail/sendMail";
+import { buildResumeAttachmentFilename } from "@/lib/outreach/resumeAttachmentFilename";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
 
   const entry = await prisma.quickApplyEntry.findFirst({
     where: { id: quickApplyEntryId, userId },
+    include: { uploadedResume: true },
   });
   if (!entry) {
     return NextResponse.json({ error: "Quick Apply entry not found" }, { status: 404 });
@@ -82,28 +84,57 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const resumeRow = await getResume(entry.resumeId, userId);
-  if (!resumeRow) {
-    return NextResponse.json({ error: "The resume attached to this entry no longer exists." }, { status: 404 });
-  }
-  const resume = mapResumeFromDB(resumeRow);
-
+  // Branch on which "Resume to Attach" source was selected: a builder
+  // Resume still gets rendered to PDF on the fly (unchanged); an uploaded
+  // PDF is already a file — skip generation entirely and fetch it straight
+  // from blob storage.
   let pdfBuffer: Buffer;
-  try {
-    const TemplateComponent = getTemplateComponent(resume.templateId);
-    // Template components render a react-pdf <Document>, but their own
-    // prop type is just { resume } — renderToBuffer's signature wants
-    // ReactElement<DocumentProps> specifically (unlike the more permissive
-    // `pdf()` helper PDFPreview.tsx uses client-side), hence the cast.
-    pdfBuffer = await renderToBuffer(
-      createElement(TemplateComponent, { resume }) as Parameters<typeof renderToBuffer>[0],
-    );
-  } catch (error) {
-    console.error("Failed to render resume PDF for Quick Apply send:", error);
-    return NextResponse.json({ error: "Failed to generate the resume PDF for this send." }, { status: 500 });
-  }
+  let resumeFilename: string;
 
-  const resumeFilename = `${resume.personalInfo.fullName || "Resume"} - Resume.pdf`;
+  if (entry.resumeSourceType === "uploaded") {
+    if (!entry.uploadedResume) {
+      return NextResponse.json({ error: "The uploaded resume attached to this entry no longer exists." }, { status: 404 });
+    }
+    try {
+      const fileRes = await fetch(entry.uploadedResume.fileUrl);
+      if (!fileRes.ok) throw new Error(`Blob fetch failed with status ${fileRes.status}`);
+      pdfBuffer = Buffer.from(await fileRes.arrayBuffer());
+    } catch (error) {
+      console.error("Failed to fetch uploaded resume PDF for Quick Apply send:", error);
+      return NextResponse.json({ error: "Failed to fetch the uploaded resume for this send." }, { status: 500 });
+    }
+    // Renamed at send time to the account holder's name — the stored
+    // fileName keeps whatever the user originally uploaded (for display in
+    // the picker), but the email attachment shouldn't go out as
+    // "scan_final_v2.pdf".
+    const clerkUser = await currentUser();
+    resumeFilename = buildResumeAttachmentFilename(clerkUser?.firstName, clerkUser?.lastName);
+  } else {
+    if (!entry.resumeId) {
+      return NextResponse.json({ error: "No resume was attached to this entry." }, { status: 400 });
+    }
+    const resumeRow = await getResume(entry.resumeId, userId);
+    if (!resumeRow) {
+      return NextResponse.json({ error: "The resume attached to this entry no longer exists." }, { status: 404 });
+    }
+    const resume = mapResumeFromDB(resumeRow);
+
+    try {
+      const TemplateComponent = getTemplateComponent(resume.templateId);
+      // Template components render a react-pdf <Document>, but their own
+      // prop type is just { resume } — renderToBuffer's signature wants
+      // ReactElement<DocumentProps> specifically (unlike the more permissive
+      // `pdf()` helper PDFPreview.tsx uses client-side), hence the cast.
+      pdfBuffer = await renderToBuffer(
+        createElement(TemplateComponent, { resume }) as Parameters<typeof renderToBuffer>[0],
+      );
+    } catch (error) {
+      console.error("Failed to render resume PDF for Quick Apply send:", error);
+      return NextResponse.json({ error: "Failed to generate the resume PDF for this send." }, { status: 500 });
+    }
+
+    resumeFilename = `${resume.personalInfo.fullName || "Resume"} - Resume.pdf`;
+  }
 
   try {
     const { messageId } = await sendQuickApplyEmail({

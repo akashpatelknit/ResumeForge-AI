@@ -14,6 +14,7 @@ const isPublicRoute = createRouteMatcher([
   "/create", // No-resume multi-step wizard (auth only gated at the final save step)
   "/api/webhooks(.*)", // Webhook endpoints
   "/api/resume/parse", // Resume drop-and-parse — must work pre-login
+  "/api/cron(.*)", // Cron-triggered endpoints — guarded by CRON_SECRET, not Clerk (called by a scheduler, not a logged-in user)
   "/sso-callback", // Clerk OAuth redirect landing page — hit before a session exists
   "/account-suspended", // Shown to a blocked user in place of the app — must render without re-triggering auth.protect()
 ]);

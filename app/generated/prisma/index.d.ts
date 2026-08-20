@@ -79,10 +79,20 @@ export type GmailAccount = $Result.DefaultSelection<Prisma.$GmailAccountPayload>
  */
 export type QuickApplyEntry = $Result.DefaultSelection<Prisma.$QuickApplyEntryPayload>
 /**
+ * Model UploadedResume
+ * 
+ */
+export type UploadedResume = $Result.DefaultSelection<Prisma.$UploadedResumePayload>
+/**
  * Model SavedJob
  * 
  */
 export type SavedJob = $Result.DefaultSelection<Prisma.$SavedJobPayload>
+/**
+ * Model UserOutreachSettings
+ * 
+ */
+export type UserOutreachSettings = $Result.DefaultSelection<Prisma.$UserOutreachSettingsPayload>
 
 /**
  * Enums
@@ -108,6 +118,22 @@ export const QuickApplyStatus: {
 export type QuickApplyStatus = (typeof QuickApplyStatus)[keyof typeof QuickApplyStatus]
 
 
+export const ResumeSourceType: {
+  builder: 'builder',
+  uploaded: 'uploaded'
+};
+
+export type ResumeSourceType = (typeof ResumeSourceType)[keyof typeof ResumeSourceType]
+
+
+export const QuickApplyMessageType: {
+  cold_application: 'cold_application',
+  referral_request: 'referral_request'
+};
+
+export type QuickApplyMessageType = (typeof QuickApplyMessageType)[keyof typeof QuickApplyMessageType]
+
+
 export const JobSource: {
   greenhouse: 'greenhouse',
   manual: 'manual'
@@ -131,9 +157,12 @@ export const OutreachStatus: {
   generated: 'generated',
   approved: 'approved',
   scheduled: 'scheduled',
+  generating: 'generating',
+  sending: 'sending',
   sent: 'sent',
   replied: 'replied',
-  bounced: 'bounced'
+  bounced: 'bounced',
+  failed: 'failed'
 };
 
 export type OutreachStatus = (typeof OutreachStatus)[keyof typeof OutreachStatus]
@@ -147,6 +176,14 @@ export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
 export type QuickApplyStatus = $Enums.QuickApplyStatus
 
 export const QuickApplyStatus: typeof $Enums.QuickApplyStatus
+
+export type ResumeSourceType = $Enums.ResumeSourceType
+
+export const ResumeSourceType: typeof $Enums.ResumeSourceType
+
+export type QuickApplyMessageType = $Enums.QuickApplyMessageType
+
+export const QuickApplyMessageType: typeof $Enums.QuickApplyMessageType
 
 export type JobSource = $Enums.JobSource
 
@@ -408,6 +445,16 @@ export class PrismaClient<
   get quickApplyEntry(): Prisma.QuickApplyEntryDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.uploadedResume`: Exposes CRUD operations for the **UploadedResume** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UploadedResumes
+    * const uploadedResumes = await prisma.uploadedResume.findMany()
+    * ```
+    */
+  get uploadedResume(): Prisma.UploadedResumeDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.savedJob`: Exposes CRUD operations for the **SavedJob** model.
     * Example usage:
     * ```ts
@@ -416,6 +463,16 @@ export class PrismaClient<
     * ```
     */
   get savedJob(): Prisma.SavedJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userOutreachSettings`: Exposes CRUD operations for the **UserOutreachSettings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserOutreachSettings
+    * const userOutreachSettings = await prisma.userOutreachSettings.findMany()
+    * ```
+    */
+  get userOutreachSettings(): Prisma.UserOutreachSettingsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -863,7 +920,9 @@ export namespace Prisma {
     UsageCounter: 'UsageCounter',
     GmailAccount: 'GmailAccount',
     QuickApplyEntry: 'QuickApplyEntry',
-    SavedJob: 'SavedJob'
+    UploadedResume: 'UploadedResume',
+    SavedJob: 'SavedJob',
+    UserOutreachSettings: 'UserOutreachSettings'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -879,7 +938,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry" | "savedJob"
+      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry" | "uploadedResume" | "savedJob" | "userOutreachSettings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1845,6 +1904,80 @@ export namespace Prisma {
           }
         }
       }
+      UploadedResume: {
+        payload: Prisma.$UploadedResumePayload<ExtArgs>
+        fields: Prisma.UploadedResumeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UploadedResumeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UploadedResumeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          findFirst: {
+            args: Prisma.UploadedResumeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UploadedResumeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          findMany: {
+            args: Prisma.UploadedResumeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>[]
+          }
+          create: {
+            args: Prisma.UploadedResumeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          createMany: {
+            args: Prisma.UploadedResumeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UploadedResumeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>[]
+          }
+          delete: {
+            args: Prisma.UploadedResumeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          update: {
+            args: Prisma.UploadedResumeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          deleteMany: {
+            args: Prisma.UploadedResumeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UploadedResumeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UploadedResumeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>[]
+          }
+          upsert: {
+            args: Prisma.UploadedResumeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedResumePayload>
+          }
+          aggregate: {
+            args: Prisma.UploadedResumeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUploadedResume>
+          }
+          groupBy: {
+            args: Prisma.UploadedResumeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UploadedResumeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UploadedResumeCountArgs<ExtArgs>
+            result: $Utils.Optional<UploadedResumeCountAggregateOutputType> | number
+          }
+        }
+      }
       SavedJob: {
         payload: Prisma.$SavedJobPayload<ExtArgs>
         fields: Prisma.SavedJobFieldRefs
@@ -1916,6 +2049,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SavedJobCountArgs<ExtArgs>
             result: $Utils.Optional<SavedJobCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserOutreachSettings: {
+        payload: Prisma.$UserOutreachSettingsPayload<ExtArgs>
+        fields: Prisma.UserOutreachSettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserOutreachSettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserOutreachSettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.UserOutreachSettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserOutreachSettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          findMany: {
+            args: Prisma.UserOutreachSettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>[]
+          }
+          create: {
+            args: Prisma.UserOutreachSettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          createMany: {
+            args: Prisma.UserOutreachSettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserOutreachSettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.UserOutreachSettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          update: {
+            args: Prisma.UserOutreachSettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserOutreachSettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserOutreachSettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserOutreachSettingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserOutreachSettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserOutreachSettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.UserOutreachSettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserOutreachSettings>
+          }
+          groupBy: {
+            args: Prisma.UserOutreachSettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserOutreachSettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserOutreachSettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<UserOutreachSettingsCountAggregateOutputType> | number
           }
         }
       }
@@ -2040,7 +2247,9 @@ export namespace Prisma {
     usageCounter?: UsageCounterOmit
     gmailAccount?: GmailAccountOmit
     quickApplyEntry?: QuickApplyEntryOmit
+    uploadedResume?: UploadedResumeOmit
     savedJob?: SavedJobOmit
+    userOutreachSettings?: UserOutreachSettingsOmit
   }
 
   /* Types for Logging */
@@ -2124,12 +2333,14 @@ export namespace Prisma {
     coverLetters: number
     analytics: number
     quickApplyEntries: number
+    savedJobs: number
   }
 
   export type ResumeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coverLetters?: boolean | ResumeCountOutputTypeCountCoverLettersArgs
     analytics?: boolean | ResumeCountOutputTypeCountAnalyticsArgs
     quickApplyEntries?: boolean | ResumeCountOutputTypeCountQuickApplyEntriesArgs
+    savedJobs?: boolean | ResumeCountOutputTypeCountSavedJobsArgs
   }
 
   // Custom InputTypes
@@ -2162,6 +2373,53 @@ export namespace Prisma {
    */
   export type ResumeCountOutputTypeCountQuickApplyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: QuickApplyEntryWhereInput
+  }
+
+  /**
+   * ResumeCountOutputType without action
+   */
+  export type ResumeCountOutputTypeCountSavedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedJobWhereInput
+  }
+
+
+  /**
+   * Count Type UploadedResumeCountOutputType
+   */
+
+  export type UploadedResumeCountOutputType = {
+    quickApplyEntries: number
+    savedJobs: number
+  }
+
+  export type UploadedResumeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    quickApplyEntries?: boolean | UploadedResumeCountOutputTypeCountQuickApplyEntriesArgs
+    savedJobs?: boolean | UploadedResumeCountOutputTypeCountSavedJobsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UploadedResumeCountOutputType without action
+   */
+  export type UploadedResumeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResumeCountOutputType
+     */
+    select?: UploadedResumeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UploadedResumeCountOutputType without action
+   */
+  export type UploadedResumeCountOutputTypeCountQuickApplyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuickApplyEntryWhereInput
+  }
+
+  /**
+   * UploadedResumeCountOutputType without action
+   */
+  export type UploadedResumeCountOutputTypeCountSavedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedJobWhereInput
   }
 
 
@@ -2356,6 +2614,7 @@ export namespace Prisma {
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
     quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
+    savedJobs?: boolean | Resume$savedJobsArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resume"]>
 
@@ -2397,6 +2656,7 @@ export namespace Prisma {
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
     quickApplyEntries?: boolean | Resume$quickApplyEntriesArgs<ExtArgs>
+    savedJobs?: boolean | Resume$savedJobsArgs<ExtArgs>
     _count?: boolean | ResumeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ResumeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2408,6 +2668,7 @@ export namespace Prisma {
       coverLetters: Prisma.$CoverLetterPayload<ExtArgs>[]
       analytics: Prisma.$ResumeAnalyticsPayload<ExtArgs>[]
       quickApplyEntries: Prisma.$QuickApplyEntryPayload<ExtArgs>[]
+      savedJobs: Prisma.$SavedJobPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2815,6 +3076,7 @@ export namespace Prisma {
     coverLetters<T extends Resume$coverLettersArgs<ExtArgs> = {}>(args?: Subset<T, Resume$coverLettersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoverLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     analytics<T extends Resume$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$analyticsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResumeAnalyticsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quickApplyEntries<T extends Resume$quickApplyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Resume$quickApplyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    savedJobs<T extends Resume$savedJobsArgs<ExtArgs> = {}>(args?: Subset<T, Resume$savedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3309,6 +3571,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * Resume.savedJobs
+   */
+  export type Resume$savedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    where?: SavedJobWhereInput
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    cursor?: SavedJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
   }
 
   /**
@@ -14789,7 +15075,11 @@ export namespace Prisma {
     companyName: string | null
     roleTitle: string | null
     pastedContext: string | null
+    messageType: $Enums.QuickApplyMessageType | null
+    jobId: string | null
+    resumeSourceType: $Enums.ResumeSourceType | null
     resumeId: string | null
+    uploadedResumeId: string | null
     generatedSubject: string | null
     generatedBody: string | null
     status: $Enums.QuickApplyStatus | null
@@ -14807,7 +15097,11 @@ export namespace Prisma {
     companyName: string | null
     roleTitle: string | null
     pastedContext: string | null
+    messageType: $Enums.QuickApplyMessageType | null
+    jobId: string | null
+    resumeSourceType: $Enums.ResumeSourceType | null
     resumeId: string | null
+    uploadedResumeId: string | null
     generatedSubject: string | null
     generatedBody: string | null
     status: $Enums.QuickApplyStatus | null
@@ -14825,7 +15119,11 @@ export namespace Prisma {
     companyName: number
     roleTitle: number
     pastedContext: number
+    messageType: number
+    jobId: number
+    resumeSourceType: number
     resumeId: number
+    uploadedResumeId: number
     generatedSubject: number
     generatedBody: number
     status: number
@@ -14845,7 +15143,11 @@ export namespace Prisma {
     companyName?: true
     roleTitle?: true
     pastedContext?: true
+    messageType?: true
+    jobId?: true
+    resumeSourceType?: true
     resumeId?: true
+    uploadedResumeId?: true
     generatedSubject?: true
     generatedBody?: true
     status?: true
@@ -14863,7 +15165,11 @@ export namespace Prisma {
     companyName?: true
     roleTitle?: true
     pastedContext?: true
+    messageType?: true
+    jobId?: true
+    resumeSourceType?: true
     resumeId?: true
+    uploadedResumeId?: true
     generatedSubject?: true
     generatedBody?: true
     status?: true
@@ -14881,7 +15187,11 @@ export namespace Prisma {
     companyName?: true
     roleTitle?: true
     pastedContext?: true
+    messageType?: true
+    jobId?: true
+    resumeSourceType?: true
     resumeId?: true
+    uploadedResumeId?: true
     generatedSubject?: true
     generatedBody?: true
     status?: true
@@ -14972,7 +15282,11 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext: string | null
-    resumeId: string
+    messageType: $Enums.QuickApplyMessageType
+    jobId: string | null
+    resumeSourceType: $Enums.ResumeSourceType
+    resumeId: string | null
+    uploadedResumeId: string | null
     generatedSubject: string | null
     generatedBody: string | null
     status: $Enums.QuickApplyStatus
@@ -15007,7 +15321,11 @@ export namespace Prisma {
     companyName?: boolean
     roleTitle?: boolean
     pastedContext?: boolean
+    messageType?: boolean
+    jobId?: boolean
+    resumeSourceType?: boolean
     resumeId?: boolean
+    uploadedResumeId?: boolean
     generatedSubject?: boolean
     generatedBody?: boolean
     status?: boolean
@@ -15016,7 +15334,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sentAt?: boolean
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["quickApplyEntry"]>
 
   export type QuickApplyEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15026,7 +15345,11 @@ export namespace Prisma {
     companyName?: boolean
     roleTitle?: boolean
     pastedContext?: boolean
+    messageType?: boolean
+    jobId?: boolean
+    resumeSourceType?: boolean
     resumeId?: boolean
+    uploadedResumeId?: boolean
     generatedSubject?: boolean
     generatedBody?: boolean
     status?: boolean
@@ -15035,7 +15358,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sentAt?: boolean
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["quickApplyEntry"]>
 
   export type QuickApplyEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15045,7 +15369,11 @@ export namespace Prisma {
     companyName?: boolean
     roleTitle?: boolean
     pastedContext?: boolean
+    messageType?: boolean
+    jobId?: boolean
+    resumeSourceType?: boolean
     resumeId?: boolean
+    uploadedResumeId?: boolean
     generatedSubject?: boolean
     generatedBody?: boolean
     status?: boolean
@@ -15054,7 +15382,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sentAt?: boolean
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["quickApplyEntry"]>
 
   export type QuickApplyEntrySelectScalar = {
@@ -15064,7 +15393,11 @@ export namespace Prisma {
     companyName?: boolean
     roleTitle?: boolean
     pastedContext?: boolean
+    messageType?: boolean
+    jobId?: boolean
+    resumeSourceType?: boolean
     resumeId?: boolean
+    uploadedResumeId?: boolean
     generatedSubject?: boolean
     generatedBody?: boolean
     status?: boolean
@@ -15075,21 +15408,25 @@ export namespace Prisma {
     sentAt?: boolean
   }
 
-  export type QuickApplyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "recipientEmail" | "companyName" | "roleTitle" | "pastedContext" | "resumeId" | "generatedSubject" | "generatedBody" | "status" | "gmailMessageId" | "errorMessage" | "createdAt" | "updatedAt" | "sentAt", ExtArgs["result"]["quickApplyEntry"]>
+  export type QuickApplyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "recipientEmail" | "companyName" | "roleTitle" | "pastedContext" | "messageType" | "jobId" | "resumeSourceType" | "resumeId" | "uploadedResumeId" | "generatedSubject" | "generatedBody" | "status" | "gmailMessageId" | "errorMessage" | "createdAt" | "updatedAt" | "sentAt", ExtArgs["result"]["quickApplyEntry"]>
   export type QuickApplyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }
   export type QuickApplyEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }
   export type QuickApplyEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resume?: boolean | ResumeDefaultArgs<ExtArgs>
+    resume?: boolean | QuickApplyEntry$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | QuickApplyEntry$uploadedResumeArgs<ExtArgs>
   }
 
   export type $QuickApplyEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "QuickApplyEntry"
     objects: {
-      resume: Prisma.$ResumePayload<ExtArgs>
+      resume: Prisma.$ResumePayload<ExtArgs> | null
+      uploadedResume: Prisma.$UploadedResumePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15098,7 +15435,11 @@ export namespace Prisma {
       companyName: string
       roleTitle: string
       pastedContext: string | null
-      resumeId: string
+      messageType: $Enums.QuickApplyMessageType
+      jobId: string | null
+      resumeSourceType: $Enums.ResumeSourceType
+      resumeId: string | null
+      uploadedResumeId: string | null
       generatedSubject: string | null
       generatedBody: string | null
       status: $Enums.QuickApplyStatus
@@ -15501,7 +15842,8 @@ export namespace Prisma {
    */
   export interface Prisma__QuickApplyEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    resume<T extends ResumeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResumeDefaultArgs<ExtArgs>>): Prisma__ResumeClient<$Result.GetResult<Prisma.$ResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    resume<T extends QuickApplyEntry$resumeArgs<ExtArgs> = {}>(args?: Subset<T, QuickApplyEntry$resumeArgs<ExtArgs>>): Prisma__ResumeClient<$Result.GetResult<Prisma.$ResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    uploadedResume<T extends QuickApplyEntry$uploadedResumeArgs<ExtArgs> = {}>(args?: Subset<T, QuickApplyEntry$uploadedResumeArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15537,7 +15879,11 @@ export namespace Prisma {
     readonly companyName: FieldRef<"QuickApplyEntry", 'String'>
     readonly roleTitle: FieldRef<"QuickApplyEntry", 'String'>
     readonly pastedContext: FieldRef<"QuickApplyEntry", 'String'>
+    readonly messageType: FieldRef<"QuickApplyEntry", 'QuickApplyMessageType'>
+    readonly jobId: FieldRef<"QuickApplyEntry", 'String'>
+    readonly resumeSourceType: FieldRef<"QuickApplyEntry", 'ResumeSourceType'>
     readonly resumeId: FieldRef<"QuickApplyEntry", 'String'>
+    readonly uploadedResumeId: FieldRef<"QuickApplyEntry", 'String'>
     readonly generatedSubject: FieldRef<"QuickApplyEntry", 'String'>
     readonly generatedBody: FieldRef<"QuickApplyEntry", 'String'>
     readonly status: FieldRef<"QuickApplyEntry", 'QuickApplyStatus'>
@@ -15942,6 +16288,44 @@ export namespace Prisma {
   }
 
   /**
+   * QuickApplyEntry.resume
+   */
+  export type QuickApplyEntry$resumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resume
+     */
+    select?: ResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resume
+     */
+    omit?: ResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResumeInclude<ExtArgs> | null
+    where?: ResumeWhereInput
+  }
+
+  /**
+   * QuickApplyEntry.uploadedResume
+   */
+  export type QuickApplyEntry$uploadedResumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    where?: UploadedResumeWhereInput
+  }
+
+  /**
    * QuickApplyEntry without action
    */
   export type QuickApplyEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15961,13 +16345,1168 @@ export namespace Prisma {
 
 
   /**
+   * Model UploadedResume
+   */
+
+  export type AggregateUploadedResume = {
+    _count: UploadedResumeCountAggregateOutputType | null
+    _avg: UploadedResumeAvgAggregateOutputType | null
+    _sum: UploadedResumeSumAggregateOutputType | null
+    _min: UploadedResumeMinAggregateOutputType | null
+    _max: UploadedResumeMaxAggregateOutputType | null
+  }
+
+  export type UploadedResumeAvgAggregateOutputType = {
+    fileSizeBytes: number | null
+  }
+
+  export type UploadedResumeSumAggregateOutputType = {
+    fileSizeBytes: number | null
+  }
+
+  export type UploadedResumeMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fileName: string | null
+    fileUrl: string | null
+    fileSizeBytes: number | null
+    uploadedAt: Date | null
+  }
+
+  export type UploadedResumeMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fileName: string | null
+    fileUrl: string | null
+    fileSizeBytes: number | null
+    uploadedAt: Date | null
+  }
+
+  export type UploadedResumeCountAggregateOutputType = {
+    id: number
+    userId: number
+    fileName: number
+    fileUrl: number
+    fileSizeBytes: number
+    uploadedAt: number
+    _all: number
+  }
+
+
+  export type UploadedResumeAvgAggregateInputType = {
+    fileSizeBytes?: true
+  }
+
+  export type UploadedResumeSumAggregateInputType = {
+    fileSizeBytes?: true
+  }
+
+  export type UploadedResumeMinAggregateInputType = {
+    id?: true
+    userId?: true
+    fileName?: true
+    fileUrl?: true
+    fileSizeBytes?: true
+    uploadedAt?: true
+  }
+
+  export type UploadedResumeMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    fileName?: true
+    fileUrl?: true
+    fileSizeBytes?: true
+    uploadedAt?: true
+  }
+
+  export type UploadedResumeCountAggregateInputType = {
+    id?: true
+    userId?: true
+    fileName?: true
+    fileUrl?: true
+    fileSizeBytes?: true
+    uploadedAt?: true
+    _all?: true
+  }
+
+  export type UploadedResumeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadedResume to aggregate.
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedResumes to fetch.
+     */
+    orderBy?: UploadedResumeOrderByWithRelationInput | UploadedResumeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UploadedResumeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedResumes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedResumes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UploadedResumes
+    **/
+    _count?: true | UploadedResumeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UploadedResumeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UploadedResumeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UploadedResumeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UploadedResumeMaxAggregateInputType
+  }
+
+  export type GetUploadedResumeAggregateType<T extends UploadedResumeAggregateArgs> = {
+        [P in keyof T & keyof AggregateUploadedResume]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUploadedResume[P]>
+      : GetScalarType<T[P], AggregateUploadedResume[P]>
+  }
+
+
+
+
+  export type UploadedResumeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadedResumeWhereInput
+    orderBy?: UploadedResumeOrderByWithAggregationInput | UploadedResumeOrderByWithAggregationInput[]
+    by: UploadedResumeScalarFieldEnum[] | UploadedResumeScalarFieldEnum
+    having?: UploadedResumeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UploadedResumeCountAggregateInputType | true
+    _avg?: UploadedResumeAvgAggregateInputType
+    _sum?: UploadedResumeSumAggregateInputType
+    _min?: UploadedResumeMinAggregateInputType
+    _max?: UploadedResumeMaxAggregateInputType
+  }
+
+  export type UploadedResumeGroupByOutputType = {
+    id: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt: Date
+    _count: UploadedResumeCountAggregateOutputType | null
+    _avg: UploadedResumeAvgAggregateOutputType | null
+    _sum: UploadedResumeSumAggregateOutputType | null
+    _min: UploadedResumeMinAggregateOutputType | null
+    _max: UploadedResumeMaxAggregateOutputType | null
+  }
+
+  type GetUploadedResumeGroupByPayload<T extends UploadedResumeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UploadedResumeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UploadedResumeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UploadedResumeGroupByOutputType[P]>
+            : GetScalarType<T[P], UploadedResumeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UploadedResumeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    fileName?: boolean
+    fileUrl?: boolean
+    fileSizeBytes?: boolean
+    uploadedAt?: boolean
+    quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
+    savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
+    _count?: boolean | UploadedResumeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadedResume"]>
+
+  export type UploadedResumeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    fileName?: boolean
+    fileUrl?: boolean
+    fileSizeBytes?: boolean
+    uploadedAt?: boolean
+  }, ExtArgs["result"]["uploadedResume"]>
+
+  export type UploadedResumeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    fileName?: boolean
+    fileUrl?: boolean
+    fileSizeBytes?: boolean
+    uploadedAt?: boolean
+  }, ExtArgs["result"]["uploadedResume"]>
+
+  export type UploadedResumeSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    fileName?: boolean
+    fileUrl?: boolean
+    fileSizeBytes?: boolean
+    uploadedAt?: boolean
+  }
+
+  export type UploadedResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "fileUrl" | "fileSizeBytes" | "uploadedAt", ExtArgs["result"]["uploadedResume"]>
+  export type UploadedResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
+    savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
+    _count?: boolean | UploadedResumeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UploadedResumeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UploadedResumeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $UploadedResumePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UploadedResume"
+    objects: {
+      quickApplyEntries: Prisma.$QuickApplyEntryPayload<ExtArgs>[]
+      savedJobs: Prisma.$SavedJobPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      fileName: string
+      fileUrl: string
+      fileSizeBytes: number
+      uploadedAt: Date
+    }, ExtArgs["result"]["uploadedResume"]>
+    composites: {}
+  }
+
+  type UploadedResumeGetPayload<S extends boolean | null | undefined | UploadedResumeDefaultArgs> = $Result.GetResult<Prisma.$UploadedResumePayload, S>
+
+  type UploadedResumeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UploadedResumeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UploadedResumeCountAggregateInputType | true
+    }
+
+  export interface UploadedResumeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UploadedResume'], meta: { name: 'UploadedResume' } }
+    /**
+     * Find zero or one UploadedResume that matches the filter.
+     * @param {UploadedResumeFindUniqueArgs} args - Arguments to find a UploadedResume
+     * @example
+     * // Get one UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UploadedResumeFindUniqueArgs>(args: SelectSubset<T, UploadedResumeFindUniqueArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UploadedResume that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UploadedResumeFindUniqueOrThrowArgs} args - Arguments to find a UploadedResume
+     * @example
+     * // Get one UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UploadedResumeFindUniqueOrThrowArgs>(args: SelectSubset<T, UploadedResumeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadedResume that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeFindFirstArgs} args - Arguments to find a UploadedResume
+     * @example
+     * // Get one UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UploadedResumeFindFirstArgs>(args?: SelectSubset<T, UploadedResumeFindFirstArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadedResume that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeFindFirstOrThrowArgs} args - Arguments to find a UploadedResume
+     * @example
+     * // Get one UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UploadedResumeFindFirstOrThrowArgs>(args?: SelectSubset<T, UploadedResumeFindFirstOrThrowArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UploadedResumes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UploadedResumes
+     * const uploadedResumes = await prisma.uploadedResume.findMany()
+     * 
+     * // Get first 10 UploadedResumes
+     * const uploadedResumes = await prisma.uploadedResume.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const uploadedResumeWithIdOnly = await prisma.uploadedResume.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UploadedResumeFindManyArgs>(args?: SelectSubset<T, UploadedResumeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UploadedResume.
+     * @param {UploadedResumeCreateArgs} args - Arguments to create a UploadedResume.
+     * @example
+     * // Create one UploadedResume
+     * const UploadedResume = await prisma.uploadedResume.create({
+     *   data: {
+     *     // ... data to create a UploadedResume
+     *   }
+     * })
+     * 
+     */
+    create<T extends UploadedResumeCreateArgs>(args: SelectSubset<T, UploadedResumeCreateArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UploadedResumes.
+     * @param {UploadedResumeCreateManyArgs} args - Arguments to create many UploadedResumes.
+     * @example
+     * // Create many UploadedResumes
+     * const uploadedResume = await prisma.uploadedResume.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UploadedResumeCreateManyArgs>(args?: SelectSubset<T, UploadedResumeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UploadedResumes and returns the data saved in the database.
+     * @param {UploadedResumeCreateManyAndReturnArgs} args - Arguments to create many UploadedResumes.
+     * @example
+     * // Create many UploadedResumes
+     * const uploadedResume = await prisma.uploadedResume.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UploadedResumes and only return the `id`
+     * const uploadedResumeWithIdOnly = await prisma.uploadedResume.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UploadedResumeCreateManyAndReturnArgs>(args?: SelectSubset<T, UploadedResumeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UploadedResume.
+     * @param {UploadedResumeDeleteArgs} args - Arguments to delete one UploadedResume.
+     * @example
+     * // Delete one UploadedResume
+     * const UploadedResume = await prisma.uploadedResume.delete({
+     *   where: {
+     *     // ... filter to delete one UploadedResume
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UploadedResumeDeleteArgs>(args: SelectSubset<T, UploadedResumeDeleteArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UploadedResume.
+     * @param {UploadedResumeUpdateArgs} args - Arguments to update one UploadedResume.
+     * @example
+     * // Update one UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UploadedResumeUpdateArgs>(args: SelectSubset<T, UploadedResumeUpdateArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UploadedResumes.
+     * @param {UploadedResumeDeleteManyArgs} args - Arguments to filter UploadedResumes to delete.
+     * @example
+     * // Delete a few UploadedResumes
+     * const { count } = await prisma.uploadedResume.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UploadedResumeDeleteManyArgs>(args?: SelectSubset<T, UploadedResumeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadedResumes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UploadedResumes
+     * const uploadedResume = await prisma.uploadedResume.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UploadedResumeUpdateManyArgs>(args: SelectSubset<T, UploadedResumeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadedResumes and returns the data updated in the database.
+     * @param {UploadedResumeUpdateManyAndReturnArgs} args - Arguments to update many UploadedResumes.
+     * @example
+     * // Update many UploadedResumes
+     * const uploadedResume = await prisma.uploadedResume.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UploadedResumes and only return the `id`
+     * const uploadedResumeWithIdOnly = await prisma.uploadedResume.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UploadedResumeUpdateManyAndReturnArgs>(args: SelectSubset<T, UploadedResumeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UploadedResume.
+     * @param {UploadedResumeUpsertArgs} args - Arguments to update or create a UploadedResume.
+     * @example
+     * // Update or create a UploadedResume
+     * const uploadedResume = await prisma.uploadedResume.upsert({
+     *   create: {
+     *     // ... data to create a UploadedResume
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UploadedResume we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UploadedResumeUpsertArgs>(args: SelectSubset<T, UploadedResumeUpsertArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UploadedResumes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeCountArgs} args - Arguments to filter UploadedResumes to count.
+     * @example
+     * // Count the number of UploadedResumes
+     * const count = await prisma.uploadedResume.count({
+     *   where: {
+     *     // ... the filter for the UploadedResumes we want to count
+     *   }
+     * })
+    **/
+    count<T extends UploadedResumeCountArgs>(
+      args?: Subset<T, UploadedResumeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UploadedResumeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UploadedResume.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UploadedResumeAggregateArgs>(args: Subset<T, UploadedResumeAggregateArgs>): Prisma.PrismaPromise<GetUploadedResumeAggregateType<T>>
+
+    /**
+     * Group by UploadedResume.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedResumeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UploadedResumeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UploadedResumeGroupByArgs['orderBy'] }
+        : { orderBy?: UploadedResumeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UploadedResumeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUploadedResumeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UploadedResume model
+   */
+  readonly fields: UploadedResumeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UploadedResume.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UploadedResumeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    quickApplyEntries<T extends UploadedResume$quickApplyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, UploadedResume$quickApplyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuickApplyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    savedJobs<T extends UploadedResume$savedJobsArgs<ExtArgs> = {}>(args?: Subset<T, UploadedResume$savedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UploadedResume model
+   */
+  interface UploadedResumeFieldRefs {
+    readonly id: FieldRef<"UploadedResume", 'String'>
+    readonly userId: FieldRef<"UploadedResume", 'String'>
+    readonly fileName: FieldRef<"UploadedResume", 'String'>
+    readonly fileUrl: FieldRef<"UploadedResume", 'String'>
+    readonly fileSizeBytes: FieldRef<"UploadedResume", 'Int'>
+    readonly uploadedAt: FieldRef<"UploadedResume", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UploadedResume findUnique
+   */
+  export type UploadedResumeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedResume to fetch.
+     */
+    where: UploadedResumeWhereUniqueInput
+  }
+
+  /**
+   * UploadedResume findUniqueOrThrow
+   */
+  export type UploadedResumeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedResume to fetch.
+     */
+    where: UploadedResumeWhereUniqueInput
+  }
+
+  /**
+   * UploadedResume findFirst
+   */
+  export type UploadedResumeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedResume to fetch.
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedResumes to fetch.
+     */
+    orderBy?: UploadedResumeOrderByWithRelationInput | UploadedResumeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadedResumes.
+     */
+    cursor?: UploadedResumeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedResumes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedResumes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadedResumes.
+     */
+    distinct?: UploadedResumeScalarFieldEnum | UploadedResumeScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume findFirstOrThrow
+   */
+  export type UploadedResumeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedResume to fetch.
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedResumes to fetch.
+     */
+    orderBy?: UploadedResumeOrderByWithRelationInput | UploadedResumeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadedResumes.
+     */
+    cursor?: UploadedResumeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedResumes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedResumes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadedResumes.
+     */
+    distinct?: UploadedResumeScalarFieldEnum | UploadedResumeScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume findMany
+   */
+  export type UploadedResumeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedResumes to fetch.
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedResumes to fetch.
+     */
+    orderBy?: UploadedResumeOrderByWithRelationInput | UploadedResumeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UploadedResumes.
+     */
+    cursor?: UploadedResumeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedResumes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedResumes.
+     */
+    skip?: number
+    distinct?: UploadedResumeScalarFieldEnum | UploadedResumeScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume create
+   */
+  export type UploadedResumeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UploadedResume.
+     */
+    data: XOR<UploadedResumeCreateInput, UploadedResumeUncheckedCreateInput>
+  }
+
+  /**
+   * UploadedResume createMany
+   */
+  export type UploadedResumeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UploadedResumes.
+     */
+    data: UploadedResumeCreateManyInput | UploadedResumeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UploadedResume createManyAndReturn
+   */
+  export type UploadedResumeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * The data used to create many UploadedResumes.
+     */
+    data: UploadedResumeCreateManyInput | UploadedResumeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UploadedResume update
+   */
+  export type UploadedResumeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UploadedResume.
+     */
+    data: XOR<UploadedResumeUpdateInput, UploadedResumeUncheckedUpdateInput>
+    /**
+     * Choose, which UploadedResume to update.
+     */
+    where: UploadedResumeWhereUniqueInput
+  }
+
+  /**
+   * UploadedResume updateMany
+   */
+  export type UploadedResumeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UploadedResumes.
+     */
+    data: XOR<UploadedResumeUpdateManyMutationInput, UploadedResumeUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadedResumes to update
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * Limit how many UploadedResumes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadedResume updateManyAndReturn
+   */
+  export type UploadedResumeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * The data used to update UploadedResumes.
+     */
+    data: XOR<UploadedResumeUpdateManyMutationInput, UploadedResumeUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadedResumes to update
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * Limit how many UploadedResumes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadedResume upsert
+   */
+  export type UploadedResumeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UploadedResume to update in case it exists.
+     */
+    where: UploadedResumeWhereUniqueInput
+    /**
+     * In case the UploadedResume found by the `where` argument doesn't exist, create a new UploadedResume with this data.
+     */
+    create: XOR<UploadedResumeCreateInput, UploadedResumeUncheckedCreateInput>
+    /**
+     * In case the UploadedResume was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UploadedResumeUpdateInput, UploadedResumeUncheckedUpdateInput>
+  }
+
+  /**
+   * UploadedResume delete
+   */
+  export type UploadedResumeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    /**
+     * Filter which UploadedResume to delete.
+     */
+    where: UploadedResumeWhereUniqueInput
+  }
+
+  /**
+   * UploadedResume deleteMany
+   */
+  export type UploadedResumeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadedResumes to delete
+     */
+    where?: UploadedResumeWhereInput
+    /**
+     * Limit how many UploadedResumes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadedResume.quickApplyEntries
+   */
+  export type UploadedResume$quickApplyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuickApplyEntry
+     */
+    select?: QuickApplyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuickApplyEntry
+     */
+    omit?: QuickApplyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuickApplyEntryInclude<ExtArgs> | null
+    where?: QuickApplyEntryWhereInput
+    orderBy?: QuickApplyEntryOrderByWithRelationInput | QuickApplyEntryOrderByWithRelationInput[]
+    cursor?: QuickApplyEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuickApplyEntryScalarFieldEnum | QuickApplyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume.savedJobs
+   */
+  export type UploadedResume$savedJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedJob
+     */
+    select?: SavedJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedJob
+     */
+    omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    where?: SavedJobWhereInput
+    orderBy?: SavedJobOrderByWithRelationInput | SavedJobOrderByWithRelationInput[]
+    cursor?: SavedJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedJobScalarFieldEnum | SavedJobScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedResume without action
+   */
+  export type UploadedResumeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model SavedJob
    */
 
   export type AggregateSavedJob = {
     _count: SavedJobCountAggregateOutputType | null
+    _avg: SavedJobAvgAggregateOutputType | null
+    _sum: SavedJobSumAggregateOutputType | null
     _min: SavedJobMinAggregateOutputType | null
     _max: SavedJobMaxAggregateOutputType | null
+  }
+
+  export type SavedJobAvgAggregateOutputType = {
+    sendAttempts: number | null
+  }
+
+  export type SavedJobSumAggregateOutputType = {
+    sendAttempts: number | null
   }
 
   export type SavedJobMinAggregateOutputType = {
@@ -15988,6 +17527,14 @@ export namespace Prisma {
     outreachStatus: $Enums.OutreachStatus | null
     scheduledSendTime: Date | null
     lastActivityAt: Date | null
+    resumeSourceType: $Enums.ResumeSourceType | null
+    resumeId: string | null
+    uploadedResumeId: string | null
+    generatedSubject: string | null
+    generatedBody: string | null
+    sendAttempts: number | null
+    lastError: string | null
+    sentAt: Date | null
   }
 
   export type SavedJobMaxAggregateOutputType = {
@@ -16008,6 +17555,14 @@ export namespace Prisma {
     outreachStatus: $Enums.OutreachStatus | null
     scheduledSendTime: Date | null
     lastActivityAt: Date | null
+    resumeSourceType: $Enums.ResumeSourceType | null
+    resumeId: string | null
+    uploadedResumeId: string | null
+    generatedSubject: string | null
+    generatedBody: string | null
+    sendAttempts: number | null
+    lastError: string | null
+    sentAt: Date | null
   }
 
   export type SavedJobCountAggregateOutputType = {
@@ -16029,9 +17584,26 @@ export namespace Prisma {
     outreachStatus: number
     scheduledSendTime: number
     lastActivityAt: number
+    resumeSourceType: number
+    resumeId: number
+    uploadedResumeId: number
+    generatedSubject: number
+    generatedBody: number
+    sendAttempts: number
+    lastError: number
+    sentAt: number
+    gmailMessageIds: number
     _all: number
   }
 
+
+  export type SavedJobAvgAggregateInputType = {
+    sendAttempts?: true
+  }
+
+  export type SavedJobSumAggregateInputType = {
+    sendAttempts?: true
+  }
 
   export type SavedJobMinAggregateInputType = {
     id?: true
@@ -16051,6 +17623,14 @@ export namespace Prisma {
     outreachStatus?: true
     scheduledSendTime?: true
     lastActivityAt?: true
+    resumeSourceType?: true
+    resumeId?: true
+    uploadedResumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    sendAttempts?: true
+    lastError?: true
+    sentAt?: true
   }
 
   export type SavedJobMaxAggregateInputType = {
@@ -16071,6 +17651,14 @@ export namespace Prisma {
     outreachStatus?: true
     scheduledSendTime?: true
     lastActivityAt?: true
+    resumeSourceType?: true
+    resumeId?: true
+    uploadedResumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    sendAttempts?: true
+    lastError?: true
+    sentAt?: true
   }
 
   export type SavedJobCountAggregateInputType = {
@@ -16092,6 +17680,15 @@ export namespace Prisma {
     outreachStatus?: true
     scheduledSendTime?: true
     lastActivityAt?: true
+    resumeSourceType?: true
+    resumeId?: true
+    uploadedResumeId?: true
+    generatedSubject?: true
+    generatedBody?: true
+    sendAttempts?: true
+    lastError?: true
+    sentAt?: true
+    gmailMessageIds?: true
     _all?: true
   }
 
@@ -16133,6 +17730,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: SavedJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SavedJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SavedJobMinAggregateInputType
@@ -16163,6 +17772,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SavedJobCountAggregateInputType | true
+    _avg?: SavedJobAvgAggregateInputType
+    _sum?: SavedJobSumAggregateInputType
     _min?: SavedJobMinAggregateInputType
     _max?: SavedJobMaxAggregateInputType
   }
@@ -16186,7 +17797,18 @@ export namespace Prisma {
     outreachStatus: $Enums.OutreachStatus | null
     scheduledSendTime: Date | null
     lastActivityAt: Date | null
+    resumeSourceType: $Enums.ResumeSourceType
+    resumeId: string | null
+    uploadedResumeId: string | null
+    generatedSubject: string | null
+    generatedBody: string | null
+    sendAttempts: number
+    lastError: string | null
+    sentAt: Date | null
+    gmailMessageIds: string[]
     _count: SavedJobCountAggregateOutputType | null
+    _avg: SavedJobAvgAggregateOutputType | null
+    _sum: SavedJobSumAggregateOutputType | null
     _min: SavedJobMinAggregateOutputType | null
     _max: SavedJobMaxAggregateOutputType | null
   }
@@ -16224,6 +17846,17 @@ export namespace Prisma {
     outreachStatus?: boolean
     scheduledSendTime?: boolean
     lastActivityAt?: boolean
+    resumeSourceType?: boolean
+    resumeId?: boolean
+    uploadedResumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    sendAttempts?: boolean
+    lastError?: boolean
+    sentAt?: boolean
+    gmailMessageIds?: boolean
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["savedJob"]>
 
   export type SavedJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16245,6 +17878,17 @@ export namespace Prisma {
     outreachStatus?: boolean
     scheduledSendTime?: boolean
     lastActivityAt?: boolean
+    resumeSourceType?: boolean
+    resumeId?: boolean
+    uploadedResumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    sendAttempts?: boolean
+    lastError?: boolean
+    sentAt?: boolean
+    gmailMessageIds?: boolean
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["savedJob"]>
 
   export type SavedJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16266,6 +17910,17 @@ export namespace Prisma {
     outreachStatus?: boolean
     scheduledSendTime?: boolean
     lastActivityAt?: boolean
+    resumeSourceType?: boolean
+    resumeId?: boolean
+    uploadedResumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    sendAttempts?: boolean
+    lastError?: boolean
+    sentAt?: boolean
+    gmailMessageIds?: boolean
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
   }, ExtArgs["result"]["savedJob"]>
 
   export type SavedJobSelectScalar = {
@@ -16287,13 +17942,37 @@ export namespace Prisma {
     outreachStatus?: boolean
     scheduledSendTime?: boolean
     lastActivityAt?: boolean
+    resumeSourceType?: boolean
+    resumeId?: boolean
+    uploadedResumeId?: boolean
+    generatedSubject?: boolean
+    generatedBody?: boolean
+    sendAttempts?: boolean
+    lastError?: boolean
+    sentAt?: boolean
+    gmailMessageIds?: boolean
   }
 
-  export type SavedJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "externalJobId" | "company" | "jobTitle" | "location" | "jobDescription" | "requisitionId" | "contactEmails" | "isBookmarked" | "isQueued" | "addedAt" | "updatedAt" | "outreachType" | "outreachStatus" | "scheduledSendTime" | "lastActivityAt", ExtArgs["result"]["savedJob"]>
+  export type SavedJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "externalJobId" | "company" | "jobTitle" | "location" | "jobDescription" | "requisitionId" | "contactEmails" | "isBookmarked" | "isQueued" | "addedAt" | "updatedAt" | "outreachType" | "outreachStatus" | "scheduledSendTime" | "lastActivityAt" | "resumeSourceType" | "resumeId" | "uploadedResumeId" | "generatedSubject" | "generatedBody" | "sendAttempts" | "lastError" | "sentAt" | "gmailMessageIds", ExtArgs["result"]["savedJob"]>
+  export type SavedJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
+  }
+  export type SavedJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
+  }
+  export type SavedJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resume?: boolean | SavedJob$resumeArgs<ExtArgs>
+    uploadedResume?: boolean | SavedJob$uploadedResumeArgs<ExtArgs>
+  }
 
   export type $SavedJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SavedJob"
-    objects: {}
+    objects: {
+      resume: Prisma.$ResumePayload<ExtArgs> | null
+      uploadedResume: Prisma.$UploadedResumePayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
@@ -16313,6 +17992,15 @@ export namespace Prisma {
       outreachStatus: $Enums.OutreachStatus | null
       scheduledSendTime: Date | null
       lastActivityAt: Date | null
+      resumeSourceType: $Enums.ResumeSourceType
+      resumeId: string | null
+      uploadedResumeId: string | null
+      generatedSubject: string | null
+      generatedBody: string | null
+      sendAttempts: number
+      lastError: string | null
+      sentAt: Date | null
+      gmailMessageIds: string[]
     }, ExtArgs["result"]["savedJob"]>
     composites: {}
   }
@@ -16707,6 +18395,8 @@ export namespace Prisma {
    */
   export interface Prisma__SavedJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    resume<T extends SavedJob$resumeArgs<ExtArgs> = {}>(args?: Subset<T, SavedJob$resumeArgs<ExtArgs>>): Prisma__ResumeClient<$Result.GetResult<Prisma.$ResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    uploadedResume<T extends SavedJob$uploadedResumeArgs<ExtArgs> = {}>(args?: Subset<T, SavedJob$uploadedResumeArgs<ExtArgs>>): Prisma__UploadedResumeClient<$Result.GetResult<Prisma.$UploadedResumePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16754,6 +18444,15 @@ export namespace Prisma {
     readonly outreachStatus: FieldRef<"SavedJob", 'OutreachStatus'>
     readonly scheduledSendTime: FieldRef<"SavedJob", 'DateTime'>
     readonly lastActivityAt: FieldRef<"SavedJob", 'DateTime'>
+    readonly resumeSourceType: FieldRef<"SavedJob", 'ResumeSourceType'>
+    readonly resumeId: FieldRef<"SavedJob", 'String'>
+    readonly uploadedResumeId: FieldRef<"SavedJob", 'String'>
+    readonly generatedSubject: FieldRef<"SavedJob", 'String'>
+    readonly generatedBody: FieldRef<"SavedJob", 'String'>
+    readonly sendAttempts: FieldRef<"SavedJob", 'Int'>
+    readonly lastError: FieldRef<"SavedJob", 'String'>
+    readonly sentAt: FieldRef<"SavedJob", 'DateTime'>
+    readonly gmailMessageIds: FieldRef<"SavedJob", 'String[]'>
   }
     
 
@@ -16770,6 +18469,10 @@ export namespace Prisma {
      * Omit specific fields from the SavedJob
      */
     omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
     /**
      * Filter, which SavedJob to fetch.
      */
@@ -16789,6 +18492,10 @@ export namespace Prisma {
      */
     omit?: SavedJobOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    /**
      * Filter, which SavedJob to fetch.
      */
     where: SavedJobWhereUniqueInput
@@ -16806,6 +18513,10 @@ export namespace Prisma {
      * Omit specific fields from the SavedJob
      */
     omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
     /**
      * Filter, which SavedJob to fetch.
      */
@@ -16855,6 +18566,10 @@ export namespace Prisma {
      */
     omit?: SavedJobOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    /**
      * Filter, which SavedJob to fetch.
      */
     where?: SavedJobWhereInput
@@ -16903,6 +18618,10 @@ export namespace Prisma {
      */
     omit?: SavedJobOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    /**
      * Filter, which SavedJobs to fetch.
      */
     where?: SavedJobWhereInput
@@ -16946,6 +18665,10 @@ export namespace Prisma {
      */
     omit?: SavedJobOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    /**
      * The data needed to create a SavedJob.
      */
     data: XOR<SavedJobCreateInput, SavedJobUncheckedCreateInput>
@@ -16979,6 +18702,10 @@ export namespace Prisma {
      */
     data: SavedJobCreateManyInput | SavedJobCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -16993,6 +18720,10 @@ export namespace Prisma {
      * Omit specific fields from the SavedJob
      */
     omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
     /**
      * The data needed to update a SavedJob.
      */
@@ -17045,6 +18776,10 @@ export namespace Prisma {
      * Limit how many SavedJobs to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -17059,6 +18794,10 @@ export namespace Prisma {
      * Omit specific fields from the SavedJob
      */
     omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
     /**
      * The filter to search for the SavedJob to update in case it exists.
      */
@@ -17086,6 +18825,10 @@ export namespace Prisma {
      */
     omit?: SavedJobOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+    /**
      * Filter which SavedJob to delete.
      */
     where: SavedJobWhereUniqueInput
@@ -17106,6 +18849,44 @@ export namespace Prisma {
   }
 
   /**
+   * SavedJob.resume
+   */
+  export type SavedJob$resumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resume
+     */
+    select?: ResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resume
+     */
+    omit?: ResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResumeInclude<ExtArgs> | null
+    where?: ResumeWhereInput
+  }
+
+  /**
+   * SavedJob.uploadedResume
+   */
+  export type SavedJob$uploadedResumeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedResume
+     */
+    select?: UploadedResumeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedResume
+     */
+    omit?: UploadedResumeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedResumeInclude<ExtArgs> | null
+    where?: UploadedResumeWhereInput
+  }
+
+  /**
    * SavedJob without action
    */
   export type SavedJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17117,6 +18898,1112 @@ export namespace Prisma {
      * Omit specific fields from the SavedJob
      */
     omit?: SavedJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedJobInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserOutreachSettings
+   */
+
+  export type AggregateUserOutreachSettings = {
+    _count: UserOutreachSettingsCountAggregateOutputType | null
+    _avg: UserOutreachSettingsAvgAggregateOutputType | null
+    _sum: UserOutreachSettingsSumAggregateOutputType | null
+    _min: UserOutreachSettingsMinAggregateOutputType | null
+    _max: UserOutreachSettingsMaxAggregateOutputType | null
+  }
+
+  export type UserOutreachSettingsAvgAggregateOutputType = {
+    dailySendLimit: number | null
+    jitterMinSeconds: number | null
+    jitterMaxSeconds: number | null
+  }
+
+  export type UserOutreachSettingsSumAggregateOutputType = {
+    dailySendLimit: number | null
+    jitterMinSeconds: number | null
+    jitterMaxSeconds: number | null
+  }
+
+  export type UserOutreachSettingsMinAggregateOutputType = {
+    userId: string | null
+    dailySendLimit: number | null
+    sendWindowStart: string | null
+    sendWindowEnd: string | null
+    weekdaysOnly: boolean | null
+    jitterEnabled: boolean | null
+    jitterMinSeconds: number | null
+    jitterMaxSeconds: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserOutreachSettingsMaxAggregateOutputType = {
+    userId: string | null
+    dailySendLimit: number | null
+    sendWindowStart: string | null
+    sendWindowEnd: string | null
+    weekdaysOnly: boolean | null
+    jitterEnabled: boolean | null
+    jitterMinSeconds: number | null
+    jitterMaxSeconds: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserOutreachSettingsCountAggregateOutputType = {
+    userId: number
+    dailySendLimit: number
+    sendWindowStart: number
+    sendWindowEnd: number
+    weekdaysOnly: number
+    jitterEnabled: number
+    jitterMinSeconds: number
+    jitterMaxSeconds: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserOutreachSettingsAvgAggregateInputType = {
+    dailySendLimit?: true
+    jitterMinSeconds?: true
+    jitterMaxSeconds?: true
+  }
+
+  export type UserOutreachSettingsSumAggregateInputType = {
+    dailySendLimit?: true
+    jitterMinSeconds?: true
+    jitterMaxSeconds?: true
+  }
+
+  export type UserOutreachSettingsMinAggregateInputType = {
+    userId?: true
+    dailySendLimit?: true
+    sendWindowStart?: true
+    sendWindowEnd?: true
+    weekdaysOnly?: true
+    jitterEnabled?: true
+    jitterMinSeconds?: true
+    jitterMaxSeconds?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserOutreachSettingsMaxAggregateInputType = {
+    userId?: true
+    dailySendLimit?: true
+    sendWindowStart?: true
+    sendWindowEnd?: true
+    weekdaysOnly?: true
+    jitterEnabled?: true
+    jitterMinSeconds?: true
+    jitterMaxSeconds?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserOutreachSettingsCountAggregateInputType = {
+    userId?: true
+    dailySendLimit?: true
+    sendWindowStart?: true
+    sendWindowEnd?: true
+    weekdaysOnly?: true
+    jitterEnabled?: true
+    jitterMinSeconds?: true
+    jitterMaxSeconds?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserOutreachSettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserOutreachSettings to aggregate.
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserOutreachSettings to fetch.
+     */
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserOutreachSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserOutreachSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserOutreachSettings
+    **/
+    _count?: true | UserOutreachSettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserOutreachSettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserOutreachSettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserOutreachSettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserOutreachSettingsMaxAggregateInputType
+  }
+
+  export type GetUserOutreachSettingsAggregateType<T extends UserOutreachSettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserOutreachSettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserOutreachSettings[P]>
+      : GetScalarType<T[P], AggregateUserOutreachSettings[P]>
+  }
+
+
+
+
+  export type UserOutreachSettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserOutreachSettingsWhereInput
+    orderBy?: UserOutreachSettingsOrderByWithAggregationInput | UserOutreachSettingsOrderByWithAggregationInput[]
+    by: UserOutreachSettingsScalarFieldEnum[] | UserOutreachSettingsScalarFieldEnum
+    having?: UserOutreachSettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserOutreachSettingsCountAggregateInputType | true
+    _avg?: UserOutreachSettingsAvgAggregateInputType
+    _sum?: UserOutreachSettingsSumAggregateInputType
+    _min?: UserOutreachSettingsMinAggregateInputType
+    _max?: UserOutreachSettingsMaxAggregateInputType
+  }
+
+  export type UserOutreachSettingsGroupByOutputType = {
+    userId: string
+    dailySendLimit: number
+    sendWindowStart: string
+    sendWindowEnd: string
+    weekdaysOnly: boolean
+    jitterEnabled: boolean
+    jitterMinSeconds: number
+    jitterMaxSeconds: number
+    createdAt: Date
+    updatedAt: Date
+    _count: UserOutreachSettingsCountAggregateOutputType | null
+    _avg: UserOutreachSettingsAvgAggregateOutputType | null
+    _sum: UserOutreachSettingsSumAggregateOutputType | null
+    _min: UserOutreachSettingsMinAggregateOutputType | null
+    _max: UserOutreachSettingsMaxAggregateOutputType | null
+  }
+
+  type GetUserOutreachSettingsGroupByPayload<T extends UserOutreachSettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserOutreachSettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserOutreachSettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserOutreachSettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], UserOutreachSettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserOutreachSettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    dailySendLimit?: boolean
+    sendWindowStart?: boolean
+    sendWindowEnd?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: boolean
+    jitterMaxSeconds?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userOutreachSettings"]>
+
+  export type UserOutreachSettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    dailySendLimit?: boolean
+    sendWindowStart?: boolean
+    sendWindowEnd?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: boolean
+    jitterMaxSeconds?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userOutreachSettings"]>
+
+  export type UserOutreachSettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    dailySendLimit?: boolean
+    sendWindowStart?: boolean
+    sendWindowEnd?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: boolean
+    jitterMaxSeconds?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["userOutreachSettings"]>
+
+  export type UserOutreachSettingsSelectScalar = {
+    userId?: boolean
+    dailySendLimit?: boolean
+    sendWindowStart?: boolean
+    sendWindowEnd?: boolean
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: boolean
+    jitterMaxSeconds?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserOutreachSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "dailySendLimit" | "sendWindowStart" | "sendWindowEnd" | "weekdaysOnly" | "jitterEnabled" | "jitterMinSeconds" | "jitterMaxSeconds" | "createdAt" | "updatedAt", ExtArgs["result"]["userOutreachSettings"]>
+
+  export type $UserOutreachSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserOutreachSettings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      userId: string
+      dailySendLimit: number
+      sendWindowStart: string
+      sendWindowEnd: string
+      weekdaysOnly: boolean
+      jitterEnabled: boolean
+      jitterMinSeconds: number
+      jitterMaxSeconds: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userOutreachSettings"]>
+    composites: {}
+  }
+
+  type UserOutreachSettingsGetPayload<S extends boolean | null | undefined | UserOutreachSettingsDefaultArgs> = $Result.GetResult<Prisma.$UserOutreachSettingsPayload, S>
+
+  type UserOutreachSettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserOutreachSettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserOutreachSettingsCountAggregateInputType | true
+    }
+
+  export interface UserOutreachSettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserOutreachSettings'], meta: { name: 'UserOutreachSettings' } }
+    /**
+     * Find zero or one UserOutreachSettings that matches the filter.
+     * @param {UserOutreachSettingsFindUniqueArgs} args - Arguments to find a UserOutreachSettings
+     * @example
+     * // Get one UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserOutreachSettingsFindUniqueArgs>(args: SelectSubset<T, UserOutreachSettingsFindUniqueArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserOutreachSettings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserOutreachSettingsFindUniqueOrThrowArgs} args - Arguments to find a UserOutreachSettings
+     * @example
+     * // Get one UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserOutreachSettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, UserOutreachSettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserOutreachSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsFindFirstArgs} args - Arguments to find a UserOutreachSettings
+     * @example
+     * // Get one UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserOutreachSettingsFindFirstArgs>(args?: SelectSubset<T, UserOutreachSettingsFindFirstArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserOutreachSettings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsFindFirstOrThrowArgs} args - Arguments to find a UserOutreachSettings
+     * @example
+     * // Get one UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserOutreachSettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, UserOutreachSettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserOutreachSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findMany()
+     * 
+     * // Get first 10 UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.findMany({ take: 10 })
+     * 
+     * // Only select the `userId`
+     * const userOutreachSettingsWithUserIdOnly = await prisma.userOutreachSettings.findMany({ select: { userId: true } })
+     * 
+     */
+    findMany<T extends UserOutreachSettingsFindManyArgs>(args?: SelectSubset<T, UserOutreachSettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserOutreachSettings.
+     * @param {UserOutreachSettingsCreateArgs} args - Arguments to create a UserOutreachSettings.
+     * @example
+     * // Create one UserOutreachSettings
+     * const UserOutreachSettings = await prisma.userOutreachSettings.create({
+     *   data: {
+     *     // ... data to create a UserOutreachSettings
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserOutreachSettingsCreateArgs>(args: SelectSubset<T, UserOutreachSettingsCreateArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserOutreachSettings.
+     * @param {UserOutreachSettingsCreateManyArgs} args - Arguments to create many UserOutreachSettings.
+     * @example
+     * // Create many UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserOutreachSettingsCreateManyArgs>(args?: SelectSubset<T, UserOutreachSettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserOutreachSettings and returns the data saved in the database.
+     * @param {UserOutreachSettingsCreateManyAndReturnArgs} args - Arguments to create many UserOutreachSettings.
+     * @example
+     * // Create many UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserOutreachSettings and only return the `userId`
+     * const userOutreachSettingsWithUserIdOnly = await prisma.userOutreachSettings.createManyAndReturn({
+     *   select: { userId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserOutreachSettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, UserOutreachSettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserOutreachSettings.
+     * @param {UserOutreachSettingsDeleteArgs} args - Arguments to delete one UserOutreachSettings.
+     * @example
+     * // Delete one UserOutreachSettings
+     * const UserOutreachSettings = await prisma.userOutreachSettings.delete({
+     *   where: {
+     *     // ... filter to delete one UserOutreachSettings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserOutreachSettingsDeleteArgs>(args: SelectSubset<T, UserOutreachSettingsDeleteArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserOutreachSettings.
+     * @param {UserOutreachSettingsUpdateArgs} args - Arguments to update one UserOutreachSettings.
+     * @example
+     * // Update one UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserOutreachSettingsUpdateArgs>(args: SelectSubset<T, UserOutreachSettingsUpdateArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserOutreachSettings.
+     * @param {UserOutreachSettingsDeleteManyArgs} args - Arguments to filter UserOutreachSettings to delete.
+     * @example
+     * // Delete a few UserOutreachSettings
+     * const { count } = await prisma.userOutreachSettings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserOutreachSettingsDeleteManyArgs>(args?: SelectSubset<T, UserOutreachSettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserOutreachSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserOutreachSettingsUpdateManyArgs>(args: SelectSubset<T, UserOutreachSettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserOutreachSettings and returns the data updated in the database.
+     * @param {UserOutreachSettingsUpdateManyAndReturnArgs} args - Arguments to update many UserOutreachSettings.
+     * @example
+     * // Update many UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserOutreachSettings and only return the `userId`
+     * const userOutreachSettingsWithUserIdOnly = await prisma.userOutreachSettings.updateManyAndReturn({
+     *   select: { userId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserOutreachSettingsUpdateManyAndReturnArgs>(args: SelectSubset<T, UserOutreachSettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserOutreachSettings.
+     * @param {UserOutreachSettingsUpsertArgs} args - Arguments to update or create a UserOutreachSettings.
+     * @example
+     * // Update or create a UserOutreachSettings
+     * const userOutreachSettings = await prisma.userOutreachSettings.upsert({
+     *   create: {
+     *     // ... data to create a UserOutreachSettings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserOutreachSettings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserOutreachSettingsUpsertArgs>(args: SelectSubset<T, UserOutreachSettingsUpsertArgs<ExtArgs>>): Prisma__UserOutreachSettingsClient<$Result.GetResult<Prisma.$UserOutreachSettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserOutreachSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsCountArgs} args - Arguments to filter UserOutreachSettings to count.
+     * @example
+     * // Count the number of UserOutreachSettings
+     * const count = await prisma.userOutreachSettings.count({
+     *   where: {
+     *     // ... the filter for the UserOutreachSettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserOutreachSettingsCountArgs>(
+      args?: Subset<T, UserOutreachSettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserOutreachSettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserOutreachSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserOutreachSettingsAggregateArgs>(args: Subset<T, UserOutreachSettingsAggregateArgs>): Prisma.PrismaPromise<GetUserOutreachSettingsAggregateType<T>>
+
+    /**
+     * Group by UserOutreachSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserOutreachSettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserOutreachSettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserOutreachSettingsGroupByArgs['orderBy'] }
+        : { orderBy?: UserOutreachSettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserOutreachSettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserOutreachSettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserOutreachSettings model
+   */
+  readonly fields: UserOutreachSettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserOutreachSettings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserOutreachSettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserOutreachSettings model
+   */
+  interface UserOutreachSettingsFieldRefs {
+    readonly userId: FieldRef<"UserOutreachSettings", 'String'>
+    readonly dailySendLimit: FieldRef<"UserOutreachSettings", 'Int'>
+    readonly sendWindowStart: FieldRef<"UserOutreachSettings", 'String'>
+    readonly sendWindowEnd: FieldRef<"UserOutreachSettings", 'String'>
+    readonly weekdaysOnly: FieldRef<"UserOutreachSettings", 'Boolean'>
+    readonly jitterEnabled: FieldRef<"UserOutreachSettings", 'Boolean'>
+    readonly jitterMinSeconds: FieldRef<"UserOutreachSettings", 'Int'>
+    readonly jitterMaxSeconds: FieldRef<"UserOutreachSettings", 'Int'>
+    readonly createdAt: FieldRef<"UserOutreachSettings", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserOutreachSettings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserOutreachSettings findUnique
+   */
+  export type UserOutreachSettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which UserOutreachSettings to fetch.
+     */
+    where: UserOutreachSettingsWhereUniqueInput
+  }
+
+  /**
+   * UserOutreachSettings findUniqueOrThrow
+   */
+  export type UserOutreachSettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which UserOutreachSettings to fetch.
+     */
+    where: UserOutreachSettingsWhereUniqueInput
+  }
+
+  /**
+   * UserOutreachSettings findFirst
+   */
+  export type UserOutreachSettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which UserOutreachSettings to fetch.
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserOutreachSettings to fetch.
+     */
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserOutreachSettings.
+     */
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserOutreachSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserOutreachSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserOutreachSettings.
+     */
+    distinct?: UserOutreachSettingsScalarFieldEnum | UserOutreachSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * UserOutreachSettings findFirstOrThrow
+   */
+  export type UserOutreachSettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which UserOutreachSettings to fetch.
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserOutreachSettings to fetch.
+     */
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserOutreachSettings.
+     */
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserOutreachSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserOutreachSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserOutreachSettings.
+     */
+    distinct?: UserOutreachSettingsScalarFieldEnum | UserOutreachSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * UserOutreachSettings findMany
+   */
+  export type UserOutreachSettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which UserOutreachSettings to fetch.
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserOutreachSettings to fetch.
+     */
+    orderBy?: UserOutreachSettingsOrderByWithRelationInput | UserOutreachSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserOutreachSettings.
+     */
+    cursor?: UserOutreachSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserOutreachSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserOutreachSettings.
+     */
+    skip?: number
+    distinct?: UserOutreachSettingsScalarFieldEnum | UserOutreachSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * UserOutreachSettings create
+   */
+  export type UserOutreachSettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a UserOutreachSettings.
+     */
+    data: XOR<UserOutreachSettingsCreateInput, UserOutreachSettingsUncheckedCreateInput>
+  }
+
+  /**
+   * UserOutreachSettings createMany
+   */
+  export type UserOutreachSettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserOutreachSettings.
+     */
+    data: UserOutreachSettingsCreateManyInput | UserOutreachSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserOutreachSettings createManyAndReturn
+   */
+  export type UserOutreachSettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserOutreachSettings.
+     */
+    data: UserOutreachSettingsCreateManyInput | UserOutreachSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserOutreachSettings update
+   */
+  export type UserOutreachSettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a UserOutreachSettings.
+     */
+    data: XOR<UserOutreachSettingsUpdateInput, UserOutreachSettingsUncheckedUpdateInput>
+    /**
+     * Choose, which UserOutreachSettings to update.
+     */
+    where: UserOutreachSettingsWhereUniqueInput
+  }
+
+  /**
+   * UserOutreachSettings updateMany
+   */
+  export type UserOutreachSettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserOutreachSettings.
+     */
+    data: XOR<UserOutreachSettingsUpdateManyMutationInput, UserOutreachSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which UserOutreachSettings to update
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * Limit how many UserOutreachSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserOutreachSettings updateManyAndReturn
+   */
+  export type UserOutreachSettingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * The data used to update UserOutreachSettings.
+     */
+    data: XOR<UserOutreachSettingsUpdateManyMutationInput, UserOutreachSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which UserOutreachSettings to update
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * Limit how many UserOutreachSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserOutreachSettings upsert
+   */
+  export type UserOutreachSettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the UserOutreachSettings to update in case it exists.
+     */
+    where: UserOutreachSettingsWhereUniqueInput
+    /**
+     * In case the UserOutreachSettings found by the `where` argument doesn't exist, create a new UserOutreachSettings with this data.
+     */
+    create: XOR<UserOutreachSettingsCreateInput, UserOutreachSettingsUncheckedCreateInput>
+    /**
+     * In case the UserOutreachSettings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserOutreachSettingsUpdateInput, UserOutreachSettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * UserOutreachSettings delete
+   */
+  export type UserOutreachSettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
+    /**
+     * Filter which UserOutreachSettings to delete.
+     */
+    where: UserOutreachSettingsWhereUniqueInput
+  }
+
+  /**
+   * UserOutreachSettings deleteMany
+   */
+  export type UserOutreachSettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserOutreachSettings to delete
+     */
+    where?: UserOutreachSettingsWhereInput
+    /**
+     * Limit how many UserOutreachSettings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserOutreachSettings without action
+   */
+  export type UserOutreachSettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserOutreachSettings
+     */
+    select?: UserOutreachSettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserOutreachSettings
+     */
+    omit?: UserOutreachSettingsOmit<ExtArgs> | null
   }
 
 
@@ -17297,7 +20184,11 @@ export namespace Prisma {
     companyName: 'companyName',
     roleTitle: 'roleTitle',
     pastedContext: 'pastedContext',
+    messageType: 'messageType',
+    jobId: 'jobId',
+    resumeSourceType: 'resumeSourceType',
     resumeId: 'resumeId',
+    uploadedResumeId: 'uploadedResumeId',
     generatedSubject: 'generatedSubject',
     generatedBody: 'generatedBody',
     status: 'status',
@@ -17309,6 +20200,18 @@ export namespace Prisma {
   };
 
   export type QuickApplyEntryScalarFieldEnum = (typeof QuickApplyEntryScalarFieldEnum)[keyof typeof QuickApplyEntryScalarFieldEnum]
+
+
+  export const UploadedResumeScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    fileName: 'fileName',
+    fileUrl: 'fileUrl',
+    fileSizeBytes: 'fileSizeBytes',
+    uploadedAt: 'uploadedAt'
+  };
+
+  export type UploadedResumeScalarFieldEnum = (typeof UploadedResumeScalarFieldEnum)[keyof typeof UploadedResumeScalarFieldEnum]
 
 
   export const SavedJobScalarFieldEnum: {
@@ -17329,10 +20232,35 @@ export namespace Prisma {
     outreachType: 'outreachType',
     outreachStatus: 'outreachStatus',
     scheduledSendTime: 'scheduledSendTime',
-    lastActivityAt: 'lastActivityAt'
+    lastActivityAt: 'lastActivityAt',
+    resumeSourceType: 'resumeSourceType',
+    resumeId: 'resumeId',
+    uploadedResumeId: 'uploadedResumeId',
+    generatedSubject: 'generatedSubject',
+    generatedBody: 'generatedBody',
+    sendAttempts: 'sendAttempts',
+    lastError: 'lastError',
+    sentAt: 'sentAt',
+    gmailMessageIds: 'gmailMessageIds'
   };
 
   export type SavedJobScalarFieldEnum = (typeof SavedJobScalarFieldEnum)[keyof typeof SavedJobScalarFieldEnum]
+
+
+  export const UserOutreachSettingsScalarFieldEnum: {
+    userId: 'userId',
+    dailySendLimit: 'dailySendLimit',
+    sendWindowStart: 'sendWindowStart',
+    sendWindowEnd: 'sendWindowEnd',
+    weekdaysOnly: 'weekdaysOnly',
+    jitterEnabled: 'jitterEnabled',
+    jitterMinSeconds: 'jitterMinSeconds',
+    jitterMaxSeconds: 'jitterMaxSeconds',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserOutreachSettingsScalarFieldEnum = (typeof UserOutreachSettingsScalarFieldEnum)[keyof typeof UserOutreachSettingsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17466,6 +20394,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'QuickApplyMessageType'
+   */
+  export type EnumQuickApplyMessageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyMessageType'>
+    
+
+
+  /**
+   * Reference to a field of type 'QuickApplyMessageType[]'
+   */
+  export type ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyMessageType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ResumeSourceType'
+   */
+  export type EnumResumeSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResumeSourceType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ResumeSourceType[]'
+   */
+  export type ListEnumResumeSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResumeSourceType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'QuickApplyStatus'
    */
   export type EnumQuickApplyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuickApplyStatus'>
@@ -17553,6 +20509,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterListRelationFilter
     analytics?: ResumeAnalyticsListRelationFilter
     quickApplyEntries?: QuickApplyEntryListRelationFilter
+    savedJobs?: SavedJobListRelationFilter
   }
 
   export type ResumeOrderByWithRelationInput = {
@@ -17567,6 +20524,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterOrderByRelationAggregateInput
     analytics?: ResumeAnalyticsOrderByRelationAggregateInput
     quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
+    savedJobs?: SavedJobOrderByRelationAggregateInput
   }
 
   export type ResumeWhereUniqueInput = Prisma.AtLeast<{
@@ -17584,6 +20542,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterListRelationFilter
     analytics?: ResumeAnalyticsListRelationFilter
     quickApplyEntries?: QuickApplyEntryListRelationFilter
+    savedJobs?: SavedJobListRelationFilter
   }, "id">
 
   export type ResumeOrderByWithAggregationInput = {
@@ -18314,7 +21273,11 @@ export namespace Prisma {
     companyName?: StringFilter<"QuickApplyEntry"> | string
     roleTitle?: StringFilter<"QuickApplyEntry"> | string
     pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
-    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    messageType?: EnumQuickApplyMessageTypeFilter<"QuickApplyEntry"> | $Enums.QuickApplyMessageType
+    jobId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"QuickApplyEntry"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
     generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
     generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
     status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
@@ -18323,7 +21286,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
-    resume?: XOR<ResumeScalarRelationFilter, ResumeWhereInput>
+    resume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    uploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }
 
   export type QuickApplyEntryOrderByWithRelationInput = {
@@ -18333,7 +21297,11 @@ export namespace Prisma {
     companyName?: SortOrder
     roleTitle?: SortOrder
     pastedContext?: SortOrderInput | SortOrder
-    resumeId?: SortOrder
+    messageType?: SortOrder
+    jobId?: SortOrderInput | SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrderInput | SortOrder
+    uploadedResumeId?: SortOrderInput | SortOrder
     generatedSubject?: SortOrderInput | SortOrder
     generatedBody?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -18343,6 +21311,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     resume?: ResumeOrderByWithRelationInput
+    uploadedResume?: UploadedResumeOrderByWithRelationInput
   }
 
   export type QuickApplyEntryWhereUniqueInput = Prisma.AtLeast<{
@@ -18355,7 +21324,11 @@ export namespace Prisma {
     companyName?: StringFilter<"QuickApplyEntry"> | string
     roleTitle?: StringFilter<"QuickApplyEntry"> | string
     pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
-    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    messageType?: EnumQuickApplyMessageTypeFilter<"QuickApplyEntry"> | $Enums.QuickApplyMessageType
+    jobId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"QuickApplyEntry"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
     generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
     generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
     status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
@@ -18364,7 +21337,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
-    resume?: XOR<ResumeScalarRelationFilter, ResumeWhereInput>
+    resume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    uploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }, "id">
 
   export type QuickApplyEntryOrderByWithAggregationInput = {
@@ -18374,7 +21348,11 @@ export namespace Prisma {
     companyName?: SortOrder
     roleTitle?: SortOrder
     pastedContext?: SortOrderInput | SortOrder
-    resumeId?: SortOrder
+    messageType?: SortOrder
+    jobId?: SortOrderInput | SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrderInput | SortOrder
+    uploadedResumeId?: SortOrderInput | SortOrder
     generatedSubject?: SortOrderInput | SortOrder
     generatedBody?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -18398,7 +21376,11 @@ export namespace Prisma {
     companyName?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
     roleTitle?: StringWithAggregatesFilter<"QuickApplyEntry"> | string
     pastedContext?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
-    resumeId?: UuidWithAggregatesFilter<"QuickApplyEntry"> | string
+    messageType?: EnumQuickApplyMessageTypeWithAggregatesFilter<"QuickApplyEntry"> | $Enums.QuickApplyMessageType
+    jobId?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    resumeSourceType?: EnumResumeSourceTypeWithAggregatesFilter<"QuickApplyEntry"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
+    uploadedResumeId?: UuidNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
     generatedSubject?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
     generatedBody?: StringNullableWithAggregatesFilter<"QuickApplyEntry"> | string | null
     status?: EnumQuickApplyStatusWithAggregatesFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
@@ -18407,6 +21389,71 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"QuickApplyEntry"> | Date | string
     sentAt?: DateTimeNullableWithAggregatesFilter<"QuickApplyEntry"> | Date | string | null
+  }
+
+  export type UploadedResumeWhereInput = {
+    AND?: UploadedResumeWhereInput | UploadedResumeWhereInput[]
+    OR?: UploadedResumeWhereInput[]
+    NOT?: UploadedResumeWhereInput | UploadedResumeWhereInput[]
+    id?: UuidFilter<"UploadedResume"> | string
+    userId?: StringFilter<"UploadedResume"> | string
+    fileName?: StringFilter<"UploadedResume"> | string
+    fileUrl?: StringFilter<"UploadedResume"> | string
+    fileSizeBytes?: IntFilter<"UploadedResume"> | number
+    uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
+    quickApplyEntries?: QuickApplyEntryListRelationFilter
+    savedJobs?: SavedJobListRelationFilter
+  }
+
+  export type UploadedResumeOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fileName?: SortOrder
+    fileUrl?: SortOrder
+    fileSizeBytes?: SortOrder
+    uploadedAt?: SortOrder
+    quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
+    savedJobs?: SavedJobOrderByRelationAggregateInput
+  }
+
+  export type UploadedResumeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UploadedResumeWhereInput | UploadedResumeWhereInput[]
+    OR?: UploadedResumeWhereInput[]
+    NOT?: UploadedResumeWhereInput | UploadedResumeWhereInput[]
+    userId?: StringFilter<"UploadedResume"> | string
+    fileName?: StringFilter<"UploadedResume"> | string
+    fileUrl?: StringFilter<"UploadedResume"> | string
+    fileSizeBytes?: IntFilter<"UploadedResume"> | number
+    uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
+    quickApplyEntries?: QuickApplyEntryListRelationFilter
+    savedJobs?: SavedJobListRelationFilter
+  }, "id">
+
+  export type UploadedResumeOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fileName?: SortOrder
+    fileUrl?: SortOrder
+    fileSizeBytes?: SortOrder
+    uploadedAt?: SortOrder
+    _count?: UploadedResumeCountOrderByAggregateInput
+    _avg?: UploadedResumeAvgOrderByAggregateInput
+    _max?: UploadedResumeMaxOrderByAggregateInput
+    _min?: UploadedResumeMinOrderByAggregateInput
+    _sum?: UploadedResumeSumOrderByAggregateInput
+  }
+
+  export type UploadedResumeScalarWhereWithAggregatesInput = {
+    AND?: UploadedResumeScalarWhereWithAggregatesInput | UploadedResumeScalarWhereWithAggregatesInput[]
+    OR?: UploadedResumeScalarWhereWithAggregatesInput[]
+    NOT?: UploadedResumeScalarWhereWithAggregatesInput | UploadedResumeScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"UploadedResume"> | string
+    userId?: StringWithAggregatesFilter<"UploadedResume"> | string
+    fileName?: StringWithAggregatesFilter<"UploadedResume"> | string
+    fileUrl?: StringWithAggregatesFilter<"UploadedResume"> | string
+    fileSizeBytes?: IntWithAggregatesFilter<"UploadedResume"> | number
+    uploadedAt?: DateTimeWithAggregatesFilter<"UploadedResume"> | Date | string
   }
 
   export type SavedJobWhereInput = {
@@ -18431,6 +21478,17 @@ export namespace Prisma {
     outreachStatus?: EnumOutreachStatusNullableFilter<"SavedJob"> | $Enums.OutreachStatus | null
     scheduledSendTime?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
     lastActivityAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"SavedJob"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    generatedSubject?: StringNullableFilter<"SavedJob"> | string | null
+    generatedBody?: StringNullableFilter<"SavedJob"> | string | null
+    sendAttempts?: IntFilter<"SavedJob"> | number
+    lastError?: StringNullableFilter<"SavedJob"> | string | null
+    sentAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    gmailMessageIds?: StringNullableListFilter<"SavedJob">
+    resume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    uploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }
 
   export type SavedJobOrderByWithRelationInput = {
@@ -18452,6 +21510,17 @@ export namespace Prisma {
     outreachStatus?: SortOrderInput | SortOrder
     scheduledSendTime?: SortOrderInput | SortOrder
     lastActivityAt?: SortOrderInput | SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrderInput | SortOrder
+    uploadedResumeId?: SortOrderInput | SortOrder
+    generatedSubject?: SortOrderInput | SortOrder
+    generatedBody?: SortOrderInput | SortOrder
+    sendAttempts?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    gmailMessageIds?: SortOrder
+    resume?: ResumeOrderByWithRelationInput
+    uploadedResume?: UploadedResumeOrderByWithRelationInput
   }
 
   export type SavedJobWhereUniqueInput = Prisma.AtLeast<{
@@ -18477,6 +21546,17 @@ export namespace Prisma {
     outreachStatus?: EnumOutreachStatusNullableFilter<"SavedJob"> | $Enums.OutreachStatus | null
     scheduledSendTime?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
     lastActivityAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"SavedJob"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    generatedSubject?: StringNullableFilter<"SavedJob"> | string | null
+    generatedBody?: StringNullableFilter<"SavedJob"> | string | null
+    sendAttempts?: IntFilter<"SavedJob"> | number
+    lastError?: StringNullableFilter<"SavedJob"> | string | null
+    sentAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    gmailMessageIds?: StringNullableListFilter<"SavedJob">
+    resume?: XOR<ResumeNullableScalarRelationFilter, ResumeWhereInput> | null
+    uploadedResume?: XOR<UploadedResumeNullableScalarRelationFilter, UploadedResumeWhereInput> | null
   }, "id" | "userId_externalJobId">
 
   export type SavedJobOrderByWithAggregationInput = {
@@ -18498,9 +21578,20 @@ export namespace Prisma {
     outreachStatus?: SortOrderInput | SortOrder
     scheduledSendTime?: SortOrderInput | SortOrder
     lastActivityAt?: SortOrderInput | SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrderInput | SortOrder
+    uploadedResumeId?: SortOrderInput | SortOrder
+    generatedSubject?: SortOrderInput | SortOrder
+    generatedBody?: SortOrderInput | SortOrder
+    sendAttempts?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    gmailMessageIds?: SortOrder
     _count?: SavedJobCountOrderByAggregateInput
+    _avg?: SavedJobAvgOrderByAggregateInput
     _max?: SavedJobMaxOrderByAggregateInput
     _min?: SavedJobMinOrderByAggregateInput
+    _sum?: SavedJobSumOrderByAggregateInput
   }
 
   export type SavedJobScalarWhereWithAggregatesInput = {
@@ -18525,6 +21616,94 @@ export namespace Prisma {
     outreachStatus?: EnumOutreachStatusNullableWithAggregatesFilter<"SavedJob"> | $Enums.OutreachStatus | null
     scheduledSendTime?: DateTimeNullableWithAggregatesFilter<"SavedJob"> | Date | string | null
     lastActivityAt?: DateTimeNullableWithAggregatesFilter<"SavedJob"> | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeWithAggregatesFilter<"SavedJob"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableWithAggregatesFilter<"SavedJob"> | string | null
+    uploadedResumeId?: UuidNullableWithAggregatesFilter<"SavedJob"> | string | null
+    generatedSubject?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    generatedBody?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    sendAttempts?: IntWithAggregatesFilter<"SavedJob"> | number
+    lastError?: StringNullableWithAggregatesFilter<"SavedJob"> | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"SavedJob"> | Date | string | null
+    gmailMessageIds?: StringNullableListFilter<"SavedJob">
+  }
+
+  export type UserOutreachSettingsWhereInput = {
+    AND?: UserOutreachSettingsWhereInput | UserOutreachSettingsWhereInput[]
+    OR?: UserOutreachSettingsWhereInput[]
+    NOT?: UserOutreachSettingsWhereInput | UserOutreachSettingsWhereInput[]
+    userId?: StringFilter<"UserOutreachSettings"> | string
+    dailySendLimit?: IntFilter<"UserOutreachSettings"> | number
+    sendWindowStart?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowEnd?: StringFilter<"UserOutreachSettings"> | string
+    weekdaysOnly?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
+    jitterMaxSeconds?: IntFilter<"UserOutreachSettings"> | number
+    createdAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+  }
+
+  export type UserOutreachSettingsOrderByWithRelationInput = {
+    userId?: SortOrder
+    dailySendLimit?: SortOrder
+    sendWindowStart?: SortOrder
+    sendWindowEnd?: SortOrder
+    weekdaysOnly?: SortOrder
+    jitterEnabled?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserOutreachSettingsWhereUniqueInput = Prisma.AtLeast<{
+    userId?: string
+    AND?: UserOutreachSettingsWhereInput | UserOutreachSettingsWhereInput[]
+    OR?: UserOutreachSettingsWhereInput[]
+    NOT?: UserOutreachSettingsWhereInput | UserOutreachSettingsWhereInput[]
+    dailySendLimit?: IntFilter<"UserOutreachSettings"> | number
+    sendWindowStart?: StringFilter<"UserOutreachSettings"> | string
+    sendWindowEnd?: StringFilter<"UserOutreachSettings"> | string
+    weekdaysOnly?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterEnabled?: BoolFilter<"UserOutreachSettings"> | boolean
+    jitterMinSeconds?: IntFilter<"UserOutreachSettings"> | number
+    jitterMaxSeconds?: IntFilter<"UserOutreachSettings"> | number
+    createdAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"UserOutreachSettings"> | Date | string
+  }, "userId">
+
+  export type UserOutreachSettingsOrderByWithAggregationInput = {
+    userId?: SortOrder
+    dailySendLimit?: SortOrder
+    sendWindowStart?: SortOrder
+    sendWindowEnd?: SortOrder
+    weekdaysOnly?: SortOrder
+    jitterEnabled?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserOutreachSettingsCountOrderByAggregateInput
+    _avg?: UserOutreachSettingsAvgOrderByAggregateInput
+    _max?: UserOutreachSettingsMaxOrderByAggregateInput
+    _min?: UserOutreachSettingsMinOrderByAggregateInput
+    _sum?: UserOutreachSettingsSumOrderByAggregateInput
+  }
+
+  export type UserOutreachSettingsScalarWhereWithAggregatesInput = {
+    AND?: UserOutreachSettingsScalarWhereWithAggregatesInput | UserOutreachSettingsScalarWhereWithAggregatesInput[]
+    OR?: UserOutreachSettingsScalarWhereWithAggregatesInput[]
+    NOT?: UserOutreachSettingsScalarWhereWithAggregatesInput | UserOutreachSettingsScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"UserOutreachSettings"> | string
+    dailySendLimit?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
+    sendWindowStart?: StringWithAggregatesFilter<"UserOutreachSettings"> | string
+    sendWindowEnd?: StringWithAggregatesFilter<"UserOutreachSettings"> | string
+    weekdaysOnly?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
+    jitterEnabled?: BoolWithAggregatesFilter<"UserOutreachSettings"> | boolean
+    jitterMinSeconds?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
+    jitterMaxSeconds?: IntWithAggregatesFilter<"UserOutreachSettings"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"UserOutreachSettings"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserOutreachSettings"> | Date | string
   }
 
   export type ResumeCreateInput = {
@@ -18539,6 +21718,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateInput = {
@@ -18553,6 +21733,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUpdateInput = {
@@ -18567,6 +21748,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateInput = {
@@ -18581,6 +21763,7 @@ export namespace Prisma {
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeCreateManyInput = {
@@ -19384,6 +22567,9 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -19392,7 +22578,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sentAt?: Date | string | null
-    resume: ResumeCreateNestedOneWithoutQuickApplyEntriesInput
+    resume?: ResumeCreateNestedOneWithoutQuickApplyEntriesInput
+    uploadedResume?: UploadedResumeCreateNestedOneWithoutQuickApplyEntriesInput
   }
 
   export type QuickApplyEntryUncheckedCreateInput = {
@@ -19402,7 +22589,11 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
-    resumeId: string
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    uploadedResumeId?: string | null
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -19420,6 +22611,9 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -19428,7 +22622,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resume?: ResumeUpdateOneRequiredWithoutQuickApplyEntriesNestedInput
+    resume?: ResumeUpdateOneWithoutQuickApplyEntriesNestedInput
+    uploadedResume?: UploadedResumeUpdateOneWithoutQuickApplyEntriesNestedInput
   }
 
   export type QuickApplyEntryUncheckedUpdateInput = {
@@ -19438,7 +22633,11 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
-    resumeId?: StringFieldUpdateOperationsInput | string
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -19456,7 +22655,11 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
-    resumeId: string
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    uploadedResumeId?: string | null
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -19474,6 +22677,9 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -19491,7 +22697,11 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
-    resumeId?: StringFieldUpdateOperationsInput | string
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -19500,6 +22710,77 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UploadedResumeCreateInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeUncheckedCreateInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type UploadedResumeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type UploadedResumeCreateManyInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+  }
+
+  export type UploadedResumeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedResumeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SavedJobCreateInput = {
@@ -19521,6 +22802,15 @@ export namespace Prisma {
     outreachStatus?: $Enums.OutreachStatus | null
     scheduledSendTime?: Date | string | null
     lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+    resume?: ResumeCreateNestedOneWithoutSavedJobsInput
+    uploadedResume?: UploadedResumeCreateNestedOneWithoutSavedJobsInput
   }
 
   export type SavedJobUncheckedCreateInput = {
@@ -19542,6 +22832,15 @@ export namespace Prisma {
     outreachStatus?: $Enums.OutreachStatus | null
     scheduledSendTime?: Date | string | null
     lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    uploadedResumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
   }
 
   export type SavedJobUpdateInput = {
@@ -19563,6 +22862,15 @@ export namespace Prisma {
     outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
     scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+    resume?: ResumeUpdateOneWithoutSavedJobsNestedInput
+    uploadedResume?: UploadedResumeUpdateOneWithoutSavedJobsNestedInput
   }
 
   export type SavedJobUncheckedUpdateInput = {
@@ -19584,6 +22892,15 @@ export namespace Prisma {
     outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
     scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
   }
 
   export type SavedJobCreateManyInput = {
@@ -19605,6 +22922,15 @@ export namespace Prisma {
     outreachStatus?: $Enums.OutreachStatus | null
     scheduledSendTime?: Date | string | null
     lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    uploadedResumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
   }
 
   export type SavedJobUpdateManyMutationInput = {
@@ -19626,6 +22952,13 @@ export namespace Prisma {
     outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
     scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
   }
 
   export type SavedJobUncheckedUpdateManyInput = {
@@ -19647,6 +22980,106 @@ export namespace Prisma {
     outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
     scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+  }
+
+  export type UserOutreachSettingsCreateInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserOutreachSettingsUncheckedCreateInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserOutreachSettingsUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserOutreachSettingsCreateManyInput = {
+    userId: string
+    dailySendLimit?: number
+    sendWindowStart?: string
+    sendWindowEnd?: string
+    weekdaysOnly?: boolean
+    jitterEnabled?: boolean
+    jitterMinSeconds?: number
+    jitterMaxSeconds?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserOutreachSettingsUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserOutreachSettingsUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    dailySendLimit?: IntFieldUpdateOperationsInput | number
+    sendWindowStart?: StringFieldUpdateOperationsInput | string
+    sendWindowEnd?: StringFieldUpdateOperationsInput | string
+    weekdaysOnly?: BoolFieldUpdateOperationsInput | boolean
+    jitterEnabled?: BoolFieldUpdateOperationsInput | boolean
+    jitterMinSeconds?: IntFieldUpdateOperationsInput | number
+    jitterMaxSeconds?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UuidFilter<$PrismaModel = never> = {
@@ -19743,6 +23176,12 @@ export namespace Prisma {
     none?: QuickApplyEntryWhereInput
   }
 
+  export type SavedJobListRelationFilter = {
+    every?: SavedJobWhereInput
+    some?: SavedJobWhereInput
+    none?: SavedJobWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -19757,6 +23196,10 @@ export namespace Prisma {
   }
 
   export type QuickApplyEntryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SavedJobOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20434,11 +23877,35 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumQuickApplyMessageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyMessageType | EnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel> | $Enums.QuickApplyMessageType
+  }
+
+  export type EnumResumeSourceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumResumeSourceTypeFilter<$PrismaModel> | $Enums.ResumeSourceType
+  }
+
   export type EnumQuickApplyStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
     in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumQuickApplyStatusFilter<$PrismaModel> | $Enums.QuickApplyStatus
+  }
+
+  export type ResumeNullableScalarRelationFilter = {
+    is?: ResumeWhereInput | null
+    isNot?: ResumeWhereInput | null
+  }
+
+  export type UploadedResumeNullableScalarRelationFilter = {
+    is?: UploadedResumeWhereInput | null
+    isNot?: UploadedResumeWhereInput | null
   }
 
   export type QuickApplyEntryCountOrderByAggregateInput = {
@@ -20448,7 +23915,11 @@ export namespace Prisma {
     companyName?: SortOrder
     roleTitle?: SortOrder
     pastedContext?: SortOrder
+    messageType?: SortOrder
+    jobId?: SortOrder
+    resumeSourceType?: SortOrder
     resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
     generatedSubject?: SortOrder
     generatedBody?: SortOrder
     status?: SortOrder
@@ -20466,7 +23937,11 @@ export namespace Prisma {
     companyName?: SortOrder
     roleTitle?: SortOrder
     pastedContext?: SortOrder
+    messageType?: SortOrder
+    jobId?: SortOrder
+    resumeSourceType?: SortOrder
     resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
     generatedSubject?: SortOrder
     generatedBody?: SortOrder
     status?: SortOrder
@@ -20484,7 +23959,11 @@ export namespace Prisma {
     companyName?: SortOrder
     roleTitle?: SortOrder
     pastedContext?: SortOrder
+    messageType?: SortOrder
+    jobId?: SortOrder
+    resumeSourceType?: SortOrder
     resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
     generatedSubject?: SortOrder
     generatedBody?: SortOrder
     status?: SortOrder
@@ -20495,6 +23974,26 @@ export namespace Prisma {
     sentAt?: SortOrder
   }
 
+  export type EnumQuickApplyMessageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyMessageType | EnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyMessageTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuickApplyMessageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel>
+    _max?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel>
+  }
+
+  export type EnumResumeSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumResumeSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.ResumeSourceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumResumeSourceTypeFilter<$PrismaModel>
+    _max?: NestedEnumResumeSourceTypeFilter<$PrismaModel>
+  }
+
   export type EnumQuickApplyStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
     in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
@@ -20503,6 +24002,41 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
     _max?: NestedEnumQuickApplyStatusFilter<$PrismaModel>
+  }
+
+  export type UploadedResumeCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fileName?: SortOrder
+    fileUrl?: SortOrder
+    fileSizeBytes?: SortOrder
+    uploadedAt?: SortOrder
+  }
+
+  export type UploadedResumeAvgOrderByAggregateInput = {
+    fileSizeBytes?: SortOrder
+  }
+
+  export type UploadedResumeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fileName?: SortOrder
+    fileUrl?: SortOrder
+    fileSizeBytes?: SortOrder
+    uploadedAt?: SortOrder
+  }
+
+  export type UploadedResumeMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fileName?: SortOrder
+    fileUrl?: SortOrder
+    fileSizeBytes?: SortOrder
+    uploadedAt?: SortOrder
+  }
+
+  export type UploadedResumeSumOrderByAggregateInput = {
+    fileSizeBytes?: SortOrder
   }
 
   export type EnumJobSourceFilter<$PrismaModel = never> = {
@@ -20550,6 +24084,19 @@ export namespace Prisma {
     outreachStatus?: SortOrder
     scheduledSendTime?: SortOrder
     lastActivityAt?: SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    sendAttempts?: SortOrder
+    lastError?: SortOrder
+    sentAt?: SortOrder
+    gmailMessageIds?: SortOrder
+  }
+
+  export type SavedJobAvgOrderByAggregateInput = {
+    sendAttempts?: SortOrder
   }
 
   export type SavedJobMaxOrderByAggregateInput = {
@@ -20570,6 +24117,14 @@ export namespace Prisma {
     outreachStatus?: SortOrder
     scheduledSendTime?: SortOrder
     lastActivityAt?: SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    sendAttempts?: SortOrder
+    lastError?: SortOrder
+    sentAt?: SortOrder
   }
 
   export type SavedJobMinOrderByAggregateInput = {
@@ -20590,6 +24145,18 @@ export namespace Prisma {
     outreachStatus?: SortOrder
     scheduledSendTime?: SortOrder
     lastActivityAt?: SortOrder
+    resumeSourceType?: SortOrder
+    resumeId?: SortOrder
+    uploadedResumeId?: SortOrder
+    generatedSubject?: SortOrder
+    generatedBody?: SortOrder
+    sendAttempts?: SortOrder
+    lastError?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type SavedJobSumOrderByAggregateInput = {
+    sendAttempts?: SortOrder
   }
 
   export type EnumJobSourceWithAggregatesFilter<$PrismaModel = never> = {
@@ -20622,6 +24189,57 @@ export namespace Prisma {
     _max?: NestedEnumOutreachStatusNullableFilter<$PrismaModel>
   }
 
+  export type UserOutreachSettingsCountOrderByAggregateInput = {
+    userId?: SortOrder
+    dailySendLimit?: SortOrder
+    sendWindowStart?: SortOrder
+    sendWindowEnd?: SortOrder
+    weekdaysOnly?: SortOrder
+    jitterEnabled?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserOutreachSettingsAvgOrderByAggregateInput = {
+    dailySendLimit?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+  }
+
+  export type UserOutreachSettingsMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    dailySendLimit?: SortOrder
+    sendWindowStart?: SortOrder
+    sendWindowEnd?: SortOrder
+    weekdaysOnly?: SortOrder
+    jitterEnabled?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserOutreachSettingsMinOrderByAggregateInput = {
+    userId?: SortOrder
+    dailySendLimit?: SortOrder
+    sendWindowStart?: SortOrder
+    sendWindowEnd?: SortOrder
+    weekdaysOnly?: SortOrder
+    jitterEnabled?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserOutreachSettingsSumOrderByAggregateInput = {
+    dailySendLimit?: SortOrder
+    jitterMinSeconds?: SortOrder
+    jitterMaxSeconds?: SortOrder
+  }
+
   export type CoverLetterCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -20643,6 +24261,13 @@ export namespace Prisma {
     connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
   }
 
+  export type SavedJobCreateNestedManyWithoutResumeInput = {
+    create?: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput> | SavedJobCreateWithoutResumeInput[] | SavedJobUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutResumeInput | SavedJobCreateOrConnectWithoutResumeInput[]
+    createMany?: SavedJobCreateManyResumeInputEnvelope
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+  }
+
   export type CoverLetterUncheckedCreateNestedManyWithoutResumeInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -20662,6 +24287,13 @@ export namespace Prisma {
     connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutResumeInput | QuickApplyEntryCreateOrConnectWithoutResumeInput[]
     createMany?: QuickApplyEntryCreateManyResumeInputEnvelope
     connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+  }
+
+  export type SavedJobUncheckedCreateNestedManyWithoutResumeInput = {
+    create?: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput> | SavedJobCreateWithoutResumeInput[] | SavedJobUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutResumeInput | SavedJobCreateOrConnectWithoutResumeInput[]
+    createMany?: SavedJobCreateManyResumeInputEnvelope
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -20718,6 +24350,20 @@ export namespace Prisma {
     deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
   }
 
+  export type SavedJobUpdateManyWithoutResumeNestedInput = {
+    create?: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput> | SavedJobCreateWithoutResumeInput[] | SavedJobUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutResumeInput | SavedJobCreateOrConnectWithoutResumeInput[]
+    upsert?: SavedJobUpsertWithWhereUniqueWithoutResumeInput | SavedJobUpsertWithWhereUniqueWithoutResumeInput[]
+    createMany?: SavedJobCreateManyResumeInputEnvelope
+    set?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    disconnect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    delete?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    update?: SavedJobUpdateWithWhereUniqueWithoutResumeInput | SavedJobUpdateWithWhereUniqueWithoutResumeInput[]
+    updateMany?: SavedJobUpdateManyWithWhereWithoutResumeInput | SavedJobUpdateManyWithWhereWithoutResumeInput[]
+    deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+  }
+
   export type CoverLetterUncheckedUpdateManyWithoutResumeNestedInput = {
     create?: XOR<CoverLetterCreateWithoutResumeInput, CoverLetterUncheckedCreateWithoutResumeInput> | CoverLetterCreateWithoutResumeInput[] | CoverLetterUncheckedCreateWithoutResumeInput[]
     connectOrCreate?: CoverLetterCreateOrConnectWithoutResumeInput | CoverLetterCreateOrConnectWithoutResumeInput[]
@@ -20758,6 +24404,20 @@ export namespace Prisma {
     update?: QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput | QuickApplyEntryUpdateWithWhereUniqueWithoutResumeInput[]
     updateMany?: QuickApplyEntryUpdateManyWithWhereWithoutResumeInput | QuickApplyEntryUpdateManyWithWhereWithoutResumeInput[]
     deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+  }
+
+  export type SavedJobUncheckedUpdateManyWithoutResumeNestedInput = {
+    create?: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput> | SavedJobCreateWithoutResumeInput[] | SavedJobUncheckedCreateWithoutResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutResumeInput | SavedJobCreateOrConnectWithoutResumeInput[]
+    upsert?: SavedJobUpsertWithWhereUniqueWithoutResumeInput | SavedJobUpsertWithWhereUniqueWithoutResumeInput[]
+    createMany?: SavedJobCreateManyResumeInputEnvelope
+    set?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    disconnect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    delete?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    update?: SavedJobUpdateWithWhereUniqueWithoutResumeInput | SavedJobUpdateWithWhereUniqueWithoutResumeInput[]
+    updateMany?: SavedJobUpdateManyWithWhereWithoutResumeInput | SavedJobUpdateManyWithWhereWithoutResumeInput[]
+    deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
   }
 
   export type ResumeCreateNestedOneWithoutCoverLettersInput = {
@@ -20831,20 +24491,146 @@ export namespace Prisma {
     connect?: ResumeWhereUniqueInput
   }
 
+  export type UploadedResumeCreateNestedOneWithoutQuickApplyEntriesInput = {
+    create?: XOR<UploadedResumeCreateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutQuickApplyEntriesInput
+    connect?: UploadedResumeWhereUniqueInput
+  }
+
+  export type EnumQuickApplyMessageTypeFieldUpdateOperationsInput = {
+    set?: $Enums.QuickApplyMessageType
+  }
+
+  export type EnumResumeSourceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ResumeSourceType
+  }
+
   export type EnumQuickApplyStatusFieldUpdateOperationsInput = {
     set?: $Enums.QuickApplyStatus
   }
 
-  export type ResumeUpdateOneRequiredWithoutQuickApplyEntriesNestedInput = {
+  export type ResumeUpdateOneWithoutQuickApplyEntriesNestedInput = {
     create?: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
     connectOrCreate?: ResumeCreateOrConnectWithoutQuickApplyEntriesInput
     upsert?: ResumeUpsertWithoutQuickApplyEntriesInput
+    disconnect?: ResumeWhereInput | boolean
+    delete?: ResumeWhereInput | boolean
     connect?: ResumeWhereUniqueInput
     update?: XOR<XOR<ResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput, ResumeUpdateWithoutQuickApplyEntriesInput>, ResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
   }
 
+  export type UploadedResumeUpdateOneWithoutQuickApplyEntriesNestedInput = {
+    create?: XOR<UploadedResumeCreateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutQuickApplyEntriesInput
+    upsert?: UploadedResumeUpsertWithoutQuickApplyEntriesInput
+    disconnect?: UploadedResumeWhereInput | boolean
+    delete?: UploadedResumeWhereInput | boolean
+    connect?: UploadedResumeWhereUniqueInput
+    update?: XOR<XOR<UploadedResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput, UploadedResumeUpdateWithoutQuickApplyEntriesInput>, UploadedResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+  }
+
+  export type QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
+    createMany?: QuickApplyEntryCreateManyUploadedResumeInputEnvelope
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+  }
+
+  export type SavedJobCreateNestedManyWithoutUploadedResumeInput = {
+    create?: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput> | SavedJobCreateWithoutUploadedResumeInput[] | SavedJobUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutUploadedResumeInput | SavedJobCreateOrConnectWithoutUploadedResumeInput[]
+    createMany?: SavedJobCreateManyUploadedResumeInputEnvelope
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+  }
+
+  export type QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
+    createMany?: QuickApplyEntryCreateManyUploadedResumeInputEnvelope
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+  }
+
+  export type SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput = {
+    create?: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput> | SavedJobCreateWithoutUploadedResumeInput[] | SavedJobUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutUploadedResumeInput | SavedJobCreateOrConnectWithoutUploadedResumeInput[]
+    createMany?: SavedJobCreateManyUploadedResumeInputEnvelope
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+  }
+
+  export type QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
+    upsert?: QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput | QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput[]
+    createMany?: QuickApplyEntryCreateManyUploadedResumeInputEnvelope
+    set?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    disconnect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    delete?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    update?: QuickApplyEntryUpdateWithWhereUniqueWithoutUploadedResumeInput | QuickApplyEntryUpdateWithWhereUniqueWithoutUploadedResumeInput[]
+    updateMany?: QuickApplyEntryUpdateManyWithWhereWithoutUploadedResumeInput | QuickApplyEntryUpdateManyWithWhereWithoutUploadedResumeInput[]
+    deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+  }
+
+  export type SavedJobUpdateManyWithoutUploadedResumeNestedInput = {
+    create?: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput> | SavedJobCreateWithoutUploadedResumeInput[] | SavedJobUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutUploadedResumeInput | SavedJobCreateOrConnectWithoutUploadedResumeInput[]
+    upsert?: SavedJobUpsertWithWhereUniqueWithoutUploadedResumeInput | SavedJobUpsertWithWhereUniqueWithoutUploadedResumeInput[]
+    createMany?: SavedJobCreateManyUploadedResumeInputEnvelope
+    set?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    disconnect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    delete?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    update?: SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput | SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput[]
+    updateMany?: SavedJobUpdateManyWithWhereWithoutUploadedResumeInput | SavedJobUpdateManyWithWhereWithoutUploadedResumeInput[]
+    deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+  }
+
+  export type QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput = {
+    create?: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput> | QuickApplyEntryCreateWithoutUploadedResumeInput[] | QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput | QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput[]
+    upsert?: QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput | QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput[]
+    createMany?: QuickApplyEntryCreateManyUploadedResumeInputEnvelope
+    set?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    disconnect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    delete?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    connect?: QuickApplyEntryWhereUniqueInput | QuickApplyEntryWhereUniqueInput[]
+    update?: QuickApplyEntryUpdateWithWhereUniqueWithoutUploadedResumeInput | QuickApplyEntryUpdateWithWhereUniqueWithoutUploadedResumeInput[]
+    updateMany?: QuickApplyEntryUpdateManyWithWhereWithoutUploadedResumeInput | QuickApplyEntryUpdateManyWithWhereWithoutUploadedResumeInput[]
+    deleteMany?: QuickApplyEntryScalarWhereInput | QuickApplyEntryScalarWhereInput[]
+  }
+
+  export type SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput = {
+    create?: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput> | SavedJobCreateWithoutUploadedResumeInput[] | SavedJobUncheckedCreateWithoutUploadedResumeInput[]
+    connectOrCreate?: SavedJobCreateOrConnectWithoutUploadedResumeInput | SavedJobCreateOrConnectWithoutUploadedResumeInput[]
+    upsert?: SavedJobUpsertWithWhereUniqueWithoutUploadedResumeInput | SavedJobUpsertWithWhereUniqueWithoutUploadedResumeInput[]
+    createMany?: SavedJobCreateManyUploadedResumeInputEnvelope
+    set?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    disconnect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    delete?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    connect?: SavedJobWhereUniqueInput | SavedJobWhereUniqueInput[]
+    update?: SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput | SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput[]
+    updateMany?: SavedJobUpdateManyWithWhereWithoutUploadedResumeInput | SavedJobUpdateManyWithWhereWithoutUploadedResumeInput[]
+    deleteMany?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+  }
+
   export type SavedJobCreatecontactEmailsInput = {
     set: string[]
+  }
+
+  export type SavedJobCreategmailMessageIdsInput = {
+    set: string[]
+  }
+
+  export type ResumeCreateNestedOneWithoutSavedJobsInput = {
+    create?: XOR<ResumeCreateWithoutSavedJobsInput, ResumeUncheckedCreateWithoutSavedJobsInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutSavedJobsInput
+    connect?: ResumeWhereUniqueInput
+  }
+
+  export type UploadedResumeCreateNestedOneWithoutSavedJobsInput = {
+    create?: XOR<UploadedResumeCreateWithoutSavedJobsInput, UploadedResumeUncheckedCreateWithoutSavedJobsInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutSavedJobsInput
+    connect?: UploadedResumeWhereUniqueInput
   }
 
   export type EnumJobSourceFieldUpdateOperationsInput = {
@@ -20862,6 +24648,31 @@ export namespace Prisma {
 
   export type NullableEnumOutreachStatusFieldUpdateOperationsInput = {
     set?: $Enums.OutreachStatus | null
+  }
+
+  export type SavedJobUpdategmailMessageIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ResumeUpdateOneWithoutSavedJobsNestedInput = {
+    create?: XOR<ResumeCreateWithoutSavedJobsInput, ResumeUncheckedCreateWithoutSavedJobsInput>
+    connectOrCreate?: ResumeCreateOrConnectWithoutSavedJobsInput
+    upsert?: ResumeUpsertWithoutSavedJobsInput
+    disconnect?: ResumeWhereInput | boolean
+    delete?: ResumeWhereInput | boolean
+    connect?: ResumeWhereUniqueInput
+    update?: XOR<XOR<ResumeUpdateToOneWithWhereWithoutSavedJobsInput, ResumeUpdateWithoutSavedJobsInput>, ResumeUncheckedUpdateWithoutSavedJobsInput>
+  }
+
+  export type UploadedResumeUpdateOneWithoutSavedJobsNestedInput = {
+    create?: XOR<UploadedResumeCreateWithoutSavedJobsInput, UploadedResumeUncheckedCreateWithoutSavedJobsInput>
+    connectOrCreate?: UploadedResumeCreateOrConnectWithoutSavedJobsInput
+    upsert?: UploadedResumeUpsertWithoutSavedJobsInput
+    disconnect?: UploadedResumeWhereInput | boolean
+    delete?: UploadedResumeWhereInput | boolean
+    connect?: UploadedResumeWhereUniqueInput
+    update?: XOR<XOR<UploadedResumeUpdateToOneWithWhereWithoutSavedJobsInput, UploadedResumeUpdateWithoutSavedJobsInput>, UploadedResumeUncheckedUpdateWithoutSavedJobsInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -21178,11 +24989,45 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumQuickApplyMessageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyMessageType | EnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel> | $Enums.QuickApplyMessageType
+  }
+
+  export type NestedEnumResumeSourceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumResumeSourceTypeFilter<$PrismaModel> | $Enums.ResumeSourceType
+  }
+
   export type NestedEnumQuickApplyStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.QuickApplyStatus | EnumQuickApplyStatusFieldRefInput<$PrismaModel>
     in?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.QuickApplyStatus[] | ListEnumQuickApplyStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumQuickApplyStatusFilter<$PrismaModel> | $Enums.QuickApplyStatus
+  }
+
+  export type NestedEnumQuickApplyMessageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuickApplyMessageType | EnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuickApplyMessageType[] | ListEnumQuickApplyMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuickApplyMessageTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuickApplyMessageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel>
+    _max?: NestedEnumQuickApplyMessageTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumResumeSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResumeSourceType | EnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResumeSourceType[] | ListEnumResumeSourceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumResumeSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.ResumeSourceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumResumeSourceTypeFilter<$PrismaModel>
+    _max?: NestedEnumResumeSourceTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumQuickApplyStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -21309,6 +25154,9 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -21317,6 +25165,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sentAt?: Date | string | null
+    uploadedResume?: UploadedResumeCreateNestedOneWithoutQuickApplyEntriesInput
   }
 
   export type QuickApplyEntryUncheckedCreateWithoutResumeInput = {
@@ -21326,6 +25175,10 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    uploadedResumeId?: string | null
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -21343,6 +25196,74 @@ export namespace Prisma {
 
   export type QuickApplyEntryCreateManyResumeInputEnvelope = {
     data: QuickApplyEntryCreateManyResumeInput | QuickApplyEntryCreateManyResumeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SavedJobCreateWithoutResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+    uploadedResume?: UploadedResumeCreateNestedOneWithoutSavedJobsInput
+  }
+
+  export type SavedJobUncheckedCreateWithoutResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    uploadedResumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+  }
+
+  export type SavedJobCreateOrConnectWithoutResumeInput = {
+    where: SavedJobWhereUniqueInput
+    create: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput>
+  }
+
+  export type SavedJobCreateManyResumeInputEnvelope = {
+    data: SavedJobCreateManyResumeInput | SavedJobCreateManyResumeInput[]
     skipDuplicates?: boolean
   }
 
@@ -21430,7 +25351,11 @@ export namespace Prisma {
     companyName?: StringFilter<"QuickApplyEntry"> | string
     roleTitle?: StringFilter<"QuickApplyEntry"> | string
     pastedContext?: StringNullableFilter<"QuickApplyEntry"> | string | null
-    resumeId?: UuidFilter<"QuickApplyEntry"> | string
+    messageType?: EnumQuickApplyMessageTypeFilter<"QuickApplyEntry"> | $Enums.QuickApplyMessageType
+    jobId?: StringNullableFilter<"QuickApplyEntry"> | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"QuickApplyEntry"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"QuickApplyEntry"> | string | null
     generatedSubject?: StringNullableFilter<"QuickApplyEntry"> | string | null
     generatedBody?: StringNullableFilter<"QuickApplyEntry"> | string | null
     status?: EnumQuickApplyStatusFilter<"QuickApplyEntry"> | $Enums.QuickApplyStatus
@@ -21439,6 +25364,55 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"QuickApplyEntry"> | Date | string
     sentAt?: DateTimeNullableFilter<"QuickApplyEntry"> | Date | string | null
+  }
+
+  export type SavedJobUpsertWithWhereUniqueWithoutResumeInput = {
+    where: SavedJobWhereUniqueInput
+    update: XOR<SavedJobUpdateWithoutResumeInput, SavedJobUncheckedUpdateWithoutResumeInput>
+    create: XOR<SavedJobCreateWithoutResumeInput, SavedJobUncheckedCreateWithoutResumeInput>
+  }
+
+  export type SavedJobUpdateWithWhereUniqueWithoutResumeInput = {
+    where: SavedJobWhereUniqueInput
+    data: XOR<SavedJobUpdateWithoutResumeInput, SavedJobUncheckedUpdateWithoutResumeInput>
+  }
+
+  export type SavedJobUpdateManyWithWhereWithoutResumeInput = {
+    where: SavedJobScalarWhereInput
+    data: XOR<SavedJobUpdateManyMutationInput, SavedJobUncheckedUpdateManyWithoutResumeInput>
+  }
+
+  export type SavedJobScalarWhereInput = {
+    AND?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+    OR?: SavedJobScalarWhereInput[]
+    NOT?: SavedJobScalarWhereInput | SavedJobScalarWhereInput[]
+    id?: UuidFilter<"SavedJob"> | string
+    userId?: StringFilter<"SavedJob"> | string
+    source?: EnumJobSourceFilter<"SavedJob"> | $Enums.JobSource
+    externalJobId?: StringNullableFilter<"SavedJob"> | string | null
+    company?: StringFilter<"SavedJob"> | string
+    jobTitle?: StringFilter<"SavedJob"> | string
+    location?: StringNullableFilter<"SavedJob"> | string | null
+    jobDescription?: StringFilter<"SavedJob"> | string
+    requisitionId?: StringNullableFilter<"SavedJob"> | string | null
+    contactEmails?: StringNullableListFilter<"SavedJob">
+    isBookmarked?: BoolFilter<"SavedJob"> | boolean
+    isQueued?: BoolFilter<"SavedJob"> | boolean
+    addedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    updatedAt?: DateTimeFilter<"SavedJob"> | Date | string
+    outreachType?: EnumOutreachTypeNullableFilter<"SavedJob"> | $Enums.OutreachType | null
+    outreachStatus?: EnumOutreachStatusNullableFilter<"SavedJob"> | $Enums.OutreachStatus | null
+    scheduledSendTime?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    lastActivityAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFilter<"SavedJob"> | $Enums.ResumeSourceType
+    resumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    uploadedResumeId?: UuidNullableFilter<"SavedJob"> | string | null
+    generatedSubject?: StringNullableFilter<"SavedJob"> | string | null
+    generatedBody?: StringNullableFilter<"SavedJob"> | string | null
+    sendAttempts?: IntFilter<"SavedJob"> | number
+    lastError?: StringNullableFilter<"SavedJob"> | string | null
+    sentAt?: DateTimeNullableFilter<"SavedJob"> | Date | string | null
+    gmailMessageIds?: StringNullableListFilter<"SavedJob">
   }
 
   export type ResumeCreateWithoutCoverLettersInput = {
@@ -21452,6 +25426,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutCoverLettersInput = {
@@ -21465,6 +25440,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutCoverLettersInput = {
@@ -21494,6 +25470,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutCoverLettersInput = {
@@ -21507,6 +25484,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeCreateWithoutAnalyticsInput = {
@@ -21520,6 +25498,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutAnalyticsInput = {
@@ -21533,6 +25512,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutAnalyticsInput = {
@@ -21562,6 +25542,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutAnalyticsInput = {
@@ -21575,6 +25556,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeCreateWithoutQuickApplyEntriesInput = {
@@ -21588,6 +25570,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeUncheckedCreateWithoutQuickApplyEntriesInput = {
@@ -21601,11 +25584,37 @@ export namespace Prisma {
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutResumeInput
   }
 
   export type ResumeCreateOrConnectWithoutQuickApplyEntriesInput = {
     where: ResumeWhereUniqueInput
     create: XOR<ResumeCreateWithoutQuickApplyEntriesInput, ResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+  }
+
+  export type UploadedResumeCreateWithoutQuickApplyEntriesInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeCreateOrConnectWithoutQuickApplyEntriesInput = {
+    where: UploadedResumeWhereUniqueInput
+    create: XOR<UploadedResumeCreateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput>
   }
 
   export type ResumeUpsertWithoutQuickApplyEntriesInput = {
@@ -21630,6 +25639,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUpdateManyWithoutResumeNestedInput
   }
 
   export type ResumeUncheckedUpdateWithoutQuickApplyEntriesInput = {
@@ -21643,6 +25653,318 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutResumeNestedInput
+  }
+
+  export type UploadedResumeUpsertWithoutQuickApplyEntriesInput = {
+    update: XOR<UploadedResumeUpdateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+    create: XOR<UploadedResumeCreateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedCreateWithoutQuickApplyEntriesInput>
+    where?: UploadedResumeWhereInput
+  }
+
+  export type UploadedResumeUpdateToOneWithWhereWithoutQuickApplyEntriesInput = {
+    where?: UploadedResumeWhereInput
+    data: XOR<UploadedResumeUpdateWithoutQuickApplyEntriesInput, UploadedResumeUncheckedUpdateWithoutQuickApplyEntriesInput>
+  }
+
+  export type UploadedResumeUpdateWithoutQuickApplyEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type UploadedResumeUncheckedUpdateWithoutQuickApplyEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type QuickApplyEntryCreateWithoutUploadedResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+    resume?: ResumeCreateNestedOneWithoutQuickApplyEntriesInput
+  }
+
+  export type QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type QuickApplyEntryCreateOrConnectWithoutUploadedResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    create: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput>
+  }
+
+  export type QuickApplyEntryCreateManyUploadedResumeInputEnvelope = {
+    data: QuickApplyEntryCreateManyUploadedResumeInput | QuickApplyEntryCreateManyUploadedResumeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SavedJobCreateWithoutUploadedResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+    resume?: ResumeCreateNestedOneWithoutSavedJobsInput
+  }
+
+  export type SavedJobUncheckedCreateWithoutUploadedResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+  }
+
+  export type SavedJobCreateOrConnectWithoutUploadedResumeInput = {
+    where: SavedJobWhereUniqueInput
+    create: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput>
+  }
+
+  export type SavedJobCreateManyUploadedResumeInputEnvelope = {
+    data: SavedJobCreateManyUploadedResumeInput | SavedJobCreateManyUploadedResumeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type QuickApplyEntryUpsertWithWhereUniqueWithoutUploadedResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    update: XOR<QuickApplyEntryUpdateWithoutUploadedResumeInput, QuickApplyEntryUncheckedUpdateWithoutUploadedResumeInput>
+    create: XOR<QuickApplyEntryCreateWithoutUploadedResumeInput, QuickApplyEntryUncheckedCreateWithoutUploadedResumeInput>
+  }
+
+  export type QuickApplyEntryUpdateWithWhereUniqueWithoutUploadedResumeInput = {
+    where: QuickApplyEntryWhereUniqueInput
+    data: XOR<QuickApplyEntryUpdateWithoutUploadedResumeInput, QuickApplyEntryUncheckedUpdateWithoutUploadedResumeInput>
+  }
+
+  export type QuickApplyEntryUpdateManyWithWhereWithoutUploadedResumeInput = {
+    where: QuickApplyEntryScalarWhereInput
+    data: XOR<QuickApplyEntryUpdateManyMutationInput, QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeInput>
+  }
+
+  export type SavedJobUpsertWithWhereUniqueWithoutUploadedResumeInput = {
+    where: SavedJobWhereUniqueInput
+    update: XOR<SavedJobUpdateWithoutUploadedResumeInput, SavedJobUncheckedUpdateWithoutUploadedResumeInput>
+    create: XOR<SavedJobCreateWithoutUploadedResumeInput, SavedJobUncheckedCreateWithoutUploadedResumeInput>
+  }
+
+  export type SavedJobUpdateWithWhereUniqueWithoutUploadedResumeInput = {
+    where: SavedJobWhereUniqueInput
+    data: XOR<SavedJobUpdateWithoutUploadedResumeInput, SavedJobUncheckedUpdateWithoutUploadedResumeInput>
+  }
+
+  export type SavedJobUpdateManyWithWhereWithoutUploadedResumeInput = {
+    where: SavedJobScalarWhereInput
+    data: XOR<SavedJobUpdateManyMutationInput, SavedJobUncheckedUpdateManyWithoutUploadedResumeInput>
+  }
+
+  export type ResumeCreateWithoutSavedJobsInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeUncheckedCreateWithoutSavedJobsInput = {
+    id?: string
+    userId: string
+    title: string
+    templateId: string
+    data: JsonNullValueInput | InputJsonValue
+    latexSource?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
+    analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutResumeInput
+  }
+
+  export type ResumeCreateOrConnectWithoutSavedJobsInput = {
+    where: ResumeWhereUniqueInput
+    create: XOR<ResumeCreateWithoutSavedJobsInput, ResumeUncheckedCreateWithoutSavedJobsInput>
+  }
+
+  export type UploadedResumeCreateWithoutSavedJobsInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeUncheckedCreateWithoutSavedJobsInput = {
+    id?: string
+    userId: string
+    fileName: string
+    fileUrl: string
+    fileSizeBytes: number
+    uploadedAt?: Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
+  }
+
+  export type UploadedResumeCreateOrConnectWithoutSavedJobsInput = {
+    where: UploadedResumeWhereUniqueInput
+    create: XOR<UploadedResumeCreateWithoutSavedJobsInput, UploadedResumeUncheckedCreateWithoutSavedJobsInput>
+  }
+
+  export type ResumeUpsertWithoutSavedJobsInput = {
+    update: XOR<ResumeUpdateWithoutSavedJobsInput, ResumeUncheckedUpdateWithoutSavedJobsInput>
+    create: XOR<ResumeCreateWithoutSavedJobsInput, ResumeUncheckedCreateWithoutSavedJobsInput>
+    where?: ResumeWhereInput
+  }
+
+  export type ResumeUpdateToOneWithWhereWithoutSavedJobsInput = {
+    where?: ResumeWhereInput
+    data: XOR<ResumeUpdateWithoutSavedJobsInput, ResumeUncheckedUpdateWithoutSavedJobsInput>
+  }
+
+  export type ResumeUpdateWithoutSavedJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutResumeNestedInput
+  }
+
+  export type ResumeUncheckedUpdateWithoutSavedJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    data?: JsonNullValueInput | InputJsonValue
+    latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
+    analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutResumeNestedInput
+  }
+
+  export type UploadedResumeUpsertWithoutSavedJobsInput = {
+    update: XOR<UploadedResumeUpdateWithoutSavedJobsInput, UploadedResumeUncheckedUpdateWithoutSavedJobsInput>
+    create: XOR<UploadedResumeCreateWithoutSavedJobsInput, UploadedResumeUncheckedCreateWithoutSavedJobsInput>
+    where?: UploadedResumeWhereInput
+  }
+
+  export type UploadedResumeUpdateToOneWithWhereWithoutSavedJobsInput = {
+    where?: UploadedResumeWhereInput
+    data: XOR<UploadedResumeUpdateWithoutSavedJobsInput, UploadedResumeUncheckedUpdateWithoutSavedJobsInput>
+  }
+
+  export type UploadedResumeUpdateWithoutSavedJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
+  }
+
+  export type UploadedResumeUncheckedUpdateWithoutSavedJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileSizeBytes?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
   }
 
   export type CoverLetterCreateManyResumeInput = {
@@ -21670,6 +25992,10 @@ export namespace Prisma {
     companyName: string
     roleTitle: string
     pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    uploadedResumeId?: string | null
     generatedSubject?: string | null
     generatedBody?: string | null
     status?: $Enums.QuickApplyStatus
@@ -21678,6 +26004,35 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sentAt?: Date | string | null
+  }
+
+  export type SavedJobCreateManyResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    uploadedResumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
   }
 
   export type CoverLetterUpdateWithoutResumeInput = {
@@ -21741,6 +26096,9 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -21749,6 +26107,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    uploadedResume?: UploadedResumeUpdateOneWithoutQuickApplyEntriesNestedInput
   }
 
   export type QuickApplyEntryUncheckedUpdateWithoutResumeInput = {
@@ -21758,6 +26117,10 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -21775,6 +26138,10 @@ export namespace Prisma {
     companyName?: StringFieldUpdateOperationsInput | string
     roleTitle?: StringFieldUpdateOperationsInput | string
     pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
     generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
     generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
@@ -21783,6 +26150,293 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SavedJobUpdateWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+    uploadedResume?: UploadedResumeUpdateOneWithoutSavedJobsNestedInput
+  }
+
+  export type SavedJobUncheckedUpdateWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+  }
+
+  export type SavedJobUncheckedUpdateManyWithoutResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    uploadedResumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+  }
+
+  export type QuickApplyEntryCreateManyUploadedResumeInput = {
+    id?: string
+    userId: string
+    recipientEmail: string
+    companyName: string
+    roleTitle: string
+    pastedContext?: string | null
+    messageType?: $Enums.QuickApplyMessageType
+    jobId?: string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    status?: $Enums.QuickApplyStatus
+    gmailMessageId?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+  }
+
+  export type SavedJobCreateManyUploadedResumeInput = {
+    id?: string
+    userId: string
+    source: $Enums.JobSource
+    externalJobId?: string | null
+    company: string
+    jobTitle: string
+    location?: string | null
+    jobDescription: string
+    requisitionId?: string | null
+    contactEmails?: SavedJobCreatecontactEmailsInput | string[]
+    isBookmarked?: boolean
+    isQueued?: boolean
+    addedAt?: Date | string
+    updatedAt?: Date | string
+    outreachType?: $Enums.OutreachType | null
+    outreachStatus?: $Enums.OutreachStatus | null
+    scheduledSendTime?: Date | string | null
+    lastActivityAt?: Date | string | null
+    resumeSourceType?: $Enums.ResumeSourceType
+    resumeId?: string | null
+    generatedSubject?: string | null
+    generatedBody?: string | null
+    sendAttempts?: number
+    lastError?: string | null
+    sentAt?: Date | string | null
+    gmailMessageIds?: SavedJobCreategmailMessageIdsInput | string[]
+  }
+
+  export type QuickApplyEntryUpdateWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resume?: ResumeUpdateOneWithoutQuickApplyEntriesNestedInput
+  }
+
+  export type QuickApplyEntryUncheckedUpdateWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    roleTitle?: StringFieldUpdateOperationsInput | string
+    pastedContext?: NullableStringFieldUpdateOperationsInput | string | null
+    messageType?: EnumQuickApplyMessageTypeFieldUpdateOperationsInput | $Enums.QuickApplyMessageType
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumQuickApplyStatusFieldUpdateOperationsInput | $Enums.QuickApplyStatus
+    gmailMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SavedJobUpdateWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+    resume?: ResumeUpdateOneWithoutSavedJobsNestedInput
+  }
+
+  export type SavedJobUncheckedUpdateWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
+  }
+
+  export type SavedJobUncheckedUpdateManyWithoutUploadedResumeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumJobSourceFieldUpdateOperationsInput | $Enums.JobSource
+    externalJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: StringFieldUpdateOperationsInput | string
+    jobTitle?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    jobDescription?: StringFieldUpdateOperationsInput | string
+    requisitionId?: NullableStringFieldUpdateOperationsInput | string | null
+    contactEmails?: SavedJobUpdatecontactEmailsInput | string[]
+    isBookmarked?: BoolFieldUpdateOperationsInput | boolean
+    isQueued?: BoolFieldUpdateOperationsInput | boolean
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outreachType?: NullableEnumOutreachTypeFieldUpdateOperationsInput | $Enums.OutreachType | null
+    outreachStatus?: NullableEnumOutreachStatusFieldUpdateOperationsInput | $Enums.OutreachStatus | null
+    scheduledSendTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastActivityAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resumeSourceType?: EnumResumeSourceTypeFieldUpdateOperationsInput | $Enums.ResumeSourceType
+    resumeId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedBody?: NullableStringFieldUpdateOperationsInput | string | null
+    sendAttempts?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gmailMessageIds?: SavedJobUpdategmailMessageIdsInput | string[]
   }
 
 

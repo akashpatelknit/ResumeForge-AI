@@ -229,12 +229,12 @@ export default function Sidebar() {
           {/* Logo */}
           <div className="p-5 border-b border-gray-100 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-200">
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-200">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  ResumeForge
+                <h1 className="font-bold text-xl bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Rezlo
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">AI Powered</p>
               </div>
@@ -258,7 +258,7 @@ export default function Sidebar() {
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
                       ${
                         isActive
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-200"
+                          ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-200"
                           : "text-gray-700 hover:bg-gray-100 hover:translate-x-1"
                       }`}
                   >
@@ -312,7 +312,7 @@ export default function Sidebar() {
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
                               ${
                                 isChildActiveRoute
-                                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-100"
+                                  ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-100"
                                   : "text-gray-600 hover:bg-gray-100 hover:translate-x-1"
                               }`}
                           >

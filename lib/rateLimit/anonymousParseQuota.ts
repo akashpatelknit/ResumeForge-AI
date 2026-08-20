@@ -1,7 +1,7 @@
 import "server-only";
 import { getRedis } from "@/lib/redis";
 
-export const ANON_ID_COOKIE = "resumeforge_anon_id";
+export const ANON_ID_COOKIE = "rezlo_anon_id";
 export const FREE_PARSE_LIMIT = 5;
 
 // ~180 days — long enough that the "5 free tries" limit is a real limit

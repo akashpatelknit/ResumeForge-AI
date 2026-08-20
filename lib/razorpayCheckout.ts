@@ -79,7 +79,7 @@ export async function openRazorpayCheckout({
   const checkout = new window.Razorpay({
     key: keyId,
     subscription_id: subscriptionId,
-    name: "ResumeForge AI",
+    name: "Rezlo",
     description: "Pro subscription — ₹149/month",
     prefill,
     theme: { color: "#7c3aed" },

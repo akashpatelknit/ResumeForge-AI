@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/types/resume";
 
-export const PENDING_PARSE_KEY = "resumeforge_pending_parse";
-export const PENDING_WIZARD_KEY = "resumeforge_pending_wizard";
+export const PENDING_PARSE_KEY = "rezlo_pending_parse";
+export const PENDING_WIZARD_KEY = "rezlo_pending_wizard";
 
 export interface PendingResume {
   data: ResumeData;

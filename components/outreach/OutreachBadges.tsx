@@ -13,10 +13,13 @@ export const STATUS_STYLES: Record<OutreachStatus, { text: string; dot: string }
   approved: { text: "text-brand-purple", dot: "bg-brand-purple" },
   generated: { text: "text-blue-600", dot: "bg-blue-500" },
   scheduled: { text: "text-orange-600", dot: "bg-orange-500" },
+  generating: { text: "text-indigo-600", dot: "bg-indigo-500" },
+  sending: { text: "text-indigo-600", dot: "bg-indigo-500" },
   sent: { text: "text-emerald-600", dot: "bg-emerald-500" },
   replied: { text: "text-teal-600", dot: "bg-teal-500" },
   bounced: { text: "text-red-600", dot: "bg-red-500" },
   draft: { text: "text-gray-500", dot: "bg-gray-400" },
+  failed: { text: "text-red-600", dot: "bg-red-500" },
 };
 
 // Muted, brand-adjacent tints keyed off the company's initial rather than

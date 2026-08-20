@@ -16,6 +16,7 @@ export interface QuickApplyExtractResult {
   recipientEmail: string | null;
   companyName: string | null;
   roleTitle: string | null;
+  jobId: string | null;
 }
 
 function cleanField(value: unknown): string | null {
@@ -34,11 +35,13 @@ export async function generateQuickApplyExtract(pastedText: string): Promise<Qui
     recipientEmail?: unknown;
     companyName?: unknown;
     roleTitle?: unknown;
+    jobId?: unknown;
   };
 
   return {
     recipientEmail: cleanField(parsed.recipientEmail),
     companyName: cleanField(parsed.companyName),
     roleTitle: cleanField(parsed.roleTitle),
+    jobId: cleanField(parsed.jobId),
   };
 }

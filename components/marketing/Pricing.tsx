@@ -58,9 +58,9 @@ const Pricing = () => (
   <section id="pricing" className="py-20 lg:py-32">
     <div className="container mx-auto px-4 lg:px-6">
       <div className="mx-auto mb-16 max-w-2xl text-center">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Simple, <span className="text-gradient">Transparent Pricing</span>
-        </h2>
+        </h1>
         <p className="text-lg text-muted-foreground">
           No hidden fees. Start free, upgrade when you're ready.
         </p>

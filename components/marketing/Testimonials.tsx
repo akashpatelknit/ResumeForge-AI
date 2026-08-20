@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "I landed 3 interviews in my first week after using ResumeForge AI. The ATS optimization made all the difference — got 3x more callbacks.",
+      "I landed 3 interviews in my first week after using Rezlo. The ATS optimization made all the difference — got 3x more callbacks.",
     name: "Sarah Chen",
     role: "Software Engineer at Google",
     result: "3x more interviews",
@@ -33,7 +33,7 @@ const Testimonials = () => (
           Success <span className="text-gradient">Stories</span>
         </h2>
         <p className="text-lg text-muted-foreground">
-          See how ResumeForge AI helped professionals land their dream jobs.
+          See how Rezlo helped professionals land their dream jobs.
         </p>
       </div>
 

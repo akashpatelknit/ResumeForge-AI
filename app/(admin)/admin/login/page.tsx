@@ -48,7 +48,7 @@ export default function AdminLoginPage() {
           </div>
           <div>
             <p className="text-lg font-bold text-gray-900">Admin Panel</p>
-            <p className="text-sm text-gray-500">ResumeForge AI</p>
+            <p className="text-sm text-gray-500">Rezlo</p>
           </div>
         </div>
 

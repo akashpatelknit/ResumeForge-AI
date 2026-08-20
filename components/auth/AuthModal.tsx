@@ -49,7 +49,7 @@ export function AuthModal() {
           </DialogTitle>
           <DialogDescription>
             {view === "sign-in"
-              ? "Sign in to ResumeForge AI to continue."
+              ? "Sign in to Rezlo to continue."
               : "Sign up to start building your resume with AI."}
           </DialogDescription>
         </DialogHeader>

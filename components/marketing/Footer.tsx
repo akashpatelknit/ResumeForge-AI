@@ -19,7 +19,7 @@ const Footer = () => (
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-hero">
               <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
-            ResumeForge AI
+            Rezlo
           </a>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
             AI-powered resumes that get you hired. Build, optimize, and download
@@ -63,7 +63,7 @@ const Footer = () => (
 
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-xs text-muted-foreground">
-          &copy; {new Date().getFullYear()} ResumeForge AI. All rights reserved.
+          &copy; {new Date().getFullYear()} Rezlo. All rights reserved.
         </p>
         <div className="flex gap-4">
           {["LinkedIn", "Twitter", "GitHub"].map((social) => (

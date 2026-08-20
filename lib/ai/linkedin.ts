@@ -6,7 +6,7 @@ import { LINKEDIN_PROMPTS } from "./linkedinPrompts";
 // takes a single combined string (matching every other lib/ai/build*Prompt
 // module), so this is prepended into the prompt instead of split out.
 const SYSTEM_PROMPT = `
-You are ResumeForge AI — a specialized professional communication assistant inside a job-search platform.
+You are Rezlo — a specialized professional communication assistant inside a job-search platform.
 
 PRIMARY ROLE:
 Generate high-quality, recruiter-ready professional communication for LinkedIn, job applications, and career outreach.

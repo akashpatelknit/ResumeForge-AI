@@ -247,7 +247,11 @@ exports.Prisma.QuickApplyEntryScalarFieldEnum = {
   companyName: 'companyName',
   roleTitle: 'roleTitle',
   pastedContext: 'pastedContext',
+  messageType: 'messageType',
+  jobId: 'jobId',
+  resumeSourceType: 'resumeSourceType',
   resumeId: 'resumeId',
+  uploadedResumeId: 'uploadedResumeId',
   generatedSubject: 'generatedSubject',
   generatedBody: 'generatedBody',
   status: 'status',
@@ -256,6 +260,15 @@ exports.Prisma.QuickApplyEntryScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sentAt: 'sentAt'
+};
+
+exports.Prisma.UploadedResumeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSizeBytes: 'fileSizeBytes',
+  uploadedAt: 'uploadedAt'
 };
 
 exports.Prisma.SavedJobScalarFieldEnum = {
@@ -276,7 +289,29 @@ exports.Prisma.SavedJobScalarFieldEnum = {
   outreachType: 'outreachType',
   outreachStatus: 'outreachStatus',
   scheduledSendTime: 'scheduledSendTime',
-  lastActivityAt: 'lastActivityAt'
+  lastActivityAt: 'lastActivityAt',
+  resumeSourceType: 'resumeSourceType',
+  resumeId: 'resumeId',
+  uploadedResumeId: 'uploadedResumeId',
+  generatedSubject: 'generatedSubject',
+  generatedBody: 'generatedBody',
+  sendAttempts: 'sendAttempts',
+  lastError: 'lastError',
+  sentAt: 'sentAt',
+  gmailMessageIds: 'gmailMessageIds'
+};
+
+exports.Prisma.UserOutreachSettingsScalarFieldEnum = {
+  userId: 'userId',
+  dailySendLimit: 'dailySendLimit',
+  sendWindowStart: 'sendWindowStart',
+  sendWindowEnd: 'sendWindowEnd',
+  weekdaysOnly: 'weekdaysOnly',
+  jitterEnabled: 'jitterEnabled',
+  jitterMinSeconds: 'jitterMinSeconds',
+  jitterMaxSeconds: 'jitterMaxSeconds',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -315,6 +350,16 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   cancelled: 'cancelled'
 };
 
+exports.QuickApplyMessageType = exports.$Enums.QuickApplyMessageType = {
+  cold_application: 'cold_application',
+  referral_request: 'referral_request'
+};
+
+exports.ResumeSourceType = exports.$Enums.ResumeSourceType = {
+  builder: 'builder',
+  uploaded: 'uploaded'
+};
+
 exports.QuickApplyStatus = exports.$Enums.QuickApplyStatus = {
   draft: 'draft',
   generated: 'generated',
@@ -339,9 +384,12 @@ exports.OutreachStatus = exports.$Enums.OutreachStatus = {
   generated: 'generated',
   approved: 'approved',
   scheduled: 'scheduled',
+  generating: 'generating',
+  sending: 'sending',
   sent: 'sent',
   replied: 'replied',
-  bounced: 'bounced'
+  bounced: 'bounced',
+  failed: 'failed'
 };
 
 exports.Prisma.ModelName = {
@@ -358,7 +406,9 @@ exports.Prisma.ModelName = {
   UsageCounter: 'UsageCounter',
   GmailAccount: 'GmailAccount',
   QuickApplyEntry: 'QuickApplyEntry',
-  SavedJob: 'SavedJob'
+  UploadedResume: 'UploadedResume',
+  SavedJob: 'SavedJob',
+  UserOutreachSettings: 'UserOutreachSettings'
 };
 
 /**

@@ -22,7 +22,7 @@ const BeforeAfter = () => (
     <div className="container mx-auto px-4 lg:px-6">
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Why ResumeForge AI <span className="text-gradient">Wins</span>
+          Why Rezlo <span className="text-gradient">Wins</span>
         </h2>
         <p className="text-lg text-muted-foreground">
           See the difference AI makes in your job search.
@@ -50,10 +50,10 @@ const BeforeAfter = () => (
           </CardContent>
         </Card>
 
-        {/* ResumeForge */}
+        {/* Rezlo */}
         <Card className="border-primary/20 bg-primary/[0.03] shadow-lg shadow-primary/5">
           <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-semibold">ResumeForge AI</h3>
+            <h3 className="mb-4 text-lg font-semibold">Rezlo</h3>
             <ul className="space-y-3">
               {forge.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm">

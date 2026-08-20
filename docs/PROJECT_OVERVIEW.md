@@ -1,4 +1,4 @@
-# ResumeForge AI — Project Overview
+# Rezlo — Project Overview
 
 This is the ground-truth doc: everything here was verified against the actual source, not the README's aspirational feature list. Where the existing docs in this folder (`ARCHITECTURE.md`, `DASHBOARD.md`, etc.) disagree with the code, the code wins and the discrepancy is called out below.
 

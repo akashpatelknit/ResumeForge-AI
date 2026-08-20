@@ -7,7 +7,7 @@
 ```
 ┌─────────────────────────────────┐
 │                                 │
-│  [Logo] ResumeForge              │
+│  [Logo] Rezlo              │
 │                                 │
 │  🏠 Dashboard ← Active           │
 │  📄 My Resumes                   │
@@ -168,7 +168,7 @@ Color Variations:
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
-│ [≡] ResumeForge    │   Welcome back, John          🔍 📳 👤      │
+│ [≡] Rezlo    │   Welcome back, John          🔍 📳 👤      │
 │                    │   Here's what's happening...                 │
 ├────────────────────┼───────────────────────────────────────────────┤
 │                    │                                               │

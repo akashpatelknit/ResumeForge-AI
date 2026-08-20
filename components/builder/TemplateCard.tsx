@@ -17,7 +17,7 @@ export default function TemplateCard({
       <img
         src={template.thumbnail}
         alt={template.name}
-        className="w-full max-w-[200px] mb-4"
+        className="w-full max-w-50 mb-4"
       />
       <h2 className="text-xl font-bold">{template.name}</h2>
       <p className="text-gray-600">{template.description}</p>

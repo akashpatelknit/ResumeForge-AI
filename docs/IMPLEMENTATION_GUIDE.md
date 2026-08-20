@@ -1,4 +1,4 @@
-# ResumeForge AI Dashboard - Implementation Guide
+# Rezlo Dashboard - Implementation Guide
 
 ## Quick Start
 
@@ -150,7 +150,7 @@ const accentGradients = {
 };
 
 // Customize the card background
-className={`p-6 bg-gradient-to-br ${accentGradients[accentColor]}`}
+className={`p-6 bg-linear-to-br ${accentGradients[accentColor]}`}
 ```
 
 ### 4. QuickActions
@@ -585,4 +585,4 @@ import { CustomChart } from "@/components/dashboard/CustomChart";
 
 ## License
 
-This dashboard implementation is part of the ResumeForge AI application.
+This dashboard implementation is part of the Rezlo application.

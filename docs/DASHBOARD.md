@@ -1,8 +1,8 @@
-# ResumeForge AI - Dashboard Documentation
+# Rezlo - Dashboard Documentation
 
 ## Overview
 
-A modern, professional admin dashboard for the ResumeForge AI resume builder SaaS application. The dashboard provides users with resume analytics, management tools, and AI-powered recommendations.
+A modern, professional admin dashboard for the Rezlo resume builder SaaS application. The dashboard provides users with resume analytics, management tools, and AI-powered recommendations.
 
 ## Project Structure
 

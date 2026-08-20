@@ -1,11 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getResume } from "@/lib/db/resumes";
+import { getUploadedResume } from "@/lib/db/uploadedResumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
+import { extractUploadedResumeText } from "@/lib/textExtraction/extractUploadedResumeText";
+import { ResumeFileError } from "@/lib/textExtraction/extractResumeText";
 import { generateQuickApplyEmail } from "@/lib/ai/generateQuickApplyEmail";
+import type { ResumeContext } from "@/lib/ai/formatResumeContext";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import { isValidEmailFormat, looksLikeGibberish } from "@/lib/validation/textSanity";
 import { prisma } from "@/lib/prisma";
+
+// extractUploadedResumeText → extractResumeText needs Node APIs (Buffer,
+// pdf-parse) — not available on the edge runtime.
+export const runtime = "nodejs";
+
+// Resolves the "Resume to Attach" selection into (a) a ResumeContext for the
+// AI prompt and (b) the resumeId/uploadedResumeId pair to persist on the
+// QuickApplyEntry — shared by this route and draft/route.ts so the two
+// don't disagree about what counts as a valid selection.
+async function resolveResumeSelection(
+  userId: string,
+  resumeSourceType: "builder" | "uploaded",
+  resumeId: string,
+  uploadedResumeId: string,
+): Promise<
+  | { ok: true; resumeContext: ResumeContext; resumeId: string | null; uploadedResumeId: string | null }
+  | { ok: false; status: number; error: string }
+> {
+  if (resumeSourceType === "uploaded") {
+    if (!uploadedResumeId) {
+      return { ok: false, status: 400, error: "uploadedResumeId is required" };
+    }
+    const uploaded = await getUploadedResume(uploadedResumeId, userId);
+    if (!uploaded) {
+      return { ok: false, status: 404, error: "Uploaded resume not found" };
+    }
+
+    let text: string;
+    try {
+      text = await extractUploadedResumeText(uploaded.fileUrl, uploaded.fileName);
+    } catch (error) {
+      const message = error instanceof ResumeFileError ? error.message : "Could not read the uploaded resume.";
+      return { ok: false, status: 400, error: message };
+    }
+
+    return {
+      ok: true,
+      resumeContext: { kind: "text", text },
+      resumeId: null,
+      uploadedResumeId: uploaded.id,
+    };
+  }
+
+  if (!resumeId) {
+    return { ok: false, status: 400, error: "resumeId is required" };
+  }
+  const resumeRow = await getResume(resumeId, userId);
+  if (!resumeRow) {
+    return { ok: false, status: 404, error: "Resume not found" };
+  }
+
+  return {
+    ok: true,
+    resumeContext: { kind: "structured", resume: mapResumeFromDB(resumeRow) },
+    resumeId: resumeRow.id,
+    uploadedResumeId: null,
+  };
+}
 
 // Generates the email AND persists it as a QuickApplyEntry (status
 // "generated") in one call. `entryId` is optional: pass the id returned by
@@ -34,7 +96,12 @@ export async function POST(request: NextRequest) {
   const companyName = typeof b.companyName === "string" ? b.companyName.trim() : "";
   const roleTitle = typeof b.roleTitle === "string" ? b.roleTitle.trim() : "";
   const pastedContext = typeof b.pastedContext === "string" ? b.pastedContext.trim() : "";
+  const resumeSourceType: "builder" | "uploaded" = b.resumeSourceType === "uploaded" ? "uploaded" : "builder";
   const resumeId = typeof b.resumeId === "string" ? b.resumeId.trim() : "";
+  const uploadedResumeId = typeof b.uploadedResumeId === "string" ? b.uploadedResumeId.trim() : "";
+  const messageType: "cold_application" | "referral_request" =
+    b.messageType === "referral_request" ? "referral_request" : "cold_application";
+  const jobId = typeof b.jobId === "string" ? b.jobId.trim() : "";
 
   if (!recipientEmail || !isValidEmailFormat(recipientEmail)) {
     return NextResponse.json({ error: "A valid recipient email is required" }, { status: 400 });
@@ -45,15 +112,11 @@ export async function POST(request: NextRequest) {
   if (!roleTitle || looksLikeGibberish(roleTitle)) {
     return NextResponse.json({ error: "Role / position doesn't look valid — please check it" }, { status: 400 });
   }
-  if (!resumeId) {
-    return NextResponse.json({ error: "resumeId is required" }, { status: 400 });
-  }
 
-  const resumeRow = await getResume(resumeId, userId);
-  if (!resumeRow) {
-    return NextResponse.json({ error: "Resume not found" }, { status: 404 });
+  const resolved = await resolveResumeSelection(userId, resumeSourceType, resumeId, uploadedResumeId);
+  if (!resolved.ok) {
+    return NextResponse.json({ error: resolved.error }, { status: resolved.status });
   }
-  const resume = mapResumeFromDB(resumeRow);
 
   // Ownership check when regenerating an existing entry — never let one
   // user's entryId update another user's row.
@@ -69,7 +132,9 @@ export async function POST(request: NextRequest) {
       companyName,
       roleTitle,
       pastedContext: pastedContext || undefined,
-      resume,
+      resumeContext: resolved.resumeContext,
+      messageType,
+      jobId: jobId || undefined,
     });
 
     const fields = {
@@ -77,7 +142,11 @@ export async function POST(request: NextRequest) {
       companyName,
       roleTitle,
       pastedContext: pastedContext || null,
-      resumeId,
+      messageType,
+      jobId: jobId || null,
+      resumeSourceType,
+      resumeId: resolved.resumeId,
+      uploadedResumeId: resolved.uploadedResumeId,
       generatedSubject: subject,
       generatedBody: emailBody,
       status: "generated" as const,

@@ -23,7 +23,7 @@ export default function MinimalHeader() {
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-hero">
             <Sparkles className="h-3.5 w-3.5 text-white" />
           </div>
-          ResumeForge AI
+          Rezlo
         </Link>
 
         <nav className="flex items-center gap-6">

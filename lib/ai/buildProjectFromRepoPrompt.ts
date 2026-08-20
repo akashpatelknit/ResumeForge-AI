@@ -31,7 +31,7 @@ ${
 
 RULES:
 - "projectName" is a clean, resume-friendly title — not necessarily the literal
-  repo slug (e.g. "resume-forge-ai" -> "ResumeForge AI").
+  repo slug (e.g. "my-cool-project" -> "My Cool Project").
 - "description" is 1-2 sentences summarizing what the project does and why it's notable.
 - "highlights" is 2-3 resume-style bullet points, each starting with a strong
   action verb. Quantify impact ONLY when the input genuinely supports a number

@@ -47,7 +47,18 @@ import { GenerateEmailPanel } from "@/components/outreach/GenerateEmailPanel";
 import { QuickApplyModal } from "@/components/outreach/QuickApplyModal";
 
 const OUTREACH_TYPES: OutreachType[] = ["cold", "general", "referral", "quickApply"];
-const STATUSES: OutreachStatus[] = ["approved", "generated", "scheduled", "sent", "replied", "bounced", "draft"];
+const STATUSES: OutreachStatus[] = [
+  "approved",
+  "generated",
+  "scheduled",
+  "generating",
+  "sending",
+  "sent",
+  "replied",
+  "bounced",
+  "failed",
+  "draft",
+];
 const PAGE_SIZE_OPTIONS = [10, 25, 50];
 const DATE_FILTER_OPTIONS = [
   { value: "0", label: "Any Time" },
@@ -110,6 +121,7 @@ export default function ColdOutreachPage() {
   const [panelEntry, setPanelEntry] = useState<OutreachEntry | null>(null);
   const [quickApplyOpen, setQuickApplyOpen] = useState(false);
   const [quickApplyKey, setQuickApplyKey] = useState(0);
+  const [scheduling, setScheduling] = useState(false);
 
   // The Dashboard's only data source is a user's own queued SavedJob rows
   // (GET /api/outreach/queue) — never raw Job Discovery listings, since
@@ -244,6 +256,32 @@ export default function ColdOutreachPage() {
     } catch (error) {
       console.error("Failed to remove from queue:", error);
       toast.error("Network error — please try again.");
+    }
+  }
+
+  async function approveAndSchedule() {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    setScheduling(true);
+    try {
+      const res = await fetch("/api/outreach/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ savedJobIds: ids }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed to schedule outreach.");
+        return;
+      }
+      toast.success(`Scheduled ${data.scheduled.length} outreach email${data.scheduled.length === 1 ? "" : "s"}.`);
+      setSelected(new Set());
+      await fetchQueue();
+    } catch (error) {
+      console.error("Failed to schedule outreach:", error);
+      toast.error("Network error — please try again.");
+    } finally {
+      setScheduling(false);
     }
   }
 
@@ -481,10 +519,11 @@ export default function ColdOutreachPage() {
           </button>
           <button
             type="button"
-            onClick={notWiredYet}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-brand-purple px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-brand-purple/90"
+            onClick={approveAndSchedule}
+            disabled={scheduling}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-brand-purple px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-brand-purple/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <Calendar className="h-3.5 w-3.5" />
+            {scheduling ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Calendar className="h-3.5 w-3.5" />}
             Approve &amp; Schedule
           </button>
           <button

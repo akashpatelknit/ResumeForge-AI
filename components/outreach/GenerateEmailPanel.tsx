@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { CompanyLogo } from "@/components/outreach/OutreachBadges";
 import { RichTextEditor } from "@/components/outreach/RichTextEditor";
+import { ResumeAttachPicker, type ResumeAttachValue } from "@/components/outreach/ResumeAttachPicker";
 import {
   MOCK_JD_SUMMARY,
-  MOCK_RESUMES,
   OUTREACH_TYPE_LABELS,
   generateMockEmailHtml,
   type OutreachEntry,
@@ -70,8 +70,7 @@ export function GenerateEmailPanel({
   const [emails, setEmails] = useState<string[]>(entry?.emails ?? []);
   const [jobId, setJobId] = useState(entry?.jobId ?? "");
   const [summaryOpen, setSummaryOpen] = useState(false);
-  const [resumeOpen, setResumeOpen] = useState(false);
-  const [selectedResumeId, setSelectedResumeId] = useState(MOCK_RESUMES[0].id);
+  const [resumeSelection, setResumeSelection] = useState<ResumeAttachValue | null>(null);
   const [subject, setSubject] = useState(entry ? `Application for ${entry.role} – Akash Patel` : "");
   const [body, setBody] = useState(() => generateMockEmailHtml());
   const [tone, setTone] = useState<(typeof TONES)[number]>("Formal");
@@ -80,7 +79,6 @@ export function GenerateEmailPanel({
   const showEmailField = outreachType !== "referral";
   const plainTextBody = body.replace(/<[^>]+>/g, " ").trim();
   const wordCount = plainTextBody.length === 0 ? 0 : plainTextBody.split(/\s+/).length;
-  const selectedResume = MOCK_RESUMES.find((r) => r.id === selectedResumeId) ?? MOCK_RESUMES[0];
 
   if (!entry) return null;
 
@@ -202,45 +200,7 @@ export function GenerateEmailPanel({
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-700">Resume to Attach</label>
             <p className="mb-1.5 text-xs text-gray-400">This resume will be referenced in the email.</p>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setResumeOpen((v) => !v)}
-                className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-left hover:border-purple-200"
-              >
-                <span className="flex-1 truncate text-sm font-medium text-gray-700">{selectedResume.name}</span>
-                {selectedResume.aiSuggested && (
-                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[11px] font-medium text-brand-purple">
-                    <Sparkles className="h-3 w-3" />
-                    AI suggested
-                  </span>
-                )}
-                <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400 transition-transform", resumeOpen && "rotate-180")} />
-              </button>
-              {resumeOpen && (
-                <div className="absolute left-0 right-0 top-full z-10 mt-1.5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-                  {MOCK_RESUMES.map((resume) => (
-                    <button
-                      key={resume.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedResumeId(resume.id);
-                        setResumeOpen(false);
-                      }}
-                      className={cn(
-                        "flex w-full cursor-pointer items-center gap-2 border-none px-3.5 py-2.5 text-left text-sm transition-colors",
-                        resume.id === selectedResumeId ? "bg-purple-50 text-brand-purple" : "bg-white text-gray-700 hover:bg-gray-50",
-                      )}
-                    >
-                      <span className="flex-1 truncate">{resume.name}</span>
-                      {resume.aiSuggested && (
-                        <span className="shrink-0 text-[11px] font-medium text-brand-purple">AI suggested</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ResumeAttachPicker value={resumeSelection} onChange={setResumeSelection} />
           </div>
 
           {/* AI Generated Email */}

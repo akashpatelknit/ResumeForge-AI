@@ -38,7 +38,7 @@ const TemplateShowcase = () => {
             >
               <Card className="group overflow-hidden cursor-pointer transition-shadow duration-300 hover:shadow-xl hover:shadow-purple-500/10">
                 <div className="relative bg-muted/50 p-6">
-                  <div className="mx-auto flex w-full max-w-[140px] flex-col gap-2 rounded-lg bg-background p-4 shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <div className="mx-auto flex w-full max-w-35 flex-col gap-2 rounded-lg bg-background p-4 shadow-sm transition-transform duration-300 group-hover:scale-105">
                     <div className="h-3 w-3/4 rounded bg-primary/30" />
                     <div className="h-px w-full bg-border" />
                     {t.lines.map((w, i) => (
