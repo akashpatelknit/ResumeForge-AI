@@ -1,0 +1,18 @@
+name = "resumeforge-outreach-poller"
+main = "src/index.ts"
+compatibility_date = "2026-08-20"
+
+# Every minute — well within the free plan's 100k requests/day (1,440/day
+# at this cadence). Change to "*/2 * * * *" for every 2 minutes if you'd
+# rather match the interval the old vercel.json cron config used.
+[triggers]
+crons = ["*/1 * * * *"]
+
+[vars]
+# Point this at your actual deployed domain — defaults to config/site.ts's
+# fallback, override if you're on a custom domain.
+TARGET_URL = "https://rezlo.vercel.app/api/cron/process-outreach-queue"
+
+# CRON_SECRET is NOT set here — it's a secret, not a plain var. Set it with:
+#   wrangler secret put CRON_SECRET
+# (same value as the Next.js app's CRON_SECRET env var on Vercel)

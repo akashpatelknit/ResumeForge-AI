@@ -44,3 +44,11 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# Cloudflare Worker (cloudflare/outreach-poller) — its own package.json/
+# node_modules, separate from the root Next.js app's. Also mirrored in a
+# nested cloudflare/outreach-poller/.gitignore so this still holds even if
+# that subproject is copied elsewhere.
+cloudflare/outreach-poller/node_modules/
+cloudflare/outreach-poller/.wrangler/
+cloudflare/outreach-poller/.dev.vars
