@@ -124,6 +124,9 @@ export async function processOutreachSend(job: SavedJob) {
         const text = await extractResumeText(file);
         resumeContext = { kind: "text", text };
       } catch (error) {
+        if (!(error instanceof ResumeFileError)) {
+          console.error(`Unexpected error reading uploaded resume for job ${job.id}:`, error);
+        }
         const message = error instanceof ResumeFileError ? error.message : "Could not read the uploaded resume.";
         await markOutreachSendFailed(job.id, job.sendAttempts, message);
         return;

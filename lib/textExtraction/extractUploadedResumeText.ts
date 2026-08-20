@@ -9,8 +9,15 @@ import { extractResumeText, ResumeFileError } from "@/lib/textExtraction/extract
 // so an upload that will never be used for AI-personalized outreach never
 // pays this cost.
 export async function extractUploadedResumeText(fileUrl: string, fileName: string): Promise<string> {
-  const res = await fetch(fileUrl);
+  let res: Response;
+  try {
+    res = await fetch(fileUrl);
+  } catch (error) {
+    console.error(`Failed to fetch uploaded resume from ${fileUrl}:`, error);
+    throw new ResumeFileError("Could not fetch the uploaded resume file.");
+  }
   if (!res.ok) {
+    console.error(`Uploaded resume fetch returned ${res.status} ${res.statusText} for ${fileUrl}`);
     throw new ResumeFileError("Could not fetch the uploaded resume file.");
   }
   const buffer = Buffer.from(await res.arrayBuffer());

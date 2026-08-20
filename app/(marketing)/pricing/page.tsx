@@ -5,21 +5,22 @@ import FAQ from "@/components/marketing/FAQ";
 import FinalCTA from "@/components/marketing/CTA";
 import Footer from "@/components/marketing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
-import { siteConfig } from "@/config/site";
+import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
+
+const title = "Rezlo Pricing — Free and Pro Plans for Job Seekers";
+const description =
+  "Compare Rezlo's Free and Pro plans. Start building ATS-optimized resumes for free, upgrade for unlimited AI tailoring, outreach, and premium templates.";
+const ogDescription =
+  "Free and Pro plans for AI resume building, job tracking, and outreach. Compare and pick what fits.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Rezlo Pricing — Free and Pro Plans for Job Seekers" },
-  description:
-    "Compare Rezlo's Free and Pro plans. Start building ATS-optimized resumes for free, upgrade for unlimited AI tailoring, outreach, and premium templates.",
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: `${siteConfig.url}/pricing`,
   },
-  openGraph: {
-    url: `${siteConfig.url}/pricing`,
-    title: "Rezlo Pricing — Free and Pro Plans for Job Seekers",
-    description:
-      "Compare Rezlo's Free and Pro plans. Start building ATS-optimized resumes for free, upgrade for unlimited AI tailoring, outreach, and premium templates.",
-  },
+  openGraph: pageOpenGraph({ title, description: ogDescription, path: "/pricing" }),
+  twitter: pageTwitter({ title, description }),
 };
 
 export default function PricingPage() {

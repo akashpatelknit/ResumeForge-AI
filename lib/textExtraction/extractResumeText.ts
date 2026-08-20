@@ -14,16 +14,17 @@ function getExtension(filename: string): string {
 }
 
 async function extractFromPdf(buffer: Buffer): Promise<string> {
-  const { PDFParse } = await import("pdf-parse");
-  const parser = new PDFParse({ data: buffer });
+  let parser: InstanceType<Awaited<typeof import("pdf-parse")>["PDFParse"]> | undefined;
   try {
+    const { PDFParse } = await import("pdf-parse");
+    parser = new PDFParse({ data: buffer });
     const result = await parser.getText();
     return result.text;
   } catch (error) {
     console.error("PDF extraction failed:", error);
     throw new ResumeFileError("Could not read this PDF — it may be corrupt or password-protected.");
   } finally {
-    await parser.destroy();
+    await parser?.destroy();
   }
 }
 

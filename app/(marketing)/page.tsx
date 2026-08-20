@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import LandingPageClient from "@/components/landing/LandingPageClient";
-import { siteConfig } from "@/config/site";
+import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
+
+const title = "Rezlo — AI Resume Builder & Job Application Assistant";
+const description =
+  "Drop your resume, get hired faster. Build ATS-optimized resumes with AI, track applications on a Kanban board, and send AI-drafted outreach — free to start.";
+const ogDescription =
+  "AI reads your resume, scores it against jobs, and helps you apply — all in one place.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Rezlo — AI Resume Builder & Job Application Assistant" },
-  description:
-    "Drop your resume, get hired faster. Build ATS-optimized resumes with AI, track applications on a Kanban board, and send AI-drafted outreach — free to start.",
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: siteConfig.url,
   },
-  openGraph: {
-    url: siteConfig.url,
-    title: "Rezlo — AI Resume Builder & Job Application Assistant",
-    description:
-      "Drop your resume, get hired faster. Build ATS-optimized resumes with AI, track applications on a Kanban board, and send AI-drafted outreach — free to start.",
-  },
+  openGraph: pageOpenGraph({ title, description: ogDescription }),
+  twitter: pageTwitter({ title, description }),
 };
 
 export default function LandingPage() {

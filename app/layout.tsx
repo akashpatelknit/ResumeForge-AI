@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { QueryProvider } from "@/components/providers/QueryProvider";
-import { siteConfig } from "@/config/site";
+import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
 import "./globals.css";
 import "./index.css";
 
@@ -23,32 +23,13 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
 
   // Open Graph metadata (Facebook, LinkedIn, etc.)
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: siteConfig.url,
-    title: siteConfig.title,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: `${siteConfig.name} - AI-Powered Resume Builder`,
-      },
-    ],
-  },
+  openGraph: pageOpenGraph({ title: siteConfig.title }),
 
   // Twitter Card metadata
-  twitter: {
-    card: "summary_large_image",
+  twitter: pageTwitter({
     title: siteConfig.title,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: "@rezlo",
-    site: "@rezlo",
-  },
+    description: siteConfig.ogDescription,
+  }),
 
   // Robots and indexing
   robots: {

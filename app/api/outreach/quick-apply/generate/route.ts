@@ -41,6 +41,9 @@ async function resolveResumeSelection(
     try {
       text = await extractUploadedResumeText(uploaded.fileUrl, uploaded.fileName);
     } catch (error) {
+      if (!(error instanceof ResumeFileError)) {
+        console.error(`Unexpected error reading uploaded resume ${uploaded.id}:`, error);
+      }
       const message = error instanceof ResumeFileError ? error.message : "Could not read the uploaded resume.";
       return { ok: false, status: 400, error: message };
     }

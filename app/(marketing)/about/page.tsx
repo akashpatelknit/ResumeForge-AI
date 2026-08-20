@@ -7,21 +7,22 @@ import LogoCloud from "@/components/marketing/LogoCloud";
 import FinalCTA from "@/components/marketing/CTA";
 import Footer from "@/components/marketing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
-import { siteConfig } from "@/config/site";
+import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
+
+const title = "About Rezlo — Our Mission to Help You Get Hired Faster";
+const description =
+  "Rezlo builds AI-powered tools that help job seekers write ATS-optimized resumes, track applications, and land interviews faster. Learn what drives us.";
+const ogDescription =
+  "Rezlo builds AI tools that help job seekers write standout resumes and land interviews faster.";
 
 export const metadata: Metadata = {
-  title: { absolute: "About Rezlo — Our Mission to Help You Get Hired Faster" },
-  description:
-    "Rezlo builds AI-powered tools that help job seekers write ATS-optimized resumes, track applications, and land interviews faster. Learn what drives us.",
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: `${siteConfig.url}/about`,
   },
-  openGraph: {
-    url: `${siteConfig.url}/about`,
-    title: "About Rezlo — Our Mission to Help You Get Hired Faster",
-    description:
-      "Rezlo builds AI-powered tools that help job seekers write ATS-optimized resumes, track applications, and land interviews faster. Learn what drives us.",
-  },
+  openGraph: pageOpenGraph({ title, description: ogDescription, path: "/about" }),
+  twitter: pageTwitter({ title, description }),
 };
 
 export default function AboutPage() {
