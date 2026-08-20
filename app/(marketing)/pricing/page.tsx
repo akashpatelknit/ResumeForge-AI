@@ -6,6 +6,7 @@ import FinalCTA from "@/components/marketing/CTA";
 import Footer from "@/components/marketing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
 import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
+import { getPlanConfig } from "@/lib/subscription/planConfig";
 
 const title = "Rezlo Pricing — Free and Pro Plans for Job Seekers";
 const description =
@@ -23,12 +24,18 @@ export const metadata: Metadata = {
   twitter: pageTwitter({ title, description }),
 };
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const planConfig = await getPlanConfig();
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <Pricing />
+        <Pricing
+          proPriceInr={planConfig.proPriceInr}
+          freeResumeLimit={planConfig.freeResumeLimit}
+          freeAiGenerationLimit={planConfig.freeAiGenerationLimit}
+        />
         <A>
           <FAQ />
         </A>
