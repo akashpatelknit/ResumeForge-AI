@@ -268,7 +268,8 @@ exports.Prisma.UploadedResumeScalarFieldEnum = {
   fileName: 'fileName',
   fileUrl: 'fileUrl',
   fileSizeBytes: 'fileSizeBytes',
-  uploadedAt: 'uploadedAt'
+  uploadedAt: 'uploadedAt',
+  parsedText: 'parsedText'
 };
 
 exports.Prisma.SavedJobScalarFieldEnum = {

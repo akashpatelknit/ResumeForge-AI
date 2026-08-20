@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ComponentType } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -89,9 +90,7 @@ export function AdminShell({ email, children }: { email: string; children: React
         )}
       >
         <div className="flex items-center gap-2.5 px-5 py-5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-brand-purple to-brand-pink">
-            <Sparkles className="h-4.5 w-4.5 text-white" />
-          </div>
+          <Image src="/rezlo.png" alt="Rezlo" width={36} height={36} className="h-9 w-9 shrink-0 rounded-xl" />
           {!collapsed && (
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-gray-900">Admin Panel</p>

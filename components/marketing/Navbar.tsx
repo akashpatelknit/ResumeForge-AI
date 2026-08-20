@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Sparkles, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -41,9 +42,7 @@ export default function Navbar() {
     <header className="w-full px-4 pt-6 sm:px-6">
       <div className="mx-auto flex h-16 max-w-4xl items-center justify-between rounded-full border border-[#E5E5E5] bg-white/90 px-5 shadow-[0_10px_40px_rgba(0,0,0,0.04)] backdrop-blur-sm sm:px-7">
         <Link href="/" className="flex items-center gap-2.5 text-[16px] font-bold text-foreground">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-brand-purple via-brand-blue to-brand-pink">
-            <Sparkles className="h-4 w-4 text-white" />
-          </div>
+          <Image src="/rezlo.png" alt="Rezlo" width={32} height={32} className="h-8 w-8 rounded-lg" />
           Rezlo
         </Link>
 

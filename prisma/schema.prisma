@@ -284,6 +284,12 @@ model UploadedResume {
   fileUrl           String            @map("file_url")
   fileSizeBytes     Int               @map("file_size_bytes")
   uploadedAt        DateTime          @default(now()) @map("uploaded_at") @db.Timestamptz(6)
+  // Text extracted from the PDF, cached lazily on first use (Quick Apply /
+  // scheduled outreach generation) so the same upload never gets re-fetched
+  // from blob storage and re-parsed on every subsequent send. Null until
+  // that first use — an upload nobody ever generates an email for never
+  // pays the parsing cost at all. See lib/db/uploadedResumes.ts.
+  parsedText        String?           @map("parsed_text")
   quickApplyEntries QuickApplyEntry[]
   savedJobs         SavedJob[]
   defaultForOutreachSettings UserOutreachSettings[]

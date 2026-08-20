@@ -33,3 +33,15 @@ export async function deleteUploadedResume(id: string, userId: string) {
     where: { id, userId },
   });
 }
+
+// Persists the text extracted from this upload's PDF on first use (Quick
+// Apply / scheduled outreach generation), so later generations for the same
+// upload can skip both the blob fetch and the PDF parse. Scoped to userId
+// like every other write here even though the caller already owns the row
+// (defense in depth, same pattern as deleteUploadedResume).
+export async function setUploadedResumeParsedText(id: string, userId: string, parsedText: string) {
+  return prisma.uploadedResume.update({
+    where: { id, userId },
+    data: { parsedText },
+  });
+}

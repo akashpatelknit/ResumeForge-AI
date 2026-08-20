@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Sparkles } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -41,9 +41,7 @@ export function AuthModal() {
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
       <DialogContent className="gap-6 sm:max-w-100">
         <DialogHeader className="items-center text-center sm:text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-brand-purple via-brand-blue to-brand-pink">
-            <Sparkles className="h-5 w-5 text-white" />
-          </div>
+          <Image src="/rezlo.png" alt="Rezlo" width={40} height={40} className="h-10 w-10 rounded-xl" />
           <DialogTitle className="text-xl">
             {view === "sign-in" ? "Welcome back" : "Create your account"}
           </DialogTitle>

@@ -4,6 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { pdf } from "@react-pdf/renderer";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { getTemplateComponent } from "@/components/pdf/template";
 import type { AppResume } from "@/types/resume";
 import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
@@ -41,6 +51,7 @@ export function useResumeActions(resume: AppResume, onRefresh?: () => void) {
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [isArchiving, setIsArchiving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const handleEdit = () => {
     router.push(`/builder/${resume.id}`);
@@ -144,11 +155,13 @@ export function useResumeActions(resume: AppResume, onRefresh?: () => void) {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (isDeleting) return;
-    if (!window.confirm(`Delete "${resume.title}"? This can't be undone.`)) {
-      return;
-    }
+    setConfirmDeleteOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    setConfirmDeleteOpen(false);
     setIsDeleting(true);
     try {
       const res = await fetch(`/api/resumes/${resume.id}`, {
@@ -167,6 +180,27 @@ export function useResumeActions(resume: AppResume, onRefresh?: () => void) {
     }
   };
 
+  // Rendered once by each caller (ResumeCardActions, ResumeRowMenu) alongside
+  // its own markup — keeps the confirm-before-delete UI centralized here
+  // with the rest of the resume action logic, same reasoning as the header
+  // comment on this hook.
+  const DeleteConfirmDialog = (
+    <AlertDialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete &quot;{resume.title}&quot;?</AlertDialogTitle>
+          <AlertDialogDescription>This can&apos;t be undone.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive" onClick={confirmDelete}>
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+
   return {
     handleEdit,
     handleDownload,
@@ -175,6 +209,7 @@ export function useResumeActions(resume: AppResume, onRefresh?: () => void) {
     handleShareLink,
     handleToggleArchive,
     handleDelete,
+    DeleteConfirmDialog,
     isDownloading,
     isDuplicating,
     isArchiving,

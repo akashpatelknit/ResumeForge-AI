@@ -56,6 +56,7 @@ export default function ResumeCardActions({
     handleShareLink,
     handleToggleArchive,
     handleDelete,
+    DeleteConfirmDialog,
     isDownloading,
     isDuplicating,
     isArchiving,
@@ -142,6 +143,7 @@ export default function ResumeCardActions({
         resumeId={resume.id}
         resumeTitle={resume.title}
       />
+      {DeleteConfirmDialog}
     </div>
   );
 }

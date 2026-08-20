@@ -17,9 +17,6 @@ const isPublicRoute = createRouteMatcher([
   "/api/cron(.*)", // Cron-triggered endpoints — guarded by CRON_SECRET, not Clerk (called by a scheduler, not a logged-in user)
   "/sso-callback", // Clerk OAuth redirect landing page — hit before a session exists
   "/account-suspended", // Shown to a blocked user in place of the app — must render without re-triggering auth.protect()
-  "/opengraph-image", // Dynamic OG image route — fetched unauthenticated by social-media crawlers
-  "/icon", // Dynamic favicon route — same extensionless-URL issue as /opengraph-image
-  "/apple-icon", // Dynamic Apple touch icon route — same extensionless-URL issue as /opengraph-image
 ]);
 
 // /admin and /api/admin have their own, completely separate session system

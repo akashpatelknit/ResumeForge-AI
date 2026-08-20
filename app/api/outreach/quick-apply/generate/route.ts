@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getResume } from "@/lib/db/resumes";
-import { getUploadedResume } from "@/lib/db/uploadedResumes";
+import { getUploadedResume, setUploadedResumeParsedText } from "@/lib/db/uploadedResumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { extractUploadedResumeText } from "@/lib/textExtraction/extractUploadedResumeText";
 import { ResumeFileError } from "@/lib/textExtraction/extractResumeText";
@@ -38,14 +38,26 @@ async function resolveResumeSelection(
     }
 
     let text: string;
-    try {
-      text = await extractUploadedResumeText(uploaded.fileUrl, uploaded.fileName);
-    } catch (error) {
-      if (!(error instanceof ResumeFileError)) {
-        console.error(`Unexpected error reading uploaded resume ${uploaded.id}:`, error);
+    if (uploaded.parsedText) {
+      // Already extracted on a previous generation for this same upload —
+      // skip both the blob fetch and the PDF parse entirely.
+      text = uploaded.parsedText;
+    } else {
+      try {
+        text = await extractUploadedResumeText(uploaded.fileUrl, uploaded.fileName);
+      } catch (error) {
+        if (!(error instanceof ResumeFileError)) {
+          console.error(`Unexpected error reading uploaded resume ${uploaded.id}:`, error);
+        }
+        const message = error instanceof ResumeFileError ? error.message : "Could not read the uploaded resume.";
+        return { ok: false, status: 400, error: message };
       }
-      const message = error instanceof ResumeFileError ? error.message : "Could not read the uploaded resume.";
-      return { ok: false, status: 400, error: message };
+
+      // Best-effort cache write — a failure here shouldn't fail the request
+      // that already has a perfectly good `text` result in hand.
+      setUploadedResumeParsedText(uploaded.id, userId, text).catch((error) => {
+        console.error(`Failed to cache parsed text for uploaded resume ${uploaded.id}:`, error);
+      });
     }
 
     return {

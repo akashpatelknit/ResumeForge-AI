@@ -28,6 +28,7 @@ export default function ResumeRowMenu({ resume, onRefresh }: ResumeRowMenuProps)
     handleDownload,
     handleDuplicate,
     handleDelete,
+    DeleteConfirmDialog,
     isDownloading,
     isDuplicating,
     isDeleting,
@@ -36,44 +37,47 @@ export default function ResumeRowMenu({ resume, onRefresh }: ResumeRowMenuProps)
   const busy = isDownloading || isDuplicating || isDeleting;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {busy ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <MoreVertical className="w-4 h-4" />
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onClick={handleEdit}>
-          <Edit className="w-4 h-4 mr-2" />
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleDownload} disabled={isDownloading}>
-          <Download className="w-4 h-4 mr-2" />
-          Download
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleDuplicate} disabled={isDuplicating}>
-          <Copy className="w-4 h-4 mr-2" />
-          Duplicate
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="text-red-600"
-          onClick={handleDelete}
-          disabled={isDeleting}
-        >
-          <Trash2 className="w-4 h-4 mr-2" />
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {busy ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MoreVertical className="w-4 h-4" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuItem onClick={handleEdit}>
+            <Edit className="w-4 h-4 mr-2" />
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDownload} disabled={isDownloading}>
+            <Download className="w-4 h-4 mr-2" />
+            Download
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDuplicate} disabled={isDuplicating}>
+            <Copy className="w-4 h-4 mr-2" />
+            Duplicate
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="text-red-600"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {DeleteConfirmDialog}
+    </>
   );
 }

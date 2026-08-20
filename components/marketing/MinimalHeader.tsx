@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useAuthModalStore } from "@/store/authModalStore";
@@ -24,9 +25,7 @@ export default function MinimalHeader() {
     <header className="w-full">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 lg:px-6">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-hero">
-            <Sparkles className="h-3.5 w-3.5 text-white" />
-          </div>
+          <Image src="/rezlo.png" alt="Rezlo" width={28} height={28} className="h-7 w-7 rounded-lg" />
           Rezlo
         </Link>
 

@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -16,9 +16,7 @@ const Footer = () => (
         {/* Brand + newsletter */}
         <div className="lg:col-span-2">
           <a href="/" className="flex items-center gap-2 font-bold text-lg">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-hero">
-              <Sparkles className="h-3.5 w-3.5 text-white" />
-            </div>
+            <Image src="/rezlo.png" alt="Rezlo" width={28} height={28} className="h-7 w-7 rounded-md" />
             Rezlo
           </a>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">

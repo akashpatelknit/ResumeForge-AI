@@ -16417,6 +16417,7 @@ export namespace Prisma {
     fileUrl: string | null
     fileSizeBytes: number | null
     uploadedAt: Date | null
+    parsedText: string | null
   }
 
   export type UploadedResumeMaxAggregateOutputType = {
@@ -16426,6 +16427,7 @@ export namespace Prisma {
     fileUrl: string | null
     fileSizeBytes: number | null
     uploadedAt: Date | null
+    parsedText: string | null
   }
 
   export type UploadedResumeCountAggregateOutputType = {
@@ -16435,6 +16437,7 @@ export namespace Prisma {
     fileUrl: number
     fileSizeBytes: number
     uploadedAt: number
+    parsedText: number
     _all: number
   }
 
@@ -16454,6 +16457,7 @@ export namespace Prisma {
     fileUrl?: true
     fileSizeBytes?: true
     uploadedAt?: true
+    parsedText?: true
   }
 
   export type UploadedResumeMaxAggregateInputType = {
@@ -16463,6 +16467,7 @@ export namespace Prisma {
     fileUrl?: true
     fileSizeBytes?: true
     uploadedAt?: true
+    parsedText?: true
   }
 
   export type UploadedResumeCountAggregateInputType = {
@@ -16472,6 +16477,7 @@ export namespace Prisma {
     fileUrl?: true
     fileSizeBytes?: true
     uploadedAt?: true
+    parsedText?: true
     _all?: true
   }
 
@@ -16568,6 +16574,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt: Date
+    parsedText: string | null
     _count: UploadedResumeCountAggregateOutputType | null
     _avg: UploadedResumeAvgAggregateOutputType | null
     _sum: UploadedResumeSumAggregateOutputType | null
@@ -16596,6 +16603,7 @@ export namespace Prisma {
     fileUrl?: boolean
     fileSizeBytes?: boolean
     uploadedAt?: boolean
+    parsedText?: boolean
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
     defaultForOutreachSettings?: boolean | UploadedResume$defaultForOutreachSettingsArgs<ExtArgs>
@@ -16609,6 +16617,7 @@ export namespace Prisma {
     fileUrl?: boolean
     fileSizeBytes?: boolean
     uploadedAt?: boolean
+    parsedText?: boolean
   }, ExtArgs["result"]["uploadedResume"]>
 
   export type UploadedResumeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16618,6 +16627,7 @@ export namespace Prisma {
     fileUrl?: boolean
     fileSizeBytes?: boolean
     uploadedAt?: boolean
+    parsedText?: boolean
   }, ExtArgs["result"]["uploadedResume"]>
 
   export type UploadedResumeSelectScalar = {
@@ -16627,9 +16637,10 @@ export namespace Prisma {
     fileUrl?: boolean
     fileSizeBytes?: boolean
     uploadedAt?: boolean
+    parsedText?: boolean
   }
 
-  export type UploadedResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "fileUrl" | "fileSizeBytes" | "uploadedAt", ExtArgs["result"]["uploadedResume"]>
+  export type UploadedResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "fileUrl" | "fileSizeBytes" | "uploadedAt" | "parsedText", ExtArgs["result"]["uploadedResume"]>
   export type UploadedResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
@@ -16653,6 +16664,7 @@ export namespace Prisma {
       fileUrl: string
       fileSizeBytes: number
       uploadedAt: Date
+      parsedText: string | null
     }, ExtArgs["result"]["uploadedResume"]>
     composites: {}
   }
@@ -17085,6 +17097,7 @@ export namespace Prisma {
     readonly fileUrl: FieldRef<"UploadedResume", 'String'>
     readonly fileSizeBytes: FieldRef<"UploadedResume", 'Int'>
     readonly uploadedAt: FieldRef<"UploadedResume", 'DateTime'>
+    readonly parsedText: FieldRef<"UploadedResume", 'String'>
   }
     
 
@@ -20443,7 +20456,8 @@ export namespace Prisma {
     fileName: 'fileName',
     fileUrl: 'fileUrl',
     fileSizeBytes: 'fileSizeBytes',
-    uploadedAt: 'uploadedAt'
+    uploadedAt: 'uploadedAt',
+    parsedText: 'parsedText'
   };
 
   export type UploadedResumeScalarFieldEnum = (typeof UploadedResumeScalarFieldEnum)[keyof typeof UploadedResumeScalarFieldEnum]
@@ -21643,6 +21657,7 @@ export namespace Prisma {
     fileUrl?: StringFilter<"UploadedResume"> | string
     fileSizeBytes?: IntFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
+    parsedText?: StringNullableFilter<"UploadedResume"> | string | null
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
     defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
@@ -21655,6 +21670,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
+    parsedText?: SortOrderInput | SortOrder
     quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
     savedJobs?: SavedJobOrderByRelationAggregateInput
     defaultForOutreachSettings?: UserOutreachSettingsOrderByRelationAggregateInput
@@ -21670,6 +21686,7 @@ export namespace Prisma {
     fileUrl?: StringFilter<"UploadedResume"> | string
     fileSizeBytes?: IntFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
+    parsedText?: StringNullableFilter<"UploadedResume"> | string | null
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
     defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
@@ -21682,6 +21699,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
+    parsedText?: SortOrderInput | SortOrder
     _count?: UploadedResumeCountOrderByAggregateInput
     _avg?: UploadedResumeAvgOrderByAggregateInput
     _max?: UploadedResumeMaxOrderByAggregateInput
@@ -21699,6 +21717,7 @@ export namespace Prisma {
     fileUrl?: StringWithAggregatesFilter<"UploadedResume"> | string
     fileSizeBytes?: IntWithAggregatesFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeWithAggregatesFilter<"UploadedResume"> | Date | string
+    parsedText?: StringNullableWithAggregatesFilter<"UploadedResume"> | string | null
   }
 
   export type SavedJobWhereInput = {
@@ -22994,6 +23013,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
@@ -23006,6 +23026,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
@@ -23018,6 +23039,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
@@ -23030,6 +23052,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
@@ -23042,6 +23065,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
   }
 
   export type UploadedResumeUpdateManyMutationInput = {
@@ -23051,6 +23075,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UploadedResumeUncheckedUpdateManyInput = {
@@ -23060,6 +23085,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SavedJobCreateInput = {
@@ -24326,6 +24352,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
+    parsedText?: SortOrder
   }
 
   export type UploadedResumeAvgOrderByAggregateInput = {
@@ -24339,6 +24366,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
+    parsedText?: SortOrder
   }
 
   export type UploadedResumeMinOrderByAggregateInput = {
@@ -24348,6 +24376,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
+    parsedText?: SortOrder
   }
 
   export type UploadedResumeSumOrderByAggregateInput = {
@@ -26168,6 +26197,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -26179,6 +26209,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -26247,6 +26278,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -26258,6 +26290,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -26514,6 +26547,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -26525,6 +26559,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -26593,6 +26628,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -26604,6 +26640,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -26650,6 +26687,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
   }
@@ -26661,6 +26699,7 @@ export namespace Prisma {
     fileUrl: string
     fileSizeBytes: number
     uploadedAt?: Date | string
+    parsedText?: string | null
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
   }
@@ -26729,6 +26768,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
   }
@@ -26740,6 +26780,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parsedText?: NullableStringFieldUpdateOperationsInput | string | null
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
   }

@@ -3,7 +3,7 @@ import { createClerkClient } from "@clerk/backend";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { prisma } from "@/lib/prisma";
 import { getResume } from "@/lib/db/resumes";
-import { getUploadedResume } from "@/lib/db/uploadedResumes";
+import { getUploadedResume, setUploadedResumeParsedText } from "@/lib/db/uploadedResumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { getTemplateComponent } from "@/components/pdf/template";
 import { extractResumeText, ResumeFileError } from "@/lib/textExtraction/extractResumeText";
@@ -68,6 +68,10 @@ export async function processOutreachSend(job: SavedJob) {
   // attachment, rather than fetching the same blob twice).
   let builderResume: AppResume | null = null;
   let uploadedFile: { buffer: Buffer; fileName: string } | null = null;
+  // Kept alongside uploadedFile so the extraction step below can reuse a
+  // cached parse (uploaded.parsedText) or persist a fresh one — the actual
+  // PDF bytes still have to be fetched either way, for the email attachment.
+  let uploadedResumeRow: { id: string; parsedText: string | null } | null = null;
 
   if (job.resumeSourceType === "uploaded") {
     if (!job.uploadedResumeId) {
@@ -79,6 +83,7 @@ export async function processOutreachSend(job: SavedJob) {
       await markOutreachSendFailed(job.id, job.sendAttempts, "The uploaded resume attached to this job no longer exists.");
       return;
     }
+    uploadedResumeRow = { id: uploaded.id, parsedText: uploaded.parsedText };
     try {
       const fileRes = await fetch(uploaded.fileUrl);
       if (!fileRes.ok) throw new Error(`Blob fetch failed with status ${fileRes.status}`);
@@ -114,15 +119,23 @@ export async function processOutreachSend(job: SavedJob) {
 
     // Uploaded PDFs have no structured JSON to feed the prompt — extract
     // raw text from the same bytes fetched above (reusing the landing
-    // page's parse-flow extraction, not a duplicate) and pass that instead.
+    // page's parse-flow extraction, not a duplicate) and pass that instead,
+    // unless a previous generation for this same upload already cached it.
     let resumeContext: ResumeContext;
     if (builderResume) {
       resumeContext = { kind: "structured", resume: builderResume };
+    } else if (uploadedResumeRow?.parsedText) {
+      resumeContext = { kind: "text", text: uploadedResumeRow.parsedText };
     } else {
       try {
         const file = new File([new Uint8Array(uploadedFile!.buffer)], uploadedFile!.fileName, { type: "application/pdf" });
         const text = await extractResumeText(file);
         resumeContext = { kind: "text", text };
+        if (uploadedResumeRow) {
+          setUploadedResumeParsedText(uploadedResumeRow.id, job.userId, text).catch((error) => {
+            console.error(`Failed to cache parsed text for uploaded resume ${uploadedResumeRow!.id}:`, error);
+          });
+        }
       } catch (error) {
         if (!(error instanceof ResumeFileError)) {
           console.error(`Unexpected error reading uploaded resume for job ${job.id}:`, error);

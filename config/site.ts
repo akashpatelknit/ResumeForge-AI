@@ -7,7 +7,7 @@ export const siteConfig = {
   ogDescription:
     "AI-powered resume builder that helps you get hired faster. Free to start.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app",
-  ogImage: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app"}/opengraph-image`,
+  ogImage: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rezlo.vercel.app"}/images/opengraph.png`,
   links: {
     twitter: "https://twitter.com/rezlo",
     github: "https://github.com/akashpatelknit/Rezlo",
@@ -65,8 +65,8 @@ export function pageOpenGraph({
     images: [
       {
         url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
+        width: 3420,
+        height: 1970,
         alt: `${siteConfig.name} - AI-Powered Resume Builder`,
       },
     ],
