@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useResumeStore } from "@/store/resumeStore";
+import { cn } from "@/lib/utils";
 import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
@@ -390,6 +391,11 @@ export default function BuilderPage({
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useAuth();
   const { resumeId } = use(params);
+  // Below lg there isn't room to show the form and the live preview at
+  // once, so mobile/tablet gets a toggle instead of a stacked column —
+  // both panels stay mounted (just hidden via CSS) so form/scroll state
+  // survives switching back and forth.
+  const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
 
   useEffect(() => {
     if (!userId) return;
@@ -419,15 +425,18 @@ export default function BuilderPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <BuilderToolbar />
+      <BuilderToolbar
+        mobilePreviewActive={mobileView === "preview"}
+        onTogglePreview={() => setMobileView((v) => (v === "edit" ? "preview" : "edit"))}
+      />
 
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="space-y-4">
+          <div className={cn("space-y-4", mobileView === "preview" && "hidden lg:block")}>
             <ResumeForm />
           </div>
 
-          <div className="sticky top-6 h-fit">
+          <div className={cn("h-fit lg:sticky lg:top-6", mobileView === "edit" && "hidden lg:block")}>
             <PDFPreview resume={currentResume} />
           </div>
         </div>

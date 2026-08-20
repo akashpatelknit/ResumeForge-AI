@@ -26,10 +26,11 @@ export default function ATSScoreButton({ resumeId }: ATSScoreButtonProps) {
       <SheetTrigger asChild>
         <Button
           size="lg"
-          className="fixed bottom-6 left-6 z-50 bg-white text-gray-800 border border-gray-200 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-200 rounded-full px-6 py-6 cursor-pointer"
+          aria-label="Check ATS Score"
+          className="fixed bottom-6 left-6 z-50 bg-white text-gray-800 border border-gray-200 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-200 rounded-full p-4 sm:px-6 sm:py-6 cursor-pointer"
         >
-          <Target className="h-5 w-5 mr-2 text-blue-600" />
-          <span className="font-semibold">Check ATS Score</span>
+          <Target className="h-5 w-5 sm:mr-2 text-blue-600" />
+          <span className="hidden font-semibold sm:inline">Check ATS Score</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">

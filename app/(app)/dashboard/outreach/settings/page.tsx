@@ -636,7 +636,8 @@ export default function SendSchedulerPage() {
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <SectionHeading title="Outreach Type Send Rules" subtitle="Set daily limits by outreach type. These limits help control volume and keep your outreach safe." />
 
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
@@ -682,7 +683,7 @@ export default function SendSchedulerPage() {
                         <button
                           type="button"
                           onClick={notWiredYet}
-                          className="inline-flex cursor-pointer items-center justify-center rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                          className="inline-flex cursor-pointer items-center justify-center rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
                           aria-label={`More info about ${rule.type} limits`}
                         >
                           <Info className="h-4 w-4" />
@@ -694,6 +695,51 @@ export default function SendSchedulerPage() {
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="space-y-3 md:hidden">
+          {TYPE_RULES.map((rule) => {
+            const Icon = rule.icon;
+            const limit = typeLimits[rule.type];
+            const isUnlimited = rule.defaultLimit === null;
+            return (
+              <div key={rule.type} className="rounded-xl border border-gray-100 p-4">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <Icon className="h-4 w-4 shrink-0 text-gray-400" />
+                    <OutreachTypeBadge type={rule.type} />
+                  </div>
+                  {isUnlimited ? (
+                    <span className="text-xs font-medium text-gray-400">Manual</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={notWiredYet}
+                      className="inline-flex cursor-pointer items-center justify-center rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
+                      aria-label={`More info about ${rule.type} limits`}
+                    >
+                      <Info className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                <p className="mb-3 text-xs text-gray-500">{rule.description}</p>
+                {isUnlimited ? (
+                  <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
+                    Unlimited
+                  </span>
+                ) : (
+                  <Stepper
+                    value={limit ?? 0}
+                    onChange={(v) => setTypeLimits((prev) => ({ ...prev, [rule.type]: v }))}
+                    min={1}
+                    max={50}
+                    suffix="/ day"
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <p className="mt-4 flex items-center gap-1.5 text-xs text-gray-400">
@@ -725,65 +771,124 @@ export default function SendSchedulerPage() {
             Nothing scheduled yet. Approve &amp; Schedule jobs from the Cold Outreach dashboard.
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
-                  <th className="py-2.5 pr-4 font-medium">Company</th>
-                  <th className="py-2.5 pr-4 font-medium">Role</th>
-                  <th className="py-2.5 pr-4 font-medium">Outreach Type</th>
-                  <th className="py-2.5 pr-4 font-medium">Recipient / Email</th>
-                  <th className="py-2.5 pr-4 font-medium">Estimated Send Time</th>
-                  <th className="w-10 py-2.5" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {queueRows.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50/60">
-                    <td className="py-3.5 pr-4">
-                      <div className="flex items-center gap-2.5">
-                        <CompanyLogo company={row.company} />
-                        <span className="font-medium text-gray-900">{row.company}</span>
-                      </div>
-                    </td>
-                    <td className="py-3.5 pr-4 text-gray-600">{row.role}</td>
-                    <td className="py-3.5 pr-4">
-                      <OutreachTypeBadge type={row.outreachType} />
-                    </td>
-                    <td className="py-3.5 pr-4 text-gray-600">{row.emails[0] ?? "—"}</td>
-                    <td className="py-3.5 pr-4">
-                      <p className="font-semibold text-gray-900">{formatQueueTime(row.scheduledSendTime!)}</p>
-                      <p className="text-xs text-gray-400">{formatRelative(row.scheduledSendTime!)}</p>
-                    </td>
-                    <td className="py-3.5 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button
-                            type="button"
-                            className="cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                            aria-label={`Actions for ${row.company}`}
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
-                            Send Now
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
-                            Reschedule
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
-                            Remove from Queue
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
+          <>
+            {/* Desktop table */}
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
+                    <th className="py-2.5 pr-4 font-medium">Company</th>
+                    <th className="py-2.5 pr-4 font-medium">Role</th>
+                    <th className="py-2.5 pr-4 font-medium">Outreach Type</th>
+                    <th className="py-2.5 pr-4 font-medium">Recipient / Email</th>
+                    <th className="py-2.5 pr-4 font-medium">Estimated Send Time</th>
+                    <th className="w-10 py-2.5" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {queueRows.map((row) => (
+                    <tr key={row.id} className="hover:bg-gray-50/60">
+                      <td className="py-3.5 pr-4">
+                        <div className="flex items-center gap-2.5">
+                          <CompanyLogo company={row.company} />
+                          <span className="font-medium text-gray-900">{row.company}</span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 pr-4 text-gray-600">{row.role}</td>
+                      <td className="py-3.5 pr-4">
+                        <OutreachTypeBadge type={row.outreachType} />
+                      </td>
+                      <td className="py-3.5 pr-4 text-gray-600">{row.emails[0] ?? "—"}</td>
+                      <td className="py-3.5 pr-4">
+                        <p className="font-semibold text-gray-900">{formatQueueTime(row.scheduledSendTime!)}</p>
+                        <p className="text-xs text-gray-400">{formatRelative(row.scheduledSendTime!)}</p>
+                      </td>
+                      <td className="py-3.5 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button
+                              type="button"
+                              className="cursor-pointer rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
+                              aria-label={`Actions for ${row.company}`}
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                              Send Now
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                              Reschedule
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
+                              Remove from Queue
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile cards */}
+            <div className="space-y-3 md:hidden">
+              {queueRows.map((row) => (
+                <div key={row.id} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <CompanyLogo company={row.company} />
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-gray-900">{row.company}</p>
+                        <p className="truncate text-xs text-gray-500">{row.role}</p>
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          type="button"
+                          className="shrink-0 cursor-pointer rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
+                          aria-label={`Actions for ${row.company}`}
+                        >
+                          <MoreVertical className="h-4 w-4" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                          Send Now
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer" onClick={notWiredYet}>
+                          Reschedule
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer text-red-600" onClick={notWiredYet}>
+                          Remove from Queue
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+
+                  <div className="mb-3">
+                    <OutreachTypeBadge type={row.outreachType} />
+                  </div>
+
+                  <div className="space-y-1.5 border-t border-gray-100 pt-2.5 text-xs text-gray-500">
+                    <div className="flex items-center justify-between gap-3">
+                      <span>Recipient</span>
+                      <span className="truncate text-gray-700">{row.emails[0] ?? "—"}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span>Est. send time</span>
+                      <span className="text-right text-gray-700">
+                        {formatQueueTime(row.scheduledSendTime!)} · {formatRelative(row.scheduledSendTime!)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

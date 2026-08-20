@@ -93,7 +93,8 @@ export default function AllJobsPage() {
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
@@ -158,7 +159,7 @@ export default function AllJobsPage() {
                             href={app.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                            className="inline-flex rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
                             aria-label={`Open ${app.company} listing`}
                           >
                             <ExternalLink className="h-4 w-4" />
@@ -171,6 +172,73 @@ export default function AllJobsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="space-y-3 p-4 md:hidden">
+          {isLoading ? (
+            <p className="py-10 text-center text-sm text-gray-400">Loading applications…</p>
+          ) : loadError ? (
+            <p className="py-10 text-center text-sm text-red-500">{loadError}</p>
+          ) : pageRows.length === 0 ? (
+            <p className="py-10 text-center text-sm text-gray-500">
+              No applications yet.{" "}
+              <Link href="/dashboard/jobs/tracker" className="text-brand-purple underline underline-offset-2">
+                Add one from the Kanban Board
+              </Link>
+              .
+            </p>
+          ) : (
+            pageRows.map((app) => {
+              const style = STATUS_STYLES[app.status] ?? STATUS_STYLES.wishlist;
+              return (
+                <div key={app.id} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-purple-600 text-sm font-bold text-white">
+                        {app.company.charAt(0).toUpperCase()}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-gray-900">{app.company}</p>
+                        <p className="truncate text-xs text-gray-500">{app.role}</p>
+                      </div>
+                    </div>
+                    {app.url && (
+                      <a
+                        href={app.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="shrink-0 rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
+                        aria-label={`Open ${app.company} listing`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${style.text}`}>
+                      <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
+                      {style.label}
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 border-t border-gray-100 pt-2.5 text-xs text-gray-500">
+                    <div className="flex items-center justify-between">
+                      <span>Location</span>
+                      <span className="text-gray-700">{app.location ?? "—"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Applied</span>
+                      <span className="text-gray-700">{formatDate(app.appliedDate)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Updated</span>
+                      <span className="text-gray-700">{formatDate(app.updatedAt)}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
 
         {!isLoading && !loadError && total > 0 && (

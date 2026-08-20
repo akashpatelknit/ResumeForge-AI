@@ -8,8 +8,6 @@ import {
   Layout,
   BarChart3,
   Settings,
-  Menu,
-  X,
   Zap,
   Target,
   Bot,
@@ -96,8 +94,12 @@ const navigation: NavItem[] = [
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
-export default function Sidebar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+interface SidebarProps {
+  isMobileMenuOpen: boolean;
+  onCloseMobileMenu: () => void;
+}
+
+export default function Sidebar({ isMobileMenuOpen, onCloseMobileMenu }: SidebarProps) {
   const [openSections, setOpenSections] = useState<string[]>(["Resumes"]);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [queueCount, setQueueCount] = useState<number | null>(null);
@@ -197,23 +199,11 @@ export default function Sidebar() {
         }
       `}</style>
 
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer border-none"
-      >
-        {isMobileMenuOpen ? (
-          <X className="w-6 h-6 text-gray-700" />
-        ) : (
-          <Menu className="w-6 h-6 text-gray-700" />
-        )}
-      </button>
-
       {/* Overlay */}
       {isMobileMenuOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={onCloseMobileMenu}
         />
       )}
 
@@ -254,7 +244,7 @@ export default function Sidebar() {
                   <Link
                     key={item.name}
                     href={item.href!}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={onCloseMobileMenu}
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
                       ${
                         isActive
@@ -308,7 +298,7 @@ export default function Sidebar() {
                           <Link
                             key={child.name}
                             href={child.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
+                            onClick={onCloseMobileMenu}
                             className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
                               ${
                                 isChildActiveRoute
@@ -349,7 +339,7 @@ export default function Sidebar() {
                 </div>
                 <Link
                   href="/dashboard/jobs/discover"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={onCloseMobileMenu}
                   className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-purple hover:underline"
                 >
                   View Queue

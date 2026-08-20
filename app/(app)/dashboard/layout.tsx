@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Sidebar from "@/components/shared/Sidebar";
 import DashboardHeader from "@/components/shared/DashboardHeader";
 
@@ -8,12 +9,17 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-linear-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
-      <Sidebar />
+      <Sidebar
+        isMobileMenuOpen={isMobileMenuOpen}
+        onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+      />
 
       <div className="flex-1 lg:ml-64">
-        <DashboardHeader />
+        <DashboardHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
 
         <main className="p-4 animate-fadeIn">{children}</main>
       </div>

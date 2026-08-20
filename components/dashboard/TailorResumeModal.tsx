@@ -96,7 +96,7 @@ function DiffSection({
           <span className="text-xs text-gray-400 shrink-0">No changes suggested</span>
         )}
       </div>
-      <div className="grid grid-cols-2 divide-x divide-gray-100">
+      <div className="grid grid-cols-1 divide-y divide-gray-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
         <div className="p-3 space-y-1.5 bg-white">
           {original.map((line, i) => (
             <p

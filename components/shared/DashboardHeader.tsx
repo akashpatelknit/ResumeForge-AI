@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Bell } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import ProfileMenu from "@/components/shared/ProfileMenu";
@@ -22,7 +22,11 @@ interface HeaderSummary {
 // data up into a layout-level sibling). This does mean a second, lightweight
 // GET /api/resumes call alongside the page's own — acceptable for one small
 // text line, but worth knowing about if this pattern gets reused elsewhere.
-export default function DashboardHeader() {
+interface DashboardHeaderProps {
+  onMenuClick: () => void;
+}
+
+export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const { user } = useUser();
   const pathname = usePathname();
   const router = useRouter();
@@ -89,10 +93,19 @@ export default function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-200">
-      <div className="flex items-center justify-between px-6 lg:px-8 py-4">
+      <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 gap-3">
+        {/* Mobile menu trigger */}
+        <button
+          onClick={onMenuClick}
+          aria-label="Open menu"
+          className="lg:hidden shrink-0 -ml-1 p-2.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer border-none bg-transparent"
+        >
+          <Menu className="w-5 h-5 text-gray-700" />
+        </button>
+
         {/* Page Title */}
-        <div>
-          <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
+        <div className="min-w-0 flex-1 lg:flex-initial">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 truncate">
             Dashboard
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -122,7 +135,7 @@ export default function DashboardHeader() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 shrink-0">
           {/* Search Bar - Hidden on mobile */}
           {/* <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-xl px-4 py-2.5 w-80 hover:bg-gray-150 transition-colors group">
             <Search className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />

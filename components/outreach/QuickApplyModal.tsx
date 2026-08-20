@@ -278,7 +278,7 @@ export function QuickApplyModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-h-[90vh] w-full min-w-3xl  overflow-y-auto gap-0 rounded-2xl p-0"
+        className="inset-0 h-screen w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-y-auto rounded-none p-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-6 py-5">
@@ -292,7 +292,7 @@ export function QuickApplyModal({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="cursor-pointer rounded-lg border-none bg-transparent p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="cursor-pointer rounded-lg border-none bg-transparent p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
             aria-label="Close"
           >
             <X className="h-5 w-5" />

@@ -47,9 +47,9 @@ export default function TemplateSelectionModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="min-w-7xl w-full max-h-[95vh] overflow-hidden bg-white rounded-2xl shadow-2xl border-0 p-0">
+      <DialogContent className="inset-0 h-screen w-screen max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:inset-auto sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-4xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl lg:max-w-6xl">
         {/* Header */}
-        <div className="px-8 pt-8 pb-4 border-b border-gray-100">
+        <div className="border-b border-gray-100 px-4 pt-6 pb-4 sm:px-8 sm:pt-8">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-gray-900 tracking-tight">
               Choose a Template
@@ -61,7 +61,7 @@ export default function TemplateSelectionModal({
         </div>
 
         {/* Template Grid */}
-        <div className="px-8 py-6 overflow-y-auto max-h-[55vh] grid grid-cols-4 gap-5 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+        <div className="grid grid-cols-1 gap-5 overflow-y-auto px-4 py-6 max-h-[calc(100vh-13rem)] sm:max-h-[55vh] sm:grid-cols-2 sm:px-8 lg:grid-cols-3 xl:grid-cols-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
           {templates.map((template) => {
             const isHovered = hoveredId === template.id;
             const isSelected = selectedId === template.id;
@@ -159,8 +159,8 @@ export default function TemplateSelectionModal({
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-5 border-t border-gray-100 bg-gray-50/60 rounded-b-2xl">
-          <DialogFooter className="flex items-center justify-between sm:justify-between gap-3">
+        <div className="border-t border-gray-100 bg-gray-50/60 px-4 py-5 sm:px-8 rounded-b-2xl">
+          <DialogFooter className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-gray-400">
               {creatingId
                 ? "Creating your resume..."

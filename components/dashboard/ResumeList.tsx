@@ -98,6 +98,8 @@ export default function ResumeListView({
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -232,11 +234,81 @@ export default function ResumeListView({
             })}
           </tbody>
         </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="space-y-3 p-4 md:hidden">
+          {paginatedResumes.map((resume) => {
+            const atsBadge = getATSBadge(resume.atsScore ?? 0);
+            return (
+              <div key={resume.id} className="rounded-xl border border-gray-200 p-4">
+                <div className="mb-3 flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedResumes.includes(resume.id)}
+                    onChange={() => onToggleSelect(resume.id)}
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="truncate font-medium text-gray-900">{resume.title}</p>
+                      <button onClick={() => onToggleFavorite(resume.id)} className="shrink-0">
+                        <Star
+                          className={`h-4 w-4 transition-colors ${
+                            resume.isFavorite
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300 hover:text-yellow-400"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    <Badge variant="outline" className="mt-1 text-xs">
+                      {resume.templateId}
+                    </Badge>
+                  </div>
+                  <div className="shrink-0">
+                    <ResumeCardActions resume={resume} fill={false} onRefresh={onRefresh} />
+                  </div>
+                </div>
+
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex-1">
+                    <div className="mb-1 flex items-center justify-between">
+                      <span className="text-sm font-bold text-gray-900">{resume.atsScore}</span>
+                      <Badge className={`${atsBadge.color} border px-2 py-0.5 text-xs whitespace-nowrap`}>
+                        {atsBadge.label}
+                      </Badge>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-gray-200">
+                      <div
+                        className={`h-1.5 rounded-full transition-all duration-500 ${
+                          (resume.atsScore ?? 0) >= 90
+                            ? "bg-linear-to-r from-green-500 to-green-600"
+                            : (resume.atsScore ?? 0) >= 75
+                              ? "bg-linear-to-r from-blue-500 to-blue-600"
+                              : (resume.atsScore ?? 0) >= 60
+                                ? "bg-linear-to-r from-yellow-500 to-yellow-600"
+                                : "bg-linear-to-r from-red-500 to-red-600"
+                        }`}
+                        style={{ width: `${resume.atsScore}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <p className="border-t border-gray-100 pt-2 text-xs text-gray-500">
+                  Modified {new Date(resume.updatedAt).toLocaleDateString()} at{" "}
+                  {new Date(resume.updatedAt).toLocaleTimeString()}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Pagination Footer */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-1 w-full">
+        <div className="flex flex-col gap-3 px-1 w-full sm:flex-row sm:items-center sm:justify-between">
           {/* Results info + page size selector */}
           <div className="flex items-center gap-3 text-sm text-gray-600">
             <span className="whitespace-nowrap">

@@ -152,7 +152,7 @@ export function TemplatesTable({ initialTemplates }: { initialTemplates: AdminTe
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="cursor-pointer rounded-md border border-gray-200 p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                      className="cursor-pointer rounded-md border border-gray-200 p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
                       aria-label={`Actions for ${template.name}`}
                     >
                       <MoreVertical className="h-4 w-4" />

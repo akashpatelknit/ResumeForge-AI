@@ -11,11 +11,12 @@ export default function AIOptimizeButton() {
         /* Open AI modal */
       }}
       size="lg"
-      className="fixed bottom-6 right-6 z-50 bg-linear-to-r from-purple-600 via-blue-600 to-pink-600 text-white shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-200 rounded-full px-6 py-6 group cursor-pointer"
+      aria-label="Optimize with AI"
+      className="fixed bottom-6 right-6 z-50 bg-linear-to-r from-purple-600 via-blue-600 to-pink-600 text-white shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-200 rounded-full p-4 sm:px-6 sm:py-6 group cursor-pointer"
     >
-      <Sparkles className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
-      <span className="font-semibold">Optimize with AI</span>
-      <Badge className="ml-2 bg-white text-purple-600 text-xs">Beta</Badge>
+      <Sparkles className="h-5 w-5 sm:mr-2 group-hover:rotate-12 transition-transform" />
+      <span className="hidden font-semibold sm:inline">Optimize with AI</span>
+      <Badge className="ml-2 hidden bg-white text-xs text-purple-600 sm:inline-flex">Beta</Badge>
     </Button>
   );
 }

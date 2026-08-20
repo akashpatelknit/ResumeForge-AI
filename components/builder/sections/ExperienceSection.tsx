@@ -198,7 +198,7 @@ function ExperienceEntry({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <div className="space-y-1">
             <Label htmlFor={`startDate-${exp.id}`}>Start Date *</Label>
             <MonthYearPicker

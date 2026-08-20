@@ -25,7 +25,7 @@ export default function LandingPageClient() {
   });
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-white">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-white lg:h-screen lg:overflow-hidden">
       {/* Barely-visible ambient wash, confined to the upper portion behind
           the headline only — purple/blue, no pink, and pulled in tight so
           the rest of the page reads as plain white. */}
@@ -44,16 +44,20 @@ export default function LandingPageClient() {
         </motion.div>
       </div>
 
-      <main className="relative z-10 mx-auto flex max-w-300 flex-1 min-h-0 flex-col items-center justify-center px-4 pt-10 pb-10">
+      {/* Below lg, this is a normal flowing/scrollable column — there isn't
+          room to fit the whole hero in one screen on mobile, so it only
+          gets forced into a single no-scroll viewport (flex-1 min-h-0 +
+          justify-center) at lg and up, matching the parent's lg:h-screen. */}
+      <main className="relative z-10 mx-auto flex w-full max-w-300 flex-col items-center px-4 pt-6 pb-8 sm:pt-8 lg:flex-1 lg:min-h-0 lg:justify-center lg:pt-10 lg:pb-10">
         <motion.div {...enter(0.09)}>
           <HeroHeading />
         </motion.div>
 
-        <motion.div {...enter(0.18)} className="mt-9 mb-14">
+        <motion.div {...enter(0.18)} className="mt-4 mb-6 sm:mt-6 sm:mb-8 lg:mt-9 lg:mb-14">
           <HeroSubtitle />
         </motion.div>
 
-        <motion.div {...enter(0.27)} className="mb-10 w-full">
+        <motion.div {...enter(0.27)} className="mb-6 w-full lg:mb-10">
           <FloatingResumePreview />
         </motion.div>
 
@@ -61,7 +65,7 @@ export default function LandingPageClient() {
           <ResumeDropzone upload={upload} />
         </motion.div>
 
-        <motion.div {...enter(0.45)} className="mt-10">
+        <motion.div {...enter(0.45)} className="mt-6 lg:mt-10">
           <BuildFromScratch />
         </motion.div>
       </main>

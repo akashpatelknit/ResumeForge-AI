@@ -48,7 +48,7 @@ export function QueueEmailPromptModal({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="cursor-pointer rounded-lg border-none bg-transparent p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="cursor-pointer rounded-lg border-none bg-transparent p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
             aria-label="Close"
           >
             <X className="h-5 w-5" />

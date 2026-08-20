@@ -598,7 +598,7 @@ export default function ColdOutreachPage() {
                           <DropdownMenuTrigger asChild>
                             <button
                               type="button"
-                              className="cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                              className="cursor-pointer rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5"
                               aria-label={`Actions for ${entry.company}`}
                             >
                               <MoreVertical className="h-4 w-4" />

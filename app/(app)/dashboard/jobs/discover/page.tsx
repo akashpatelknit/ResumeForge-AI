@@ -443,7 +443,8 @@ export default function JobDiscoveryPage() {
           </div>
         )}
 
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-gray-100 text-xs font-medium text-gray-500">
@@ -548,6 +549,87 @@ export default function JobDiscoveryPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="space-y-3 p-4 md:hidden">
+          {loading ? (
+            <div className="py-16 text-center text-sm text-gray-400">
+              <Loader2 className="mx-auto mb-2 h-5 w-5 animate-spin" />
+              Loading jobs...
+            </div>
+          ) : jobsQuery.isError ? (
+            <p className="py-16 text-center text-sm text-red-500">
+              {jobsQuery.error instanceof Error ? jobsQuery.error.message : "Failed to load jobs."}
+            </p>
+          ) : jobs.length === 0 ? (
+            <p className="py-16 text-center text-sm text-gray-500">No jobs match these filters.</p>
+          ) : (
+            jobs.map((job) => {
+              const style = sourceStyle(job.source);
+              const isPending = pendingId === job.id;
+              return (
+                <div key={job.id} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <CompanyLogo company={job.company} />
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-gray-900">{job.company}</p>
+                        <p className="truncate text-sm font-medium text-brand-purple">{job.jobTitle}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleBookmark(job)}
+                      disabled={isPending}
+                      className="shrink-0 cursor-pointer rounded-md border-none bg-transparent p-1.5 text-gray-400 hover:bg-gray-100 hover:text-brand-purple disabled:cursor-not-allowed disabled:opacity-60"
+                      aria-label={job.isBookmarked ? "Remove bookmark" : "Bookmark this job"}
+                    >
+                      <Bookmark className={cn("h-4 w-4", job.isBookmarked && "fill-brand-purple text-brand-purple")} />
+                    </button>
+                  </div>
+
+                  <div className="mb-3 flex flex-wrap items-center gap-2">
+                    <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium", style.bg, style.text)}>
+                      {style.label}
+                    </span>
+                    {job.location && (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
+                        <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                        {job.location}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mb-3 flex items-center justify-between border-t border-gray-100 pt-2.5 text-xs text-gray-500">
+                    <span>{job.experienceLevel || "Not specified"}</span>
+                    <span>{formatRelative(job.postedDate)}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleQueue(job)}
+                    disabled={isPending}
+                    className={cn(
+                      "flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+                      job.isQueued
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                        : "border-brand-purple bg-white text-brand-purple hover:bg-purple-50",
+                    )}
+                  >
+                    {isPending ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : job.isQueued ? (
+                      <Check className="h-3.5 w-3.5" />
+                    ) : (
+                      <Plus className="h-3.5 w-3.5" />
+                    )}
+                    {job.isQueued ? "In Queue" : "Add to Queue"}
+                  </button>
+                </div>
+              );
+            })
+          )}
         </div>
 
         {!loading && total > 0 && (

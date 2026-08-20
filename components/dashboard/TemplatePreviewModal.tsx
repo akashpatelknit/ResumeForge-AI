@@ -99,7 +99,7 @@ export default function TemplatePreviewModal({
       {/* Single wrapper — backdrop + centering, pointer-events only on card */}
       <div
         className={cn(
-          "fixed inset-0 z-50 flex items-center justify-center p-4",
+          "fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4",
           "bg-black/75 backdrop-blur-md",
           "transition-opacity duration-300",
           isVisible ? "opacity-100" : "opacity-0",
@@ -108,16 +108,16 @@ export default function TemplatePreviewModal({
       >
         <div
           className={cn(
-            "relative flex w-full max-w-6xl h-[90vh] rounded-2xl overflow-hidden shadow-2xl border border-white/10",
+            "relative flex w-full max-w-6xl h-screen sm:h-[90vh] flex-col overflow-y-auto rounded-none sm:rounded-2xl shadow-2xl border border-white/10 lg:flex-row lg:overflow-hidden",
             "transition-transform duration-300",
             isVisible ? "scale-100" : "scale-95",
           )}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Preview Panel */}
-          <div className="relative flex-1 bg-[#0f0f13] flex flex-col">
+          <div className="relative flex h-[50vh] shrink-0 flex-col bg-[#0f0f13] lg:h-auto lg:flex-1">
             {/* Top Bar */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/8">
+            <div className="flex flex-wrap items-center justify-between gap-y-2 px-3 py-2.5 border-b border-white/8 sm:px-4 sm:py-3">
               {/* Zoom Controls */}
               <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
                 <Tooltip>
@@ -125,7 +125,7 @@ export default function TemplatePreviewModal({
                     <button
                       onClick={handleZoomOut}
                       disabled={zoom <= 50}
-                      className="p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="p-2 sm:p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <ZoomOut className="w-3.5 h-3.5" />
                     </button>
@@ -145,7 +145,7 @@ export default function TemplatePreviewModal({
                     <button
                       onClick={handleZoomIn}
                       disabled={zoom >= 200}
-                      className="p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="p-2 sm:p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <ZoomIn className="w-3.5 h-3.5" />
                     </button>
@@ -162,7 +162,7 @@ export default function TemplatePreviewModal({
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleZoomReset}
-                      className="p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all"
+                      className="p-2 sm:p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-all"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                     </button>
@@ -194,7 +194,7 @@ export default function TemplatePreviewModal({
                 <TooltipTrigger asChild>
                   <button
                     onClick={onClose}
-                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-all border border-white/8 hover:border-white/15"
+                    className="p-3 sm:p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-all border border-white/8 hover:border-white/15"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -238,8 +238,8 @@ export default function TemplatePreviewModal({
           </div>
 
           {/* Sidebar */}
-          <div className="w-75 bg-white flex flex-col border-l border-gray-100">
-            <ScrollArea className="flex-1">
+          <div className="w-full shrink-0 bg-white flex flex-col border-t border-gray-100 lg:w-75 lg:border-t-0 lg:border-l">
+            <ScrollArea className="lg:flex-1">
               <div className="p-4 space-y-4">
                 {/* Header */}
                 <div>

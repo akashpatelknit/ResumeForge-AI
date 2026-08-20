@@ -87,7 +87,11 @@ function ResumeFormContent() {
     <div className="space-y-4">
       <Card className="p-6">
         <Tabs defaultValue={initialTab} className="w-full">
-          <TabsList className="flex w-full gap-1">
+          {/* overflow-x-auto: 6 tabs at min-content width can exceed a
+              narrow phone's viewport — this keeps the scroll contained to
+              the tab strip instead of blowing out the page's horizontal
+              bounds. */}
+          <TabsList className="flex w-full gap-1 overflow-x-auto">
             <TabsTrigger value="personal">Personal</TabsTrigger>
             <Reorder.Group
               as="div"

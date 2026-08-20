@@ -90,7 +90,8 @@ export function UsersTable({
         </Button>
       </form>
 
-      <div className="rounded-md border border-slate-800">
+      {/* Desktop table */}
+      <div className="hidden rounded-md border border-slate-800 md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-slate-800 hover:bg-transparent">
@@ -151,7 +152,53 @@ export function UsersTable({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-slate-400">
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {users.length === 0 && (
+          <div className="rounded-md border border-slate-800 py-10 text-center text-sm text-slate-500">
+            No users found.
+          </div>
+        )}
+        {users.map((user) => (
+          <div key={user.id} className="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="truncate font-medium text-slate-200">{user.name ?? "(no name)"}</p>
+                <p className="truncate text-xs text-slate-500">{user.email}</p>
+              </div>
+              <Badge variant={user.plan === "pro" ? "default" : "outline"} className="shrink-0">
+                {user.plan === "pro" ? `Pro (${user.subscriptionStatus})` : "Free"}
+              </Badge>
+            </div>
+            <div className="mb-3 flex items-center gap-2">
+              {user.isBlocked ? (
+                <Badge variant="destructive" title={user.blockedReason ?? undefined}>
+                  Blocked
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+                  Active
+                </Badge>
+              )}
+            </div>
+            <div className="mb-3 flex items-center justify-between border-t border-slate-800 pt-2.5 text-xs text-slate-400">
+              <span>{user.resumeCount} resumes</span>
+              <span>Joined {new Date(user.createdAt).toLocaleDateString()}</span>
+            </div>
+            <Button
+              size="sm"
+              variant={user.isBlocked ? "outline" : "destructive"}
+              disabled={pendingUserId === user.id}
+              onClick={() => toggleBlock(user)}
+              className={user.isBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
+            >
+              {user.isBlocked ? "Unblock" : "Block"}
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
         <span>
           {total} user{total === 1 ? "" : "s"}
         </span>

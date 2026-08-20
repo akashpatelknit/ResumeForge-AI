@@ -182,7 +182,7 @@ export function DashboardUsersPreview({
                         <button
                           type="button"
                           disabled={pendingUserId === user.id}
-                          className="cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:pointer-events-none disabled:opacity-50"
+                          className="cursor-pointer rounded-md p-3.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:p-1.5 disabled:pointer-events-none disabled:opacity-50"
                           aria-label={`Actions for ${user.email}`}
                         >
                           <MoreVertical className="h-4 w-4" />

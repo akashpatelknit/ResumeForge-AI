@@ -138,7 +138,7 @@ export default function FloatingResumePreview() {
         </div>
 
         <div
-          className="h-74 overflow-hidden p-5 sm:p-6"
+          className="h-56 overflow-hidden p-4 sm:h-64 sm:p-5 lg:h-74 lg:p-6"
           style={{
             maskImage: "linear-gradient(to bottom, black 60%, transparent 96%)",
             WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 96%)",
