@@ -1,6 +1,6 @@
 "use client";
 
-import { Palette, LayoutGrid, Calendar, Wrench, Type } from "lucide-react";
+import { Palette, LayoutGrid, Calendar, Wrench, Type, RotateCcw } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -8,9 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/store/resumeStore";
 import {
   DATE_FORMAT_OPTIONS,
+  DEFAULT_STYLE_CONFIG,
   PAPER_FORMAT_OPTIONS,
   type DateFormat,
   type PaperFormat,
@@ -59,6 +61,20 @@ export default function LayoutPanel() {
 
   return (
     <div className="space-y-6 p-1">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Customize how this resume looks</p>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-auto gap-1.5 px-2 py-1 text-xs text-gray-500 hover:text-gray-900"
+          onClick={() => updateStyleConfig(DEFAULT_STYLE_CONFIG)}
+        >
+          <RotateCcw className="size-3.5" />
+          Reset Layout
+        </Button>
+      </div>
+
       <LayoutSection icon={Palette} title="Accent Color">
         <AccentColorPicker
           value={styleConfig.accentColor}

@@ -20,17 +20,20 @@ interface ATSScoreButtonProps {
 // Entry point for checking the ATS match score without leaving the editor:
 // opens the same JobDescriptionAnalyzer used on the dashboard's Job
 // Analyzer page, in a side sheet, scoped to whichever resume is open here.
+// Rendered in the builder header (BuilderToolbar's endSlot) alongside every
+// other preview/editor control, not as a floating page-level button.
 export default function ATSScoreButton({ resumeId }: ATSScoreButtonProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
-          size="lg"
+          variant="outline"
+          size="sm"
           aria-label="Check ATS Score"
-          className="fixed bottom-6 left-6 z-50 bg-white text-gray-800 border border-gray-200 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-200 rounded-full p-4 sm:px-6 sm:py-6 cursor-pointer"
+          className="cursor-pointer px-2 transition-colors duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 sm:px-3"
         >
-          <Target className="h-5 w-5 sm:mr-2 text-blue-600" />
-          <span className="hidden font-semibold sm:inline">Check ATS Score</span>
+          <Target className="h-4 w-4 text-blue-600" />
+          {/* <span className="hidden font-medium sm:inline">ATS</span> */}
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">

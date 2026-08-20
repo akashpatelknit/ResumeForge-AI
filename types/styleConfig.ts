@@ -34,8 +34,10 @@ export interface ResumeStyleConfig {
   lineSpacingPct: number;
 }
 
+// Matches the template's original, pre-Layout-tab look (plain black text,
+// no theming) — this is also what "Reset Layout" restores.
 export const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
-  accentColor: "#2563eb",
+  accentColor: "#000000",
   paperFormat: "a4",
   margins: {
     topBottom: 0.5,
@@ -58,6 +60,23 @@ export const FONT_OPTIONS: { value: PdfFontFamily; label: string }[] = [
   { value: "Times-Roman", label: "Times New Roman" },
   { value: "Courier", label: "Courier" },
 ];
+
+// react-pdf's standard fonts don't synthesize bold from fontWeight — each
+// weight is its own named font, and the bold variant isn't just the base
+// name + "-Bold" (Times-Roman's bold is "Times-Bold", not
+// "Times-Roman-Bold"). Templates that render bold text need this instead of
+// guessing the suffix.
+export const PDF_BOLD_FONT_MAP: Record<PdfFontFamily, string> = {
+  Helvetica: "Helvetica-Bold",
+  "Times-Roman": "Times-Bold",
+  Courier: "Courier-Bold",
+};
+
+export const PAPER_SIZE_MAP: Record<PaperFormat, "A4" | "LETTER" | "LEGAL"> = {
+  a4: "A4",
+  letter: "LETTER",
+  legal: "LEGAL",
+};
 
 export const ACCENT_COLOR_PRESETS = [
   "#bfdbfe", // blue

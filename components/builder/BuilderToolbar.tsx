@@ -3,9 +3,11 @@
 import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Save, Download, Eye, Pencil, ChevronLeft } from "lucide-react";
+import { Save, Download, Eye, Pencil, ChevronLeft,Timer,Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useResumeStore } from "@/store/resumeStore";
+import { pdf } from "@react-pdf/renderer";
+import { getTemplateComponent } from "@/components/pdf/template";
 import Link from "next/link";
 
 interface BuilderToolbarProps {
@@ -31,16 +33,32 @@ export default function BuilderToolbar({
   mobilePreviewActive,
   onTogglePreview,
 }: BuilderToolbarProps) {
-  const { currentResume, updateTitle } = useResumeStore();
-  const [isSaving, setIsSaving] = useState(false);
+  const { currentResume, updateTitle, saveResume, isSaving } = useResumeStore();
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleSave = async () => {
-    setIsSaving(true);
-    setTimeout(() => setIsSaving(false), 1000);
+  const handleSave = () => {
+    saveResume();
   };
 
-  const handleDownload = () => {
-    console.log("Download PDF");
+  const handleDownload = async () => {
+    if (!currentResume || isDownloading) return;
+
+    setIsDownloading(true);
+    try {
+      const TemplateComponent = getTemplateComponent(currentResume.templateId);
+      const blob = await pdf(<TemplateComponent resume={currentResume} />).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${currentResume.title || "resume"}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -50,7 +68,11 @@ export default function BuilderToolbar({
           {/* Left Section */}
           <div className="flex min-w-0 items-center gap-2 sm:gap-4">
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm" className="shrink-0 px-2 sm:px-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="shrink-0 px-2 sm:px-3"
+              >
                 <ChevronLeft className="h-4 w-4 sm:mr-1" />
                 <span className="hidden sm:inline">Back</span>
               </Button>
@@ -66,7 +88,9 @@ export default function BuilderToolbar({
 
           {/* Middle */}
           {centerSlot && (
-            <div className="hidden md:flex items-center gap-3">{centerSlot}</div>
+            <div className="hidden md:flex items-center gap-3">
+              {centerSlot}
+            </div>
           )}
 
           {/* Right Actions */}
@@ -80,8 +104,11 @@ export default function BuilderToolbar({
               disabled={isSaving}
               className="px-2 sm:px-3"
             >
-              <Save className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">{isSaving ? "Saving..." : "Save"}</span>
+              {isSaving ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
             </Button>
 
             {onTogglePreview && (
@@ -89,7 +116,10 @@ export default function BuilderToolbar({
                 variant={mobilePreviewActive ? "default" : "outline"}
                 size="sm"
                 onClick={onTogglePreview}
-                className={cn("px-2 lg:hidden", mobilePreviewActive && "sm:px-3")}
+                className={cn(
+                  "px-2 lg:hidden",
+                  mobilePreviewActive && "sm:px-3",
+                )}
               >
                 {mobilePreviewActive ? (
                   <>
@@ -105,9 +135,17 @@ export default function BuilderToolbar({
               </Button>
             )}
 
-            <Button size="sm" onClick={handleDownload} className="px-2 sm:px-3">
-              <Download className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">Download PDF</span>
+            <Button
+              size="sm"
+              onClick={handleDownload}
+              disabled={!currentResume || isDownloading}
+              className="px-2 sm:px-3"
+            >
+              {isDownloading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>

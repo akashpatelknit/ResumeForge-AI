@@ -9,6 +9,12 @@ import {
 import { Fragment } from "react";
 import { AppResume } from "@/types/resume";
 import { getEffectiveSectionOrder, type SectionKey } from "@/lib/resumeSections";
+import {
+  PAPER_SIZE_MAP,
+  PDF_BOLD_FONT_MAP,
+  type ResumeStyleConfig,
+} from "@/types/styleConfig";
+import { formatResumeDate } from "@/lib/pdf/formatResumeDate";
 
 /**
  * ModernTemplate — pixel-faithful port of the LaTeX resume template
@@ -17,279 +23,300 @@ import { getEffectiveSectionOrder, type SectionKey } from "@/lib/resumeSections"
  * LaTeX margins translated to pt:
  *   \oddsidemargin  -0.530in  → ~38pt left/right (after \textwidth +1in)
  *   \topmargin      -0.45in   → ~18pt top
+ *
+ * Styles are built per-render from resume.styleConfig (Layout tab) rather
+ * than a fixed StyleSheet.create() — accent color, margins, fonts, sizes and
+ * line spacing all flow through here. Left/right page padding (38pt) and the
+ * smaller internal gaps (bullet-to-bullet, header rows) aren't covered by
+ * any Layout control, so they stay fixed.
  */
+function buildStyles(sc: ResumeStyleConfig) {
+  const headScale = sc.headingSizePct / 100;
+  const bodyScale = sc.bodySizePct / 100;
+  const lineScale = sc.lineSpacingPct / 100;
+  const boldPrimary = PDF_BOLD_FONT_MAP[sc.primaryFont];
+  const accent = sc.accentColor;
+  const topBottomPt = sc.margins.topBottom * 72; // stored in inches
+  const B = 10 * bodyScale; // base body font size, everything but name/section titles
 
-const styles = StyleSheet.create({
-  // ── Page ──────────────────────────────────────────────────────────────────
-  page: {
-    paddingTop: 18,
-    paddingBottom: 24,
-    paddingLeft: 38,
-    paddingRight: 38,
-    fontSize: 10,
-    fontFamily: "Helvetica",
-    lineHeight: 1.25,
-    backgroundColor: "#ffffff",
-  },
+  return StyleSheet.create({
+    // ── Page ──────────────────────────────────────────────────────────────
+    page: {
+      paddingTop: topBottomPt,
+      paddingBottom: topBottomPt,
+      paddingLeft: 38,
+      paddingRight: 38,
+      fontSize: B,
+      fontFamily: sc.secondaryFont,
+      lineHeight: 1.25 * lineScale,
+      backgroundColor: "#ffffff",
+    },
 
-  // ── Header ────────────────────────────────────────────────────────────────
-  // Mirrors: \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-  headerRow1: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 4,
-  },
-  headerRow2: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginTop: 1,
-  },
-  headerRow3: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    marginTop: 1,
-  },
-  // Left column in rows 2 & 3 — flex so it never bleeds into right column
-  headerLeft: {
-    flex: 1,
-    paddingRight: 8,
-  },
-  // Right column — fixed width wide enough for "Email: ..." / "Mobile: ..."
-  headerRight: {
-    flexShrink: 0,
-  },
-  // \textbf{{\LARGE Name}}  ≈ 22pt bold
-  name: {
-    fontSize: 22,
-    lineHeight: 1.15,
-    fontFamily: "Helvetica-Bold",
-  },
-  // Email on right of row 1 — rendered as a clickable mailto link
-  headerEmailLink: {
-    fontSize: 10,
-    color: "#1a1a1a",
-    textDecoration: "none",
-    flexShrink: 0,
-  },
-  // LinkedIn / Github links on left column
-  headerLink: {
-    fontSize: 10,
-    color: "#1a1a1a",
-    textDecoration: "none",
-  },
-  // "Mobile:   +91-..." plain text on right of row 2
-  headerMobile: {
-    fontSize: 10,
-    color: "#1a1a1a",
-    flexShrink: 0,
-  },
+    // ── Header ────────────────────────────────────────────────────────────
+    // Mirrors: \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+    headerRow1: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      marginBottom: 4,
+    },
+    headerRow2: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      marginTop: 1,
+    },
+    headerRow3: {
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      marginTop: 1,
+    },
+    // Left column in rows 2 & 3 — flex so it never bleeds into right column
+    headerLeft: {
+      flex: 1,
+      paddingRight: 8,
+    },
+    // Right column — fixed width wide enough for "Email: ..." / "Mobile: ..."
+    headerRight: {
+      flexShrink: 0,
+    },
+    // \textbf{{\LARGE Name}}  ≈ 22pt bold
+    name: {
+      fontSize: 22 * headScale,
+      lineHeight: 1.15 * lineScale,
+      fontFamily: boldPrimary,
+      color: accent,
+    },
+    // Email on right of row 1 — rendered as a clickable mailto link
+    headerEmailLink: {
+      fontSize: B,
+      color: "#1a1a1a",
+      textDecoration: "none",
+      flexShrink: 0,
+    },
+    // LinkedIn / Github links on left column
+    headerLink: {
+      fontSize: B,
+      color: "#1a1a1a",
+      textDecoration: "none",
+    },
+    // "Mobile:   +91-..." plain text on right of row 2
+    headerMobile: {
+      fontSize: B,
+      color: "#1a1a1a",
+      flexShrink: 0,
+    },
 
-  // ── Section title ─────────────────────────────────────────────────────────
-  // \vspace{-10pt}\scshape\raggedright\large  +  \titlerule
-  sectionTitle: {
-    fontSize: 13,
-    fontFamily: "Helvetica-Bold",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-    marginTop: 6,
-    marginBottom: 3,
-    borderBottomWidth: 0.75,
-    borderBottomColor: "#000000",
-    paddingBottom: 2,
-  },
+    // ── Section title ───────────────────────────────────────────────────────
+    // \vspace{-10pt}\scshape\raggedright\large  +  \titlerule
+    sectionTitle: {
+      fontSize: 13 * headScale,
+      fontFamily: boldPrimary,
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+      marginTop: sc.margins.betweenSections,
+      marginBottom: sc.margins.betweenTitlesAndContent,
+      borderBottomWidth: 0.75,
+      borderBottomColor: accent,
+      paddingBottom: 2,
+      color: accent,
+    },
 
-  // ── Professional Summary ──────────────────────────────────────────────────
-  summaryText: {
-    fontSize: 10,
-    lineHeight: 1.4,
-    marginBottom: 2,
-    textAlign: "justify",
-  },
+    // ── Professional Summary ─────────────────────────────────────────────────
+    summaryText: {
+      fontSize: B,
+      lineHeight: 1.4 * lineScale,
+      marginBottom: 2,
+      textAlign: "justify",
+    },
 
-  // ── resumeSubHeadingListStart/End ─────────────────────────────────────────
-  // Outer wrapper — itemize leftmargin=*
-  subHeadingList: {
-    paddingLeft: 0,
-    marginBottom: 0,
-  },
+    // ── resumeSubHeadingListStart/End ────────────────────────────────────────
+    // Outer wrapper — itemize leftmargin=*
+    subHeadingList: {
+      paddingLeft: 0,
+      marginBottom: 0,
+    },
 
-  // ── resumeSubItem / resumeItem ────────────────────────────────────────────
-  // \item\small{ \textbf{#1}{: #2} }
-  // →  •  BOLD_LABEL: normal value
-  subItem: {
-    flexDirection: "row",
-    marginBottom: 2,
-    alignItems: "flex-start",
-  },
-  subItemBullet: {
-    fontSize: 10,
-    width: 14,
-    lineHeight: 1.3,
-  },
-  subItemTextWrap: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  subItemLabelBold: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    lineHeight: 1.3,
-  },
-  subItemValue: {
-    fontSize: 10,
-    lineHeight: 1.3,
-  },
+    // ── resumeSubItem / resumeItem ───────────────────────────────────────────
+    // \item\small{ \textbf{#1}{: #2} }
+    // →  •  BOLD_LABEL: normal value
+    subItem: {
+      flexDirection: "row",
+      marginBottom: 2,
+      alignItems: "flex-start",
+    },
+    subItemBullet: {
+      fontSize: B,
+      width: 14,
+      lineHeight: 1.3 * lineScale,
+    },
+    subItemTextWrap: {
+      flex: 1,
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
+    subItemLabelBold: {
+      fontSize: B,
+      fontFamily: boldPrimary,
+      lineHeight: 1.3 * lineScale,
+    },
+    subItemValue: {
+      fontSize: B,
+      lineHeight: 1.3 * lineScale,
+    },
 
-  // ── resumeSubheading ──────────────────────────────────────────────────────
-  // \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-  //   \textbf{Company}  &  Location  \\
-  //   \textit{Position}  &  \textit{Date}  \\
-  // \end{tabular*}
-  subheadingItem: {
-    marginTop: 2,
-    marginBottom: 0,
-  },
-  subheadingTopRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  subheadingBotRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginTop: 1,
-    marginBottom: 2,
-  },
-  subheadingCompany: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-  },
-  subheadingLocation: {
-    fontSize: 10,
-  },
-  subheadingPosition: {
-    fontSize: 10,
-    fontStyle: "italic",
-  },
-  subheadingDate: {
-    fontSize: 10,
-    fontStyle: "italic",
-  },
+    // ── resumeSubheading ──────────────────────────────────────────────────────
+    // \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    //   \textbf{Company}  &  Location  \\
+    //   \textit{Position}  &  \textit{Date}  \\
+    // \end{tabular*}
+    subheadingItem: {
+      marginTop: sc.margins.betweenContentBlocks,
+      marginBottom: 0,
+    },
+    // row-reverse for "left" flips which side date/location land on without
+    // restructuring the JSX (company/position stay first in markup either way).
+    subheadingTopRow: {
+      flexDirection: sc.dateLocationAlign === "left" ? "row-reverse" : "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+    },
+    subheadingBotRow: {
+      flexDirection: sc.dateLocationAlign === "left" ? "row-reverse" : "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      marginTop: 1,
+      marginBottom: 2,
+    },
+    subheadingCompany: {
+      fontSize: B,
+      fontFamily: boldPrimary,
+    },
+    subheadingLocation: {
+      fontSize: B,
+    },
+    subheadingPosition: {
+      fontSize: B,
+      fontStyle: "italic",
+    },
+    subheadingDate: {
+      fontSize: B,
+      fontStyle: "italic",
+    },
 
-  // ── resumeItemListStart / resumeItem ──────────────────────────────────────
-  // \begin{itemize}  inside experience
-  // \resumeItem{Title}{desc} = \item\small{ \textbf{Title}{: desc} }
-  itemList: {
-    paddingLeft: 6,
-    marginBottom: 4,
-  },
-  itemRow: {
-    flexDirection: "row",
-    marginBottom: 3,
-    alignItems: "flex-start",
-  },
-  itemBullet: {
-    fontSize: 10,
-    width: 14,
-    lineHeight: 1.3,
-  },
-  itemBodyBold: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    lineHeight: 1.3,
-  },
-  itemBodyNormal: {
-    fontSize: 10,
-    flex: 1,
-    lineHeight: 1.3,
-    textAlign: "justify",
-  },
+    // ── resumeItemListStart / resumeItem ─────────────────────────────────────
+    // \begin{itemize}  inside experience
+    // \resumeItem{Title}{desc} = \item\small{ \textbf{Title}{: desc} }
+    itemList: {
+      paddingLeft: 6,
+      marginBottom: 4,
+    },
+    itemRow: {
+      flexDirection: "row",
+      marginBottom: 3,
+      alignItems: "flex-start",
+    },
+    itemBullet: {
+      fontSize: B,
+      width: 14,
+      lineHeight: 1.3 * lineScale,
+    },
+    itemBodyBold: {
+      fontSize: B,
+      fontFamily: boldPrimary,
+      lineHeight: 1.3 * lineScale,
+    },
+    itemBodyNormal: {
+      fontSize: B,
+      flex: 1,
+      lineHeight: 1.3 * lineScale,
+      textAlign: "justify",
+    },
 
-  // ── Projects ──────────────────────────────────────────────────────────────
-  // \resumeSubItem{Name [links]}{description \\ \textbullet~ ... \\ \textbf{Tech Stack:} ...}
-  projectSubItem: {
-    flexDirection: "row",
-    marginBottom: 6, // \vspace{5pt} between projects
-    alignItems: "flex-start",
-  },
-  projectBullet: {
-    fontSize: 10,
-    width: 14,
-    lineHeight: 1.3,
-  },
-  projectBody: {
-    flex: 1,
-  },
-  // Bold first arg: Name + inline links
-  projectNameRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    marginBottom: 2,
-  },
-  projectNameBold: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-  },
-  projectLinkText: {
-    fontSize: 10,
-    color: "#0066cc",
-    textDecoration: "none",
-    marginLeft: 4,
-  },
-  // Normal second arg
-  projectDesc: {
-    fontSize: 10,
-    lineHeight: 1.3,
-    marginBottom: 2,
-    textAlign: "justify",
-  },
-  // \textbullet~ sub-bullets inside project body
-  projectBulletRow: {
-    flexDirection: "row",
-    marginBottom: 2,
-    alignItems: "flex-start",
-  },
-  projectBulletMark: {
-    fontSize: 10,
-    width: 14,
-    lineHeight: 1.3,
-  },
-  projectBulletText: {
-    fontSize: 10,
-    flex: 1,
-    lineHeight: 1.3,
-    textAlign: "justify",
-  },
-  // \textbf{Tech Stack:} value
-  techStackRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 1,
-  },
-  techStackBold: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    lineHeight: 1.3,
-  },
-  techStackValue: {
-    fontSize: 10,
-    lineHeight: 1.3,
-  },
+    // ── Projects ──────────────────────────────────────────────────────────────
+    // \resumeSubItem{Name [links]}{description \\ \textbullet~ ... \\ \textbf{Tech Stack:} ...}
+    projectSubItem: {
+      flexDirection: "row",
+      marginBottom: sc.margins.betweenContentBlocks,
+      alignItems: "flex-start",
+    },
+    projectBullet: {
+      fontSize: B,
+      width: 14,
+      lineHeight: 1.3 * lineScale,
+    },
+    projectBody: {
+      flex: 1,
+    },
+    // Bold first arg: Name + inline links
+    projectNameRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      marginBottom: 2,
+    },
+    projectNameBold: {
+      fontSize: B,
+      fontFamily: boldPrimary,
+    },
+    projectLinkText: {
+      fontSize: B,
+      color: accent,
+      textDecoration: "none",
+      marginLeft: 4,
+    },
+    // Normal second arg
+    projectDesc: {
+      fontSize: B,
+      lineHeight: 1.3 * lineScale,
+      marginBottom: 2,
+      textAlign: "justify",
+    },
+    // \textbullet~ sub-bullets inside project body
+    projectBulletRow: {
+      flexDirection: "row",
+      marginBottom: 2,
+      alignItems: "flex-start",
+    },
+    projectBulletMark: {
+      fontSize: B,
+      width: 14,
+      lineHeight: 1.3 * lineScale,
+    },
+    projectBulletText: {
+      fontSize: B,
+      flex: 1,
+      lineHeight: 1.3 * lineScale,
+      textAlign: "justify",
+    },
+    // \textbf{Tech Stack:} value
+    techStackRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      marginTop: 1,
+    },
+    techStackBold: {
+      fontSize: B,
+      fontFamily: boldPrimary,
+      lineHeight: 1.3 * lineScale,
+    },
+    techStackValue: {
+      fontSize: B,
+      lineHeight: 1.3 * lineScale,
+    },
 
-  // ── Education ─────────────────────────────────────────────────────────────
-  educationItem: {
-    marginBottom: 4,
-  },
-  gpaText: {
-    fontSize: 10,
-    marginBottom: 2,
-  },
-});
+    // ── Education ───────────────────────────────────────────────────────────
+    educationItem: {
+      marginBottom: 4,
+    },
+    gpaText: {
+      fontSize: B,
+      marginBottom: 2,
+    },
+  });
+}
+
+type Styles = ReturnType<typeof buildStyles>;
 
 // ── Section renderers ─────────────────────────────────────────────────────
 // Each returns the same JSX previously inlined in a fixed sequence, or null
@@ -302,7 +329,7 @@ const styles = StyleSheet.create({
 // of the reorderable set. This is just the Professional Summary; the
 // contact-info header above it is rendered unconditionally, outside of
 // sectionOrder entirely.
-function renderSummary(resume: AppResume) {
+function renderSummary(resume: AppResume, styles: Styles) {
   if (!resume.summary) return null;
   return (
     <View>
@@ -312,7 +339,7 @@ function renderSummary(resume: AppResume) {
   );
 }
 
-function renderSkills(resume: AppResume) {
+function renderSkills(resume: AppResume, styles: Styles) {
   if ((resume.skills ?? []).length === 0) return null;
   return (
     <View>
@@ -337,7 +364,7 @@ function renderSkills(resume: AppResume) {
   );
 }
 
-function renderExperience(resume: AppResume) {
+function renderExperience(resume: AppResume, styles: Styles) {
   if ((resume.experience ?? []).length === 0) return null;
   return (
     <View>
@@ -354,7 +381,8 @@ function renderExperience(resume: AppResume) {
             <View style={styles.subheadingBotRow}>
               <Text style={styles.subheadingPosition}>{exp.position}</Text>
               <Text style={styles.subheadingDate}>
-                {exp.startDate} - {exp.endDate || "Present"}
+                {formatResumeDate(exp.startDate, resume.styleConfig.dateFormat)} -{" "}
+                {formatResumeDate(exp.endDate, resume.styleConfig.dateFormat)}
               </Text>
             </View>
 
@@ -388,7 +416,7 @@ function renderExperience(resume: AppResume) {
   );
 }
 
-function renderProjects(resume: AppResume) {
+function renderProjects(resume: AppResume, styles: Styles) {
   if ((resume.projects ?? []).length === 0) return null;
   return (
     <View>
@@ -445,7 +473,7 @@ function renderProjects(resume: AppResume) {
   );
 }
 
-function renderEducation(resume: AppResume) {
+function renderEducation(resume: AppResume, styles: Styles) {
   if ((resume.education ?? []).length === 0) return null;
   return (
     <View>
@@ -462,7 +490,8 @@ function renderEducation(resume: AppResume) {
                 {edu.degree} in {edu.field}
               </Text>
               <Text style={styles.subheadingDate}>
-                {edu.startDate} - {edu.endDate}
+                {formatResumeDate(edu.startDate, resume.styleConfig.dateFormat)} -{" "}
+                {formatResumeDate(edu.endDate, resume.styleConfig.dateFormat)}
               </Text>
             </View>
             {edu.gpa && <Text style={styles.gpaText}>GPA: {edu.gpa}</Text>}
@@ -486,7 +515,7 @@ function renderEducation(resume: AppResume) {
   );
 }
 
-function renderAchievements(resume: AppResume) {
+function renderAchievements(resume: AppResume, styles: Styles) {
   if ((resume.achievements ?? []).length === 0) return null;
   return (
     <View>
@@ -519,7 +548,7 @@ function renderAchievements(resume: AppResume) {
   );
 }
 
-function renderCertifications(resume: AppResume) {
+function renderCertifications(resume: AppResume, styles: Styles) {
   if ((resume.certifications ?? []).length === 0) return null;
   return (
     <View>
@@ -544,7 +573,7 @@ function renderCertifications(resume: AppResume) {
   );
 }
 
-function renderCustomSections(resume: AppResume) {
+function renderCustomSections(resume: AppResume, styles: Styles) {
   const sections = (resume.customSections ?? []).filter(
     (section) => section.title && section.items.length > 0,
   );
@@ -585,7 +614,10 @@ function renderCustomSections(resume: AppResume) {
 
 // Every SectionKey except "personal" — that one's rendered unconditionally
 // right after the header, never through this map, since it's locked first.
-const SECTION_RENDERERS: Record<Exclude<SectionKey, "personal">, (resume: AppResume) => React.ReactNode> = {
+const SECTION_RENDERERS: Record<
+  Exclude<SectionKey, "personal">,
+  (resume: AppResume, styles: Styles) => React.ReactNode
+> = {
   skills: renderSkills,
   experience: renderExperience,
   projects: renderProjects,
@@ -604,10 +636,11 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
   // even for resumes saved before sectionOrder existed — see
   // lib/resumeSections.ts.
   const order = getEffectiveSectionOrder(resume.sectionOrder);
+  const styles = buildStyles(resume.styleConfig);
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size={PAPER_SIZE_MAP[resume.styleConfig.paperFormat]} style={styles.page}>
         {/* ================================================================
             HEADING — always first, never reorderable (it's the identity
             block, not a "section").
@@ -653,13 +686,13 @@ export default function ModernTemplate({ resume }: LatexModernTemplateProps) {
 
         {/* "personal" section (Professional Summary) — locked first,
             rendered outside the sectionOrder loop below. */}
-        {renderSummary(resume)}
+        {renderSummary(resume, styles)}
 
         {/* Everything else, in the user's chosen (or default) order. */}
         {order
           .filter((key): key is Exclude<SectionKey, "personal"> => key !== "personal")
           .map((key) => (
-            <Fragment key={key}>{SECTION_RENDERERS[key](resume)}</Fragment>
+            <Fragment key={key}>{SECTION_RENDERERS[key](resume, styles)}</Fragment>
           ))}
       </Page>
     </Document>

@@ -29,6 +29,29 @@ export const sampleTemplates: Template[] = [
     bestFor: ["Software Engineers", "Product Managers", "Most roles"],
   },
   {
+    id: "classic",
+    name: "Classic",
+    description: "Centered header, no-bullet skills list — a widely-used FAANG-style layout.",
+    category: "classic",
+    type: "resume",
+    thumbnail:
+      "https://api.dicebear.com/7.x/shapes/svg?seed=classic1&backgroundColor=1f2937",
+    fullPreview:
+      "https://api.dicebear.com/7.x/shapes/svg?seed=classic1&backgroundColor=1f2937",
+    features: [
+      "Centered header",
+      "ATS-optimized",
+      "Custom sections support",
+      "Compact skills list",
+    ],
+    rating: 4.7,
+    usageCount: 0,
+    isPremium: false,
+    // Matches the seed content already wired to this templateId — see
+    // lib/seedResumeData.ts's classicSeed.
+    bestFor: ["Designers", "Marketers", "Content Creators"],
+  },
+  {
     id: "coming-soon-1",
     name: "Two-Column Modern",
     description: "A sidebar layout with a skills column — in the works.",

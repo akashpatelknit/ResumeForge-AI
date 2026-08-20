@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils";
 import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
-import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
 import ATSScoreButton from "@/components/builder/ATSScoreButton";
 import LayoutPanel from "@/components/builder/layout/LayoutPanel";
+import TemplateSwitcherPanel from "@/components/builder/templates/TemplateSwitcherPanel";
+import ZoomControl from "@/components/builder/preview/ZoomControl";
+import { useAutoSave } from "@/hooks/useAutoSave";
 import {
   Tabs,
   TabsContent,
@@ -398,11 +400,13 @@ export default function BuilderPage({
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useAuth();
   const { resumeId } = use(params);
+  useAutoSave();
   // Below lg there isn't room to show the form and the live preview at
   // once, so mobile/tablet gets a toggle instead of a stacked column —
   // both panels stay mounted (just hidden via CSS) so form/scroll state
   // survives switching back and forth.
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     if (!userId) return;
@@ -431,8 +435,21 @@ export default function BuilderPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Tabs defaultValue="content" className="min-h-screen gap-0 bg-gray-50">
       <BuilderToolbar
+        centerSlot={
+          <TabsList>
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
+            <TabsTrigger value="layout">Layout</TabsTrigger>
+          </TabsList>
+        }
+        endSlot={
+          <>
+            <ZoomControl zoom={zoom} onChange={setZoom} />
+            <ATSScoreButton resumeId={currentResume?.id ?? null} />
+          </>
+        }
         mobilePreviewActive={mobileView === "preview"}
         onTogglePreview={() => setMobileView((v) => (v === "edit" ? "preview" : "edit"))}
       />
@@ -440,30 +457,31 @@ export default function BuilderPage({
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className={cn("space-y-4", mobileView === "preview" && "hidden lg:block")}>
-            <Tabs defaultValue="content">
-              <TabsList>
-                <TabsTrigger value="content">Content</TabsTrigger>
-                <TabsTrigger value="layout">Layout</TabsTrigger>
-              </TabsList>
-              <TabsContent value="content">
-                <ResumeForm />
-              </TabsContent>
-              <TabsContent value="layout">
-                <div className="rounded-xl border bg-white p-4">
-                  <LayoutPanel />
-                </div>
-              </TabsContent>
-            </Tabs>
+            <TabsContent value="content">
+              <ResumeForm />
+            </TabsContent>
+            <TabsContent value="templates">
+              <div className="rounded-xl border bg-white p-4">
+                <TemplateSwitcherPanel />
+              </div>
+            </TabsContent>
+            <TabsContent value="layout">
+              <div className="rounded-xl border bg-white p-4">
+                <LayoutPanel />
+              </div>
+            </TabsContent>
           </div>
 
-          <div className={cn("h-fit lg:sticky lg:top-6", mobileView === "edit" && "hidden lg:block")}>
-            <PDFPreview resume={currentResume} />
+          <div
+            className={cn(
+              "lg:sticky lg:top-6 lg:h-[calc(100vh-6.5rem)]",
+              mobileView === "edit" && "hidden lg:block",
+            )}
+          >
+            <PDFPreview resume={currentResume} zoom={zoom} />
           </div>
         </div>
       </div>
-
-      <AIOptimizeButton />
-      <ATSScoreButton resumeId={currentResume?.id ?? null} />
-    </div>
+    </Tabs>
   );
 }

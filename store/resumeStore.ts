@@ -39,6 +39,7 @@ interface ResumeStore {
   updatePersonalInfo: (info: Partial<Resume["personalInfo"]>) => void;
   updateSummary: (summary: string) => void;
   updateTitle: (title: string) => void;
+  updateTemplateId: (templateId: string) => void;
   addExperience: (experience: Resume["experience"][0]) => void;
   updateExperience: (
     id: string,
@@ -223,6 +224,13 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
     set((state) => ({
       currentResume: state.currentResume
         ? { ...state.currentResume, title, updatedAt: new Date() }
+        : null,
+    })),
+
+  updateTemplateId: (templateId) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? { ...state.currentResume, templateId, updatedAt: new Date() }
         : null,
     })),
 

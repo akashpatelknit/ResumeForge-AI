@@ -3,7 +3,7 @@ export interface Template {
   name: string;
   description: string;
   thumbnail: string;
-  category: "modern" | "professional" | "minimal" | "creative";
+  category: "modern" | "professional" | "minimal" | "creative" | "classic";
   type: "resume" | "cover-letter";
   colors?: {
     primary: string;
