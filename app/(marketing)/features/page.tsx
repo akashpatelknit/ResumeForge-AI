@@ -4,7 +4,7 @@ import AIFeatures from "@/components/marketing/AIFeatures";
 import HowItWorks from "@/components/marketing/HowItWorks";
 import BeforeAfter from "@/components/marketing/BeforeAfter";
 import FinalCTA from "@/components/marketing/CTA";
-import Footer from "@/components/marketing/Footer";
+import Footer from "@/components/landing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
 
 export default function FeaturesPage() {

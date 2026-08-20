@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { DEFAULT_SECTION_ORDER } from "@/lib/resumeSections";
+import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
 
 // Seed content used when a new resume is created from a template.
 // Each templateId gets content tailored to the roles it's designed for
@@ -112,6 +113,7 @@ const modernSeed: ResumeData = {
   isArchived: false,
   thumbnail: "",
   atsScore: 78,
+  styleConfig: DEFAULT_STYLE_CONFIG,
 };
 
 // "professional" — senior/exec, per config/templates.ts bestFor: C-Level, VP, Directors
@@ -190,6 +192,7 @@ const professionalSeed: ResumeData = {
   isArchived: false,
   thumbnail: "",
   atsScore: 82,
+  styleConfig: DEFAULT_STYLE_CONFIG,
 };
 
 // "classic" — creative/marketing, per config/templates.ts bestFor: Designers, Marketers, Content Creators
@@ -256,6 +259,7 @@ const classicSeed: ResumeData = {
   isArchived: false,
   thumbnail: "",
   atsScore: 74,
+  styleConfig: DEFAULT_STYLE_CONFIG,
 };
 
 const seedsByTemplateId: Record<string, ResumeData> = {

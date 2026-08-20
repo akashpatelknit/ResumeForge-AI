@@ -16,6 +16,7 @@ import { useAuthGatedSave } from "@/hooks/useAuthGatedSave";
 import { clearPendingWizard, loadPendingWizard, savePendingWizard } from "@/lib/pendingResume";
 import type { ResumeData } from "@/types/resume";
 import { DEFAULT_SECTION_ORDER } from "@/lib/resumeSections";
+import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
 
 const STEP_LABELS = ["Personal", "Experience", "Education", "Skills", "Projects"];
 
@@ -44,6 +45,7 @@ function blankResumeData(): ResumeData {
     isArchived: false,
     thumbnail: "",
     atsScore: 0,
+    styleConfig: DEFAULT_STYLE_CONFIG,
   };
 }
 

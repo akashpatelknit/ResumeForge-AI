@@ -9,6 +9,7 @@ import {
   Resume,
   Skill,
 } from "@/types/resume";
+import type { ResumeStyleConfig } from "@/types/styleConfig";
 
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { getSeedResumeData } from "@/lib/seedResumeData";
@@ -64,6 +65,9 @@ interface ResumeStore {
   // Skills/Projects/Custom); "personal" and the non-tab sections
   // (achievements/certifications) are merged back in untouched.
   updateSectionOrder: (newReorderableOrder: SectionKey[]) => void;
+
+  // Layout panel — presentation settings, independent of templateId.
+  updateStyleConfig: (patch: Partial<ResumeStyleConfig>) => void;
 
   // Custom sections — user-defined sections beyond the fixed set
   addCustomSection: (title: string) => void;
@@ -139,6 +143,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
             isArchived: currentResume.isArchived,
             thumbnail: currentResume.thumbnail,
             atsScore: currentResume.atsScore,
+            styleConfig: currentResume.styleConfig,
           },
         }),
       });
@@ -218,6 +223,24 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
     set((state) => ({
       currentResume: state.currentResume
         ? { ...state.currentResume, title, updatedAt: new Date() }
+        : null,
+    })),
+
+  updateStyleConfig: (patch) =>
+    set((state) => ({
+      currentResume: state.currentResume
+        ? {
+            ...state.currentResume,
+            styleConfig: {
+              ...state.currentResume.styleConfig,
+              ...patch,
+              margins: {
+                ...state.currentResume.styleConfig.margins,
+                ...patch.margins,
+              },
+            },
+            updatedAt: new Date(),
+          }
         : null,
     })),
 

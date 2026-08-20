@@ -10,6 +10,7 @@ import type {
   Skill,
 } from "@/types/resume";
 import { DEFAULT_SECTION_ORDER } from "@/lib/resumeSections";
+import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
 
 // Same strip-fences-then-parse pattern as generateSummary.ts / generateColdEmails.ts
 // — kept as a local copy rather than a shared import, matching how those
@@ -167,6 +168,7 @@ function normalizeResumeData(raw: ParsedResumeJson): ResumeData {
     isArchived: false,
     thumbnail: "",
     atsScore: 0,
+    styleConfig: DEFAULT_STYLE_CONFIG,
   };
 }
 

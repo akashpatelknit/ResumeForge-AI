@@ -9,10 +9,21 @@ import ResumeDropzone from "@/components/landing/ResumeDropzone";
 import BuildFromScratch from "@/components/landing/BuildFromScratch";
 import Footer from "@/components/landing/Footer";
 import { useResumeUpload } from "@/hooks/useResumeUpload";
+import { cn } from "@/lib/utils";
 
 export default function LandingPageClient() {
   const prefersReducedMotion = useReducedMotion();
   const upload = useResumeUpload();
+
+  // The locked single-viewport treatment below (`lg:h-screen
+  // lg:overflow-hidden` + `justify-center` on `main`) is sized for the idle
+  // dropzone's compact pill. The uploading/success/error/gated states render
+  // a much taller box (LoadingResume, ResumePreviewCard, etc.) — forcing
+  // those into the same fixed height made the vertically-centered content
+  // overflow upward on top of the Navbar. Only lock the viewport while the
+  // dropzone is actually idle; anything taller falls back to the normal
+  // flowing/scrollable layout mobile already uses.
+  const isIdle = upload.status === "idle";
 
   // Staggered entrance — headline, subtitle, preview, dropzone, CTA each
   // fade/slide in ~90ms after the last, short individual durations (~500ms)
@@ -25,7 +36,12 @@ export default function LandingPageClient() {
   });
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-white lg:h-screen lg:overflow-hidden">
+    <div
+      className={cn(
+        "relative flex min-h-screen flex-col overflow-x-hidden bg-white",
+        isIdle && "lg:h-screen lg:overflow-hidden",
+      )}
+    >
       {/* Barely-visible ambient wash, confined to the upper portion behind
           the headline only — purple/blue, no pink, and pulled in tight so
           the rest of the page reads as plain white. */}
@@ -48,7 +64,12 @@ export default function LandingPageClient() {
           room to fit the whole hero in one screen on mobile, so it only
           gets forced into a single no-scroll viewport (flex-1 min-h-0 +
           justify-center) at lg and up, matching the parent's lg:h-screen. */}
-      <main className="relative z-10 mx-auto flex w-full max-w-300 flex-col items-center px-4 pt-6 pb-8 sm:pt-8 lg:flex-1 lg:min-h-0 lg:justify-center lg:pt-10 lg:pb-10">
+      <main
+        className={cn(
+          "relative z-10 mx-auto flex w-full max-w-300 flex-col items-center px-4 pt-6 pb-8 sm:pt-8 lg:pt-10 lg:pb-10",
+          isIdle ? "lg:flex-1 lg:min-h-0 lg:justify-center" : "lg:py-16",
+        )}
+      >
         <motion.div {...enter(0.09)}>
           <HeroHeading />
         </motion.div>

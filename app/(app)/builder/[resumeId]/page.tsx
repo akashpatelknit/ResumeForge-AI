@@ -9,6 +9,13 @@ import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
 import AIOptimizeButton from "@/components/builder/AIOptimizeButton";
 import ATSScoreButton from "@/components/builder/ATSScoreButton";
+import LayoutPanel from "@/components/builder/layout/LayoutPanel";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 /* ============================================================================
  * LaTeX editing mode — DISABLED HERE, NOT DELETED.
@@ -433,7 +440,20 @@ export default function BuilderPage({
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className={cn("space-y-4", mobileView === "preview" && "hidden lg:block")}>
-            <ResumeForm />
+            <Tabs defaultValue="content">
+              <TabsList>
+                <TabsTrigger value="content">Content</TabsTrigger>
+                <TabsTrigger value="layout">Layout</TabsTrigger>
+              </TabsList>
+              <TabsContent value="content">
+                <ResumeForm />
+              </TabsContent>
+              <TabsContent value="layout">
+                <div className="rounded-xl border bg-white p-4">
+                  <LayoutPanel />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
 
           <div className={cn("h-fit lg:sticky lg:top-6", mobileView === "edit" && "hidden lg:block")}>

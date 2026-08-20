@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { Clock, Crown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/marketing/Navbar";
+import Footer from "@/components/landing/Footer";
 import ResumeTemplatePreview from "@/components/marketing/ResumeTemplatePreview";
 import TemplateThumbnail from "@/components/dashboard/TemplateThumbnail";
 import { sampleTemplates } from "@/config/templates";
@@ -186,19 +186,7 @@ export default function TemplatesPageClient() {
         </div>
       </main>
 
-      <footer className="border-t border-gray-100 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-1.5 px-4 text-center text-sm text-gray-500 sm:flex-row sm:justify-center">
-          <span>© {new Date().getFullYear()} Rezlo</span>
-          <span className="hidden sm:inline">·</span>
-          <Link href="/pricing" className="hover:text-gray-700">
-            Pricing
-          </Link>
-          <span className="hidden sm:inline">·</span>
-          <Link href="/about" className="hover:text-gray-700">
-            About
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

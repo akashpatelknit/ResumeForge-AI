@@ -1,6 +1,7 @@
 import { Resume as PrismaResume } from "@/app/generated/prisma/client";
 import { AppResume, ResumeData } from "@/types/resume";
 import { getEffectiveSectionOrder } from "@/lib/resumeSections";
+import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
 
 // Resumes created before a field existed in ResumeData (customSections is
 // the newest example) simply don't have that key in their stored `data`
@@ -39,5 +40,13 @@ export function mapResumeFromDB(r: PrismaResume): AppResume {
     isArchived: data.isArchived ?? false,
     thumbnail: data.thumbnail ?? "",
     atsScore: data.atsScore ?? 0,
+    styleConfig: {
+      ...DEFAULT_STYLE_CONFIG,
+      ...data.styleConfig,
+      margins: {
+        ...DEFAULT_STYLE_CONFIG.margins,
+        ...data.styleConfig?.margins,
+      },
+    },
   };
 }

@@ -11,6 +11,10 @@ const isPublicRoute = createRouteMatcher([
   "/templates", // Templates showcase page
   "/pricing", // Pricing page
   "/about", // About page
+  "/blog", // Blog index
+  "/blog/(.*)", // Blog post pages
+  "/privacy", // Privacy policy
+  "/terms", // Terms of service
   "/create", // No-resume multi-step wizard (auth only gated at the final save step)
   "/api/webhooks(.*)", // Webhook endpoints
   "/api/resume/parse", // Resume drop-and-parse — must work pre-login

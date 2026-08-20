@@ -1,5 +1,6 @@
 // types/resume.ts
 import { Prisma, Resume as PrismaResume } from "@/app/generated/prisma/client";
+import type { ResumeStyleConfig } from "@/types/styleConfig";
 
 export type ResumeWithRelations = Prisma.ResumeGetPayload<{
   include: {
@@ -105,6 +106,7 @@ export interface ResumeData {
   isArchived: boolean;
   thumbnail: string;
   atsScore: number;
+  styleConfig: ResumeStyleConfig;
 }
 
 export type AppResume = Omit<PrismaResume, "data"> & ResumeData;

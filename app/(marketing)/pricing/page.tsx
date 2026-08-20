@@ -3,7 +3,7 @@ import Navbar from "@/components/marketing/Navbar";
 import Pricing from "@/components/marketing/Pricing";
 import FAQ from "@/components/marketing/FAQ";
 import FinalCTA from "@/components/marketing/CTA";
-import Footer from "@/components/marketing/Footer";
+import Footer from "@/components/landing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
 import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
 import { getPlanConfig } from "@/lib/subscription/planConfig";

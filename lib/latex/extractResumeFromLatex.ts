@@ -64,7 +64,12 @@ Rules:
 // user's manually dragged section order every time they sync from LaTeX.
 export type ExtractedResumeFields = Omit<
   ResumeData,
-  "isFavorite" | "isArchived" | "thumbnail" | "atsScore" | "sectionOrder"
+  | "isFavorite"
+  | "isArchived"
+  | "thumbnail"
+  | "atsScore"
+  | "sectionOrder"
+  | "styleConfig"
 >;
 
 export async function extractResumeFromLatex(
