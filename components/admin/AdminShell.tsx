@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ComponentType } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   LogOut,
   Sparkles,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -63,6 +64,28 @@ export function AdminShell({ email, children }: { email: string; children: React
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [creditsUsedToday, setCreditsUsedToday] = useState<number | null>(null);
+
+  // Platform-wide, not one admin's own balance — total AI credits spent
+  // across every user today (see lib/admin/creditsUsage.ts). Fetched once
+  // per shell mount; this is a passive "how hot is usage right now"
+  // glance, not a live ticker, so no polling.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/analytics/credits-usage");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled) setCreditsUsedToday(data.usedToday);
+      } catch (error) {
+        console.error("Failed to load platform credit usage:", error);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -182,6 +205,16 @@ export function AdminShell({ email, children }: { email: string; children: React
                 ⌘K
               </kbd>
             </div>
+
+            {creditsUsedToday !== null && (
+              <div
+                title="Total AI credits consumed across every user today"
+                className="hidden shrink-0 items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-1.5 text-xs font-semibold text-gray-600 sm:flex"
+              >
+                <Zap className="h-3.5 w-3.5 text-brand-purple" />
+                {creditsUsedToday.toLocaleString()} credits today
+              </div>
+            )}
 
             <button
               type="button"

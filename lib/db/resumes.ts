@@ -42,6 +42,21 @@ export async function updateResume(
   });
 }
 
+// Persists an ATS Readiness Score check (app/api/ats/check/route.ts) — this
+// IS the "last checked" value, not a transient result. Distinct from the
+// JD Match Score, which stays in ResumeAnalytics "ats_analysis" events.
+export async function setResumeReadinessScore(
+  id: string,
+  userId: string,
+  readinessScore: number,
+  readinessScoreDetails: Prisma.InputJsonValue,
+) {
+  return prisma.resume.update({
+    where: { id, userId },
+    data: { readinessScore, readinessScoreDetails },
+  });
+}
+
 // Delete resume
 export async function deleteResume(id: string, userId: string) {
   return prisma.resume.delete({

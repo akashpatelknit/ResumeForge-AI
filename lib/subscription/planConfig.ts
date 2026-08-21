@@ -22,6 +22,7 @@ export interface PlanConfigUpdateInput {
   proPriceInr?: number;
   freeResumeLimit?: number;
   freeAiGenerationLimit?: number;
+  proAiCreditLimit?: number;
 }
 
 export async function updatePlanConfig(data: PlanConfigUpdateInput): Promise<PlanConfig> {

@@ -7,6 +7,8 @@ import ATSScoreCard from "./ATSScoreCard";
 import type { AnalyzeJdResult, AtsSuggestion } from "@/lib/ai/generateAnalyzeJd";
 import { applyAtsSuggestion, type ApplySuggestionResult } from "@/lib/ats/applySuggestion";
 import { useResumeStore } from "@/store/resumeStore";
+import { resolveAiRejection } from "@/lib/subscription/upgradeToast";
+import { useCreditsStore } from "@/store/creditsStore";
 
 interface JobDescriptionAnalyzerProps {
   // The resume to analyze against — the real currently-selected/open resume,
@@ -94,12 +96,15 @@ export default function JobDescriptionAnalyzer({
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data?.error || "Analysis failed");
+        throw new Error(resolveAiRejection(data, "Analysis failed"));
       }
 
       setResult(data.result);
       setPreviousScore(data.previousScore ?? null);
       setStatus("success");
+      // Fire-and-forget — same live update as GenerateWithAI.tsx, see
+      // components/shared/CreditsIndicator.tsx.
+      void useCreditsStore.getState().fetchCredits();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Analysis failed");
       setStatus("error");

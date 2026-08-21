@@ -7,7 +7,6 @@ import { extractUploadedResumeText } from "@/lib/textExtraction/extractUploadedR
 import { ResumeFileError } from "@/lib/textExtraction/extractResumeText";
 import { generateQuickApplyEmail } from "@/lib/ai/generateQuickApplyEmail";
 import type { ResumeContext } from "@/lib/ai/formatResumeContext";
-import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 import { isValidEmailFormat, looksLikeGibberish } from "@/lib/validation/textSanity";
 import { prisma } from "@/lib/prisma";
@@ -96,9 +95,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const gate = await checkAiGate(userId);
-  if (!gate.allowed) return gate.response;
-
   let body: unknown;
   try {
     body = await request.json();
@@ -180,7 +176,6 @@ export async function POST(request: NextRequest) {
           data: { ...fields, userId },
         });
 
-    await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ entryId: entry.id, subject, body: emailBody });
   } catch (error) {
     console.error("Quick Apply email generation failed:", error);

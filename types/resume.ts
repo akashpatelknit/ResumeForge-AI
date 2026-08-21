@@ -109,7 +109,24 @@ export interface ResumeData {
   styleConfig: ResumeStyleConfig;
 }
 
-export type AppResume = Omit<PrismaResume, "data"> & ResumeData;
+// Shape of the readinessScoreDetails JSON column (Resume /
+// UploadedResume, see prisma/schema.prisma) — the ATS Readiness Score
+// feature (lib/ai/generateReadinessScore.ts), a second, distinct score
+// from the JD Match Score's atsScore/AnalyzeJdResult above.
+export interface ReadinessScoreDetails {
+  score: number;
+  breakdown: {
+    structure: number;
+    formatting: number;
+    completeness: number;
+    keywordStrength: number;
+  };
+  suggestions: string[];
+  analyzedAt: string;
+}
+
+export type AppResume = Omit<PrismaResume, "data" | "readinessScoreDetails"> &
+  ResumeData & { readinessScoreDetails: ReadinessScoreDetails | null };
 
 export interface Resume {
   id: string;

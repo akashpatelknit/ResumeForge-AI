@@ -1,3 +1,4 @@
+import type { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 // Same thin-wrapper-over-prisma shape as lib/db/resumes.ts.
@@ -26,6 +27,21 @@ export async function createUploadedResume(params: {
   fileSizeBytes: number;
 }) {
   return prisma.uploadedResume.create({ data: params });
+}
+
+// Persists an ATS Readiness Score check (app/api/ats/check/route.ts) for an
+// externally uploaded PDF — same shape/meaning as setResumeReadinessScore
+// in lib/db/resumes.ts.
+export async function setUploadedResumeReadinessScore(
+  id: string,
+  userId: string,
+  readinessScore: number,
+  readinessScoreDetails: Prisma.InputJsonValue,
+) {
+  return prisma.uploadedResume.update({
+    where: { id, userId },
+    data: { readinessScore, readinessScoreDetails },
+  });
 }
 
 export async function deleteUploadedResume(id: string, userId: string) {

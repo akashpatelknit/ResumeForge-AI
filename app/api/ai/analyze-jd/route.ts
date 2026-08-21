@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs/server";
 import { getResume, getResumeAnalytics, trackEvent } from "@/lib/db/resumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { generateAnalyzeJd } from "@/lib/ai/generateAnalyzeJd";
-import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
@@ -12,9 +11,6 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const gate = await checkAiGate(userId);
-  if (!gate.allowed) return gate.response;
 
   let body: unknown;
   try {
@@ -87,6 +83,5 @@ export async function POST(request: NextRequest) {
     console.error("Failed to save ATS analysis event:", error);
   }
 
-  await recordAiGeneration(userId, gate.plan);
   return NextResponse.json({ result, previousScore });
 }

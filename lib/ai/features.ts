@@ -33,32 +33,43 @@ import type { RateLimitConfig } from "./rateLimit";
 // cheap/fast single-field rewrites get generous limits, multi-field or
 // long-generation operations get tighter ones, matched to maxOutputTokens
 // above as a proxy for how expensive/slow the call is.
+//
+// `creditCost` (lib/credits/userCredits.ts) is how many AI credits one
+// successful call spends from the caller's UserCredits balance — checked
+// and deducted in the gateway itself (lib/ai/gateway.ts), never at the
+// route layer. Weighted roughly the same way rateLimit is: 1 for a cheap
+// single-field rewrite, up to 3 for the heaviest multi-section generations
+// (resume.tailor), so a Free user's flat 15-credit/month allowance buys
+// either many cheap actions or fewer expensive ones, rather than 15 of
+// anything regardless of cost.
 interface FeatureConfig {
   model: string;
   maxInputTokens: number;
   maxOutputTokens: number;
   scope: AiScope;
   rateLimit: RateLimitConfig;
+  creditCost: number;
 }
 
 export const AI_FEATURES = {
-  "resume.summary": { model: "gemini-flash-latest", maxInputTokens: 1500, maxOutputTokens: 300, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 } },
-  "resume.achievements": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 } },
-  "resume.highlights": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 } },
-  "resume.customSection": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 } },
-  "resume.tailor": { model: "gemini-flash-latest", maxInputTokens: 8000, maxOutputTokens: 3000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 30 } },
-  "resume.parse": { model: "gemini-flash-latest", maxInputTokens: 12000, maxOutputTokens: 4000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 20 } },
-  "resume.latexImport": { model: "gemini-flash-latest", maxInputTokens: 12000, maxOutputTokens: 4000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 20 } },
-  "resume.projectFromRepo": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 800, scope: "resume", rateLimit: { requests: 3, windowSeconds: 60 } },
-  "job.analyze": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 2000, scope: "job_search", rateLimit: { requests: 3, windowSeconds: 60 } },
-  "job.extractIdentity": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 300, scope: "job_search", rateLimit: { requests: 8, windowSeconds: 60 } },
-  "linkedin.audit": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 1000, scope: "linkedin", rateLimit: { requests: 3, windowSeconds: 60 } },
-  "linkedin.outreach": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "linkedin", rateLimit: { requests: 4, windowSeconds: 60 } },
-  "outreach.coldEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 1500, scope: "outreach", rateLimit: { requests: 3, windowSeconds: 60 } },
-  "outreach.coverLetter": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 1200, scope: "cover_letter", rateLimit: { requests: 1, windowSeconds: 10 } },
-  "outreach.quickApplyExtract": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 400, scope: "outreach", rateLimit: { requests: 10, windowSeconds: 60 } },
-  "outreach.quickApplyEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "outreach", rateLimit: { requests: 4, windowSeconds: 60 } },
-  "outreach.scheduledEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "outreach", rateLimit: { requests: 5, windowSeconds: 60 } },
+  "resume.summary": { model: "gemini-flash-latest", maxInputTokens: 1500, maxOutputTokens: 300, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 }, creditCost: 1 },
+  "resume.achievements": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 }, creditCost: 1 },
+  "resume.highlights": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 }, creditCost: 1 },
+  "resume.customSection": { model: "gemini-flash-latest", maxInputTokens: 2000, maxOutputTokens: 500, scope: "resume", rateLimit: { requests: 5, windowSeconds: 60 }, creditCost: 1 },
+  "resume.tailor": { model: "gemini-flash-latest", maxInputTokens: 8000, maxOutputTokens: 3000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 30 }, creditCost: 3 },
+  "resume.readiness_score": { model: "gemini-flash-latest", maxInputTokens: 8000, maxOutputTokens: 2000, scope: "resume", rateLimit: { requests: 3, windowSeconds: 60 }, creditCost: 1 },
+  "resume.parse": { model: "gemini-flash-latest", maxInputTokens: 12000, maxOutputTokens: 4000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 20 }, creditCost: 2 },
+  "resume.latexImport": { model: "gemini-flash-latest", maxInputTokens: 12000, maxOutputTokens: 4000, scope: "resume", rateLimit: { requests: 1, windowSeconds: 20 }, creditCost: 2 },
+  "resume.projectFromRepo": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 800, scope: "resume", rateLimit: { requests: 3, windowSeconds: 60 }, creditCost: 2 },
+  "job.analyze": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 2000, scope: "job_search", rateLimit: { requests: 3, windowSeconds: 60 }, creditCost: 2 },
+  "job.extractIdentity": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 300, scope: "job_search", rateLimit: { requests: 8, windowSeconds: 60 }, creditCost: 1 },
+  "linkedin.audit": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 1000, scope: "linkedin", rateLimit: { requests: 3, windowSeconds: 60 }, creditCost: 2 },
+  "linkedin.outreach": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "linkedin", rateLimit: { requests: 4, windowSeconds: 60 }, creditCost: 1 },
+  "outreach.coldEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 1500, scope: "outreach", rateLimit: { requests: 3, windowSeconds: 60 }, creditCost: 1 },
+  "outreach.coverLetter": { model: "gemini-flash-latest", maxInputTokens: 6000, maxOutputTokens: 1200, scope: "cover_letter", rateLimit: { requests: 1, windowSeconds: 10 }, creditCost: 2 },
+  "outreach.quickApplyExtract": { model: "gemini-flash-latest", maxInputTokens: 3000, maxOutputTokens: 400, scope: "outreach", rateLimit: { requests: 10, windowSeconds: 60 }, creditCost: 1 },
+  "outreach.quickApplyEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "outreach", rateLimit: { requests: 4, windowSeconds: 60 }, creditCost: 1 },
+  "outreach.scheduledEmail": { model: "gemini-flash-latest", maxInputTokens: 4000, maxOutputTokens: 600, scope: "outreach", rateLimit: { requests: 5, windowSeconds: 60 }, creditCost: 1 },
 } as const satisfies Record<string, FeatureConfig>;
 
 export type AiFeature = keyof typeof AI_FEATURES;

@@ -16,6 +16,7 @@ const updateSchema = z.object({
   proPriceInr: z.number().int().positive().optional(),
   freeResumeLimit: z.number().int().min(0).optional(),
   freeAiGenerationLimit: z.number().int().min(0).optional(),
+  proAiCreditLimit: z.number().int().min(0).optional(),
 });
 
 export async function PUT(request: NextRequest) {

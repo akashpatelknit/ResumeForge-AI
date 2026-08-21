@@ -4,11 +4,11 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
 import ResumeRowMenu from "./ResumeRowMenu";
-import type { AppResume } from "@/types/resume";
+import { AtsScoreCell } from "./AtsScoreCell";
+import type { AppResume, ReadinessScoreDetails } from "@/types/resume";
 
 interface RecentResumesProps {
   resumes: AppResume[];
@@ -17,27 +17,20 @@ interface RecentResumesProps {
   // clicked, to draw the eye to the lowest-scoring row it scrolled to.
   highlightResumeId?: string | null;
   onRefresh?: () => void;
+  // Fired after a per-row "Check ATS Score" action succeeds, so the parent
+  // can update its resumes state in place — the row reflects the new score
+  // immediately, without waiting on (or forcing) a full refetch.
+  onReadinessScoreChecked?: (resumeId: string, result: ReadinessScoreDetails) => void;
 }
 
 const PREVIEW_COUNT = 5;
-
-const getScoreColor = (score: number) => {
-  if (score >= 85) return "text-green-600 bg-green-100";
-  if (score >= 70) return "text-blue-600 bg-blue-100";
-  return "text-yellow-600 bg-yellow-100";
-};
-
-const getScoreLabel = (score: number) => {
-  if (score >= 85) return "Excellent";
-  if (score >= 70) return "Good";
-  return "Fair";
-};
 
 export default function RecentResumes({
   resumes,
   isLoading,
   highlightResumeId,
   onRefresh,
+  onReadinessScoreChecked,
 }: RecentResumesProps) {
   const router = useRouter();
 
@@ -128,19 +121,7 @@ export default function RecentResumes({
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-900">
-                            {resume.atsScore}/100
-                          </span>
-                          <Badge
-                            className={`text-xs px-2 py-0 ${getScoreColor(resume.atsScore)}`}
-                          >
-                            {getScoreLabel(resume.atsScore)}
-                          </Badge>
-                        </div>
-                        <Progress value={resume.atsScore} className="h-1.5" />
-                      </div>
+                      <AtsScoreCell resume={resume} onChecked={onReadinessScoreChecked} />
                     </td>
                     <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                       <div className="flex justify-end">
@@ -187,17 +168,7 @@ export default function RecentResumes({
                     <ResumeRowMenu resume={resume} onRefresh={onRefresh} />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-gray-900">
-                      ATS Score: {resume.atsScore}/100
-                    </span>
-                    <Badge className={`text-xs ${getScoreColor(resume.atsScore)}`}>
-                      {getScoreLabel(resume.atsScore)}
-                    </Badge>
-                  </div>
-                  <Progress value={resume.atsScore} className="h-1.5" />
-                </div>
+                <AtsScoreCell resume={resume} onChecked={onReadinessScoreChecked} />
               </div>
             ))}
           </div>

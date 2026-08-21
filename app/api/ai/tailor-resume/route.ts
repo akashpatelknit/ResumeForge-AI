@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs/server";
 import { getResume } from "@/lib/db/resumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { generateTailorResume } from "@/lib/ai/generateTailorResume";
-import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 // Tailors a resume's wording/emphasis to a job description — reworded
@@ -18,9 +17,6 @@ export async function POST(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const gate = await checkAiGate(userId);
-  if (!gate.allowed) return gate.response;
 
   let body: unknown;
   try {
@@ -60,7 +56,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = await generateTailorResume({ resume, jobDescription }, userId);
-    await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Resume tailoring failed:", error);

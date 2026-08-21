@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
+import { assertOkOrShowUpgrade, resolveAiRejection, UpgradeRequiredError } from "@/lib/subscription/upgradeToast";
 import {
   Sparkles,
   Loader2,
@@ -206,7 +206,7 @@ export default function TailorResumeModal({
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Failed to tailor resume");
+      if (!res.ok) throw new Error(resolveAiRejection(data, "Failed to tailor resume"));
 
       const result = data.result as TailoredResumeResult;
       setTailored(result);

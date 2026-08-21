@@ -9,6 +9,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { resolveAiRejection } from "@/lib/subscription/upgradeToast";
+import { useCreditsStore } from "@/store/creditsStore";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -85,11 +87,19 @@ export default function GenerateWithAI<T>({
       const body = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(body.error || "Failed to generate content");
+        // Shows an upgrade/blocked toast when that's what this was, and
+        // resolves to a plain human message either way (this component
+        // also renders it inline below, on top of any toast).
+        throw new Error(resolveAiRejection(body, "Failed to generate content"));
       }
 
       setResult(parseResult(body));
       setStatus("success");
+      // Fire-and-forget — updates the credit indicator wherever it's
+      // mounted (components/shared/CreditsIndicator.tsx, in both the
+      // builder toolbar and the Dashboard header) immediately after a
+      // successful spend, instead of waiting on a full page refresh.
+      void useCreditsStore.getState().fetchCredits();
     } catch (error) {
       console.error(`Failed to generate via ${endpoint}:`, error);
       setErrorMessage(

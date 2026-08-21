@@ -18,6 +18,14 @@ model Resume {
   // different kind of content (freeform text vs. structured form JSON) and doesn't
   // benefit from JSON querying. Tradeoff: needs a migration instead of being schema-free.
   latexSource                String?                @map("latex_source")
+  // ATS Readiness Score (app/api/ats/check/route.ts) — a second, distinct
+  // score from the JD Match Score (which lives transiently in
+  // ResumeAnalytics "ats_analysis" events, keyed to one job description at
+  // a time). This one scores structure/formatting/completeness generically,
+  // JD optional, and is null until the user explicitly checks this resume
+  // ("N/A" in the UI) — never computed automatically or in bulk.
+  readinessScore             Int?                   @map("readiness_score")
+  readinessScoreDetails      Json?                  @map("readiness_score_details")
   createdAt                  DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt                  DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
   coverLetters               CoverLetter[]
@@ -148,7 +156,15 @@ model PlanConfig {
   id                    String   @id @default("singleton")
   proPriceInr           Int      @default(149) @map("pro_price_inr")
   freeResumeLimit       Int      @default(3) @map("free_resume_limit")
+  // Free tier's monthly AI credit allowance (lib/credits/userCredits.ts) —
+  // same field, same admin-editable meaning as before the credits pass,
+  // just now spent in weighted units (AI_FEATURES[feature].creditCost)
+  // instead of one flat unit per generation.
   freeAiGenerationLimit Int      @default(15) @map("free_ai_generation_limit")
+  // Pro's monthly AI credit allowance — deliberately not unlimited even for
+  // Pro (fair-use ceiling), just set very high by default. See
+  // lib/credits/userCredits.ts.
+  proAiCreditLimit      Int      @default(10000) @map("pro_ai_credit_limit")
   updatedAt             DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@map("plan_config")
@@ -168,21 +184,86 @@ model TemplateMeta {
   @@map("template_meta")
 }
 
-// One row per user per calendar month (e.g. "2026-08") — resets naturally
-// by simply starting a new row rather than a scheduled job zeroing a
-// counter. Only free-tier usage is ever recorded here (see
-// lib/subscription/checkUsageLimit.ts) since it exists purely to enforce
-// the free-tier AI generation cap.
-model UsageCounter {
-  id                String   @id @default(uuid()) @db.Uuid
-  userId            String   @map("user_id")
-  month             String
-  aiGenerationsUsed Int      @default(0) @map("ai_generations_used")
-  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+// Replaces the old flat-count UsageCounter (one row per user per calendar
+// month, reset by simply starting a new row) with a weighted credit
+// balance — every AI feature now costs a different number of credits (see
+// AI_FEATURES[feature].creditCost in lib/ai/features.ts) instead of
+// counting as "1 generation" flat. One row per user, not per month:
+// creditsUsedThisMonth/monthlyAllowance/resetsAt are reset in place by
+// lib/credits/userCredits.ts's getOrCreateUserCredits() the next time the
+// user is seen after resetsAt passes, rather than by a scheduled job or a
+// fresh row. bonusCredits is admin-granted (see AdminActionLog below) and
+// deliberately never resets — see the "grant credits" admin action.
+//
+// aiAccessBlocked/aiBlockedReason gate AI specifically, separate from
+// UserStatus.isBlocked's full-account block above — a user can keep using
+// the rest of the app (viewing/editing resumes) while only their AI access
+// is cut off (e.g. for abuse of AI specifically). Lives on this model
+// rather than UserStatus because the AI Gateway (lib/ai/gateway.ts) already
+// loads this exact row on every single AI call to check credits — putting
+// the block flag here means that check is one field read on the same row,
+// not a second query.
+model UserCredits {
+  userId               String   @id @map("user_id")
+  monthlyAllowance     Int      @default(0) @map("monthly_allowance")
+  creditsUsedThisMonth Int      @default(0) @map("credits_used_this_month")
+  bonusCredits         Int      @default(0) @map("bonus_credits")
+  resetsAt             DateTime @map("resets_at") @db.Timestamptz(6)
+  aiAccessBlocked      Boolean  @default(false) @map("ai_access_blocked")
+  aiBlockedReason      String?  @map("ai_blocked_reason")
+  // True if this row was first created (see lib/credits/userCredits.ts's
+  // getOrCreateUserCredits) while PlatformConfig.billingEnabled was still
+  // false — i.e. this user showed up during the free beta period. Grants
+  // them a permanent grandfather clause: once billing is turned on, they
+  // keep getting PlatformConfig.betaCreditsPerMonth instead of being
+  // downgraded to the normal Free-tier allowance. This app has no Clerk
+  // signup webhook, so this row's first creation (first dashboard visit or
+  // first AI call) is used as "signup time" — see
+  // lib/config/getPlatformConfig.ts's doc comment for the tradeoff.
+  signedUpDuringBeta   Boolean  @default(false) @map("signed_up_during_beta")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  @@unique([userId, month])
-  @@map("usage_counters")
+  @@map("user_credits")
+}
+
+// Single-row (id is always "singleton") platform-wide switch — same
+// upsert-on-read pattern as PlanConfig above, but cached in Redis (see
+// lib/config/getPlatformConfig.ts) since it's read on nearly every AI
+// gateway call, not just admin-facing pages.
+//
+// billingEnabled=false is the "launch in beta" state: Razorpay checkout is
+// never reachable (see app/(marketing)/pricing), and every user — Free or
+// Pro — gets betaCreditsPerMonth credits regardless of plan (see
+// UserCredits above). Flipping it on later makes normal Free (15) / Pro
+// (proAiCreditLimit) allowances apply again, except for users who signed up
+// during the beta window (UserCredits.signedUpDuringBeta), who keep their
+// beta allowance permanently.
+model PlatformConfig {
+  id                  String   @id @default("singleton")
+  billingEnabled      Boolean  @default(false) @map("billing_enabled")
+  betaCreditsPerMonth Int      @default(100) @map("beta_credits_per_month")
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("platform_config")
+}
+
+// Audit trail for admin actions against a user's AI access/credits (grant
+// credits, block/unblock AI access) — see app/api/admin/users/[userId]/
+// grant-credits and toggle-ai-block. Deliberately generic (action +
+// details JSON) rather than one table per action type, so future admin
+// actions can log here too without another migration.
+model AdminActionLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  adminId      String   @map("admin_id")
+  action       String
+  targetUserId String   @map("target_user_id")
+  details      Json?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([targetUserId])
+  @@index([adminId])
+  @@map("admin_action_logs")
 }
 
 // One Gmail account per user, connected via a separate OAuth 2.0 flow from
@@ -290,6 +371,10 @@ model UploadedResume {
   // that first use — an upload nobody ever generates an email for never
   // pays the parsing cost at all. See lib/db/uploadedResumes.ts.
   parsedText                 String?                @map("parsed_text")
+  // Same ATS Readiness Score fields as Resume above — an externally
+  // uploaded PDF gets scored the same way a ResumeForge-built resume does.
+  readinessScore             Int?                   @map("readiness_score")
+  readinessScoreDetails      Json?                  @map("readiness_score_details")
   quickApplyEntries          QuickApplyEntry[]
   savedJobs                  SavedJob[]
   defaultForOutreachSettings UserOutreachSettings[]

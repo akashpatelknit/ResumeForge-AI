@@ -2,6 +2,7 @@ import "server-only";
 import { clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { PRO_STATUSES } from "@/lib/subscription/getUserPlan";
+import { availableCredits } from "@/lib/credits/userCredits";
 
 export interface AdminUserRow {
   id: string;
@@ -13,6 +14,12 @@ export interface AdminUserRow {
   resumeCount: number;
   isBlocked: boolean;
   blockedReason: string | null;
+  // AI credit balance — null when the user has never made an AI call yet
+  // (no UserCredits row exists; one is only created lazily on first AI
+  // gateway call, see lib/credits/userCredits.ts's getOrCreateUserCredits).
+  aiCredits: { available: number; monthlyAllowance: number; bonusCredits: number } | null;
+  aiAccessBlocked: boolean;
+  aiBlockedReason: string | null;
 }
 
 export interface AdminUserListResult {
@@ -51,22 +58,25 @@ export async function getAdminUsers({
 
   const userIds = clerkUsers.map((u) => u.id);
 
-  const [subscriptions, statuses, resumeCounts] = userIds.length
+  const [subscriptions, statuses, resumeCounts, credits] = userIds.length
     ? await Promise.all([
         prisma.subscription.findMany({ where: { userId: { in: userIds } } }),
         prisma.userStatus.findMany({ where: { userId: { in: userIds } } }),
         prisma.resume.groupBy({ by: ["userId"], where: { userId: { in: userIds } }, _count: { _all: true } }),
+        prisma.userCredits.findMany({ where: { userId: { in: userIds } } }),
       ])
-    : [[], [], []];
+    : [[], [], [], []];
 
   const subscriptionByUser = new Map(subscriptions.map((s) => [s.userId, s]));
   const statusByUser = new Map(statuses.map((s) => [s.userId, s]));
   const resumeCountByUser = new Map(resumeCounts.map((r) => [r.userId, r._count._all]));
+  const creditsByUser = new Map(credits.map((c) => [c.userId, c]));
 
   const users: AdminUserRow[] = clerkUsers.map((u) => {
     const subscription = subscriptionByUser.get(u.id);
     const isPro = !!subscription && PRO_STATUSES.includes(subscription.status);
     const status = statusByUser.get(u.id);
+    const userCredits = creditsByUser.get(u.id);
 
     return {
       id: u.id,
@@ -78,6 +88,15 @@ export async function getAdminUsers({
       resumeCount: resumeCountByUser.get(u.id) ?? 0,
       isBlocked: status?.isBlocked ?? false,
       blockedReason: status?.blockedReason ?? null,
+      aiCredits: userCredits
+        ? {
+            available: availableCredits(userCredits),
+            monthlyAllowance: userCredits.monthlyAllowance,
+            bonusCredits: userCredits.bonusCredits,
+          }
+        : null,
+      aiAccessBlocked: userCredits?.aiAccessBlocked ?? false,
+      aiBlockedReason: userCredits?.aiBlockedReason ?? null,
     };
   });
 

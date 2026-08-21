@@ -6,6 +6,9 @@ import { checkFreeText } from "./policy/scope";
 import { buildPolicyPreamble } from "./policy/preamble";
 import { AiRefusalError } from "./policy/refusal";
 import { checkAiRateLimit, AiRateLimitError } from "./rateLimit";
+import { getUserPlan } from "@/lib/subscription/getUserPlan";
+import { getOrCreateUserCredits, availableCredits, spendCredits } from "@/lib/credits/userCredits";
+import { AiBlockedError, AiCreditsError } from "@/lib/credits/errors";
 import { prisma } from "@/lib/prisma";
 
 // Every AI feature in the app is required to call the provider through this
@@ -16,11 +19,16 @@ import { prisma } from "@/lib/prisma";
 //
 // Layered on top of the base gateway: scope policy + prompt-injection
 // defense (deterministic pre-check on free-text input, an always-on
-// untrusted-data preamble, and an output-level refusal shape), and
-// two-tier rate limiting (per-feature + global-per-user, see
-// lib/ai/rateLimit.ts). Still explicitly NOT handled here: credits,
-// idempotency, and model routing, and rate limits don't yet vary by plan
-// — separate follow-up passes on top of this gateway.
+// untrusted-data preamble, and an output-level refusal shape), two-tier
+// rate limiting (per-feature + global-per-user, see lib/ai/rateLimit.ts),
+// and the credit reservation system (lib/credits/userCredits.ts) — a
+// per-user AI-access block check and a weighted credit balance check, both
+// enforced here before Gemini is ever called, with the actual spend
+// happening only after a successful, schema-valid response. This is why
+// every AI route's old separate checkAiGate()/recordAiGeneration() calls
+// (lib/subscription/aiGate.ts) were removed — this module is now the only
+// place that gates or spends AI usage. Still explicitly NOT handled here:
+// idempotency and model routing — separate follow-up passes.
 
 export class AiGatewayError extends Error {
   constructor(message: string) {
@@ -69,6 +77,8 @@ type UsageStatus =
   | "success_flagged_injection"
   | "refused"
   | "rate_limited"
+  | "rejected_ai_blocked"
+  | "rejected_insufficient_credits"
   | "rejected_invalid_input"
   | "rejected_input_too_large"
   | "empty_response"
@@ -128,11 +138,30 @@ export async function callAiGateway<TInput, TOutput>({
     throw new AiGatewayError(`Unknown AI feature "${feature}" — not registered in AI_FEATURES`);
   }
 
-  // First gate, before anything else — an over-limit caller shouldn't burn
-  // a free-text check, a prompt build, or a Gemini call just to get
-  // rejected. Counts every attempt (this call included), not just
-  // successful completions — that's the correct meaning of "N AI requests
-  // per window" for abuse prevention.
+  // Absolute first gate — cheaper and harder than rate limiting, and a
+  // blocked or broke user shouldn't burn a rate-limit increment (or
+  // anything downstream) just to get rejected. aiAccessBlocked is checked
+  // BEFORE credits, per prisma/schema.prisma's UserCredits doc comment —
+  // both flags come off the same row, so this is one query either way.
+  const { plan } = await getUserPlan(userId);
+  const credits = await getOrCreateUserCredits(userId, plan);
+
+  if (credits.aiAccessBlocked) {
+    await logUsage({ userId, feature, model: config.model, status: "rejected_ai_blocked" });
+    throw new AiBlockedError(credits.aiBlockedReason);
+  }
+
+  const available = availableCredits(credits);
+  if (available < config.creditCost) {
+    await logUsage({ userId, feature, model: config.model, status: "rejected_insufficient_credits" });
+    throw new AiCreditsError(config.creditCost, available);
+  }
+
+  // Next gate — an over-limit caller shouldn't burn a free-text check, a
+  // prompt build, or a Gemini call just to get rejected. Counts every
+  // attempt (this call included), not just successful completions —
+  // that's the correct meaning of "N AI requests per window" for abuse
+  // prevention.
   const rateLimitResult = await checkAiRateLimit(userId, feature, config.rateLimit);
   if (!rateLimitResult.allowed) {
     await logUsage({ userId, feature, model: config.model, status: "rate_limited" });
@@ -217,6 +246,13 @@ export async function callAiGateway<TInput, TOutput>({
       `AI response for "${feature}" did not match the expected shape: ${result.error.message}`,
     );
   }
+
+  // Only reached once a real, schema-valid result exists — every earlier
+  // return/throw path (rate limit, blocked, insufficient credits, invalid
+  // input, too-large input, provider error, empty response, refusal,
+  // validation failure) exits before this line, so a failed or rejected
+  // call never spends anything.
+  await spendCredits(userId, config.creditCost);
 
   await logUsage({
     userId,

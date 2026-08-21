@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getRazorpay } from "@/lib/razorpay";
 import { getSubscriptionByUserId, createTrialSubscription } from "@/lib/db/subscription";
+import { getPlatformConfig } from "@/lib/config/getPlatformConfig";
 
 const TRIAL_DAYS = 7;
 
@@ -23,6 +24,20 @@ export async function POST() {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Billing is off during the free beta launch (PlatformConfig.billingEnabled,
+  // see prisma/schema.prisma) — this is the actual enforcement point.
+  // Hiding/relabeling the CTA on the pricing page and Settings → Billing
+  // (components/marketing/Pricing.tsx, components/settings/BillingCard.tsx)
+  // is only a UX nicety on top of this; a direct POST here must be rejected
+  // regardless of what the client sent, before any Razorpay or DB call.
+  const platformConfig = await getPlatformConfig();
+  if (!platformConfig.billingEnabled) {
+    return NextResponse.json(
+      { error: "Billing isn't available yet — every account currently has full free access." },
+      { status: 403 },
+    );
   }
 
   const planId = process.env.RAZORPAY_PLAN_ID;

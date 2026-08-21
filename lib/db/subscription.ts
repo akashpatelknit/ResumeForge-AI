@@ -65,25 +65,3 @@ export async function updateSubscriptionStatusForUser(userId: string, status: Su
     data: { status },
   });
 }
-
-// "2026-08" — sortable, human-readable, and matches what UsageCounter.month
-// stores. Deliberately UTC-based so usage resets at a fixed instant
-// worldwide rather than drifting with server timezone.
-export function currentUsageMonth(): string {
-  const now = new Date();
-  return `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-}
-
-export async function getUsageCounter(userId: string, month: string) {
-  return prisma.usageCounter.findUnique({
-    where: { userId_month: { userId, month } },
-  });
-}
-
-export async function incrementAiUsage(userId: string, month: string) {
-  return prisma.usageCounter.upsert({
-    where: { userId_month: { userId, month } },
-    create: { userId, month, aiGenerationsUsed: 1 },
-    update: { aiGenerationsUsed: { increment: 1 } },
-  });
-}

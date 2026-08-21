@@ -18,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { AppResume } from "@/types/resume";
+import type { AppResume, ReadinessScoreDetails } from "@/types/resume";
 import ResumeCardActions from "./ResumeCardActions";
+import { AtsScoreCell } from "./AtsScoreCell";
 
 interface ResumeListViewProps {
   resumes: AppResume[];
@@ -27,29 +28,10 @@ interface ResumeListViewProps {
   onToggleSelect: (id: string) => void;
   onToggleFavorite: (id: string) => void;
   onRefresh?: () => void;
+  // Same "update this row in place after a Check ATS Score click" pattern
+  // as components/dashboard/RecentResumes.tsx — see AtsScoreCell.tsx.
+  onReadinessScoreChecked?: (resumeId: string, result: ReadinessScoreDetails) => void;
 }
-
-const getATSBadge = (score: number) => {
-  if (score >= 90)
-    return {
-      label: "Excellent",
-      color: "bg-green-100 text-green-700 border-green-200",
-    };
-  if (score >= 75)
-    return {
-      label: "Good",
-      color: "bg-blue-100 text-blue-700 border-blue-200",
-    };
-  if (score >= 60)
-    return {
-      label: "Fair",
-      color: "bg-yellow-100 text-yellow-700 border-yellow-200",
-    };
-  return {
-    label: "Needs Work",
-    color: "bg-red-100 text-red-700 border-red-200",
-  };
-};
 
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 50];
 
@@ -59,6 +41,7 @@ export default function ResumeListView({
   onToggleSelect,
   onToggleFavorite,
   onRefresh,
+  onReadinessScoreChecked,
 }: ResumeListViewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -128,8 +111,6 @@ export default function ResumeListView({
           </thead>
           <tbody className="divide-y divide-gray-100">
             {paginatedResumes.map((resume, index) => {
-              const atsBadge = getATSBadge(resume.atsScore ?? 0);
-
               return (
                 <tr
                   key={resume.id}
@@ -180,34 +161,7 @@ export default function ResumeListView({
 
                   {/* ATS Score */}
                   <td className="px-4 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 max-w-30">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-bold text-gray-900">
-                            {resume.atsScore}
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-1.5">
-                          <div
-                            className={`h-1.5 rounded-full transition-all duration-500 ${
-                              (resume.atsScore ?? 0) >= 90
-                                ? "bg-linear-to-r from-green-500 to-green-600"
-                                : (resume.atsScore ?? 0) >= 75
-                                  ? "bg-linear-to-r from-blue-500 to-blue-600"
-                                  : (resume.atsScore ?? 0) >= 60
-                                    ? "bg-linear-to-r from-yellow-500 to-yellow-600"
-                                    : "bg-linear-to-r from-red-500 to-red-600"
-                            }`}
-                            style={{ width: `${resume.atsScore}%` }}
-                          />
-                        </div>
-                      </div>
-                      <Badge
-                        className={`${atsBadge.color} border text-xs px-2 py-0.5 whitespace-nowrap`}
-                      >
-                        {atsBadge.label}
-                      </Badge>
-                    </div>
+                    <AtsScoreCell resume={resume} onChecked={onReadinessScoreChecked} />
                   </td>
 
                   {/* Modified */}
@@ -239,7 +193,6 @@ export default function ResumeListView({
         {/* Mobile cards */}
         <div className="space-y-3 p-4 md:hidden">
           {paginatedResumes.map((resume) => {
-            const atsBadge = getATSBadge(resume.atsScore ?? 0);
             return (
               <div key={resume.id} className="rounded-xl border border-gray-200 p-4">
                 <div className="mb-3 flex items-start gap-3">
@@ -271,29 +224,8 @@ export default function ResumeListView({
                   </div>
                 </div>
 
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex-1">
-                    <div className="mb-1 flex items-center justify-between">
-                      <span className="text-sm font-bold text-gray-900">{resume.atsScore}</span>
-                      <Badge className={`${atsBadge.color} border px-2 py-0.5 text-xs whitespace-nowrap`}>
-                        {atsBadge.label}
-                      </Badge>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-gray-200">
-                      <div
-                        className={`h-1.5 rounded-full transition-all duration-500 ${
-                          (resume.atsScore ?? 0) >= 90
-                            ? "bg-linear-to-r from-green-500 to-green-600"
-                            : (resume.atsScore ?? 0) >= 75
-                              ? "bg-linear-to-r from-blue-500 to-blue-600"
-                              : (resume.atsScore ?? 0) >= 60
-                                ? "bg-linear-to-r from-yellow-500 to-yellow-600"
-                                : "bg-linear-to-r from-red-500 to-red-600"
-                        }`}
-                        style={{ width: `${resume.atsScore}%` }}
-                      />
-                    </div>
-                  </div>
+                <div className="mb-3">
+                  <AtsScoreCell resume={resume} onChecked={onReadinessScoreChecked} />
                 </div>
 
                 <p className="border-t border-gray-100 pt-2 text-xs text-gray-500">

@@ -7,7 +7,7 @@ import RecentResumes from "@/components/dashboard/RecentResumes";
 import AIInsights from "@/components/dashboard/AIInsights";
 import OutreachActivity from "@/components/dashboard/OutreachActivity";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
-import type { AppResume } from "@/types/resume";
+import type { AppResume, ReadinessScoreDetails } from "@/types/resume";
 
 // Bridges the ATS-avg click in components/shared/DashboardHeader.tsx (a
 // layout-level sibling of this page, not a parent/child — no direct prop
@@ -77,6 +77,17 @@ export default function DashboardPage() {
   // resumes the user has already set aside.
   const active = resumes.filter((r) => !r.isArchived);
 
+  // Updates a single resume's readiness score in place after a per-row
+  // "Check ATS Score" action in RecentResumes succeeds — avoids a full
+  // refetch just to reflect the N/A -> checked-value transition.
+  const handleReadinessScoreChecked = useCallback((resumeId: string, result: ReadinessScoreDetails) => {
+    setResumes((prev) =>
+      prev.map((r) =>
+        r.id === resumeId ? { ...r, readinessScore: result.score, readinessScoreDetails: result } : r,
+      ),
+    );
+  }, []);
+
   const handleHighlight = useCallback((id: string) => {
     setHighlightResumeId(id);
     document
@@ -115,6 +126,7 @@ export default function DashboardPage() {
             isLoading={isLoading}
             highlightResumeId={highlightResumeId}
             onRefresh={loadResumes}
+            onReadinessScoreChecked={handleReadinessScoreChecked}
           />
         </div>
 

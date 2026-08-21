@@ -14,6 +14,8 @@ export function buildSampleAppResume(templateId: string): AppResume {
     title: "Sample Resume",
     templateId,
     latexSource: null,
+    readinessScore: null,
+    readinessScoreDetails: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     ...getSeedResumeData(templateId),

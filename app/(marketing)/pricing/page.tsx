@@ -7,6 +7,7 @@ import Footer from "@/components/landing/Footer";
 import A from "@/components/marketing/AnimateOnScroll";
 import { siteConfig, pageOpenGraph, pageTwitter } from "@/config/site";
 import { getPlanConfig } from "@/lib/subscription/planConfig";
+import { getPlatformConfig } from "@/lib/config/getPlatformConfig";
 
 const title = "Rezlo Pricing — Free and Pro Plans for Job Seekers";
 const description =
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PricingPage() {
-  const planConfig = await getPlanConfig();
+  const [planConfig, platformConfig] = await Promise.all([getPlanConfig(), getPlatformConfig()]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -35,9 +36,10 @@ export default async function PricingPage() {
           proPriceInr={planConfig.proPriceInr}
           freeResumeLimit={planConfig.freeResumeLimit}
           freeAiGenerationLimit={planConfig.freeAiGenerationLimit}
+          billingEnabled={platformConfig.billingEnabled}
         />
         <A>
-          <FAQ />
+          <FAQ billingEnabled={platformConfig.billingEnabled} />
         </A>
         <A>
           <FinalCTA />

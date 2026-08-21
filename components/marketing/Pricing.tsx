@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
-import { CheckCircle2, Loader2, Star } from "lucide-react";
+import { CheckCircle2, Loader2, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -16,6 +17,10 @@ interface PricingProps {
   proPriceInr: number;
   freeResumeLimit: number;
   freeAiGenerationLimit: number;
+  // PlatformConfig.billingEnabled (see prisma/schema.prisma) — while false,
+  // Razorpay checkout is unreachable from this page entirely: the Pro CTA
+  // just signs the visitor up/in instead, and no trial language is shown.
+  billingEnabled: boolean;
 }
 
 // Feature copy for things PlanConfig doesn't store as real flags (template
@@ -23,10 +28,11 @@ interface PricingProps {
 // numeric limits below (resumes / AI generations / price) come straight
 // from PlanConfig via props, so admin changes to those show up here without
 // a second edit.
-const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: PricingProps) => {
+const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit, billingEnabled }: PricingProps) => {
   const { isLoaded, isSignedIn } = useAuth();
   const { data } = useSubscriptionStatus();
   const openAuthModal = useAuthModalStore((state) => state.open);
+  const router = useRouter();
   const [isUpgrading, setIsUpgrading] = useState(false);
 
   const isPro = data?.plan === "pro" && (data.status === "active" || data.status === "trialing");
@@ -62,6 +68,18 @@ const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: Pricin
     }
   };
 
+  // Billing off -> no Razorpay checkout is ever reachable here. Everyone
+  // already gets full (beta) access the moment they have an account, so
+  // this just gets them an account (or drops an already-signed-in visitor
+  // straight into the dashboard) instead of "starting a trial."
+  const handleGetStartedFree = () => {
+    if (!isSignedIn) {
+      openAuthModal("sign-up");
+      return;
+    }
+    router.push("/dashboard");
+  };
+
   const freeFeatures = [
     `${freeResumeLimit} resumes`,
     `${freeAiGenerationLimit} AI generations / month`,
@@ -86,6 +104,15 @@ const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: Pricin
           </h1>
           <p className="text-lg text-muted-foreground">Start free. Upgrade when you're ready.</p>
         </div>
+
+        {!billingEnabled && (
+          <div className="mx-auto mb-8 flex w-fit max-w-xl items-center gap-2.5 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-center">
+            <Sparkles className="h-4 w-4 shrink-0 text-amber-500" />
+            <p className="text-sm font-medium text-amber-800">
+              We&apos;re in early access — all features are free right now.
+            </p>
+          </div>
+        )}
 
         <div className="mb-12 flex items-center justify-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-2 shadow-sm w-fit mx-auto">
           <span className="text-sm font-semibold text-brand-purple">Monthly</span>
@@ -153,7 +180,7 @@ const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: Pricin
               <Button asChild className="mt-8 w-full bg-gradient-hero text-white hover:opacity-90">
                 <Link href="/dashboard/settings">You're on Pro</Link>
               </Button>
-            ) : (
+            ) : billingEnabled ? (
               <Button
                 onClick={handleStartTrial}
                 disabled={!isLoaded || isUpgrading}
@@ -161,6 +188,14 @@ const Pricing = ({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }: Pricin
               >
                 {isUpgrading && <Loader2 className="h-4 w-4 animate-spin" />}
                 Start 7-day free trial
+              </Button>
+            ) : (
+              <Button
+                onClick={handleGetStartedFree}
+                disabled={!isLoaded}
+                className="mt-8 w-full gap-2 bg-gradient-hero text-white hover:opacity-90"
+              >
+                Get started free
               </Button>
             )}
           </div>

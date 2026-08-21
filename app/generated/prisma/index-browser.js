@@ -127,6 +127,8 @@ exports.Prisma.ResumeScalarFieldEnum = {
   templateId: 'templateId',
   data: 'data',
   latexSource: 'latexSource',
+  readinessScore: 'readinessScore',
+  readinessScoreDetails: 'readinessScoreDetails',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -210,6 +212,7 @@ exports.Prisma.PlanConfigScalarFieldEnum = {
   proPriceInr: 'proPriceInr',
   freeResumeLimit: 'freeResumeLimit',
   freeAiGenerationLimit: 'freeAiGenerationLimit',
+  proAiCreditLimit: 'proAiCreditLimit',
   updatedAt: 'updatedAt'
 };
 
@@ -221,13 +224,33 @@ exports.Prisma.TemplateMetaScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.UsageCounterScalarFieldEnum = {
-  id: 'id',
+exports.Prisma.UserCreditsScalarFieldEnum = {
   userId: 'userId',
-  month: 'month',
-  aiGenerationsUsed: 'aiGenerationsUsed',
+  monthlyAllowance: 'monthlyAllowance',
+  creditsUsedThisMonth: 'creditsUsedThisMonth',
+  bonusCredits: 'bonusCredits',
+  resetsAt: 'resetsAt',
+  aiAccessBlocked: 'aiAccessBlocked',
+  aiBlockedReason: 'aiBlockedReason',
+  signedUpDuringBeta: 'signedUpDuringBeta',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlatformConfigScalarFieldEnum = {
+  id: 'id',
+  billingEnabled: 'billingEnabled',
+  betaCreditsPerMonth: 'betaCreditsPerMonth',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AdminActionLogScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  action: 'action',
+  targetUserId: 'targetUserId',
+  details: 'details',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.GmailAccountScalarFieldEnum = {
@@ -269,7 +292,9 @@ exports.Prisma.UploadedResumeScalarFieldEnum = {
   fileUrl: 'fileUrl',
   fileSizeBytes: 'fileSizeBytes',
   uploadedAt: 'uploadedAt',
-  parsedText: 'parsedText'
+  parsedText: 'parsedText',
+  readinessScore: 'readinessScore',
+  readinessScoreDetails: 'readinessScoreDetails'
 };
 
 exports.Prisma.SavedJobScalarFieldEnum = {
@@ -419,7 +444,9 @@ exports.Prisma.ModelName = {
   UserStatus: 'UserStatus',
   PlanConfig: 'PlanConfig',
   TemplateMeta: 'TemplateMeta',
-  UsageCounter: 'UsageCounter',
+  UserCredits: 'UserCredits',
+  PlatformConfig: 'PlatformConfig',
+  AdminActionLog: 'AdminActionLog',
   GmailAccount: 'GmailAccount',
   QuickApplyEntry: 'QuickApplyEntry',
   UploadedResume: 'UploadedResume',

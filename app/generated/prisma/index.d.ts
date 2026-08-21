@@ -64,10 +64,20 @@ export type PlanConfig = $Result.DefaultSelection<Prisma.$PlanConfigPayload>
  */
 export type TemplateMeta = $Result.DefaultSelection<Prisma.$TemplateMetaPayload>
 /**
- * Model UsageCounter
+ * Model UserCredits
  * 
  */
-export type UsageCounter = $Result.DefaultSelection<Prisma.$UsageCounterPayload>
+export type UserCredits = $Result.DefaultSelection<Prisma.$UserCreditsPayload>
+/**
+ * Model PlatformConfig
+ * 
+ */
+export type PlatformConfig = $Result.DefaultSelection<Prisma.$PlatformConfigPayload>
+/**
+ * Model AdminActionLog
+ * 
+ */
+export type AdminActionLog = $Result.DefaultSelection<Prisma.$AdminActionLogPayload>
 /**
  * Model GmailAccount
  * 
@@ -420,14 +430,34 @@ export class PrismaClient<
   get templateMeta(): Prisma.TemplateMetaDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.usageCounter`: Exposes CRUD operations for the **UsageCounter** model.
+   * `prisma.userCredits`: Exposes CRUD operations for the **UserCredits** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more UsageCounters
-    * const usageCounters = await prisma.usageCounter.findMany()
+    * // Fetch zero or more UserCredits
+    * const userCredits = await prisma.userCredits.findMany()
     * ```
     */
-  get usageCounter(): Prisma.UsageCounterDelegate<ExtArgs, ClientOptions>;
+  get userCredits(): Prisma.UserCreditsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformConfig`: Exposes CRUD operations for the **PlatformConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformConfigs
+    * const platformConfigs = await prisma.platformConfig.findMany()
+    * ```
+    */
+  get platformConfig(): Prisma.PlatformConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.adminActionLog`: Exposes CRUD operations for the **AdminActionLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdminActionLogs
+    * const adminActionLogs = await prisma.adminActionLog.findMany()
+    * ```
+    */
+  get adminActionLog(): Prisma.AdminActionLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.gmailAccount`: Exposes CRUD operations for the **GmailAccount** model.
@@ -932,7 +962,9 @@ export namespace Prisma {
     UserStatus: 'UserStatus',
     PlanConfig: 'PlanConfig',
     TemplateMeta: 'TemplateMeta',
-    UsageCounter: 'UsageCounter',
+    UserCredits: 'UserCredits',
+    PlatformConfig: 'PlatformConfig',
+    AdminActionLog: 'AdminActionLog',
     GmailAccount: 'GmailAccount',
     QuickApplyEntry: 'QuickApplyEntry',
     UploadedResume: 'UploadedResume',
@@ -954,7 +986,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "usageCounter" | "gmailAccount" | "quickApplyEntry" | "uploadedResume" | "savedJob" | "userOutreachSettings" | "aiUsageLog"
+      modelProps: "resume" | "coverLetter" | "resumeAnalytics" | "jobApplication" | "userPreferences" | "subscription" | "admin" | "userStatus" | "planConfig" | "templateMeta" | "userCredits" | "platformConfig" | "adminActionLog" | "gmailAccount" | "quickApplyEntry" | "uploadedResume" | "savedJob" | "userOutreachSettings" | "aiUsageLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1698,77 +1730,225 @@ export namespace Prisma {
           }
         }
       }
-      UsageCounter: {
-        payload: Prisma.$UsageCounterPayload<ExtArgs>
-        fields: Prisma.UsageCounterFieldRefs
+      UserCredits: {
+        payload: Prisma.$UserCreditsPayload<ExtArgs>
+        fields: Prisma.UserCreditsFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.UsageCounterFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload> | null
+            args: Prisma.UserCreditsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.UsageCounterFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           findFirst: {
-            args: Prisma.UsageCounterFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload> | null
+            args: Prisma.UserCreditsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.UsageCounterFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           findMany: {
-            args: Prisma.UsageCounterFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+            args: Prisma.UserCreditsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>[]
           }
           create: {
-            args: Prisma.UsageCounterCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           createMany: {
-            args: Prisma.UsageCounterCreateManyArgs<ExtArgs>
+            args: Prisma.UserCreditsCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.UsageCounterCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+            args: Prisma.UserCreditsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>[]
           }
           delete: {
-            args: Prisma.UsageCounterDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           update: {
-            args: Prisma.UsageCounterUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           deleteMany: {
-            args: Prisma.UsageCounterDeleteManyArgs<ExtArgs>
+            args: Prisma.UserCreditsDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.UsageCounterUpdateManyArgs<ExtArgs>
+            args: Prisma.UserCreditsUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.UsageCounterUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>[]
+            args: Prisma.UserCreditsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>[]
           }
           upsert: {
-            args: Prisma.UsageCounterUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UsageCounterPayload>
+            args: Prisma.UserCreditsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCreditsPayload>
           }
           aggregate: {
-            args: Prisma.UsageCounterAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUsageCounter>
+            args: Prisma.UserCreditsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserCredits>
           }
           groupBy: {
-            args: Prisma.UsageCounterGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UsageCounterGroupByOutputType>[]
+            args: Prisma.UserCreditsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserCreditsGroupByOutputType>[]
           }
           count: {
-            args: Prisma.UsageCounterCountArgs<ExtArgs>
-            result: $Utils.Optional<UsageCounterCountAggregateOutputType> | number
+            args: Prisma.UserCreditsCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCreditsCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlatformConfig: {
+        payload: Prisma.$PlatformConfigPayload<ExtArgs>
+        fields: Prisma.PlatformConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          update: {
+            args: Prisma.PlatformConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformConfig>
+          }
+          groupBy: {
+            args: Prisma.PlatformConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      AdminActionLog: {
+        payload: Prisma.$AdminActionLogPayload<ExtArgs>
+        fields: Prisma.AdminActionLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminActionLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminActionLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminActionLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminActionLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          findMany: {
+            args: Prisma.AdminActionLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>[]
+          }
+          create: {
+            args: Prisma.AdminActionLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          createMany: {
+            args: Prisma.AdminActionLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminActionLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminActionLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          update: {
+            args: Prisma.AdminActionLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminActionLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminActionLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminActionLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminActionLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminActionLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminActionLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdminActionLog>
+          }
+          groupBy: {
+            args: Prisma.AdminActionLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminActionLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminActionLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminActionLogCountAggregateOutputType> | number
           }
         }
       }
@@ -2334,7 +2514,9 @@ export namespace Prisma {
     userStatus?: UserStatusOmit
     planConfig?: PlanConfigOmit
     templateMeta?: TemplateMetaOmit
-    usageCounter?: UsageCounterOmit
+    userCredits?: UserCreditsOmit
+    platformConfig?: PlatformConfigOmit
+    adminActionLog?: AdminActionLogOmit
     gmailAccount?: GmailAccountOmit
     quickApplyEntry?: QuickApplyEntryOmit
     uploadedResume?: UploadedResumeOmit
@@ -2542,8 +2724,18 @@ export namespace Prisma {
 
   export type AggregateResume = {
     _count: ResumeCountAggregateOutputType | null
+    _avg: ResumeAvgAggregateOutputType | null
+    _sum: ResumeSumAggregateOutputType | null
     _min: ResumeMinAggregateOutputType | null
     _max: ResumeMaxAggregateOutputType | null
+  }
+
+  export type ResumeAvgAggregateOutputType = {
+    readinessScore: number | null
+  }
+
+  export type ResumeSumAggregateOutputType = {
+    readinessScore: number | null
   }
 
   export type ResumeMinAggregateOutputType = {
@@ -2552,6 +2744,7 @@ export namespace Prisma {
     title: string | null
     templateId: string | null
     latexSource: string | null
+    readinessScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2562,6 +2755,7 @@ export namespace Prisma {
     title: string | null
     templateId: string | null
     latexSource: string | null
+    readinessScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2573,11 +2767,21 @@ export namespace Prisma {
     templateId: number
     data: number
     latexSource: number
+    readinessScore: number
+    readinessScoreDetails: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type ResumeAvgAggregateInputType = {
+    readinessScore?: true
+  }
+
+  export type ResumeSumAggregateInputType = {
+    readinessScore?: true
+  }
 
   export type ResumeMinAggregateInputType = {
     id?: true
@@ -2585,6 +2789,7 @@ export namespace Prisma {
     title?: true
     templateId?: true
     latexSource?: true
+    readinessScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2595,6 +2800,7 @@ export namespace Prisma {
     title?: true
     templateId?: true
     latexSource?: true
+    readinessScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2606,6 +2812,8 @@ export namespace Prisma {
     templateId?: true
     data?: true
     latexSource?: true
+    readinessScore?: true
+    readinessScoreDetails?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2649,6 +2857,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ResumeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ResumeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ResumeMinAggregateInputType
@@ -2679,6 +2899,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ResumeCountAggregateInputType | true
+    _avg?: ResumeAvgAggregateInputType
+    _sum?: ResumeSumAggregateInputType
     _min?: ResumeMinAggregateInputType
     _max?: ResumeMaxAggregateInputType
   }
@@ -2690,9 +2912,13 @@ export namespace Prisma {
     templateId: string
     data: JsonValue
     latexSource: string | null
+    readinessScore: number | null
+    readinessScoreDetails: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: ResumeCountAggregateOutputType | null
+    _avg: ResumeAvgAggregateOutputType | null
+    _sum: ResumeSumAggregateOutputType | null
     _min: ResumeMinAggregateOutputType | null
     _max: ResumeMaxAggregateOutputType | null
   }
@@ -2718,6 +2944,8 @@ export namespace Prisma {
     templateId?: boolean
     data?: boolean
     latexSource?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
@@ -2735,6 +2963,8 @@ export namespace Prisma {
     templateId?: boolean
     data?: boolean
     latexSource?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["resume"]>
@@ -2746,6 +2976,8 @@ export namespace Prisma {
     templateId?: boolean
     data?: boolean
     latexSource?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["resume"]>
@@ -2757,11 +2989,13 @@ export namespace Prisma {
     templateId?: boolean
     data?: boolean
     latexSource?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "templateId" | "data" | "latexSource" | "createdAt" | "updatedAt", ExtArgs["result"]["resume"]>
+  export type ResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "templateId" | "data" | "latexSource" | "readinessScore" | "readinessScoreDetails" | "createdAt" | "updatedAt", ExtArgs["result"]["resume"]>
   export type ResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coverLetters?: boolean | Resume$coverLettersArgs<ExtArgs>
     analytics?: boolean | Resume$analyticsArgs<ExtArgs>
@@ -2789,6 +3023,8 @@ export namespace Prisma {
       templateId: string
       data: Prisma.JsonValue
       latexSource: string | null
+      readinessScore: number | null
+      readinessScoreDetails: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["resume"]>
@@ -3225,6 +3461,8 @@ export namespace Prisma {
     readonly templateId: FieldRef<"Resume", 'String'>
     readonly data: FieldRef<"Resume", 'Json'>
     readonly latexSource: FieldRef<"Resume", 'String'>
+    readonly readinessScore: FieldRef<"Resume", 'Int'>
+    readonly readinessScoreDetails: FieldRef<"Resume", 'Json'>
     readonly createdAt: FieldRef<"Resume", 'DateTime'>
     readonly updatedAt: FieldRef<"Resume", 'DateTime'>
   }
@@ -11116,12 +11354,14 @@ export namespace Prisma {
     proPriceInr: number | null
     freeResumeLimit: number | null
     freeAiGenerationLimit: number | null
+    proAiCreditLimit: number | null
   }
 
   export type PlanConfigSumAggregateOutputType = {
     proPriceInr: number | null
     freeResumeLimit: number | null
     freeAiGenerationLimit: number | null
+    proAiCreditLimit: number | null
   }
 
   export type PlanConfigMinAggregateOutputType = {
@@ -11129,6 +11369,7 @@ export namespace Prisma {
     proPriceInr: number | null
     freeResumeLimit: number | null
     freeAiGenerationLimit: number | null
+    proAiCreditLimit: number | null
     updatedAt: Date | null
   }
 
@@ -11137,6 +11378,7 @@ export namespace Prisma {
     proPriceInr: number | null
     freeResumeLimit: number | null
     freeAiGenerationLimit: number | null
+    proAiCreditLimit: number | null
     updatedAt: Date | null
   }
 
@@ -11145,6 +11387,7 @@ export namespace Prisma {
     proPriceInr: number
     freeResumeLimit: number
     freeAiGenerationLimit: number
+    proAiCreditLimit: number
     updatedAt: number
     _all: number
   }
@@ -11154,12 +11397,14 @@ export namespace Prisma {
     proPriceInr?: true
     freeResumeLimit?: true
     freeAiGenerationLimit?: true
+    proAiCreditLimit?: true
   }
 
   export type PlanConfigSumAggregateInputType = {
     proPriceInr?: true
     freeResumeLimit?: true
     freeAiGenerationLimit?: true
+    proAiCreditLimit?: true
   }
 
   export type PlanConfigMinAggregateInputType = {
@@ -11167,6 +11412,7 @@ export namespace Prisma {
     proPriceInr?: true
     freeResumeLimit?: true
     freeAiGenerationLimit?: true
+    proAiCreditLimit?: true
     updatedAt?: true
   }
 
@@ -11175,6 +11421,7 @@ export namespace Prisma {
     proPriceInr?: true
     freeResumeLimit?: true
     freeAiGenerationLimit?: true
+    proAiCreditLimit?: true
     updatedAt?: true
   }
 
@@ -11183,6 +11430,7 @@ export namespace Prisma {
     proPriceInr?: true
     freeResumeLimit?: true
     freeAiGenerationLimit?: true
+    proAiCreditLimit?: true
     updatedAt?: true
     _all?: true
   }
@@ -11278,6 +11526,7 @@ export namespace Prisma {
     proPriceInr: number
     freeResumeLimit: number
     freeAiGenerationLimit: number
+    proAiCreditLimit: number
     updatedAt: Date
     _count: PlanConfigCountAggregateOutputType | null
     _avg: PlanConfigAvgAggregateOutputType | null
@@ -11305,6 +11554,7 @@ export namespace Prisma {
     proPriceInr?: boolean
     freeResumeLimit?: boolean
     freeAiGenerationLimit?: boolean
+    proAiCreditLimit?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["planConfig"]>
 
@@ -11313,6 +11563,7 @@ export namespace Prisma {
     proPriceInr?: boolean
     freeResumeLimit?: boolean
     freeAiGenerationLimit?: boolean
+    proAiCreditLimit?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["planConfig"]>
 
@@ -11321,6 +11572,7 @@ export namespace Prisma {
     proPriceInr?: boolean
     freeResumeLimit?: boolean
     freeAiGenerationLimit?: boolean
+    proAiCreditLimit?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["planConfig"]>
 
@@ -11329,10 +11581,11 @@ export namespace Prisma {
     proPriceInr?: boolean
     freeResumeLimit?: boolean
     freeAiGenerationLimit?: boolean
+    proAiCreditLimit?: boolean
     updatedAt?: boolean
   }
 
-  export type PlanConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "proPriceInr" | "freeResumeLimit" | "freeAiGenerationLimit" | "updatedAt", ExtArgs["result"]["planConfig"]>
+  export type PlanConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "proPriceInr" | "freeResumeLimit" | "freeAiGenerationLimit" | "proAiCreditLimit" | "updatedAt", ExtArgs["result"]["planConfig"]>
 
   export type $PlanConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PlanConfig"
@@ -11342,6 +11595,7 @@ export namespace Prisma {
       proPriceInr: number
       freeResumeLimit: number
       freeAiGenerationLimit: number
+      proAiCreditLimit: number
       updatedAt: Date
     }, ExtArgs["result"]["planConfig"]>
     composites: {}
@@ -11770,6 +12024,7 @@ export namespace Prisma {
     readonly proPriceInr: FieldRef<"PlanConfig", 'Int'>
     readonly freeResumeLimit: FieldRef<"PlanConfig", 'Int'>
     readonly freeAiGenerationLimit: FieldRef<"PlanConfig", 'Int'>
+    readonly proAiCreditLimit: FieldRef<"PlanConfig", 'Int'>
     readonly updatedAt: FieldRef<"PlanConfig", 'DateTime'>
   }
     
@@ -13133,383 +13388,439 @@ export namespace Prisma {
 
 
   /**
-   * Model UsageCounter
+   * Model UserCredits
    */
 
-  export type AggregateUsageCounter = {
-    _count: UsageCounterCountAggregateOutputType | null
-    _avg: UsageCounterAvgAggregateOutputType | null
-    _sum: UsageCounterSumAggregateOutputType | null
-    _min: UsageCounterMinAggregateOutputType | null
-    _max: UsageCounterMaxAggregateOutputType | null
+  export type AggregateUserCredits = {
+    _count: UserCreditsCountAggregateOutputType | null
+    _avg: UserCreditsAvgAggregateOutputType | null
+    _sum: UserCreditsSumAggregateOutputType | null
+    _min: UserCreditsMinAggregateOutputType | null
+    _max: UserCreditsMaxAggregateOutputType | null
   }
 
-  export type UsageCounterAvgAggregateOutputType = {
-    aiGenerationsUsed: number | null
+  export type UserCreditsAvgAggregateOutputType = {
+    monthlyAllowance: number | null
+    creditsUsedThisMonth: number | null
+    bonusCredits: number | null
   }
 
-  export type UsageCounterSumAggregateOutputType = {
-    aiGenerationsUsed: number | null
+  export type UserCreditsSumAggregateOutputType = {
+    monthlyAllowance: number | null
+    creditsUsedThisMonth: number | null
+    bonusCredits: number | null
   }
 
-  export type UsageCounterMinAggregateOutputType = {
-    id: string | null
+  export type UserCreditsMinAggregateOutputType = {
     userId: string | null
-    month: string | null
-    aiGenerationsUsed: number | null
+    monthlyAllowance: number | null
+    creditsUsedThisMonth: number | null
+    bonusCredits: number | null
+    resetsAt: Date | null
+    aiAccessBlocked: boolean | null
+    aiBlockedReason: string | null
+    signedUpDuringBeta: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type UsageCounterMaxAggregateOutputType = {
-    id: string | null
+  export type UserCreditsMaxAggregateOutputType = {
     userId: string | null
-    month: string | null
-    aiGenerationsUsed: number | null
+    monthlyAllowance: number | null
+    creditsUsedThisMonth: number | null
+    bonusCredits: number | null
+    resetsAt: Date | null
+    aiAccessBlocked: boolean | null
+    aiBlockedReason: string | null
+    signedUpDuringBeta: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type UsageCounterCountAggregateOutputType = {
-    id: number
+  export type UserCreditsCountAggregateOutputType = {
     userId: number
-    month: number
-    aiGenerationsUsed: number
+    monthlyAllowance: number
+    creditsUsedThisMonth: number
+    bonusCredits: number
+    resetsAt: number
+    aiAccessBlocked: number
+    aiBlockedReason: number
+    signedUpDuringBeta: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type UsageCounterAvgAggregateInputType = {
-    aiGenerationsUsed?: true
+  export type UserCreditsAvgAggregateInputType = {
+    monthlyAllowance?: true
+    creditsUsedThisMonth?: true
+    bonusCredits?: true
   }
 
-  export type UsageCounterSumAggregateInputType = {
-    aiGenerationsUsed?: true
+  export type UserCreditsSumAggregateInputType = {
+    monthlyAllowance?: true
+    creditsUsedThisMonth?: true
+    bonusCredits?: true
   }
 
-  export type UsageCounterMinAggregateInputType = {
-    id?: true
+  export type UserCreditsMinAggregateInputType = {
     userId?: true
-    month?: true
-    aiGenerationsUsed?: true
+    monthlyAllowance?: true
+    creditsUsedThisMonth?: true
+    bonusCredits?: true
+    resetsAt?: true
+    aiAccessBlocked?: true
+    aiBlockedReason?: true
+    signedUpDuringBeta?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type UsageCounterMaxAggregateInputType = {
-    id?: true
+  export type UserCreditsMaxAggregateInputType = {
     userId?: true
-    month?: true
-    aiGenerationsUsed?: true
+    monthlyAllowance?: true
+    creditsUsedThisMonth?: true
+    bonusCredits?: true
+    resetsAt?: true
+    aiAccessBlocked?: true
+    aiBlockedReason?: true
+    signedUpDuringBeta?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type UsageCounterCountAggregateInputType = {
-    id?: true
+  export type UserCreditsCountAggregateInputType = {
     userId?: true
-    month?: true
-    aiGenerationsUsed?: true
+    monthlyAllowance?: true
+    creditsUsedThisMonth?: true
+    bonusCredits?: true
+    resetsAt?: true
+    aiAccessBlocked?: true
+    aiBlockedReason?: true
+    signedUpDuringBeta?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type UsageCounterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UsageCounter to aggregate.
+     * Filter which UserCredits to aggregate.
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UsageCounters to fetch.
+     * Determine the order of UserCredits to fetch.
      */
-    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    orderBy?: UserCreditsOrderByWithRelationInput | UserCreditsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: UsageCounterWhereUniqueInput
+    cursor?: UserCreditsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UsageCounters from the position of the cursor.
+     * Take `±n` UserCredits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UsageCounters.
+     * Skip the first `n` UserCredits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned UsageCounters
+     * Count returned UserCredits
     **/
-    _count?: true | UsageCounterCountAggregateInputType
+    _count?: true | UserCreditsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: UsageCounterAvgAggregateInputType
+    _avg?: UserCreditsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: UsageCounterSumAggregateInputType
+    _sum?: UserCreditsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: UsageCounterMinAggregateInputType
+    _min?: UserCreditsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: UsageCounterMaxAggregateInputType
+    _max?: UserCreditsMaxAggregateInputType
   }
 
-  export type GetUsageCounterAggregateType<T extends UsageCounterAggregateArgs> = {
-        [P in keyof T & keyof AggregateUsageCounter]: P extends '_count' | 'count'
+  export type GetUserCreditsAggregateType<T extends UserCreditsAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserCredits]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateUsageCounter[P]>
-      : GetScalarType<T[P], AggregateUsageCounter[P]>
+        : GetScalarType<T[P], AggregateUserCredits[P]>
+      : GetScalarType<T[P], AggregateUserCredits[P]>
   }
 
 
 
 
-  export type UsageCounterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UsageCounterWhereInput
-    orderBy?: UsageCounterOrderByWithAggregationInput | UsageCounterOrderByWithAggregationInput[]
-    by: UsageCounterScalarFieldEnum[] | UsageCounterScalarFieldEnum
-    having?: UsageCounterScalarWhereWithAggregatesInput
+  export type UserCreditsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserCreditsWhereInput
+    orderBy?: UserCreditsOrderByWithAggregationInput | UserCreditsOrderByWithAggregationInput[]
+    by: UserCreditsScalarFieldEnum[] | UserCreditsScalarFieldEnum
+    having?: UserCreditsScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: UsageCounterCountAggregateInputType | true
-    _avg?: UsageCounterAvgAggregateInputType
-    _sum?: UsageCounterSumAggregateInputType
-    _min?: UsageCounterMinAggregateInputType
-    _max?: UsageCounterMaxAggregateInputType
+    _count?: UserCreditsCountAggregateInputType | true
+    _avg?: UserCreditsAvgAggregateInputType
+    _sum?: UserCreditsSumAggregateInputType
+    _min?: UserCreditsMinAggregateInputType
+    _max?: UserCreditsMaxAggregateInputType
   }
 
-  export type UsageCounterGroupByOutputType = {
-    id: string
+  export type UserCreditsGroupByOutputType = {
     userId: string
-    month: string
-    aiGenerationsUsed: number
+    monthlyAllowance: number
+    creditsUsedThisMonth: number
+    bonusCredits: number
+    resetsAt: Date
+    aiAccessBlocked: boolean
+    aiBlockedReason: string | null
+    signedUpDuringBeta: boolean
     createdAt: Date
     updatedAt: Date
-    _count: UsageCounterCountAggregateOutputType | null
-    _avg: UsageCounterAvgAggregateOutputType | null
-    _sum: UsageCounterSumAggregateOutputType | null
-    _min: UsageCounterMinAggregateOutputType | null
-    _max: UsageCounterMaxAggregateOutputType | null
+    _count: UserCreditsCountAggregateOutputType | null
+    _avg: UserCreditsAvgAggregateOutputType | null
+    _sum: UserCreditsSumAggregateOutputType | null
+    _min: UserCreditsMinAggregateOutputType | null
+    _max: UserCreditsMaxAggregateOutputType | null
   }
 
-  type GetUsageCounterGroupByPayload<T extends UsageCounterGroupByArgs> = Prisma.PrismaPromise<
+  type GetUserCreditsGroupByPayload<T extends UserCreditsGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<UsageCounterGroupByOutputType, T['by']> &
+      PickEnumerable<UserCreditsGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UsageCounterGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof UserCreditsGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], UsageCounterGroupByOutputType[P]>
-            : GetScalarType<T[P], UsageCounterGroupByOutputType[P]>
+              : GetScalarType<T[P], UserCreditsGroupByOutputType[P]>
+            : GetScalarType<T[P], UserCreditsGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type UsageCounterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+  export type UserCreditsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     userId?: boolean
-    month?: boolean
-    aiGenerationsUsed?: boolean
+    monthlyAllowance?: boolean
+    creditsUsedThisMonth?: boolean
+    bonusCredits?: boolean
+    resetsAt?: boolean
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: boolean
+    signedUpDuringBeta?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["usageCounter"]>
+  }, ExtArgs["result"]["userCredits"]>
 
-  export type UsageCounterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+  export type UserCreditsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     userId?: boolean
-    month?: boolean
-    aiGenerationsUsed?: boolean
+    monthlyAllowance?: boolean
+    creditsUsedThisMonth?: boolean
+    bonusCredits?: boolean
+    resetsAt?: boolean
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: boolean
+    signedUpDuringBeta?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["usageCounter"]>
+  }, ExtArgs["result"]["userCredits"]>
 
-  export type UsageCounterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+  export type UserCreditsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     userId?: boolean
-    month?: boolean
-    aiGenerationsUsed?: boolean
+    monthlyAllowance?: boolean
+    creditsUsedThisMonth?: boolean
+    bonusCredits?: boolean
+    resetsAt?: boolean
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: boolean
+    signedUpDuringBeta?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["usageCounter"]>
+  }, ExtArgs["result"]["userCredits"]>
 
-  export type UsageCounterSelectScalar = {
-    id?: boolean
+  export type UserCreditsSelectScalar = {
     userId?: boolean
-    month?: boolean
-    aiGenerationsUsed?: boolean
+    monthlyAllowance?: boolean
+    creditsUsedThisMonth?: boolean
+    bonusCredits?: boolean
+    resetsAt?: boolean
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: boolean
+    signedUpDuringBeta?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UsageCounterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "month" | "aiGenerationsUsed" | "createdAt" | "updatedAt", ExtArgs["result"]["usageCounter"]>
+  export type UserCreditsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "monthlyAllowance" | "creditsUsedThisMonth" | "bonusCredits" | "resetsAt" | "aiAccessBlocked" | "aiBlockedReason" | "signedUpDuringBeta" | "createdAt" | "updatedAt", ExtArgs["result"]["userCredits"]>
 
-  export type $UsageCounterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UsageCounter"
+  export type $UserCreditsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserCredits"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
-      id: string
       userId: string
-      month: string
-      aiGenerationsUsed: number
+      monthlyAllowance: number
+      creditsUsedThisMonth: number
+      bonusCredits: number
+      resetsAt: Date
+      aiAccessBlocked: boolean
+      aiBlockedReason: string | null
+      signedUpDuringBeta: boolean
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["usageCounter"]>
+    }, ExtArgs["result"]["userCredits"]>
     composites: {}
   }
 
-  type UsageCounterGetPayload<S extends boolean | null | undefined | UsageCounterDefaultArgs> = $Result.GetResult<Prisma.$UsageCounterPayload, S>
+  type UserCreditsGetPayload<S extends boolean | null | undefined | UserCreditsDefaultArgs> = $Result.GetResult<Prisma.$UserCreditsPayload, S>
 
-  type UsageCounterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UsageCounterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UsageCounterCountAggregateInputType | true
+  type UserCreditsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserCreditsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCreditsCountAggregateInputType | true
     }
 
-  export interface UsageCounterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UsageCounter'], meta: { name: 'UsageCounter' } }
+  export interface UserCreditsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserCredits'], meta: { name: 'UserCredits' } }
     /**
-     * Find zero or one UsageCounter that matches the filter.
-     * @param {UsageCounterFindUniqueArgs} args - Arguments to find a UsageCounter
+     * Find zero or one UserCredits that matches the filter.
+     * @param {UserCreditsFindUniqueArgs} args - Arguments to find a UserCredits
      * @example
-     * // Get one UsageCounter
-     * const usageCounter = await prisma.usageCounter.findUnique({
+     * // Get one UserCredits
+     * const userCredits = await prisma.userCredits.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends UsageCounterFindUniqueArgs>(args: SelectSubset<T, UsageCounterFindUniqueArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserCreditsFindUniqueArgs>(args: SelectSubset<T, UserCreditsFindUniqueArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one UsageCounter that matches the filter or throw an error with `error.code='P2025'`
+     * Find one UserCredits that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {UsageCounterFindUniqueOrThrowArgs} args - Arguments to find a UsageCounter
+     * @param {UserCreditsFindUniqueOrThrowArgs} args - Arguments to find a UserCredits
      * @example
-     * // Get one UsageCounter
-     * const usageCounter = await prisma.usageCounter.findUniqueOrThrow({
+     * // Get one UserCredits
+     * const userCredits = await prisma.userCredits.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UsageCounterFindUniqueOrThrowArgs>(args: SelectSubset<T, UsageCounterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserCreditsFindUniqueOrThrowArgs>(args: SelectSubset<T, UserCreditsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UsageCounter that matches the filter.
+     * Find the first UserCredits that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterFindFirstArgs} args - Arguments to find a UsageCounter
+     * @param {UserCreditsFindFirstArgs} args - Arguments to find a UserCredits
      * @example
-     * // Get one UsageCounter
-     * const usageCounter = await prisma.usageCounter.findFirst({
+     * // Get one UserCredits
+     * const userCredits = await prisma.userCredits.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends UsageCounterFindFirstArgs>(args?: SelectSubset<T, UsageCounterFindFirstArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserCreditsFindFirstArgs>(args?: SelectSubset<T, UserCreditsFindFirstArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UsageCounter that matches the filter or
+     * Find the first UserCredits that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterFindFirstOrThrowArgs} args - Arguments to find a UsageCounter
+     * @param {UserCreditsFindFirstOrThrowArgs} args - Arguments to find a UserCredits
      * @example
-     * // Get one UsageCounter
-     * const usageCounter = await prisma.usageCounter.findFirstOrThrow({
+     * // Get one UserCredits
+     * const userCredits = await prisma.userCredits.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends UsageCounterFindFirstOrThrowArgs>(args?: SelectSubset<T, UsageCounterFindFirstOrThrowArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserCreditsFindFirstOrThrowArgs>(args?: SelectSubset<T, UserCreditsFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more UsageCounters that matches the filter.
+     * Find zero or more UserCredits that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {UserCreditsFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all UsageCounters
-     * const usageCounters = await prisma.usageCounter.findMany()
+     * // Get all UserCredits
+     * const userCredits = await prisma.userCredits.findMany()
      * 
-     * // Get first 10 UsageCounters
-     * const usageCounters = await prisma.usageCounter.findMany({ take: 10 })
+     * // Get first 10 UserCredits
+     * const userCredits = await prisma.userCredits.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const usageCounterWithIdOnly = await prisma.usageCounter.findMany({ select: { id: true } })
+     * // Only select the `userId`
+     * const userCreditsWithUserIdOnly = await prisma.userCredits.findMany({ select: { userId: true } })
      * 
      */
-    findMany<T extends UsageCounterFindManyArgs>(args?: SelectSubset<T, UsageCounterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserCreditsFindManyArgs>(args?: SelectSubset<T, UserCreditsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a UsageCounter.
-     * @param {UsageCounterCreateArgs} args - Arguments to create a UsageCounter.
+     * Create a UserCredits.
+     * @param {UserCreditsCreateArgs} args - Arguments to create a UserCredits.
      * @example
-     * // Create one UsageCounter
-     * const UsageCounter = await prisma.usageCounter.create({
+     * // Create one UserCredits
+     * const UserCredits = await prisma.userCredits.create({
      *   data: {
-     *     // ... data to create a UsageCounter
+     *     // ... data to create a UserCredits
      *   }
      * })
      * 
      */
-    create<T extends UsageCounterCreateArgs>(args: SelectSubset<T, UsageCounterCreateArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreditsCreateArgs>(args: SelectSubset<T, UserCreditsCreateArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many UsageCounters.
-     * @param {UsageCounterCreateManyArgs} args - Arguments to create many UsageCounters.
+     * Create many UserCredits.
+     * @param {UserCreditsCreateManyArgs} args - Arguments to create many UserCredits.
      * @example
-     * // Create many UsageCounters
-     * const usageCounter = await prisma.usageCounter.createMany({
+     * // Create many UserCredits
+     * const userCredits = await prisma.userCredits.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends UsageCounterCreateManyArgs>(args?: SelectSubset<T, UsageCounterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends UserCreditsCreateManyArgs>(args?: SelectSubset<T, UserCreditsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many UsageCounters and returns the data saved in the database.
-     * @param {UsageCounterCreateManyAndReturnArgs} args - Arguments to create many UsageCounters.
+     * Create many UserCredits and returns the data saved in the database.
+     * @param {UserCreditsCreateManyAndReturnArgs} args - Arguments to create many UserCredits.
      * @example
-     * // Create many UsageCounters
-     * const usageCounter = await prisma.usageCounter.createManyAndReturn({
+     * // Create many UserCredits
+     * const userCredits = await prisma.userCredits.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many UsageCounters and only return the `id`
-     * const usageCounterWithIdOnly = await prisma.usageCounter.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many UserCredits and only return the `userId`
+     * const userCreditsWithUserIdOnly = await prisma.userCredits.createManyAndReturn({
+     *   select: { userId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -13518,28 +13829,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UsageCounterCreateManyAndReturnArgs>(args?: SelectSubset<T, UsageCounterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserCreditsCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreditsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a UsageCounter.
-     * @param {UsageCounterDeleteArgs} args - Arguments to delete one UsageCounter.
+     * Delete a UserCredits.
+     * @param {UserCreditsDeleteArgs} args - Arguments to delete one UserCredits.
      * @example
-     * // Delete one UsageCounter
-     * const UsageCounter = await prisma.usageCounter.delete({
+     * // Delete one UserCredits
+     * const UserCredits = await prisma.userCredits.delete({
      *   where: {
-     *     // ... filter to delete one UsageCounter
+     *     // ... filter to delete one UserCredits
      *   }
      * })
      * 
      */
-    delete<T extends UsageCounterDeleteArgs>(args: SelectSubset<T, UsageCounterDeleteArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserCreditsDeleteArgs>(args: SelectSubset<T, UserCreditsDeleteArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one UsageCounter.
-     * @param {UsageCounterUpdateArgs} args - Arguments to update one UsageCounter.
+     * Update one UserCredits.
+     * @param {UserCreditsUpdateArgs} args - Arguments to update one UserCredits.
      * @example
-     * // Update one UsageCounter
-     * const usageCounter = await prisma.usageCounter.update({
+     * // Update one UserCredits
+     * const userCredits = await prisma.userCredits.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13549,30 +13860,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UsageCounterUpdateArgs>(args: SelectSubset<T, UsageCounterUpdateArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserCreditsUpdateArgs>(args: SelectSubset<T, UserCreditsUpdateArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more UsageCounters.
-     * @param {UsageCounterDeleteManyArgs} args - Arguments to filter UsageCounters to delete.
+     * Delete zero or more UserCredits.
+     * @param {UserCreditsDeleteManyArgs} args - Arguments to filter UserCredits to delete.
      * @example
-     * // Delete a few UsageCounters
-     * const { count } = await prisma.usageCounter.deleteMany({
+     * // Delete a few UserCredits
+     * const { count } = await prisma.userCredits.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends UsageCounterDeleteManyArgs>(args?: SelectSubset<T, UsageCounterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends UserCreditsDeleteManyArgs>(args?: SelectSubset<T, UserCreditsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UsageCounters.
+     * Update zero or more UserCredits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {UserCreditsUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many UsageCounters
-     * const usageCounter = await prisma.usageCounter.updateMany({
+     * // Update many UserCredits
+     * const userCredits = await prisma.userCredits.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13582,14 +13893,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends UsageCounterUpdateManyArgs>(args: SelectSubset<T, UsageCounterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends UserCreditsUpdateManyArgs>(args: SelectSubset<T, UserCreditsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UsageCounters and returns the data updated in the database.
-     * @param {UsageCounterUpdateManyAndReturnArgs} args - Arguments to update many UsageCounters.
+     * Update zero or more UserCredits and returns the data updated in the database.
+     * @param {UserCreditsUpdateManyAndReturnArgs} args - Arguments to update many UserCredits.
      * @example
-     * // Update many UsageCounters
-     * const usageCounter = await prisma.usageCounter.updateManyAndReturn({
+     * // Update many UserCredits
+     * const userCredits = await prisma.userCredits.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13598,9 +13909,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more UsageCounters and only return the `id`
-     * const usageCounterWithIdOnly = await prisma.usageCounter.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more UserCredits and only return the `userId`
+     * const userCreditsWithUserIdOnly = await prisma.userCredits.updateManyAndReturn({
+     *   select: { userId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13612,56 +13923,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends UsageCounterUpdateManyAndReturnArgs>(args: SelectSubset<T, UsageCounterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends UserCreditsUpdateManyAndReturnArgs>(args: SelectSubset<T, UserCreditsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one UsageCounter.
-     * @param {UsageCounterUpsertArgs} args - Arguments to update or create a UsageCounter.
+     * Create or update one UserCredits.
+     * @param {UserCreditsUpsertArgs} args - Arguments to update or create a UserCredits.
      * @example
-     * // Update or create a UsageCounter
-     * const usageCounter = await prisma.usageCounter.upsert({
+     * // Update or create a UserCredits
+     * const userCredits = await prisma.userCredits.upsert({
      *   create: {
-     *     // ... data to create a UsageCounter
+     *     // ... data to create a UserCredits
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the UsageCounter we want to update
+     *     // ... the filter for the UserCredits we want to update
      *   }
      * })
      */
-    upsert<T extends UsageCounterUpsertArgs>(args: SelectSubset<T, UsageCounterUpsertArgs<ExtArgs>>): Prisma__UsageCounterClient<$Result.GetResult<Prisma.$UsageCounterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserCreditsUpsertArgs>(args: SelectSubset<T, UserCreditsUpsertArgs<ExtArgs>>): Prisma__UserCreditsClient<$Result.GetResult<Prisma.$UserCreditsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of UsageCounters.
+     * Count the number of UserCredits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterCountArgs} args - Arguments to filter UsageCounters to count.
+     * @param {UserCreditsCountArgs} args - Arguments to filter UserCredits to count.
      * @example
-     * // Count the number of UsageCounters
-     * const count = await prisma.usageCounter.count({
+     * // Count the number of UserCredits
+     * const count = await prisma.userCredits.count({
      *   where: {
-     *     // ... the filter for the UsageCounters we want to count
+     *     // ... the filter for the UserCredits we want to count
      *   }
      * })
     **/
-    count<T extends UsageCounterCountArgs>(
-      args?: Subset<T, UsageCounterCountArgs>,
+    count<T extends UserCreditsCountArgs>(
+      args?: Subset<T, UserCreditsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], UsageCounterCountAggregateOutputType>
+          : GetScalarType<T['select'], UserCreditsCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a UsageCounter.
+     * Allows you to perform aggregations operations on a UserCredits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {UserCreditsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -13681,13 +13992,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends UsageCounterAggregateArgs>(args: Subset<T, UsageCounterAggregateArgs>): Prisma.PrismaPromise<GetUsageCounterAggregateType<T>>
+    aggregate<T extends UserCreditsAggregateArgs>(args: Subset<T, UserCreditsAggregateArgs>): Prisma.PrismaPromise<GetUserCreditsAggregateType<T>>
 
     /**
-     * Group by UsageCounter.
+     * Group by UserCredits.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UsageCounterGroupByArgs} args - Group by arguments.
+     * @param {UserCreditsGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -13702,14 +14013,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends UsageCounterGroupByArgs,
+      T extends UserCreditsGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UsageCounterGroupByArgs['orderBy'] }
-        : { orderBy?: UsageCounterGroupByArgs['orderBy'] },
+        ? { orderBy: UserCreditsGroupByArgs['orderBy'] }
+        : { orderBy?: UserCreditsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -13758,20 +14069,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, UsageCounterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUsageCounterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, UserCreditsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserCreditsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the UsageCounter model
+   * Fields of the UserCredits model
    */
-  readonly fields: UsageCounterFieldRefs;
+  readonly fields: UserCreditsFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for UsageCounter.
+   * The delegate class that acts as a "Promise-like" for UserCredits.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UsageCounterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserCreditsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13799,378 +14110,2402 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the UsageCounter model
+   * Fields of the UserCredits model
    */
-  interface UsageCounterFieldRefs {
-    readonly id: FieldRef<"UsageCounter", 'String'>
-    readonly userId: FieldRef<"UsageCounter", 'String'>
-    readonly month: FieldRef<"UsageCounter", 'String'>
-    readonly aiGenerationsUsed: FieldRef<"UsageCounter", 'Int'>
-    readonly createdAt: FieldRef<"UsageCounter", 'DateTime'>
-    readonly updatedAt: FieldRef<"UsageCounter", 'DateTime'>
+  interface UserCreditsFieldRefs {
+    readonly userId: FieldRef<"UserCredits", 'String'>
+    readonly monthlyAllowance: FieldRef<"UserCredits", 'Int'>
+    readonly creditsUsedThisMonth: FieldRef<"UserCredits", 'Int'>
+    readonly bonusCredits: FieldRef<"UserCredits", 'Int'>
+    readonly resetsAt: FieldRef<"UserCredits", 'DateTime'>
+    readonly aiAccessBlocked: FieldRef<"UserCredits", 'Boolean'>
+    readonly aiBlockedReason: FieldRef<"UserCredits", 'String'>
+    readonly signedUpDuringBeta: FieldRef<"UserCredits", 'Boolean'>
+    readonly createdAt: FieldRef<"UserCredits", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserCredits", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * UsageCounter findUnique
+   * UserCredits findUnique
    */
-  export type UsageCounterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter, which UsageCounter to fetch.
+     * Filter, which UserCredits to fetch.
      */
-    where: UsageCounterWhereUniqueInput
+    where: UserCreditsWhereUniqueInput
   }
 
   /**
-   * UsageCounter findUniqueOrThrow
+   * UserCredits findUniqueOrThrow
    */
-  export type UsageCounterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter, which UsageCounter to fetch.
+     * Filter, which UserCredits to fetch.
      */
-    where: UsageCounterWhereUniqueInput
+    where: UserCreditsWhereUniqueInput
   }
 
   /**
-   * UsageCounter findFirst
+   * UserCredits findFirst
    */
-  export type UsageCounterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter, which UsageCounter to fetch.
+     * Filter, which UserCredits to fetch.
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UsageCounters to fetch.
+     * Determine the order of UserCredits to fetch.
      */
-    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    orderBy?: UserCreditsOrderByWithRelationInput | UserCreditsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UsageCounters.
+     * Sets the position for searching for UserCredits.
      */
-    cursor?: UsageCounterWhereUniqueInput
+    cursor?: UserCreditsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UsageCounters from the position of the cursor.
+     * Take `±n` UserCredits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UsageCounters.
+     * Skip the first `n` UserCredits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UsageCounters.
+     * Filter by unique combinations of UserCredits.
      */
-    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+    distinct?: UserCreditsScalarFieldEnum | UserCreditsScalarFieldEnum[]
   }
 
   /**
-   * UsageCounter findFirstOrThrow
+   * UserCredits findFirstOrThrow
    */
-  export type UsageCounterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter, which UsageCounter to fetch.
+     * Filter, which UserCredits to fetch.
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UsageCounters to fetch.
+     * Determine the order of UserCredits to fetch.
      */
-    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    orderBy?: UserCreditsOrderByWithRelationInput | UserCreditsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UsageCounters.
+     * Sets the position for searching for UserCredits.
      */
-    cursor?: UsageCounterWhereUniqueInput
+    cursor?: UserCreditsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UsageCounters from the position of the cursor.
+     * Take `±n` UserCredits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UsageCounters.
+     * Skip the first `n` UserCredits.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UsageCounters.
+     * Filter by unique combinations of UserCredits.
      */
-    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+    distinct?: UserCreditsScalarFieldEnum | UserCreditsScalarFieldEnum[]
   }
 
   /**
-   * UsageCounter findMany
+   * UserCredits findMany
    */
-  export type UsageCounterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter, which UsageCounters to fetch.
+     * Filter, which UserCredits to fetch.
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UsageCounters to fetch.
+     * Determine the order of UserCredits to fetch.
      */
-    orderBy?: UsageCounterOrderByWithRelationInput | UsageCounterOrderByWithRelationInput[]
+    orderBy?: UserCreditsOrderByWithRelationInput | UserCreditsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing UsageCounters.
+     * Sets the position for listing UserCredits.
      */
-    cursor?: UsageCounterWhereUniqueInput
+    cursor?: UserCreditsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UsageCounters from the position of the cursor.
+     * Take `±n` UserCredits from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UsageCounters.
+     * Skip the first `n` UserCredits.
      */
     skip?: number
-    distinct?: UsageCounterScalarFieldEnum | UsageCounterScalarFieldEnum[]
+    distinct?: UserCreditsScalarFieldEnum | UserCreditsScalarFieldEnum[]
   }
 
   /**
-   * UsageCounter create
+   * UserCredits create
    */
-  export type UsageCounterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * The data needed to create a UsageCounter.
+     * The data needed to create a UserCredits.
      */
-    data: XOR<UsageCounterCreateInput, UsageCounterUncheckedCreateInput>
+    data: XOR<UserCreditsCreateInput, UserCreditsUncheckedCreateInput>
   }
 
   /**
-   * UsageCounter createMany
+   * UserCredits createMany
    */
-  export type UsageCounterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many UsageCounters.
+     * The data used to create many UserCredits.
      */
-    data: UsageCounterCreateManyInput | UsageCounterCreateManyInput[]
+    data: UserCreditsCreateManyInput | UserCreditsCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * UsageCounter createManyAndReturn
+   * UserCredits createManyAndReturn
    */
-  export type UsageCounterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelectCreateManyAndReturn<ExtArgs> | null
+    select?: UserCreditsSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * The data used to create many UsageCounters.
+     * The data used to create many UserCredits.
      */
-    data: UsageCounterCreateManyInput | UsageCounterCreateManyInput[]
+    data: UserCreditsCreateManyInput | UserCreditsCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * UsageCounter update
+   * UserCredits update
    */
-  export type UsageCounterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * The data needed to update a UsageCounter.
+     * The data needed to update a UserCredits.
      */
-    data: XOR<UsageCounterUpdateInput, UsageCounterUncheckedUpdateInput>
+    data: XOR<UserCreditsUpdateInput, UserCreditsUncheckedUpdateInput>
     /**
-     * Choose, which UsageCounter to update.
+     * Choose, which UserCredits to update.
      */
-    where: UsageCounterWhereUniqueInput
+    where: UserCreditsWhereUniqueInput
   }
 
   /**
-   * UsageCounter updateMany
+   * UserCredits updateMany
    */
-  export type UsageCounterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update UsageCounters.
+     * The data used to update UserCredits.
      */
-    data: XOR<UsageCounterUpdateManyMutationInput, UsageCounterUncheckedUpdateManyInput>
+    data: XOR<UserCreditsUpdateManyMutationInput, UserCreditsUncheckedUpdateManyInput>
     /**
-     * Filter which UsageCounters to update
+     * Filter which UserCredits to update
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
-     * Limit how many UsageCounters to update.
+     * Limit how many UserCredits to update.
      */
     limit?: number
   }
 
   /**
-   * UsageCounter updateManyAndReturn
+   * UserCredits updateManyAndReturn
    */
-  export type UsageCounterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: UserCreditsSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * The data used to update UsageCounters.
+     * The data used to update UserCredits.
      */
-    data: XOR<UsageCounterUpdateManyMutationInput, UsageCounterUncheckedUpdateManyInput>
+    data: XOR<UserCreditsUpdateManyMutationInput, UserCreditsUncheckedUpdateManyInput>
     /**
-     * Filter which UsageCounters to update
+     * Filter which UserCredits to update
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
-     * Limit how many UsageCounters to update.
+     * Limit how many UserCredits to update.
      */
     limit?: number
   }
 
   /**
-   * UsageCounter upsert
+   * UserCredits upsert
    */
-  export type UsageCounterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * The filter to search for the UsageCounter to update in case it exists.
+     * The filter to search for the UserCredits to update in case it exists.
      */
-    where: UsageCounterWhereUniqueInput
+    where: UserCreditsWhereUniqueInput
     /**
-     * In case the UsageCounter found by the `where` argument doesn't exist, create a new UsageCounter with this data.
+     * In case the UserCredits found by the `where` argument doesn't exist, create a new UserCredits with this data.
      */
-    create: XOR<UsageCounterCreateInput, UsageCounterUncheckedCreateInput>
+    create: XOR<UserCreditsCreateInput, UserCreditsUncheckedCreateInput>
     /**
-     * In case the UsageCounter was found with the provided `where` argument, update it with this data.
+     * In case the UserCredits was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<UsageCounterUpdateInput, UsageCounterUncheckedUpdateInput>
+    update: XOR<UserCreditsUpdateInput, UserCreditsUncheckedUpdateInput>
   }
 
   /**
-   * UsageCounter delete
+   * UserCredits delete
    */
-  export type UsageCounterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
     /**
-     * Filter which UsageCounter to delete.
+     * Filter which UserCredits to delete.
      */
-    where: UsageCounterWhereUniqueInput
+    where: UserCreditsWhereUniqueInput
   }
 
   /**
-   * UsageCounter deleteMany
+   * UserCredits deleteMany
    */
-  export type UsageCounterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UsageCounters to delete
+     * Filter which UserCredits to delete
      */
-    where?: UsageCounterWhereInput
+    where?: UserCreditsWhereInput
     /**
-     * Limit how many UsageCounters to delete.
+     * Limit how many UserCredits to delete.
      */
     limit?: number
   }
 
   /**
-   * UsageCounter without action
+   * UserCredits without action
    */
-  export type UsageCounterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreditsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UsageCounter
+     * Select specific fields to fetch from the UserCredits
      */
-    select?: UsageCounterSelect<ExtArgs> | null
+    select?: UserCreditsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UsageCounter
+     * Omit specific fields from the UserCredits
      */
-    omit?: UsageCounterOmit<ExtArgs> | null
+    omit?: UserCreditsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlatformConfig
+   */
+
+  export type AggregatePlatformConfig = {
+    _count: PlatformConfigCountAggregateOutputType | null
+    _avg: PlatformConfigAvgAggregateOutputType | null
+    _sum: PlatformConfigSumAggregateOutputType | null
+    _min: PlatformConfigMinAggregateOutputType | null
+    _max: PlatformConfigMaxAggregateOutputType | null
+  }
+
+  export type PlatformConfigAvgAggregateOutputType = {
+    betaCreditsPerMonth: number | null
+  }
+
+  export type PlatformConfigSumAggregateOutputType = {
+    betaCreditsPerMonth: number | null
+  }
+
+  export type PlatformConfigMinAggregateOutputType = {
+    id: string | null
+    billingEnabled: boolean | null
+    betaCreditsPerMonth: number | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformConfigMaxAggregateOutputType = {
+    id: string | null
+    billingEnabled: boolean | null
+    betaCreditsPerMonth: number | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformConfigCountAggregateOutputType = {
+    id: number
+    billingEnabled: number
+    betaCreditsPerMonth: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlatformConfigAvgAggregateInputType = {
+    betaCreditsPerMonth?: true
+  }
+
+  export type PlatformConfigSumAggregateInputType = {
+    betaCreditsPerMonth?: true
+  }
+
+  export type PlatformConfigMinAggregateInputType = {
+    id?: true
+    billingEnabled?: true
+    betaCreditsPerMonth?: true
+    updatedAt?: true
+  }
+
+  export type PlatformConfigMaxAggregateInputType = {
+    id?: true
+    billingEnabled?: true
+    betaCreditsPerMonth?: true
+    updatedAt?: true
+  }
+
+  export type PlatformConfigCountAggregateInputType = {
+    id?: true
+    billingEnabled?: true
+    betaCreditsPerMonth?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlatformConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformConfig to aggregate.
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformConfigs to fetch.
+     */
+    orderBy?: PlatformConfigOrderByWithRelationInput | PlatformConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformConfigs
+    **/
+    _count?: true | PlatformConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlatformConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlatformConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformConfigMaxAggregateInputType
+  }
+
+  export type GetPlatformConfigAggregateType<T extends PlatformConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformConfig[P]>
+      : GetScalarType<T[P], AggregatePlatformConfig[P]>
+  }
+
+
+
+
+  export type PlatformConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformConfigWhereInput
+    orderBy?: PlatformConfigOrderByWithAggregationInput | PlatformConfigOrderByWithAggregationInput[]
+    by: PlatformConfigScalarFieldEnum[] | PlatformConfigScalarFieldEnum
+    having?: PlatformConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformConfigCountAggregateInputType | true
+    _avg?: PlatformConfigAvgAggregateInputType
+    _sum?: PlatformConfigSumAggregateInputType
+    _min?: PlatformConfigMinAggregateInputType
+    _max?: PlatformConfigMaxAggregateInputType
+  }
+
+  export type PlatformConfigGroupByOutputType = {
+    id: string
+    billingEnabled: boolean
+    betaCreditsPerMonth: number
+    updatedAt: Date
+    _count: PlatformConfigCountAggregateOutputType | null
+    _avg: PlatformConfigAvgAggregateOutputType | null
+    _sum: PlatformConfigSumAggregateOutputType | null
+    _min: PlatformConfigMinAggregateOutputType | null
+    _max: PlatformConfigMaxAggregateOutputType | null
+  }
+
+  type GetPlatformConfigGroupByPayload<T extends PlatformConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformConfig"]>
+
+  export type PlatformConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformConfig"]>
+
+  export type PlatformConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformConfig"]>
+
+  export type PlatformConfigSelectScalar = {
+    id?: boolean
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlatformConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "billingEnabled" | "betaCreditsPerMonth" | "updatedAt", ExtArgs["result"]["platformConfig"]>
+
+  export type $PlatformConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformConfig"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      billingEnabled: boolean
+      betaCreditsPerMonth: number
+      updatedAt: Date
+    }, ExtArgs["result"]["platformConfig"]>
+    composites: {}
+  }
+
+  type PlatformConfigGetPayload<S extends boolean | null | undefined | PlatformConfigDefaultArgs> = $Result.GetResult<Prisma.$PlatformConfigPayload, S>
+
+  type PlatformConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformConfigCountAggregateInputType | true
+    }
+
+  export interface PlatformConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformConfig'], meta: { name: 'PlatformConfig' } }
+    /**
+     * Find zero or one PlatformConfig that matches the filter.
+     * @param {PlatformConfigFindUniqueArgs} args - Arguments to find a PlatformConfig
+     * @example
+     * // Get one PlatformConfig
+     * const platformConfig = await prisma.platformConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformConfigFindUniqueArgs>(args: SelectSubset<T, PlatformConfigFindUniqueArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformConfigFindUniqueOrThrowArgs} args - Arguments to find a PlatformConfig
+     * @example
+     * // Get one PlatformConfig
+     * const platformConfig = await prisma.platformConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigFindFirstArgs} args - Arguments to find a PlatformConfig
+     * @example
+     * // Get one PlatformConfig
+     * const platformConfig = await prisma.platformConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformConfigFindFirstArgs>(args?: SelectSubset<T, PlatformConfigFindFirstArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigFindFirstOrThrowArgs} args - Arguments to find a PlatformConfig
+     * @example
+     * // Get one PlatformConfig
+     * const platformConfig = await prisma.platformConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformConfigs
+     * const platformConfigs = await prisma.platformConfig.findMany()
+     * 
+     * // Get first 10 PlatformConfigs
+     * const platformConfigs = await prisma.platformConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const platformConfigWithIdOnly = await prisma.platformConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlatformConfigFindManyArgs>(args?: SelectSubset<T, PlatformConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformConfig.
+     * @param {PlatformConfigCreateArgs} args - Arguments to create a PlatformConfig.
+     * @example
+     * // Create one PlatformConfig
+     * const PlatformConfig = await prisma.platformConfig.create({
+     *   data: {
+     *     // ... data to create a PlatformConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformConfigCreateArgs>(args: SelectSubset<T, PlatformConfigCreateArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformConfigs.
+     * @param {PlatformConfigCreateManyArgs} args - Arguments to create many PlatformConfigs.
+     * @example
+     * // Create many PlatformConfigs
+     * const platformConfig = await prisma.platformConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformConfigCreateManyArgs>(args?: SelectSubset<T, PlatformConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformConfigs and returns the data saved in the database.
+     * @param {PlatformConfigCreateManyAndReturnArgs} args - Arguments to create many PlatformConfigs.
+     * @example
+     * // Create many PlatformConfigs
+     * const platformConfig = await prisma.platformConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformConfigs and only return the `id`
+     * const platformConfigWithIdOnly = await prisma.platformConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformConfig.
+     * @param {PlatformConfigDeleteArgs} args - Arguments to delete one PlatformConfig.
+     * @example
+     * // Delete one PlatformConfig
+     * const PlatformConfig = await prisma.platformConfig.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformConfigDeleteArgs>(args: SelectSubset<T, PlatformConfigDeleteArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformConfig.
+     * @param {PlatformConfigUpdateArgs} args - Arguments to update one PlatformConfig.
+     * @example
+     * // Update one PlatformConfig
+     * const platformConfig = await prisma.platformConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformConfigUpdateArgs>(args: SelectSubset<T, PlatformConfigUpdateArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformConfigs.
+     * @param {PlatformConfigDeleteManyArgs} args - Arguments to filter PlatformConfigs to delete.
+     * @example
+     * // Delete a few PlatformConfigs
+     * const { count } = await prisma.platformConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformConfigDeleteManyArgs>(args?: SelectSubset<T, PlatformConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformConfigs
+     * const platformConfig = await prisma.platformConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformConfigUpdateManyArgs>(args: SelectSubset<T, PlatformConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformConfigs and returns the data updated in the database.
+     * @param {PlatformConfigUpdateManyAndReturnArgs} args - Arguments to update many PlatformConfigs.
+     * @example
+     * // Update many PlatformConfigs
+     * const platformConfig = await prisma.platformConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformConfigs and only return the `id`
+     * const platformConfigWithIdOnly = await prisma.platformConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformConfig.
+     * @param {PlatformConfigUpsertArgs} args - Arguments to update or create a PlatformConfig.
+     * @example
+     * // Update or create a PlatformConfig
+     * const platformConfig = await prisma.platformConfig.upsert({
+     *   create: {
+     *     // ... data to create a PlatformConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformConfigUpsertArgs>(args: SelectSubset<T, PlatformConfigUpsertArgs<ExtArgs>>): Prisma__PlatformConfigClient<$Result.GetResult<Prisma.$PlatformConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigCountArgs} args - Arguments to filter PlatformConfigs to count.
+     * @example
+     * // Count the number of PlatformConfigs
+     * const count = await prisma.platformConfig.count({
+     *   where: {
+     *     // ... the filter for the PlatformConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformConfigCountArgs>(
+      args?: Subset<T, PlatformConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformConfigAggregateArgs>(args: Subset<T, PlatformConfigAggregateArgs>): Prisma.PrismaPromise<GetPlatformConfigAggregateType<T>>
+
+    /**
+     * Group by PlatformConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformConfigGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformConfig model
+   */
+  readonly fields: PlatformConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformConfig model
+   */
+  interface PlatformConfigFieldRefs {
+    readonly id: FieldRef<"PlatformConfig", 'String'>
+    readonly billingEnabled: FieldRef<"PlatformConfig", 'Boolean'>
+    readonly betaCreditsPerMonth: FieldRef<"PlatformConfig", 'Int'>
+    readonly updatedAt: FieldRef<"PlatformConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformConfig findUnique
+   */
+  export type PlatformConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformConfig to fetch.
+     */
+    where: PlatformConfigWhereUniqueInput
+  }
+
+  /**
+   * PlatformConfig findUniqueOrThrow
+   */
+  export type PlatformConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformConfig to fetch.
+     */
+    where: PlatformConfigWhereUniqueInput
+  }
+
+  /**
+   * PlatformConfig findFirst
+   */
+  export type PlatformConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformConfig to fetch.
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformConfigs to fetch.
+     */
+    orderBy?: PlatformConfigOrderByWithRelationInput | PlatformConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformConfigs.
+     */
+    cursor?: PlatformConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformConfigs.
+     */
+    distinct?: PlatformConfigScalarFieldEnum | PlatformConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformConfig findFirstOrThrow
+   */
+  export type PlatformConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformConfig to fetch.
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformConfigs to fetch.
+     */
+    orderBy?: PlatformConfigOrderByWithRelationInput | PlatformConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformConfigs.
+     */
+    cursor?: PlatformConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformConfigs.
+     */
+    distinct?: PlatformConfigScalarFieldEnum | PlatformConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformConfig findMany
+   */
+  export type PlatformConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformConfigs to fetch.
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformConfigs to fetch.
+     */
+    orderBy?: PlatformConfigOrderByWithRelationInput | PlatformConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformConfigs.
+     */
+    cursor?: PlatformConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformConfigs.
+     */
+    skip?: number
+    distinct?: PlatformConfigScalarFieldEnum | PlatformConfigScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformConfig create
+   */
+  export type PlatformConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformConfig.
+     */
+    data: XOR<PlatformConfigCreateInput, PlatformConfigUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformConfig createMany
+   */
+  export type PlatformConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformConfigs.
+     */
+    data: PlatformConfigCreateManyInput | PlatformConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformConfig createManyAndReturn
+   */
+  export type PlatformConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformConfigs.
+     */
+    data: PlatformConfigCreateManyInput | PlatformConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformConfig update
+   */
+  export type PlatformConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformConfig.
+     */
+    data: XOR<PlatformConfigUpdateInput, PlatformConfigUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformConfig to update.
+     */
+    where: PlatformConfigWhereUniqueInput
+  }
+
+  /**
+   * PlatformConfig updateMany
+   */
+  export type PlatformConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformConfigs.
+     */
+    data: XOR<PlatformConfigUpdateManyMutationInput, PlatformConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformConfigs to update
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * Limit how many PlatformConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformConfig updateManyAndReturn
+   */
+  export type PlatformConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformConfigs.
+     */
+    data: XOR<PlatformConfigUpdateManyMutationInput, PlatformConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformConfigs to update
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * Limit how many PlatformConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformConfig upsert
+   */
+  export type PlatformConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformConfig to update in case it exists.
+     */
+    where: PlatformConfigWhereUniqueInput
+    /**
+     * In case the PlatformConfig found by the `where` argument doesn't exist, create a new PlatformConfig with this data.
+     */
+    create: XOR<PlatformConfigCreateInput, PlatformConfigUncheckedCreateInput>
+    /**
+     * In case the PlatformConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformConfigUpdateInput, PlatformConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformConfig delete
+   */
+  export type PlatformConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+    /**
+     * Filter which PlatformConfig to delete.
+     */
+    where: PlatformConfigWhereUniqueInput
+  }
+
+  /**
+   * PlatformConfig deleteMany
+   */
+  export type PlatformConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformConfigs to delete
+     */
+    where?: PlatformConfigWhereInput
+    /**
+     * Limit how many PlatformConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformConfig without action
+   */
+  export type PlatformConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformConfig
+     */
+    select?: PlatformConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformConfig
+     */
+    omit?: PlatformConfigOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AdminActionLog
+   */
+
+  export type AggregateAdminActionLog = {
+    _count: AdminActionLogCountAggregateOutputType | null
+    _min: AdminActionLogMinAggregateOutputType | null
+    _max: AdminActionLogMaxAggregateOutputType | null
+  }
+
+  export type AdminActionLogMinAggregateOutputType = {
+    id: string | null
+    adminId: string | null
+    action: string | null
+    targetUserId: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminActionLogMaxAggregateOutputType = {
+    id: string | null
+    adminId: string | null
+    action: string | null
+    targetUserId: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminActionLogCountAggregateOutputType = {
+    id: number
+    adminId: number
+    action: number
+    targetUserId: number
+    details: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AdminActionLogMinAggregateInputType = {
+    id?: true
+    adminId?: true
+    action?: true
+    targetUserId?: true
+    createdAt?: true
+  }
+
+  export type AdminActionLogMaxAggregateInputType = {
+    id?: true
+    adminId?: true
+    action?: true
+    targetUserId?: true
+    createdAt?: true
+  }
+
+  export type AdminActionLogCountAggregateInputType = {
+    id?: true
+    adminId?: true
+    action?: true
+    targetUserId?: true
+    details?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AdminActionLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminActionLog to aggregate.
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminActionLogs to fetch.
+     */
+    orderBy?: AdminActionLogOrderByWithRelationInput | AdminActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdminActionLogs
+    **/
+    _count?: true | AdminActionLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminActionLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminActionLogMaxAggregateInputType
+  }
+
+  export type GetAdminActionLogAggregateType<T extends AdminActionLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdminActionLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdminActionLog[P]>
+      : GetScalarType<T[P], AggregateAdminActionLog[P]>
+  }
+
+
+
+
+  export type AdminActionLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminActionLogWhereInput
+    orderBy?: AdminActionLogOrderByWithAggregationInput | AdminActionLogOrderByWithAggregationInput[]
+    by: AdminActionLogScalarFieldEnum[] | AdminActionLogScalarFieldEnum
+    having?: AdminActionLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminActionLogCountAggregateInputType | true
+    _min?: AdminActionLogMinAggregateInputType
+    _max?: AdminActionLogMaxAggregateInputType
+  }
+
+  export type AdminActionLogGroupByOutputType = {
+    id: string
+    adminId: string
+    action: string
+    targetUserId: string
+    details: JsonValue | null
+    createdAt: Date
+    _count: AdminActionLogCountAggregateOutputType | null
+    _min: AdminActionLogMinAggregateOutputType | null
+    _max: AdminActionLogMaxAggregateOutputType | null
+  }
+
+  type GetAdminActionLogGroupByPayload<T extends AdminActionLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminActionLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminActionLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminActionLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminActionLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminActionLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adminId?: boolean
+    action?: boolean
+    targetUserId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["adminActionLog"]>
+
+  export type AdminActionLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adminId?: boolean
+    action?: boolean
+    targetUserId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["adminActionLog"]>
+
+  export type AdminActionLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    adminId?: boolean
+    action?: boolean
+    targetUserId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["adminActionLog"]>
+
+  export type AdminActionLogSelectScalar = {
+    id?: boolean
+    adminId?: boolean
+    action?: boolean
+    targetUserId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }
+
+  export type AdminActionLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "adminId" | "action" | "targetUserId" | "details" | "createdAt", ExtArgs["result"]["adminActionLog"]>
+
+  export type $AdminActionLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdminActionLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      adminId: string
+      action: string
+      targetUserId: string
+      details: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["adminActionLog"]>
+    composites: {}
+  }
+
+  type AdminActionLogGetPayload<S extends boolean | null | undefined | AdminActionLogDefaultArgs> = $Result.GetResult<Prisma.$AdminActionLogPayload, S>
+
+  type AdminActionLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminActionLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminActionLogCountAggregateInputType | true
+    }
+
+  export interface AdminActionLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdminActionLog'], meta: { name: 'AdminActionLog' } }
+    /**
+     * Find zero or one AdminActionLog that matches the filter.
+     * @param {AdminActionLogFindUniqueArgs} args - Arguments to find a AdminActionLog
+     * @example
+     * // Get one AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminActionLogFindUniqueArgs>(args: SelectSubset<T, AdminActionLogFindUniqueArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdminActionLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminActionLogFindUniqueOrThrowArgs} args - Arguments to find a AdminActionLog
+     * @example
+     * // Get one AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminActionLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminActionLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminActionLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogFindFirstArgs} args - Arguments to find a AdminActionLog
+     * @example
+     * // Get one AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminActionLogFindFirstArgs>(args?: SelectSubset<T, AdminActionLogFindFirstArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminActionLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogFindFirstOrThrowArgs} args - Arguments to find a AdminActionLog
+     * @example
+     * // Get one AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminActionLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminActionLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdminActionLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdminActionLogs
+     * const adminActionLogs = await prisma.adminActionLog.findMany()
+     * 
+     * // Get first 10 AdminActionLogs
+     * const adminActionLogs = await prisma.adminActionLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminActionLogWithIdOnly = await prisma.adminActionLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminActionLogFindManyArgs>(args?: SelectSubset<T, AdminActionLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdminActionLog.
+     * @param {AdminActionLogCreateArgs} args - Arguments to create a AdminActionLog.
+     * @example
+     * // Create one AdminActionLog
+     * const AdminActionLog = await prisma.adminActionLog.create({
+     *   data: {
+     *     // ... data to create a AdminActionLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminActionLogCreateArgs>(args: SelectSubset<T, AdminActionLogCreateArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdminActionLogs.
+     * @param {AdminActionLogCreateManyArgs} args - Arguments to create many AdminActionLogs.
+     * @example
+     * // Create many AdminActionLogs
+     * const adminActionLog = await prisma.adminActionLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminActionLogCreateManyArgs>(args?: SelectSubset<T, AdminActionLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdminActionLogs and returns the data saved in the database.
+     * @param {AdminActionLogCreateManyAndReturnArgs} args - Arguments to create many AdminActionLogs.
+     * @example
+     * // Create many AdminActionLogs
+     * const adminActionLog = await prisma.adminActionLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdminActionLogs and only return the `id`
+     * const adminActionLogWithIdOnly = await prisma.adminActionLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminActionLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminActionLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdminActionLog.
+     * @param {AdminActionLogDeleteArgs} args - Arguments to delete one AdminActionLog.
+     * @example
+     * // Delete one AdminActionLog
+     * const AdminActionLog = await prisma.adminActionLog.delete({
+     *   where: {
+     *     // ... filter to delete one AdminActionLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminActionLogDeleteArgs>(args: SelectSubset<T, AdminActionLogDeleteArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdminActionLog.
+     * @param {AdminActionLogUpdateArgs} args - Arguments to update one AdminActionLog.
+     * @example
+     * // Update one AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminActionLogUpdateArgs>(args: SelectSubset<T, AdminActionLogUpdateArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdminActionLogs.
+     * @param {AdminActionLogDeleteManyArgs} args - Arguments to filter AdminActionLogs to delete.
+     * @example
+     * // Delete a few AdminActionLogs
+     * const { count } = await prisma.adminActionLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminActionLogDeleteManyArgs>(args?: SelectSubset<T, AdminActionLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminActionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdminActionLogs
+     * const adminActionLog = await prisma.adminActionLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminActionLogUpdateManyArgs>(args: SelectSubset<T, AdminActionLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminActionLogs and returns the data updated in the database.
+     * @param {AdminActionLogUpdateManyAndReturnArgs} args - Arguments to update many AdminActionLogs.
+     * @example
+     * // Update many AdminActionLogs
+     * const adminActionLog = await prisma.adminActionLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdminActionLogs and only return the `id`
+     * const adminActionLogWithIdOnly = await prisma.adminActionLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminActionLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminActionLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdminActionLog.
+     * @param {AdminActionLogUpsertArgs} args - Arguments to update or create a AdminActionLog.
+     * @example
+     * // Update or create a AdminActionLog
+     * const adminActionLog = await prisma.adminActionLog.upsert({
+     *   create: {
+     *     // ... data to create a AdminActionLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdminActionLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminActionLogUpsertArgs>(args: SelectSubset<T, AdminActionLogUpsertArgs<ExtArgs>>): Prisma__AdminActionLogClient<$Result.GetResult<Prisma.$AdminActionLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdminActionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogCountArgs} args - Arguments to filter AdminActionLogs to count.
+     * @example
+     * // Count the number of AdminActionLogs
+     * const count = await prisma.adminActionLog.count({
+     *   where: {
+     *     // ... the filter for the AdminActionLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminActionLogCountArgs>(
+      args?: Subset<T, AdminActionLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminActionLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdminActionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminActionLogAggregateArgs>(args: Subset<T, AdminActionLogAggregateArgs>): Prisma.PrismaPromise<GetAdminActionLogAggregateType<T>>
+
+    /**
+     * Group by AdminActionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminActionLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminActionLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminActionLogGroupByArgs['orderBy'] }
+        : { orderBy?: AdminActionLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminActionLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminActionLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdminActionLog model
+   */
+  readonly fields: AdminActionLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdminActionLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminActionLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdminActionLog model
+   */
+  interface AdminActionLogFieldRefs {
+    readonly id: FieldRef<"AdminActionLog", 'String'>
+    readonly adminId: FieldRef<"AdminActionLog", 'String'>
+    readonly action: FieldRef<"AdminActionLog", 'String'>
+    readonly targetUserId: FieldRef<"AdminActionLog", 'String'>
+    readonly details: FieldRef<"AdminActionLog", 'Json'>
+    readonly createdAt: FieldRef<"AdminActionLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdminActionLog findUnique
+   */
+  export type AdminActionLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminActionLog to fetch.
+     */
+    where: AdminActionLogWhereUniqueInput
+  }
+
+  /**
+   * AdminActionLog findUniqueOrThrow
+   */
+  export type AdminActionLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminActionLog to fetch.
+     */
+    where: AdminActionLogWhereUniqueInput
+  }
+
+  /**
+   * AdminActionLog findFirst
+   */
+  export type AdminActionLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminActionLog to fetch.
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminActionLogs to fetch.
+     */
+    orderBy?: AdminActionLogOrderByWithRelationInput | AdminActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminActionLogs.
+     */
+    cursor?: AdminActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminActionLogs.
+     */
+    distinct?: AdminActionLogScalarFieldEnum | AdminActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminActionLog findFirstOrThrow
+   */
+  export type AdminActionLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminActionLog to fetch.
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminActionLogs to fetch.
+     */
+    orderBy?: AdminActionLogOrderByWithRelationInput | AdminActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminActionLogs.
+     */
+    cursor?: AdminActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminActionLogs.
+     */
+    distinct?: AdminActionLogScalarFieldEnum | AdminActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminActionLog findMany
+   */
+  export type AdminActionLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminActionLogs to fetch.
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminActionLogs to fetch.
+     */
+    orderBy?: AdminActionLogOrderByWithRelationInput | AdminActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdminActionLogs.
+     */
+    cursor?: AdminActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminActionLogs.
+     */
+    skip?: number
+    distinct?: AdminActionLogScalarFieldEnum | AdminActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminActionLog create
+   */
+  export type AdminActionLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AdminActionLog.
+     */
+    data: XOR<AdminActionLogCreateInput, AdminActionLogUncheckedCreateInput>
+  }
+
+  /**
+   * AdminActionLog createMany
+   */
+  export type AdminActionLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdminActionLogs.
+     */
+    data: AdminActionLogCreateManyInput | AdminActionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminActionLog createManyAndReturn
+   */
+  export type AdminActionLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdminActionLogs.
+     */
+    data: AdminActionLogCreateManyInput | AdminActionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminActionLog update
+   */
+  export type AdminActionLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AdminActionLog.
+     */
+    data: XOR<AdminActionLogUpdateInput, AdminActionLogUncheckedUpdateInput>
+    /**
+     * Choose, which AdminActionLog to update.
+     */
+    where: AdminActionLogWhereUniqueInput
+  }
+
+  /**
+   * AdminActionLog updateMany
+   */
+  export type AdminActionLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdminActionLogs.
+     */
+    data: XOR<AdminActionLogUpdateManyMutationInput, AdminActionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminActionLogs to update
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * Limit how many AdminActionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminActionLog updateManyAndReturn
+   */
+  export type AdminActionLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AdminActionLogs.
+     */
+    data: XOR<AdminActionLogUpdateManyMutationInput, AdminActionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminActionLogs to update
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * Limit how many AdminActionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminActionLog upsert
+   */
+  export type AdminActionLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AdminActionLog to update in case it exists.
+     */
+    where: AdminActionLogWhereUniqueInput
+    /**
+     * In case the AdminActionLog found by the `where` argument doesn't exist, create a new AdminActionLog with this data.
+     */
+    create: XOR<AdminActionLogCreateInput, AdminActionLogUncheckedCreateInput>
+    /**
+     * In case the AdminActionLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminActionLogUpdateInput, AdminActionLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AdminActionLog delete
+   */
+  export type AdminActionLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
+    /**
+     * Filter which AdminActionLog to delete.
+     */
+    where: AdminActionLogWhereUniqueInput
+  }
+
+  /**
+   * AdminActionLog deleteMany
+   */
+  export type AdminActionLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminActionLogs to delete
+     */
+    where?: AdminActionLogWhereInput
+    /**
+     * Limit how many AdminActionLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminActionLog without action
+   */
+  export type AdminActionLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminActionLog
+     */
+    select?: AdminActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminActionLog
+     */
+    omit?: AdminActionLogOmit<ExtArgs> | null
   }
 
 
@@ -16495,10 +18830,12 @@ export namespace Prisma {
 
   export type UploadedResumeAvgAggregateOutputType = {
     fileSizeBytes: number | null
+    readinessScore: number | null
   }
 
   export type UploadedResumeSumAggregateOutputType = {
     fileSizeBytes: number | null
+    readinessScore: number | null
   }
 
   export type UploadedResumeMinAggregateOutputType = {
@@ -16509,6 +18846,7 @@ export namespace Prisma {
     fileSizeBytes: number | null
     uploadedAt: Date | null
     parsedText: string | null
+    readinessScore: number | null
   }
 
   export type UploadedResumeMaxAggregateOutputType = {
@@ -16519,6 +18857,7 @@ export namespace Prisma {
     fileSizeBytes: number | null
     uploadedAt: Date | null
     parsedText: string | null
+    readinessScore: number | null
   }
 
   export type UploadedResumeCountAggregateOutputType = {
@@ -16529,16 +18868,20 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt: number
     parsedText: number
+    readinessScore: number
+    readinessScoreDetails: number
     _all: number
   }
 
 
   export type UploadedResumeAvgAggregateInputType = {
     fileSizeBytes?: true
+    readinessScore?: true
   }
 
   export type UploadedResumeSumAggregateInputType = {
     fileSizeBytes?: true
+    readinessScore?: true
   }
 
   export type UploadedResumeMinAggregateInputType = {
@@ -16549,6 +18892,7 @@ export namespace Prisma {
     fileSizeBytes?: true
     uploadedAt?: true
     parsedText?: true
+    readinessScore?: true
   }
 
   export type UploadedResumeMaxAggregateInputType = {
@@ -16559,6 +18903,7 @@ export namespace Prisma {
     fileSizeBytes?: true
     uploadedAt?: true
     parsedText?: true
+    readinessScore?: true
   }
 
   export type UploadedResumeCountAggregateInputType = {
@@ -16569,6 +18914,8 @@ export namespace Prisma {
     fileSizeBytes?: true
     uploadedAt?: true
     parsedText?: true
+    readinessScore?: true
+    readinessScoreDetails?: true
     _all?: true
   }
 
@@ -16666,6 +19013,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt: Date
     parsedText: string | null
+    readinessScore: number | null
+    readinessScoreDetails: JsonValue | null
     _count: UploadedResumeCountAggregateOutputType | null
     _avg: UploadedResumeAvgAggregateOutputType | null
     _sum: UploadedResumeSumAggregateOutputType | null
@@ -16695,6 +19044,8 @@ export namespace Prisma {
     fileSizeBytes?: boolean
     uploadedAt?: boolean
     parsedText?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
     defaultForOutreachSettings?: boolean | UploadedResume$defaultForOutreachSettingsArgs<ExtArgs>
@@ -16709,6 +19060,8 @@ export namespace Prisma {
     fileSizeBytes?: boolean
     uploadedAt?: boolean
     parsedText?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
   }, ExtArgs["result"]["uploadedResume"]>
 
   export type UploadedResumeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16719,6 +19072,8 @@ export namespace Prisma {
     fileSizeBytes?: boolean
     uploadedAt?: boolean
     parsedText?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
   }, ExtArgs["result"]["uploadedResume"]>
 
   export type UploadedResumeSelectScalar = {
@@ -16729,9 +19084,11 @@ export namespace Prisma {
     fileSizeBytes?: boolean
     uploadedAt?: boolean
     parsedText?: boolean
+    readinessScore?: boolean
+    readinessScoreDetails?: boolean
   }
 
-  export type UploadedResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "fileUrl" | "fileSizeBytes" | "uploadedAt" | "parsedText", ExtArgs["result"]["uploadedResume"]>
+  export type UploadedResumeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "fileUrl" | "fileSizeBytes" | "uploadedAt" | "parsedText" | "readinessScore" | "readinessScoreDetails", ExtArgs["result"]["uploadedResume"]>
   export type UploadedResumeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quickApplyEntries?: boolean | UploadedResume$quickApplyEntriesArgs<ExtArgs>
     savedJobs?: boolean | UploadedResume$savedJobsArgs<ExtArgs>
@@ -16756,6 +19113,8 @@ export namespace Prisma {
       fileSizeBytes: number
       uploadedAt: Date
       parsedText: string | null
+      readinessScore: number | null
+      readinessScoreDetails: Prisma.JsonValue | null
     }, ExtArgs["result"]["uploadedResume"]>
     composites: {}
   }
@@ -17189,6 +19548,8 @@ export namespace Prisma {
     readonly fileSizeBytes: FieldRef<"UploadedResume", 'Int'>
     readonly uploadedAt: FieldRef<"UploadedResume", 'DateTime'>
     readonly parsedText: FieldRef<"UploadedResume", 'String'>
+    readonly readinessScore: FieldRef<"UploadedResume", 'Int'>
+    readonly readinessScoreDetails: FieldRef<"UploadedResume", 'Json'>
   }
     
 
@@ -21439,6 +23800,8 @@ export namespace Prisma {
     templateId: 'templateId',
     data: 'data',
     latexSource: 'latexSource',
+    readinessScore: 'readinessScore',
+    readinessScoreDetails: 'readinessScoreDetails',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21546,6 +23909,7 @@ export namespace Prisma {
     proPriceInr: 'proPriceInr',
     freeResumeLimit: 'freeResumeLimit',
     freeAiGenerationLimit: 'freeAiGenerationLimit',
+    proAiCreditLimit: 'proAiCreditLimit',
     updatedAt: 'updatedAt'
   };
 
@@ -21563,16 +23927,42 @@ export namespace Prisma {
   export type TemplateMetaScalarFieldEnum = (typeof TemplateMetaScalarFieldEnum)[keyof typeof TemplateMetaScalarFieldEnum]
 
 
-  export const UsageCounterScalarFieldEnum: {
-    id: 'id',
+  export const UserCreditsScalarFieldEnum: {
     userId: 'userId',
-    month: 'month',
-    aiGenerationsUsed: 'aiGenerationsUsed',
+    monthlyAllowance: 'monthlyAllowance',
+    creditsUsedThisMonth: 'creditsUsedThisMonth',
+    bonusCredits: 'bonusCredits',
+    resetsAt: 'resetsAt',
+    aiAccessBlocked: 'aiAccessBlocked',
+    aiBlockedReason: 'aiBlockedReason',
+    signedUpDuringBeta: 'signedUpDuringBeta',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type UsageCounterScalarFieldEnum = (typeof UsageCounterScalarFieldEnum)[keyof typeof UsageCounterScalarFieldEnum]
+  export type UserCreditsScalarFieldEnum = (typeof UserCreditsScalarFieldEnum)[keyof typeof UserCreditsScalarFieldEnum]
+
+
+  export const PlatformConfigScalarFieldEnum: {
+    id: 'id',
+    billingEnabled: 'billingEnabled',
+    betaCreditsPerMonth: 'betaCreditsPerMonth',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlatformConfigScalarFieldEnum = (typeof PlatformConfigScalarFieldEnum)[keyof typeof PlatformConfigScalarFieldEnum]
+
+
+  export const AdminActionLogScalarFieldEnum: {
+    id: 'id',
+    adminId: 'adminId',
+    action: 'action',
+    targetUserId: 'targetUserId',
+    details: 'details',
+    createdAt: 'createdAt'
+  };
+
+  export type AdminActionLogScalarFieldEnum = (typeof AdminActionLogScalarFieldEnum)[keyof typeof AdminActionLogScalarFieldEnum]
 
 
   export const GmailAccountScalarFieldEnum: {
@@ -21620,7 +24010,9 @@ export namespace Prisma {
     fileUrl: 'fileUrl',
     fileSizeBytes: 'fileSizeBytes',
     uploadedAt: 'uploadedAt',
-    parsedText: 'parsedText'
+    parsedText: 'parsedText',
+    readinessScore: 'readinessScore',
+    readinessScoreDetails: 'readinessScoreDetails'
   };
 
   export type UploadedResumeScalarFieldEnum = (typeof UploadedResumeScalarFieldEnum)[keyof typeof UploadedResumeScalarFieldEnum]
@@ -21775,20 +24167,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -21799,6 +24177,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -21934,6 +24326,8 @@ export namespace Prisma {
     templateId?: StringFilter<"Resume"> | string
     data?: JsonFilter<"Resume">
     latexSource?: StringNullableFilter<"Resume"> | string | null
+    readinessScore?: IntNullableFilter<"Resume"> | number | null
+    readinessScoreDetails?: JsonNullableFilter<"Resume">
     createdAt?: DateTimeFilter<"Resume"> | Date | string
     updatedAt?: DateTimeFilter<"Resume"> | Date | string
     coverLetters?: CoverLetterListRelationFilter
@@ -21950,6 +24344,8 @@ export namespace Prisma {
     templateId?: SortOrder
     data?: SortOrder
     latexSource?: SortOrderInput | SortOrder
+    readinessScore?: SortOrderInput | SortOrder
+    readinessScoreDetails?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     coverLetters?: CoverLetterOrderByRelationAggregateInput
@@ -21969,6 +24365,8 @@ export namespace Prisma {
     templateId?: StringFilter<"Resume"> | string
     data?: JsonFilter<"Resume">
     latexSource?: StringNullableFilter<"Resume"> | string | null
+    readinessScore?: IntNullableFilter<"Resume"> | number | null
+    readinessScoreDetails?: JsonNullableFilter<"Resume">
     createdAt?: DateTimeFilter<"Resume"> | Date | string
     updatedAt?: DateTimeFilter<"Resume"> | Date | string
     coverLetters?: CoverLetterListRelationFilter
@@ -21985,11 +24383,15 @@ export namespace Prisma {
     templateId?: SortOrder
     data?: SortOrder
     latexSource?: SortOrderInput | SortOrder
+    readinessScore?: SortOrderInput | SortOrder
+    readinessScoreDetails?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ResumeCountOrderByAggregateInput
+    _avg?: ResumeAvgOrderByAggregateInput
     _max?: ResumeMaxOrderByAggregateInput
     _min?: ResumeMinOrderByAggregateInput
+    _sum?: ResumeSumOrderByAggregateInput
   }
 
   export type ResumeScalarWhereWithAggregatesInput = {
@@ -22002,6 +24404,8 @@ export namespace Prisma {
     templateId?: StringWithAggregatesFilter<"Resume"> | string
     data?: JsonWithAggregatesFilter<"Resume">
     latexSource?: StringNullableWithAggregatesFilter<"Resume"> | string | null
+    readinessScore?: IntNullableWithAggregatesFilter<"Resume"> | number | null
+    readinessScoreDetails?: JsonNullableWithAggregatesFilter<"Resume">
     createdAt?: DateTimeWithAggregatesFilter<"Resume"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Resume"> | Date | string
   }
@@ -22476,6 +24880,7 @@ export namespace Prisma {
     proPriceInr?: IntFilter<"PlanConfig"> | number
     freeResumeLimit?: IntFilter<"PlanConfig"> | number
     freeAiGenerationLimit?: IntFilter<"PlanConfig"> | number
+    proAiCreditLimit?: IntFilter<"PlanConfig"> | number
     updatedAt?: DateTimeFilter<"PlanConfig"> | Date | string
   }
 
@@ -22484,6 +24889,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -22495,6 +24901,7 @@ export namespace Prisma {
     proPriceInr?: IntFilter<"PlanConfig"> | number
     freeResumeLimit?: IntFilter<"PlanConfig"> | number
     freeAiGenerationLimit?: IntFilter<"PlanConfig"> | number
+    proAiCreditLimit?: IntFilter<"PlanConfig"> | number
     updatedAt?: DateTimeFilter<"PlanConfig"> | Date | string
   }, "id">
 
@@ -22503,6 +24910,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
     updatedAt?: SortOrder
     _count?: PlanConfigCountOrderByAggregateInput
     _avg?: PlanConfigAvgOrderByAggregateInput
@@ -22519,6 +24927,7 @@ export namespace Prisma {
     proPriceInr?: IntWithAggregatesFilter<"PlanConfig"> | number
     freeResumeLimit?: IntWithAggregatesFilter<"PlanConfig"> | number
     freeAiGenerationLimit?: IntWithAggregatesFilter<"PlanConfig"> | number
+    proAiCreditLimit?: IntWithAggregatesFilter<"PlanConfig"> | number
     updatedAt?: DateTimeWithAggregatesFilter<"PlanConfig"> | Date | string
   }
 
@@ -22574,64 +24983,189 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TemplateMeta"> | Date | string
   }
 
-  export type UsageCounterWhereInput = {
-    AND?: UsageCounterWhereInput | UsageCounterWhereInput[]
-    OR?: UsageCounterWhereInput[]
-    NOT?: UsageCounterWhereInput | UsageCounterWhereInput[]
-    id?: UuidFilter<"UsageCounter"> | string
-    userId?: StringFilter<"UsageCounter"> | string
-    month?: StringFilter<"UsageCounter"> | string
-    aiGenerationsUsed?: IntFilter<"UsageCounter"> | number
-    createdAt?: DateTimeFilter<"UsageCounter"> | Date | string
-    updatedAt?: DateTimeFilter<"UsageCounter"> | Date | string
+  export type UserCreditsWhereInput = {
+    AND?: UserCreditsWhereInput | UserCreditsWhereInput[]
+    OR?: UserCreditsWhereInput[]
+    NOT?: UserCreditsWhereInput | UserCreditsWhereInput[]
+    userId?: StringFilter<"UserCredits"> | string
+    monthlyAllowance?: IntFilter<"UserCredits"> | number
+    creditsUsedThisMonth?: IntFilter<"UserCredits"> | number
+    bonusCredits?: IntFilter<"UserCredits"> | number
+    resetsAt?: DateTimeFilter<"UserCredits"> | Date | string
+    aiAccessBlocked?: BoolFilter<"UserCredits"> | boolean
+    aiBlockedReason?: StringNullableFilter<"UserCredits"> | string | null
+    signedUpDuringBeta?: BoolFilter<"UserCredits"> | boolean
+    createdAt?: DateTimeFilter<"UserCredits"> | Date | string
+    updatedAt?: DateTimeFilter<"UserCredits"> | Date | string
   }
 
-  export type UsageCounterOrderByWithRelationInput = {
-    id?: SortOrder
+  export type UserCreditsOrderByWithRelationInput = {
     userId?: SortOrder
-    month?: SortOrder
-    aiGenerationsUsed?: SortOrder
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+    resetsAt?: SortOrder
+    aiAccessBlocked?: SortOrder
+    aiBlockedReason?: SortOrderInput | SortOrder
+    signedUpDuringBeta?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UsageCounterWhereUniqueInput = Prisma.AtLeast<{
+  export type UserCreditsWhereUniqueInput = Prisma.AtLeast<{
+    userId?: string
+    AND?: UserCreditsWhereInput | UserCreditsWhereInput[]
+    OR?: UserCreditsWhereInput[]
+    NOT?: UserCreditsWhereInput | UserCreditsWhereInput[]
+    monthlyAllowance?: IntFilter<"UserCredits"> | number
+    creditsUsedThisMonth?: IntFilter<"UserCredits"> | number
+    bonusCredits?: IntFilter<"UserCredits"> | number
+    resetsAt?: DateTimeFilter<"UserCredits"> | Date | string
+    aiAccessBlocked?: BoolFilter<"UserCredits"> | boolean
+    aiBlockedReason?: StringNullableFilter<"UserCredits"> | string | null
+    signedUpDuringBeta?: BoolFilter<"UserCredits"> | boolean
+    createdAt?: DateTimeFilter<"UserCredits"> | Date | string
+    updatedAt?: DateTimeFilter<"UserCredits"> | Date | string
+  }, "userId">
+
+  export type UserCreditsOrderByWithAggregationInput = {
+    userId?: SortOrder
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+    resetsAt?: SortOrder
+    aiAccessBlocked?: SortOrder
+    aiBlockedReason?: SortOrderInput | SortOrder
+    signedUpDuringBeta?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserCreditsCountOrderByAggregateInput
+    _avg?: UserCreditsAvgOrderByAggregateInput
+    _max?: UserCreditsMaxOrderByAggregateInput
+    _min?: UserCreditsMinOrderByAggregateInput
+    _sum?: UserCreditsSumOrderByAggregateInput
+  }
+
+  export type UserCreditsScalarWhereWithAggregatesInput = {
+    AND?: UserCreditsScalarWhereWithAggregatesInput | UserCreditsScalarWhereWithAggregatesInput[]
+    OR?: UserCreditsScalarWhereWithAggregatesInput[]
+    NOT?: UserCreditsScalarWhereWithAggregatesInput | UserCreditsScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"UserCredits"> | string
+    monthlyAllowance?: IntWithAggregatesFilter<"UserCredits"> | number
+    creditsUsedThisMonth?: IntWithAggregatesFilter<"UserCredits"> | number
+    bonusCredits?: IntWithAggregatesFilter<"UserCredits"> | number
+    resetsAt?: DateTimeWithAggregatesFilter<"UserCredits"> | Date | string
+    aiAccessBlocked?: BoolWithAggregatesFilter<"UserCredits"> | boolean
+    aiBlockedReason?: StringNullableWithAggregatesFilter<"UserCredits"> | string | null
+    signedUpDuringBeta?: BoolWithAggregatesFilter<"UserCredits"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"UserCredits"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserCredits"> | Date | string
+  }
+
+  export type PlatformConfigWhereInput = {
+    AND?: PlatformConfigWhereInput | PlatformConfigWhereInput[]
+    OR?: PlatformConfigWhereInput[]
+    NOT?: PlatformConfigWhereInput | PlatformConfigWhereInput[]
+    id?: StringFilter<"PlatformConfig"> | string
+    billingEnabled?: BoolFilter<"PlatformConfig"> | boolean
+    betaCreditsPerMonth?: IntFilter<"PlatformConfig"> | number
+    updatedAt?: DateTimeFilter<"PlatformConfig"> | Date | string
+  }
+
+  export type PlatformConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    billingEnabled?: SortOrder
+    betaCreditsPerMonth?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformConfigWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId_month?: UsageCounterUserIdMonthCompoundUniqueInput
-    AND?: UsageCounterWhereInput | UsageCounterWhereInput[]
-    OR?: UsageCounterWhereInput[]
-    NOT?: UsageCounterWhereInput | UsageCounterWhereInput[]
-    userId?: StringFilter<"UsageCounter"> | string
-    month?: StringFilter<"UsageCounter"> | string
-    aiGenerationsUsed?: IntFilter<"UsageCounter"> | number
-    createdAt?: DateTimeFilter<"UsageCounter"> | Date | string
-    updatedAt?: DateTimeFilter<"UsageCounter"> | Date | string
-  }, "id" | "userId_month">
+    AND?: PlatformConfigWhereInput | PlatformConfigWhereInput[]
+    OR?: PlatformConfigWhereInput[]
+    NOT?: PlatformConfigWhereInput | PlatformConfigWhereInput[]
+    billingEnabled?: BoolFilter<"PlatformConfig"> | boolean
+    betaCreditsPerMonth?: IntFilter<"PlatformConfig"> | number
+    updatedAt?: DateTimeFilter<"PlatformConfig"> | Date | string
+  }, "id">
 
-  export type UsageCounterOrderByWithAggregationInput = {
+  export type PlatformConfigOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    month?: SortOrder
-    aiGenerationsUsed?: SortOrder
-    createdAt?: SortOrder
+    billingEnabled?: SortOrder
+    betaCreditsPerMonth?: SortOrder
     updatedAt?: SortOrder
-    _count?: UsageCounterCountOrderByAggregateInput
-    _avg?: UsageCounterAvgOrderByAggregateInput
-    _max?: UsageCounterMaxOrderByAggregateInput
-    _min?: UsageCounterMinOrderByAggregateInput
-    _sum?: UsageCounterSumOrderByAggregateInput
+    _count?: PlatformConfigCountOrderByAggregateInput
+    _avg?: PlatformConfigAvgOrderByAggregateInput
+    _max?: PlatformConfigMaxOrderByAggregateInput
+    _min?: PlatformConfigMinOrderByAggregateInput
+    _sum?: PlatformConfigSumOrderByAggregateInput
   }
 
-  export type UsageCounterScalarWhereWithAggregatesInput = {
-    AND?: UsageCounterScalarWhereWithAggregatesInput | UsageCounterScalarWhereWithAggregatesInput[]
-    OR?: UsageCounterScalarWhereWithAggregatesInput[]
-    NOT?: UsageCounterScalarWhereWithAggregatesInput | UsageCounterScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"UsageCounter"> | string
-    userId?: StringWithAggregatesFilter<"UsageCounter"> | string
-    month?: StringWithAggregatesFilter<"UsageCounter"> | string
-    aiGenerationsUsed?: IntWithAggregatesFilter<"UsageCounter"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"UsageCounter"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"UsageCounter"> | Date | string
+  export type PlatformConfigScalarWhereWithAggregatesInput = {
+    AND?: PlatformConfigScalarWhereWithAggregatesInput | PlatformConfigScalarWhereWithAggregatesInput[]
+    OR?: PlatformConfigScalarWhereWithAggregatesInput[]
+    NOT?: PlatformConfigScalarWhereWithAggregatesInput | PlatformConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlatformConfig"> | string
+    billingEnabled?: BoolWithAggregatesFilter<"PlatformConfig"> | boolean
+    betaCreditsPerMonth?: IntWithAggregatesFilter<"PlatformConfig"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"PlatformConfig"> | Date | string
+  }
+
+  export type AdminActionLogWhereInput = {
+    AND?: AdminActionLogWhereInput | AdminActionLogWhereInput[]
+    OR?: AdminActionLogWhereInput[]
+    NOT?: AdminActionLogWhereInput | AdminActionLogWhereInput[]
+    id?: UuidFilter<"AdminActionLog"> | string
+    adminId?: StringFilter<"AdminActionLog"> | string
+    action?: StringFilter<"AdminActionLog"> | string
+    targetUserId?: StringFilter<"AdminActionLog"> | string
+    details?: JsonNullableFilter<"AdminActionLog">
+    createdAt?: DateTimeFilter<"AdminActionLog"> | Date | string
+  }
+
+  export type AdminActionLogOrderByWithRelationInput = {
+    id?: SortOrder
+    adminId?: SortOrder
+    action?: SortOrder
+    targetUserId?: SortOrder
+    details?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminActionLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AdminActionLogWhereInput | AdminActionLogWhereInput[]
+    OR?: AdminActionLogWhereInput[]
+    NOT?: AdminActionLogWhereInput | AdminActionLogWhereInput[]
+    adminId?: StringFilter<"AdminActionLog"> | string
+    action?: StringFilter<"AdminActionLog"> | string
+    targetUserId?: StringFilter<"AdminActionLog"> | string
+    details?: JsonNullableFilter<"AdminActionLog">
+    createdAt?: DateTimeFilter<"AdminActionLog"> | Date | string
+  }, "id">
+
+  export type AdminActionLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    adminId?: SortOrder
+    action?: SortOrder
+    targetUserId?: SortOrder
+    details?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AdminActionLogCountOrderByAggregateInput
+    _max?: AdminActionLogMaxOrderByAggregateInput
+    _min?: AdminActionLogMinOrderByAggregateInput
+  }
+
+  export type AdminActionLogScalarWhereWithAggregatesInput = {
+    AND?: AdminActionLogScalarWhereWithAggregatesInput | AdminActionLogScalarWhereWithAggregatesInput[]
+    OR?: AdminActionLogScalarWhereWithAggregatesInput[]
+    NOT?: AdminActionLogScalarWhereWithAggregatesInput | AdminActionLogScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"AdminActionLog"> | string
+    adminId?: StringWithAggregatesFilter<"AdminActionLog"> | string
+    action?: StringWithAggregatesFilter<"AdminActionLog"> | string
+    targetUserId?: StringWithAggregatesFilter<"AdminActionLog"> | string
+    details?: JsonNullableWithAggregatesFilter<"AdminActionLog">
+    createdAt?: DateTimeWithAggregatesFilter<"AdminActionLog"> | Date | string
   }
 
   export type GmailAccountWhereInput = {
@@ -22835,6 +25369,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
     parsedText?: StringNullableFilter<"UploadedResume"> | string | null
+    readinessScore?: IntNullableFilter<"UploadedResume"> | number | null
+    readinessScoreDetails?: JsonNullableFilter<"UploadedResume">
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
     defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
@@ -22848,6 +25384,8 @@ export namespace Prisma {
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
     parsedText?: SortOrderInput | SortOrder
+    readinessScore?: SortOrderInput | SortOrder
+    readinessScoreDetails?: SortOrderInput | SortOrder
     quickApplyEntries?: QuickApplyEntryOrderByRelationAggregateInput
     savedJobs?: SavedJobOrderByRelationAggregateInput
     defaultForOutreachSettings?: UserOutreachSettingsOrderByRelationAggregateInput
@@ -22864,6 +25402,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeFilter<"UploadedResume"> | Date | string
     parsedText?: StringNullableFilter<"UploadedResume"> | string | null
+    readinessScore?: IntNullableFilter<"UploadedResume"> | number | null
+    readinessScoreDetails?: JsonNullableFilter<"UploadedResume">
     quickApplyEntries?: QuickApplyEntryListRelationFilter
     savedJobs?: SavedJobListRelationFilter
     defaultForOutreachSettings?: UserOutreachSettingsListRelationFilter
@@ -22877,6 +25417,8 @@ export namespace Prisma {
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
     parsedText?: SortOrderInput | SortOrder
+    readinessScore?: SortOrderInput | SortOrder
+    readinessScoreDetails?: SortOrderInput | SortOrder
     _count?: UploadedResumeCountOrderByAggregateInput
     _avg?: UploadedResumeAvgOrderByAggregateInput
     _max?: UploadedResumeMaxOrderByAggregateInput
@@ -22895,6 +25437,8 @@ export namespace Prisma {
     fileSizeBytes?: IntWithAggregatesFilter<"UploadedResume"> | number
     uploadedAt?: DateTimeWithAggregatesFilter<"UploadedResume"> | Date | string
     parsedText?: StringNullableWithAggregatesFilter<"UploadedResume"> | string | null
+    readinessScore?: IntNullableWithAggregatesFilter<"UploadedResume"> | number | null
+    readinessScoreDetails?: JsonNullableWithAggregatesFilter<"UploadedResume">
   }
 
   export type SavedJobWhereInput = {
@@ -23249,6 +25793,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
@@ -23265,6 +25811,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
@@ -23281,6 +25829,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
@@ -23297,6 +25847,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
@@ -23313,6 +25865,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23324,6 +25878,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23335,6 +25891,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23860,6 +26418,7 @@ export namespace Prisma {
     proPriceInr?: number
     freeResumeLimit?: number
     freeAiGenerationLimit?: number
+    proAiCreditLimit?: number
     updatedAt?: Date | string
   }
 
@@ -23868,6 +26427,7 @@ export namespace Prisma {
     proPriceInr?: number
     freeResumeLimit?: number
     freeAiGenerationLimit?: number
+    proAiCreditLimit?: number
     updatedAt?: Date | string
   }
 
@@ -23876,6 +26436,7 @@ export namespace Prisma {
     proPriceInr?: IntFieldUpdateOperationsInput | number
     freeResumeLimit?: IntFieldUpdateOperationsInput | number
     freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    proAiCreditLimit?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23884,6 +26445,7 @@ export namespace Prisma {
     proPriceInr?: IntFieldUpdateOperationsInput | number
     freeResumeLimit?: IntFieldUpdateOperationsInput | number
     freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    proAiCreditLimit?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23892,6 +26454,7 @@ export namespace Prisma {
     proPriceInr?: number
     freeResumeLimit?: number
     freeAiGenerationLimit?: number
+    proAiCreditLimit?: number
     updatedAt?: Date | string
   }
 
@@ -23900,6 +26463,7 @@ export namespace Prisma {
     proPriceInr?: IntFieldUpdateOperationsInput | number
     freeResumeLimit?: IntFieldUpdateOperationsInput | number
     freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    proAiCreditLimit?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23908,6 +26472,7 @@ export namespace Prisma {
     proPriceInr?: IntFieldUpdateOperationsInput | number
     freeResumeLimit?: IntFieldUpdateOperationsInput | number
     freeAiGenerationLimit?: IntFieldUpdateOperationsInput | number
+    proAiCreditLimit?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23967,67 +26532,207 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UsageCounterCreateInput = {
-    id?: string
+  export type UserCreditsCreateInput = {
     userId: string
-    month: string
-    aiGenerationsUsed?: number
+    monthlyAllowance?: number
+    creditsUsedThisMonth?: number
+    bonusCredits?: number
+    resetsAt: Date | string
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: string | null
+    signedUpDuringBeta?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UsageCounterUncheckedCreateInput = {
-    id?: string
+  export type UserCreditsUncheckedCreateInput = {
     userId: string
-    month: string
-    aiGenerationsUsed?: number
+    monthlyAllowance?: number
+    creditsUsedThisMonth?: number
+    bonusCredits?: number
+    resetsAt: Date | string
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: string | null
+    signedUpDuringBeta?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UsageCounterUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type UserCreditsUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    month?: StringFieldUpdateOperationsInput | string
-    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    monthlyAllowance?: IntFieldUpdateOperationsInput | number
+    creditsUsedThisMonth?: IntFieldUpdateOperationsInput | number
+    bonusCredits?: IntFieldUpdateOperationsInput | number
+    resetsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiAccessBlocked?: BoolFieldUpdateOperationsInput | boolean
+    aiBlockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    signedUpDuringBeta?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UsageCounterUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type UserCreditsUncheckedUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    month?: StringFieldUpdateOperationsInput | string
-    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    monthlyAllowance?: IntFieldUpdateOperationsInput | number
+    creditsUsedThisMonth?: IntFieldUpdateOperationsInput | number
+    bonusCredits?: IntFieldUpdateOperationsInput | number
+    resetsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiAccessBlocked?: BoolFieldUpdateOperationsInput | boolean
+    aiBlockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    signedUpDuringBeta?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UsageCounterCreateManyInput = {
-    id?: string
+  export type UserCreditsCreateManyInput = {
     userId: string
-    month: string
-    aiGenerationsUsed?: number
+    monthlyAllowance?: number
+    creditsUsedThisMonth?: number
+    bonusCredits?: number
+    resetsAt: Date | string
+    aiAccessBlocked?: boolean
+    aiBlockedReason?: string | null
+    signedUpDuringBeta?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type UsageCounterUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type UserCreditsUpdateManyMutationInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    month?: StringFieldUpdateOperationsInput | string
-    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    monthlyAllowance?: IntFieldUpdateOperationsInput | number
+    creditsUsedThisMonth?: IntFieldUpdateOperationsInput | number
+    bonusCredits?: IntFieldUpdateOperationsInput | number
+    resetsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiAccessBlocked?: BoolFieldUpdateOperationsInput | boolean
+    aiBlockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    signedUpDuringBeta?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UsageCounterUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type UserCreditsUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    month?: StringFieldUpdateOperationsInput | string
-    aiGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    monthlyAllowance?: IntFieldUpdateOperationsInput | number
+    creditsUsedThisMonth?: IntFieldUpdateOperationsInput | number
+    bonusCredits?: IntFieldUpdateOperationsInput | number
+    resetsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiAccessBlocked?: BoolFieldUpdateOperationsInput | boolean
+    aiBlockedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    signedUpDuringBeta?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformConfigCreateInput = {
+    id?: string
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlatformConfigUncheckedCreateInput = {
+    id?: string
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlatformConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    betaCreditsPerMonth?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    betaCreditsPerMonth?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformConfigCreateManyInput = {
+    id?: string
+    billingEnabled?: boolean
+    betaCreditsPerMonth?: number
+    updatedAt?: Date | string
+  }
+
+  export type PlatformConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    betaCreditsPerMonth?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    billingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    betaCreditsPerMonth?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminActionLogCreateInput = {
+    id?: string
+    adminId: string
+    action: string
+    targetUserId: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminActionLogUncheckedCreateInput = {
+    id?: string
+    adminId: string
+    action: string
+    targetUserId: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminActionLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminActionLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminActionLogCreateManyInput = {
+    id?: string
+    adminId: string
+    action: string
+    targetUserId: string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminActionLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminActionLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    adminId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
+    details?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GmailAccountCreateInput = {
@@ -24260,6 +26965,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
@@ -24273,6 +26980,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
@@ -24286,6 +26995,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
@@ -24299,6 +27010,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
@@ -24312,6 +27025,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type UploadedResumeUpdateManyMutationInput = {
@@ -24322,6 +27037,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type UploadedResumeUncheckedUpdateManyInput = {
@@ -24332,6 +27049,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type SavedJobCreateInput = {
@@ -24801,6 +27520,40 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -24874,8 +27627,14 @@ export namespace Prisma {
     templateId?: SortOrder
     data?: SortOrder
     latexSource?: SortOrder
+    readinessScore?: SortOrder
+    readinessScoreDetails?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ResumeAvgOrderByAggregateInput = {
+    readinessScore?: SortOrder
   }
 
   export type ResumeMaxOrderByAggregateInput = {
@@ -24884,6 +27643,7 @@ export namespace Prisma {
     title?: SortOrder
     templateId?: SortOrder
     latexSource?: SortOrder
+    readinessScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24894,8 +27654,13 @@ export namespace Prisma {
     title?: SortOrder
     templateId?: SortOrder
     latexSource?: SortOrder
+    readinessScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ResumeSumOrderByAggregateInput = {
+    readinessScore?: SortOrder
   }
 
   export type UuidWithAggregatesFilter<$PrismaModel = never> = {
@@ -24975,6 +27740,48 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -25029,29 +27836,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type ResumeAnalyticsCountOrderByAggregateInput = {
     id?: SortOrder
@@ -25074,32 +27858,6 @@ export namespace Prisma {
     eventType?: SortOrder
     createdAt?: SortOrder
   }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
@@ -25110,17 +27868,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -25221,22 +27968,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -25400,6 +28131,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -25407,6 +28139,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
   }
 
   export type PlanConfigMaxOrderByAggregateInput = {
@@ -25414,6 +28147,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -25422,6 +28156,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -25429,6 +28164,7 @@ export namespace Prisma {
     proPriceInr?: SortOrder
     freeResumeLimit?: SortOrder
     freeAiGenerationLimit?: SortOrder
+    proAiCreditLimit?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -25471,44 +28207,109 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UsageCounterUserIdMonthCompoundUniqueInput = {
-    userId: string
-    month: string
-  }
-
-  export type UsageCounterCountOrderByAggregateInput = {
-    id?: SortOrder
+  export type UserCreditsCountOrderByAggregateInput = {
     userId?: SortOrder
-    month?: SortOrder
-    aiGenerationsUsed?: SortOrder
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+    resetsAt?: SortOrder
+    aiAccessBlocked?: SortOrder
+    aiBlockedReason?: SortOrder
+    signedUpDuringBeta?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UsageCounterAvgOrderByAggregateInput = {
-    aiGenerationsUsed?: SortOrder
+  export type UserCreditsAvgOrderByAggregateInput = {
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
   }
 
-  export type UsageCounterMaxOrderByAggregateInput = {
-    id?: SortOrder
+  export type UserCreditsMaxOrderByAggregateInput = {
     userId?: SortOrder
-    month?: SortOrder
-    aiGenerationsUsed?: SortOrder
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+    resetsAt?: SortOrder
+    aiAccessBlocked?: SortOrder
+    aiBlockedReason?: SortOrder
+    signedUpDuringBeta?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UsageCounterMinOrderByAggregateInput = {
-    id?: SortOrder
+  export type UserCreditsMinOrderByAggregateInput = {
     userId?: SortOrder
-    month?: SortOrder
-    aiGenerationsUsed?: SortOrder
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+    resetsAt?: SortOrder
+    aiAccessBlocked?: SortOrder
+    aiBlockedReason?: SortOrder
+    signedUpDuringBeta?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type UsageCounterSumOrderByAggregateInput = {
-    aiGenerationsUsed?: SortOrder
+  export type UserCreditsSumOrderByAggregateInput = {
+    monthlyAllowance?: SortOrder
+    creditsUsedThisMonth?: SortOrder
+    bonusCredits?: SortOrder
+  }
+
+  export type PlatformConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    billingEnabled?: SortOrder
+    betaCreditsPerMonth?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformConfigAvgOrderByAggregateInput = {
+    betaCreditsPerMonth?: SortOrder
+  }
+
+  export type PlatformConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    billingEnabled?: SortOrder
+    betaCreditsPerMonth?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    billingEnabled?: SortOrder
+    betaCreditsPerMonth?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformConfigSumOrderByAggregateInput = {
+    betaCreditsPerMonth?: SortOrder
+  }
+
+  export type AdminActionLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    adminId?: SortOrder
+    action?: SortOrder
+    targetUserId?: SortOrder
+    details?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminActionLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    adminId?: SortOrder
+    action?: SortOrder
+    targetUserId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminActionLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    adminId?: SortOrder
+    action?: SortOrder
+    targetUserId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type GmailAccountCountOrderByAggregateInput = {
@@ -25676,10 +28477,13 @@ export namespace Prisma {
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
     parsedText?: SortOrder
+    readinessScore?: SortOrder
+    readinessScoreDetails?: SortOrder
   }
 
   export type UploadedResumeAvgOrderByAggregateInput = {
     fileSizeBytes?: SortOrder
+    readinessScore?: SortOrder
   }
 
   export type UploadedResumeMaxOrderByAggregateInput = {
@@ -25690,6 +28494,7 @@ export namespace Prisma {
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
     parsedText?: SortOrder
+    readinessScore?: SortOrder
   }
 
   export type UploadedResumeMinOrderByAggregateInput = {
@@ -25700,10 +28505,12 @@ export namespace Prisma {
     fileSizeBytes?: SortOrder
     uploadedAt?: SortOrder
     parsedText?: SortOrder
+    readinessScore?: SortOrder
   }
 
   export type UploadedResumeSumOrderByAggregateInput = {
     fileSizeBytes?: SortOrder
+    readinessScore?: SortOrder
   }
 
   export type EnumJobSourceFilter<$PrismaModel = never> = {
@@ -26057,6 +28864,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -26235,14 +29050,6 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type JobApplicationUpdatetagsInput = {
@@ -26573,6 +29380,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -26666,7 +29484,7 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -26674,21 +29492,23 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -26712,6 +29532,20 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -26748,33 +29582,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -27376,6 +30183,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsCreateNestedManyWithoutResumeInput
@@ -27391,6 +30200,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     analytics?: ResumeAnalyticsUncheckedCreateNestedManyWithoutResumeInput
@@ -27422,6 +30233,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUpdateManyWithoutResumeNestedInput
@@ -27437,6 +30250,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analytics?: ResumeAnalyticsUncheckedUpdateManyWithoutResumeNestedInput
@@ -27452,6 +30267,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
@@ -27467,6 +30284,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
@@ -27498,6 +30317,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
@@ -27513,6 +30334,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
@@ -27528,6 +30351,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
@@ -27543,6 +30368,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
@@ -27564,6 +30391,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -27576,6 +30405,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -27603,6 +30434,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
@@ -27618,6 +30451,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
@@ -27645,6 +30480,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -27657,6 +30494,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -27878,6 +30717,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
@@ -27893,6 +30734,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
@@ -27914,6 +30757,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -27926,6 +30771,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedCreateNestedManyWithoutDefaultUploadedResumeInput
   }
@@ -27953,6 +30800,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
@@ -27968,6 +30817,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
@@ -27995,6 +30846,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -28007,6 +30860,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     defaultForOutreachSettings?: UserOutreachSettingsUncheckedUpdateManyWithoutDefaultUploadedResumeNestedInput
   }
@@ -28018,6 +30873,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterCreateNestedManyWithoutResumeInput
@@ -28033,6 +30890,8 @@ export namespace Prisma {
     templateId: string
     data: JsonNullValueInput | InputJsonValue
     latexSource?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     coverLetters?: CoverLetterUncheckedCreateNestedManyWithoutResumeInput
@@ -28054,6 +30913,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobCreateNestedManyWithoutUploadedResumeInput
   }
@@ -28066,6 +30927,8 @@ export namespace Prisma {
     fileSizeBytes: number
     uploadedAt?: Date | string
     parsedText?: string | null
+    readinessScore?: number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedCreateNestedManyWithoutUploadedResumeInput
     savedJobs?: SavedJobUncheckedCreateNestedManyWithoutUploadedResumeInput
   }
@@ -28093,6 +30956,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUpdateManyWithoutResumeNestedInput
@@ -28108,6 +30973,8 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     data?: JsonNullValueInput | InputJsonValue
     latexSource?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverLetters?: CoverLetterUncheckedUpdateManyWithoutResumeNestedInput
@@ -28135,6 +31002,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUpdateManyWithoutUploadedResumeNestedInput
   }
@@ -28147,6 +31016,8 @@ export namespace Prisma {
     fileSizeBytes?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parsedText?: NullableStringFieldUpdateOperationsInput | string | null
+    readinessScore?: NullableIntFieldUpdateOperationsInput | number | null
+    readinessScoreDetails?: NullableJsonNullValueInput | InputJsonValue
     quickApplyEntries?: QuickApplyEntryUncheckedUpdateManyWithoutUploadedResumeNestedInput
     savedJobs?: SavedJobUncheckedUpdateManyWithoutUploadedResumeNestedInput
   }

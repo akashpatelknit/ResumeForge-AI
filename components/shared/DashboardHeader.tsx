@@ -6,6 +6,7 @@ import { Bell, Menu } from "lucide-react";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import ProfileMenu from "@/components/shared/ProfileMenu";
+import CreditsIndicator from "@/components/shared/CreditsIndicator";
 import type { AppResume } from "@/types/resume";
 
 interface HeaderSummary {
@@ -148,6 +149,12 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
               ⌘K
             </kbd>
           </div> */}
+
+          {/* AI credit balance — hidden on the smallest screens, same as
+              the search bar above, to keep the header from crowding. */}
+          <div className="hidden sm:block">
+            <CreditsIndicator />
+          </div>
 
           {/* Notifications */}
           <button className="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors group">

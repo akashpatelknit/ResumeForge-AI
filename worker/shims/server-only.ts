@@ -5,8 +5,8 @@
 // the "react-server" export condition, which Next sets internally during
 // its build). This standalone worker process isn't bundled by Next at all,
 // so lib/ modules it imports that start with `import "server-only"`
-// (getValidAccessToken.ts, sendMail.ts, aiGate.ts, etc., pulled in
-// transitively via processOutreachSend.ts) would crash on startup.
+// (getValidAccessToken.ts, sendMail.ts, lib/credits/userCredits.ts, etc.,
+// pulled in transitively via processOutreachSend.ts) would crash on startup.
 //
 // Setting Node's global --conditions=react-server flag "fixes" that but
 // breaks far more than it fixes: React, Next, and Clerk all branch on that

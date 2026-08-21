@@ -22,6 +22,7 @@ import {
   Package,
   ArrowRight,
   Send,
+  Gauge,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -70,7 +71,8 @@ const navigation: NavItem[] = [
     children: [
       { name: "AI Outreach", href: "/dashboard/ai/outreach", icon: Bot },
       { name: "LinkedIn Audit", href: "/dashboard/ai/audit", icon: Linkedin },
-      { name: "ATS Score", href: "/dashboard/jobs/analyzer", icon: Target },
+      { name: "Job Match Score", href: "/dashboard/jobs/analyzer", icon: Target },
+      { name: "ATS Checker", href: "/dashboard/ats-checker", icon: Gauge },
     ],
   },
   // {
@@ -127,6 +129,15 @@ export default function Sidebar({ isMobileMenuOpen, onCloseMobileMenu }: Sidebar
   }, [pathname]);
 
   const handleUpgrade = async () => {
+    // Billing is off during the free beta launch (PlatformConfig.billingEnabled)
+    // — POST /api/subscription/create rejects this server-side regardless,
+    // but skip the doomed round trip and just say so directly, same as the
+    // pricing page and Settings → Billing (components/marketing/Pricing.tsx,
+    // components/settings/BillingCard.tsx).
+    if (subscription && !subscription.billingEnabled) {
+      toast.info("We're in early access — every feature is free right now, no billing needed yet.");
+      return;
+    }
     setIsUpgrading(true);
     try {
       const res = await fetch("/api/subscription/create", { method: "POST" });
@@ -368,8 +379,7 @@ export default function Sidebar({ isMobileMenuOpen, onCloseMobileMenu }: Sidebar
                     Unlock unlimited resumes & AI tools
                   </p>
                   <p className="text-xs mb-3 opacity-75">
-                    {subscription.aiGenerations.used}/{subscription.aiGenerations.limit} AI generations used this
-                    month
+                    {subscription.aiCredits.used}/{subscription.aiCredits.limit} AI credits used this month
                   </p>
                   <Button
                     onClick={handleUpgrade}

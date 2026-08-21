@@ -8,6 +8,7 @@ import ResumeForm from "@/components/builder/ResumeForm";
 import PDFPreview from "@/components/builder/preview/PDFPreview";
 import BuilderToolbar from "@/components/builder/BuilderToolbar";
 import ATSScoreButton from "@/components/builder/ATSScoreButton";
+import CreditsIndicator from "@/components/shared/CreditsIndicator";
 import LayoutPanel from "@/components/builder/layout/LayoutPanel";
 import TemplateSwitcherPanel from "@/components/builder/templates/TemplateSwitcherPanel";
 import ZoomControl from "@/components/builder/preview/ZoomControl";
@@ -446,6 +447,7 @@ export default function BuilderPage({
         }
         endSlot={
           <>
+            <CreditsIndicator />
             <ZoomControl zoom={zoom} onChange={setZoom} />
             <ATSScoreButton resumeId={currentResume?.id ?? null} />
           </>

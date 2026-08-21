@@ -19,7 +19,7 @@ import EmptyResumeState from "@/components/dashboard/EmptyResumeState";
 import ResumeListView from "@/components/dashboard/ResumeList";
 import BulkActionsBar from "@/components/dashboard/BulkActionsBar";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
-import type { AppResume } from "@/types/resume";
+import type { AppResume, ReadinessScoreDetails } from "@/types/resume";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
@@ -163,6 +163,17 @@ export default function ResumesPage() {
       ),
     );
   };
+
+  // Same "update one resume's readiness score in place" pattern as
+  // app/(app)/dashboard/page.tsx's handler — avoids a full refetch just to
+  // reflect the N/A -> checked-value transition after a per-row check.
+  const handleReadinessScoreChecked = useCallback((resumeId: string, result: ReadinessScoreDetails) => {
+    setResumes((prev) =>
+      prev.map((r) =>
+        r.id === resumeId ? { ...r, readinessScore: result.score, readinessScoreDetails: result } : r,
+      ),
+    );
+  }, []);
 
   const toggleSelect = (id: string) => {
     setSelectedResumes((prev) =>
@@ -342,6 +353,7 @@ export default function ResumesPage() {
               onToggleSelect={toggleSelect}
               onToggleFavorite={toggleFavorite}
               onRefresh={loadResumes}
+              onReadinessScoreChecked={handleReadinessScoreChecked}
             />
           )}
 

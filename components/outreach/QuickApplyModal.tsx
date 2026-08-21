@@ -22,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ResumeAttachPicker, type ResumeAttachValue } from "@/components/outreach/ResumeAttachPicker";
+import { resolveAiRejection } from "@/lib/subscription/upgradeToast";
 
 const JOB_CONTEXT_MAX = 2000;
 const EXTRACT_DEBOUNCE_MS = 800;
@@ -189,7 +190,7 @@ export function QuickApplyModal({
       });
       const data = await res.json();
       if (!res.ok) {
-        setGenerateError(data.error ?? "Failed to generate this email.");
+        setGenerateError(resolveAiRejection(data, "Failed to generate this email."));
         return;
       }
       setEntryId(data.entryId);

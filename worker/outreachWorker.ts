@@ -16,8 +16,9 @@
 // to worker/shims/server-only.ts (a no-op) — surgical, and it only affects
 // this worker's own module graph. Must run via `tsx --tsconfig
 // worker/tsconfig.json`, not plain `tsx`, or that alias won't apply and the
-// first server-only-guarded import (getValidAccessToken.ts, aiGate.ts, etc.,
-// pulled in transitively via processOutreachSend.ts) throws on startup.
+// first server-only-guarded import (getValidAccessToken.ts,
+// lib/credits/userCredits.ts, etc., pulled in transitively via
+// processOutreachSend.ts) throws on startup.
 import "dotenv/config";
 import { Worker, type Job } from "bullmq";
 import { getQueueConnection } from "@/lib/queue/connection";

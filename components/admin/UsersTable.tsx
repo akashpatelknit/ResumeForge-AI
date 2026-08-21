@@ -2,11 +2,47 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import { toast } from "sonner";
+import { MoreVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { GrantCreditsDialog } from "@/components/admin/GrantCreditsDialog";
 import type { AdminUserRow } from "@/lib/admin/clerkUsers";
+
+function CreditsCell({ user }: { user: AdminUserRow }) {
+  if (!user.aiCredits) {
+    return <span className="text-slate-500">Never used AI</span>;
+  }
+  return (
+    <div className="text-slate-300">
+      <span className="font-medium text-slate-200">{user.aiCredits.available}</span>
+      <span className="text-slate-500"> / {user.aiCredits.monthlyAllowance} left</span>
+      {user.aiCredits.bonusCredits > 0 && (
+        <span className="ml-1.5 text-xs text-purple-400">(+{user.aiCredits.bonusCredits} bonus)</span>
+      )}
+    </div>
+  );
+}
+
+function AiAccessBadge({ user }: { user: AdminUserRow }) {
+  return user.aiAccessBlocked ? (
+    <Badge variant="destructive" title={user.aiBlockedReason ?? undefined}>
+      AI Blocked
+    </Badge>
+  ) : (
+    <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+      AI Active
+    </Badge>
+  );
+}
 
 export function UsersTable({
   initialUsers,
@@ -23,6 +59,7 @@ export function UsersTable({
   const [page, setPage] = useState(1);
   const [isPending, startTransition] = useTransition();
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
+  const [grantCreditsUser, setGrantCreditsUser] = useState<AdminUserRow | null>(null);
 
   async function fetchUsers(nextQuery: string, nextPage: number) {
     const params = new URLSearchParams({ page: String(nextPage) });
@@ -74,6 +111,57 @@ export function UsersTable({
     }
   }
 
+  // AI-access-only block, separate from the full-account block above (see
+  // UserCredits.aiAccessBlocked) — a reason is required when blocking, same
+  // pattern as toggleBlock, but re-prompted until non-empty since the API
+  // rejects an empty reason on block.
+  async function toggleAiBlock(user: AdminUserRow) {
+    const nextBlocked = !user.aiAccessBlocked;
+    let reason: string | undefined;
+    if (nextBlocked) {
+      const entered = window.prompt("Reason for blocking AI access (required):");
+      if (entered === null) return; // cancelled
+      if (!entered.trim()) {
+        toast.error("A reason is required to block AI access.");
+        return;
+      }
+      reason = entered.trim();
+    }
+
+    setPendingUserId(user.id);
+    try {
+      const response = await fetch(`/api/admin/users/${user.id}/toggle-ai-block`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blocked: nextBlocked, reason }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        toast.error(data?.error ?? "Failed to update AI access.");
+        return;
+      }
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === user.id ? { ...u, aiAccessBlocked: data.aiAccessBlocked, aiBlockedReason: data.aiBlockedReason } : u,
+        ),
+      );
+      toast.success(nextBlocked ? "AI access blocked for this user." : "AI access restored.");
+    } catch {
+      toast.error("Network error — please try again.");
+    } finally {
+      setPendingUserId(null);
+    }
+  }
+
+  // Refetches the current page rather than patching state in place — a
+  // user with no prior AI usage has no aiCredits row yet (see
+  // AdminUserRow.aiCredits' null case), so a grant can create one from
+  // scratch with a monthlyAllowance this component has no other way to know.
+  function handleGranted() {
+    startTransition(() => fetchUsers(query, page));
+  }
+
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   return (
@@ -98,6 +186,7 @@ export function UsersTable({
               <TableHead className="text-slate-400">User</TableHead>
               <TableHead className="text-slate-400">Plan</TableHead>
               <TableHead className="text-slate-400">Resumes</TableHead>
+              <TableHead className="text-slate-400">AI Credits</TableHead>
               <TableHead className="text-slate-400">Signed up</TableHead>
               <TableHead className="text-slate-400">Status</TableHead>
               <TableHead className="text-slate-400" />
@@ -116,34 +205,64 @@ export function UsersTable({
                   </Badge>
                 </TableCell>
                 <TableCell className="text-slate-300">{user.resumeCount}</TableCell>
+                <TableCell className="text-sm">
+                  <CreditsCell user={user} />
+                </TableCell>
                 <TableCell className="text-slate-400">{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  {user.isBlocked ? (
-                    <Badge variant="destructive" title={user.blockedReason ?? undefined}>
-                      Blocked
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="border-emerald-800 text-emerald-400">
-                      Active
-                    </Badge>
-                  )}
+                  <div className="flex flex-col gap-1.5">
+                    {user.isBlocked ? (
+                      <Badge variant="destructive" title={user.blockedReason ?? undefined}>
+                        Blocked
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+                        Active
+                      </Badge>
+                    )}
+                    <AiAccessBadge user={user} />
+                  </div>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    size="sm"
-                    variant={user.isBlocked ? "outline" : "destructive"}
-                    disabled={pendingUserId === user.id}
-                    onClick={() => toggleBlock(user)}
-                    className={user.isBlocked ? "border-slate-700 bg-transparent text-slate-300" : ""}
-                  >
-                    {user.isBlocked ? "Unblock" : "Block"}
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={pendingUserId === user.id}
+                        className="h-8 w-8 p-0 text-slate-400 hover:text-slate-200"
+                        aria-label={`Actions for ${user.email}`}
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setGrantCreditsUser(user)} className="cursor-pointer">
+                        Grant credits
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        variant={user.aiAccessBlocked ? "default" : "destructive"}
+                        onClick={() => toggleAiBlock(user)}
+                        className="cursor-pointer"
+                      >
+                        {user.aiAccessBlocked ? "Unblock AI access" : "Block AI access"}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant={user.isBlocked ? "default" : "destructive"}
+                        onClick={() => toggleBlock(user)}
+                        className="cursor-pointer"
+                      >
+                        {user.isBlocked ? "Unblock account" : "Block account"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}
             {users.length === 0 && (
               <TableRow className="border-slate-800 hover:bg-transparent">
-                <TableCell colSpan={6} className="text-center text-slate-500">
+                <TableCell colSpan={7} className="text-center text-slate-500">
                   No users found.
                 </TableCell>
               </TableRow>
@@ -170,7 +289,7 @@ export function UsersTable({
                 {user.plan === "pro" ? `Pro (${user.subscriptionStatus})` : "Free"}
               </Badge>
             </div>
-            <div className="mb-3 flex items-center gap-2">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
               {user.isBlocked ? (
                 <Badge variant="destructive" title={user.blockedReason ?? undefined}>
                   Blocked
@@ -180,20 +299,44 @@ export function UsersTable({
                   Active
                 </Badge>
               )}
+              <AiAccessBadge user={user} />
+            </div>
+            <div className="mb-3 text-xs">
+              <CreditsCell user={user} />
             </div>
             <div className="mb-3 flex items-center justify-between border-t border-slate-800 pt-2.5 text-xs text-slate-400">
               <span>{user.resumeCount} resumes</span>
               <span>Joined {new Date(user.createdAt).toLocaleDateString()}</span>
             </div>
-            <Button
-              size="sm"
-              variant={user.isBlocked ? "outline" : "destructive"}
-              disabled={pendingUserId === user.id}
-              onClick={() => toggleBlock(user)}
-              className={user.isBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
-            >
-              {user.isBlocked ? "Unblock" : "Block"}
-            </Button>
+            <div className="grid grid-cols-1 gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pendingUserId === user.id}
+                onClick={() => setGrantCreditsUser(user)}
+                className="w-full border-slate-700 bg-transparent text-slate-300"
+              >
+                Grant credits
+              </Button>
+              <Button
+                size="sm"
+                variant={user.aiAccessBlocked ? "outline" : "destructive"}
+                disabled={pendingUserId === user.id}
+                onClick={() => toggleAiBlock(user)}
+                className={user.aiAccessBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
+              >
+                {user.aiAccessBlocked ? "Unblock AI access" : "Block AI access"}
+              </Button>
+              <Button
+                size="sm"
+                variant={user.isBlocked ? "outline" : "destructive"}
+                disabled={pendingUserId === user.id}
+                onClick={() => toggleBlock(user)}
+                className={user.isBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
+              >
+                {user.isBlocked ? "Unblock account" : "Block account"}
+              </Button>
+            </div>
           </div>
         ))}
       </div>
@@ -226,6 +369,12 @@ export function UsersTable({
           </Button>
         </div>
       </div>
+
+      <GrantCreditsDialog
+        user={grantCreditsUser}
+        onOpenChange={(open) => !open && setGrantCreditsUser(null)}
+        onGranted={handleGranted}
+      />
     </div>
   );
 }

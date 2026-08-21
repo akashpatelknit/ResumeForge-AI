@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { PlanConfig } from "@/app/generated/prisma/client";
 
-type EditableField = "proPriceInr" | "freeResumeLimit" | "freeAiGenerationLimit";
+type EditableField = "proPriceInr" | "freeResumeLimit" | "freeAiGenerationLimit" | "proAiCreditLimit";
 
 interface PlanRow {
   icon: typeof FileText;
@@ -175,13 +175,15 @@ export function PlanConfigForm({ initialConfig }: { initialConfig: PlanConfig })
   const [proPriceInr, setProPriceInr] = useState(initialConfig.proPriceInr);
   const [freeResumeLimit, setFreeResumeLimit] = useState(initialConfig.freeResumeLimit);
   const [freeAiGenerationLimit, setFreeAiGenerationLimit] = useState(initialConfig.freeAiGenerationLimit);
+  const [proAiCreditLimit, setProAiCreditLimit] = useState(initialConfig.proAiCreditLimit);
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const isDirty =
     proPriceInr !== initialConfig.proPriceInr ||
     freeResumeLimit !== initialConfig.freeResumeLimit ||
-    freeAiGenerationLimit !== initialConfig.freeAiGenerationLimit;
+    freeAiGenerationLimit !== initialConfig.freeAiGenerationLimit ||
+    proAiCreditLimit !== initialConfig.proAiCreditLimit;
 
   function handleChange(field: EditableField, raw: string) {
     const value = Number(raw);
@@ -189,6 +191,7 @@ export function PlanConfigForm({ initialConfig }: { initialConfig: PlanConfig })
     if (field === "proPriceInr") setProPriceInr(value);
     if (field === "freeResumeLimit") setFreeResumeLimit(value);
     if (field === "freeAiGenerationLimit") setFreeAiGenerationLimit(value);
+    if (field === "proAiCreditLimit") setProAiCreditLimit(value);
   }
 
   async function handleSave() {
@@ -197,7 +200,7 @@ export function PlanConfigForm({ initialConfig }: { initialConfig: PlanConfig })
       const response = await fetch("/api/admin/plan-config", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ proPriceInr, freeResumeLimit, freeAiGenerationLimit }),
+        body: JSON.stringify({ proPriceInr, freeResumeLimit, freeAiGenerationLimit, proAiCreditLimit }),
       });
       if (!response.ok) throw new Error();
       toast.success("Plan config saved.");
@@ -222,7 +225,7 @@ export function PlanConfigForm({ initialConfig }: { initialConfig: PlanConfig })
             { icon: FileText, label: "Resumes per user", value: freeResumeLimit, editField: "freeResumeLimit" },
             {
               icon: Sparkles,
-              label: "AI generations / month",
+              label: "AI credits / month",
               value: freeAiGenerationLimit,
               editField: "freeAiGenerationLimit",
             },
@@ -245,7 +248,12 @@ export function PlanConfigForm({ initialConfig }: { initialConfig: PlanConfig })
           priceEditField="proPriceInr"
           rows={[
             { icon: FileText, label: "Resumes per user", value: "Unlimited" },
-            { icon: Sparkles, label: "AI generations / month", value: "Unlimited" },
+            {
+              icon: Sparkles,
+              label: "AI credits / month",
+              value: proAiCreditLimit,
+              editField: "proAiCreditLimit",
+            },
             { icon: Layers, label: "Template access", value: "All templates" },
             { icon: FileDown, label: "PDF export", value: "High quality" },
           ]}

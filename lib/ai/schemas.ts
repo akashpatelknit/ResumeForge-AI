@@ -42,6 +42,17 @@ export const resumeProjectFromRepoSchema = z.object({
   techStack: z.array(z.unknown()).optional(),
 });
 
+export const resumeReadinessScoreSchema = z.object({
+  score: z.number(),
+  breakdown: z.object({
+    structure: z.number(),
+    formatting: z.number(),
+    completeness: z.number(),
+    keywordStrength: z.number(),
+  }),
+  suggestions: z.array(z.unknown()).optional(),
+});
+
 export const jobAnalyzeSchema = z.object({
   score: z.number(),
   matchedKeywords: z.array(z.unknown()).optional(),

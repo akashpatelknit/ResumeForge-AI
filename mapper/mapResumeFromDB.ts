@@ -1,5 +1,5 @@
 import { Resume as PrismaResume } from "@/app/generated/prisma/client";
-import { AppResume, ResumeData } from "@/types/resume";
+import { AppResume, ReadinessScoreDetails, ResumeData } from "@/types/resume";
 import { getEffectiveSectionOrder } from "@/lib/resumeSections";
 import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
 
@@ -40,6 +40,7 @@ export function mapResumeFromDB(r: PrismaResume): AppResume {
     isArchived: data.isArchived ?? false,
     thumbnail: data.thumbnail ?? "",
     atsScore: data.atsScore ?? 0,
+    readinessScoreDetails: r.readinessScoreDetails as unknown as ReadinessScoreDetails | null,
     styleConfig: {
       ...DEFAULT_STYLE_CONFIG,
       ...data.styleConfig,

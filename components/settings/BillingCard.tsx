@@ -20,7 +20,7 @@ import { useSubscriptionStatus } from "@/hooks/useSubscriptionStatus";
 import { openRazorpayCheckout } from "@/lib/razorpayCheckout";
 
 // Real data throughout: plan/status/renewal/trial/usage/limit/price all
-// come from GET /api/subscription/status (Subscription + UsageCounter +
+// come from GET /api/subscription/status (Subscription + UserCredits +
 // PlanConfig tables). Upgrade and Cancel are the same real Razorpay-backed
 // actions BillingSection.tsx already had — this replaces that component
 // with a layout matching the reference design instead of duplicating it.
@@ -96,8 +96,19 @@ export default function BillingCard() {
   // same as upgrading, so it does that for real; for a Pro user there's
   // nothing further to manage today, so it's honest about that instead of
   // pretending to open something that doesn't exist.
+  //
+  // While PlatformConfig.billingEnabled is false (see the pricing page's
+  // same gate in components/marketing/Pricing.tsx), a free user's "upgrade"
+  // path is blocked here too — otherwise this button would be the one
+  // remaining way to reach real Razorpay checkout during the free beta
+  // launch, even with the pricing page's CTA already not sending them
+  // there.
   const handleManageBilling = () => {
     if (!isPro) {
+      if (!data.billingEnabled) {
+        toast.info("We're in early access — every feature is free right now, no billing needed yet.");
+        return;
+      }
       handleUpgrade();
     } else {
       toast.info("No hosted billing portal yet — use Cancel Subscription below, or contact support for changes.");
@@ -123,14 +134,21 @@ export default function BillingCard() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
-          <div className="flex items-center justify-between gap-4 sm:justify-start">
-            <span className="inline-flex items-center gap-2 text-sm text-gray-600">
-              <Sparkles className="h-4 w-4 text-purple-500" />
-              AI Generations
-            </span>
-            <span className="text-sm font-semibold text-gray-900">
-              {isPro ? "Unlimited (Pro)" : `${data.aiGenerations.used}/${data.aiGenerations.limit}`}
-            </span>
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center justify-between gap-4 sm:justify-start">
+              <span className="inline-flex items-center gap-2 text-sm text-gray-600">
+                <Sparkles className="h-4 w-4 text-purple-500" />
+                AI Credits
+              </span>
+              <span className="text-sm font-semibold text-gray-900">
+                {data.aiCredits.used} of {data.aiCredits.limit} AI credits used this month
+              </span>
+            </div>
+            {data.aiCredits.bonus > 0 && (
+              <p className="text-xs font-medium text-purple-600 sm:text-right">
+                +{data.aiCredits.bonus} bonus credits
+              </p>
+            )}
           </div>
           <div className="flex items-center justify-between gap-4 sm:justify-start">
             <span className="inline-flex items-center gap-2 text-sm text-gray-600">

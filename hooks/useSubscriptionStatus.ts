@@ -11,7 +11,14 @@ export interface SubscriptionStatusResponse {
   trialEndsAt: string | null;
   currentPeriodEnd: string | null;
   proPriceInr: number;
-  aiGenerations: { used: number; limit: number; remaining: number };
+  // PlatformConfig.billingEnabled — false during the free beta launch, see
+  // lib/config/getPlatformConfig.ts.
+  billingEnabled: boolean;
+  // Weighted AI credits (lib/credits/userCredits.ts), not a flat generation
+  // count — `used`/`limit` are the resetting monthly pool, `bonus` is
+  // admin-granted and never resets, `available` is what's actually left to
+  // spend right now ((limit - used) + bonus).
+  aiCredits: { used: number; limit: number; bonus: number; available: number; resetsAt: string; blocked: boolean };
   resumes: { count: number; limit: number };
 }
 

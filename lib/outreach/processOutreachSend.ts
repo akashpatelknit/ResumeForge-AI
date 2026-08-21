@@ -16,9 +16,9 @@ import { GmailSendError, sendQuickApplyEmail } from "@/lib/gmail/sendMail";
 import { generateScheduledOutreachEmail } from "@/lib/ai/generateScheduledOutreachEmail";
 import { AiRefusalError, AI_REFUSAL_MESSAGE } from "@/lib/ai/policy/refusal";
 import { AiRateLimitError } from "@/lib/ai/rateLimit";
+import { AiBlockedError, AiCreditsError } from "@/lib/credits/errors";
 import type { ResumeContext } from "@/lib/ai/formatResumeContext";
 import { buildResumeAttachmentFilename } from "@/lib/outreach/resumeAttachmentFilename";
-import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
 import type { SavedJob } from "@/app/generated/prisma/client";
 import type { AppResume } from "@/types/resume";
 
@@ -30,8 +30,8 @@ import type { AppResume } from "@/types/resume";
 // loaded by the standalone worker process, which isn't bundled by Next.js —
 // see worker/outreachWorker.ts's comment on the `--conditions=react-server`
 // flag that makes the *other* server-only-guarded modules this file imports
-// (getValidAccessToken.ts, sendMail.ts, aiGate.ts, etc.) resolve correctly
-// outside Next's bundler.
+// (getValidAccessToken.ts, sendMail.ts, lib/credits/userCredits.ts, etc.)
+// resolve correctly outside Next's bundler.
 //
 // Uses @clerk/backend's createClerkClient directly instead of
 // @clerk/nextjs/server's clerkClient() — the latter's package resolves
@@ -109,15 +109,10 @@ export async function processOutreachSend(job: SavedJob) {
   }
 
   if (!subject || !bodyText) {
-    const gate = await checkAiGate(job.userId);
-    if (!gate.allowed) {
-      await markOutreachSendFailed(
-        job.id,
-        job.sendAttempts,
-        "AI generation limit reached for this month — upgrade or retry next month.",
-      );
-      return;
-    }
+    // No pre-check here — generateScheduledOutreachEmail below goes through
+    // the AI Gateway (lib/ai/gateway.ts), which checks AI-access-block and
+    // credit balance itself before calling Gemini, and throws AiBlockedError
+    // / AiCreditsError if either gate fails (caught below).
 
     // Uploaded PDFs have no structured JSON to feed the prompt — extract
     // raw text from the same bytes fetched above (reusing the landing
@@ -160,7 +155,6 @@ export async function processOutreachSend(job: SavedJob) {
       );
       subject = generated.subject;
       bodyText = generated.body;
-      await recordAiGeneration(job.userId, gate.plan);
 
       await prisma.savedJob.update({
         where: { id: job.id },
@@ -171,7 +165,7 @@ export async function processOutreachSend(job: SavedJob) {
       const message =
         error instanceof AiRefusalError
           ? AI_REFUSAL_MESSAGE
-          : error instanceof AiRateLimitError
+          : error instanceof AiRateLimitError || error instanceof AiCreditsError || error instanceof AiBlockedError
             ? error.message
             : "Failed to generate the outreach email.";
       await markOutreachSendFailed(job.id, job.sendAttempts, message);

@@ -12,10 +12,11 @@ interface UpgradeRequiredBody {
   message: string;
 }
 
-// The shape every gating route (lib/subscription/aiGate.ts,
-// lib/subscription/checkResumeLimit.ts) returns on a 403. Narrows an
-// already-parsed error body so call sites can branch on it instead of
-// falling through to a generic error toast.
+// The shape every gating route (lib/ai/policy/refusal.ts's
+// aiRouteErrorResponse for AI credit exhaustion, lib/subscription/
+// checkResumeLimit.ts) returns on a 403. Narrows an already-parsed error
+// body so call sites can branch on it instead of falling through to a
+// generic error toast.
 export function isUpgradeRequiredResponse(body: unknown): body is UpgradeRequiredBody {
   return (
     !!body &&
@@ -23,6 +24,34 @@ export function isUpgradeRequiredResponse(body: unknown): body is UpgradeRequire
     (body as Record<string, unknown>).error === "UPGRADE_REQUIRED" &&
     typeof (body as Record<string, unknown>).message === "string"
   );
+}
+
+interface AiAccessBlockedBody {
+  error: "AI_ACCESS_BLOCKED";
+  message: string;
+}
+
+// The shape aiRouteErrorResponse returns when lib/ai/gateway.ts's
+// AiBlockedError fires (admin-blocked AI access, separate from a full
+// account block).
+export function isAiAccessBlockedResponse(body: unknown): body is AiAccessBlockedBody {
+  return (
+    !!body &&
+    typeof body === "object" &&
+    (body as Record<string, unknown>).error === "AI_ACCESS_BLOCKED" &&
+    typeof (body as Record<string, unknown>).message === "string"
+  );
+}
+
+// Resolves the best user-facing message from any AI/gating route's JSON
+// error body. UPGRADE_REQUIRED and AI_ACCESS_BLOCKED bodies carry a human
+// `message` distinct from their `error` code; every other route's `error`
+// field already IS the human-readable message (unchanged pre-existing
+// convention), so this is a safe default for both shapes.
+export function resolveErrorMessage(body: unknown, fallback: string): string {
+  if (isUpgradeRequiredResponse(body) || isAiAccessBlockedResponse(body)) return body.message;
+  const err = (body as { error?: unknown } | null)?.error;
+  return typeof err === "string" && err ? err : fallback;
 }
 
 // Non-blocking upgrade prompt shown at the exact point a free-tier limit
@@ -59,5 +88,25 @@ export async function assertOkOrShowUpgrade(response: Response, fallbackMessage:
     throw new UpgradeRequiredError(body.message);
   }
 
-  throw new Error((body as { error?: string })?.error || fallbackMessage);
+  throw new Error(resolveErrorMessage(body, fallbackMessage));
+}
+
+// AI call sites' equivalent of assertOkOrShowUpgrade above — every AI
+// feature (Generate with AI popovers, the ATS checker, Quick Apply, the
+// resume tailor/JD analyzer) can hit either an UPGRADE_REQUIRED (out of AI
+// credits) or an AI_ACCESS_BLOCKED (admin-blocked) rejection from
+// lib/ai/gateway.ts, on top of the plain string errors every route already
+// had. Shows the right toast for each and always returns a human-readable
+// message the caller can also render inline, so call sites don't have to
+// duplicate this branching themselves.
+export function resolveAiRejection(body: unknown, fallback: string): string {
+  if (isUpgradeRequiredResponse(body)) {
+    showUpgradeRequiredToast(body.message);
+    return body.message;
+  }
+  if (isAiAccessBlockedResponse(body)) {
+    toast.error(body.message, { duration: 8000 });
+    return body.message;
+  }
+  return resolveErrorMessage(body, fallback);
 }
