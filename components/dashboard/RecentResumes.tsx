@@ -6,7 +6,7 @@ import { ExternalLink, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import TemplateThumbnail from "./TemplateThumbnail";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
 import ResumeRowMenu from "./ResumeRowMenu";
 import type { AppResume } from "@/types/resume";
 
@@ -168,7 +168,7 @@ export default function RecentResumes({
               >
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-12 h-14 rounded-lg overflow-hidden shadow-sm ring-1 ring-gray-200 shrink-0">
-                    <TemplateThumbnail />
+                    <PdfCanvasThumbnail resume={resume} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 truncate">

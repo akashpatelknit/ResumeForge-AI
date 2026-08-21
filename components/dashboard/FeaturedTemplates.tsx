@@ -4,6 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Crown, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { Template } from "@/types/template";
+import TemplateThumbnail from "@/components/dashboard/TemplateThumbnail";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 
 interface FeaturedTemplatesProps {
   templates: Template[];
@@ -86,11 +89,14 @@ export default function FeaturedTemplates({
 
             {/* Preview */}
             <div className="relative aspect-16/10 bg-linear-to-br from-gray-100 to-gray-50 overflow-hidden">
-              <img
-                src={template.thumbnail}
-                alt={template.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              {template.comingSoon ? (
+                <TemplateThumbnail className="opacity-60 saturate-0" />
+              ) : (
+                <PdfCanvasThumbnail
+                  resume={buildSampleAppResume(template.id)}
+                  className="transition-transform duration-500 group-hover:scale-110"
+                />
+              )}
               <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 

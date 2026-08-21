@@ -4,6 +4,16 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Plus, Loader2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import ResumeFilters from "@/components/dashboard/ResumeFilters";
 import EmptyResumeState from "@/components/dashboard/EmptyResumeState";
 import ResumeListView from "@/components/dashboard/ResumeList";
@@ -14,6 +24,9 @@ import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { pdf } from "@react-pdf/renderer";
+import { getTemplateComponent } from "@/components/pdf/template";
+import { toResumeData } from "@/hooks/useResumeActions";
 
 /* ============================================================================
  * Grid view — DISABLED HERE, NOT DELETED.
@@ -67,6 +80,8 @@ export default function ResumesPage() {
   const [resumes, setResumes] = useState<AppResume[]>([]);
   const [isLoadingResumes, setIsLoadingResumes] = useState(true);
   const [selectedResumes, setSelectedResumes] = useState<string[]>([]);
+  const [isBulkActing, setIsBulkActing] = useState(false);
+  const [confirmBulkDeleteOpen, setConfirmBulkDeleteOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("lastModified");
@@ -155,9 +170,104 @@ export default function ResumesPage() {
     );
   };
 
-  const handleBulkAction = (action: string) => {
-    console.log(`Bulk action: ${action} on`, selectedResumes);
-    setSelectedResumes([]);
+  // Sequential, not parallel — generating several PDFs via @react-pdf/renderer
+  // at once is CPU-heavy, and triggering many <a download> clicks back-to-back
+  // gets some of them silently blocked by the browser's popup/download
+  // throttling. One at a time is slower but actually delivers every file.
+  const bulkDownload = async (ids: string[]) => {
+    const targets = resumes.filter((r) => ids.includes(r.id));
+    for (const resume of targets) {
+      const TemplateComponent = getTemplateComponent(resume.templateId);
+      const blob = await pdf(<TemplateComponent resume={resume} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${resume.title || "resume"}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const bulkArchive = async (ids: string[]) => {
+    const targets = resumes.filter((r) => ids.includes(r.id));
+    const results = await Promise.all(
+      targets.map((resume) =>
+        fetch(`/api/resumes/${resume.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: resume.title,
+            templateId: resume.templateId,
+            data: { ...toResumeData(resume), isArchived: true },
+          }),
+        }).then((res) => res.ok),
+      ),
+    );
+    if (results.some((ok) => !ok)) {
+      throw new Error("Some resumes failed to archive");
+    }
+  };
+
+  const bulkDelete = async (ids: string[]) => {
+    const results = await Promise.all(
+      ids.map((id) => fetch(`/api/resumes/${id}`, { method: "DELETE" }).then((res) => res.ok)),
+    );
+    if (results.some((ok) => !ok)) {
+      throw new Error("Some resumes failed to delete");
+    }
+  };
+
+  const handleBulkAction = async (action: string) => {
+    if (isBulkActing) return;
+
+    if (action === "delete") {
+      setConfirmBulkDeleteOpen(true);
+      return;
+    }
+
+    const ids = [...selectedResumes];
+    const count = ids.length;
+    const plural = count === 1 ? "resume" : "resumes";
+
+    setIsBulkActing(true);
+    try {
+      if (action === "download") {
+        await bulkDownload(ids);
+        toast.success(`Downloaded ${count} ${plural}.`);
+      } else if (action === "archive") {
+        await bulkArchive(ids);
+        toast.success(`Archived ${count} ${plural}.`);
+        await loadResumes();
+      }
+      setSelectedResumes([]);
+    } catch (error) {
+      console.error(`Bulk ${action} failed:`, error);
+      toast.error(`Failed to ${action} ${plural}. Please try again.`);
+    } finally {
+      setIsBulkActing(false);
+    }
+  };
+
+  const confirmBulkDelete = async () => {
+    const ids = [...selectedResumes];
+    const count = ids.length;
+    const plural = count === 1 ? "resume" : "resumes";
+
+    setConfirmBulkDeleteOpen(false);
+    setIsBulkActing(true);
+    try {
+      await bulkDelete(ids);
+      toast.success(`Deleted ${count} ${plural}.`);
+      setSelectedResumes([]);
+      await loadResumes();
+    } catch (error) {
+      console.error("Bulk delete failed:", error);
+      toast.error(`Failed to delete ${plural}. Please try again.`);
+    } finally {
+      setIsBulkActing(false);
+    }
   };
 
   const handleCreateResume = async () => {
@@ -241,10 +351,29 @@ export default function ResumesPage() {
               selectedCount={selectedResumes.length}
               onAction={handleBulkAction}
               onCancel={() => setSelectedResumes([])}
+              isBusy={isBulkActing}
             />
           )}
         </main>
       </div>
+
+      <AlertDialog open={confirmBulkDeleteOpen} onOpenChange={setConfirmBulkDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Delete {selectedResumes.length}{" "}
+              {selectedResumes.length === 1 ? "resume" : "resumes"}?
+            </AlertDialogTitle>
+            <AlertDialogDescription>This can&apos;t be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmBulkDelete}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

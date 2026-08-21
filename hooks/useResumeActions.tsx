@@ -21,7 +21,9 @@ import { assertOkOrShowUpgrade, UpgradeRequiredError } from "@/lib/subscription/
 // Builds the same `data` shape store/resumeStore.ts's saveResume() sends —
 // the PUT route replaces the whole `data` JSON column, so every field has
 // to be resent even when only one of them (e.g. isArchived) is changing.
-function toResumeData(resume: AppResume) {
+// Exported so bulk operations (app/(app)/dashboard/resumes/page.tsx) can
+// build the same PUT payload per-resume without a second copy of this shape.
+export function toResumeData(resume: AppResume) {
   return {
     personalInfo: resume.personalInfo,
     summary: resume.summary,
@@ -33,10 +35,12 @@ function toResumeData(resume: AppResume) {
     certifications: resume.certifications,
     languages: resume.languages,
     customSections: resume.customSections,
+    sectionOrder: resume.sectionOrder,
     isFavorite: resume.isFavorite,
     isArchived: resume.isArchived,
     thumbnail: resume.thumbnail,
     atsScore: resume.atsScore,
+    styleConfig: resume.styleConfig,
   };
 }
 

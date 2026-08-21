@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Check, Minus, Star, Crown } from "lucide-react";
 import { Template } from "@/types/template";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 
 interface TemplateComparisonProps {
   templates: Template[];
@@ -54,11 +56,7 @@ export default function TemplateComparison({
                 <div className="p-6 border-b border-gray-200 bg-gray-50">
                   {/* Preview */}
                   <div className="relative aspect-[8.5/11] bg-white rounded-lg overflow-hidden mb-4 shadow-sm">
-                    <img
-                      src={template.thumbnail}
-                      alt={template.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <PdfCanvasThumbnail resume={buildSampleAppResume(template.id)} />
                     {template.isPremium && (
                       <Badge className="absolute top-2 right-2 bg-linear-to-r from-yellow-400 to-yellow-600 text-white border-0">
                         <Crown className="w-3 h-3 mr-1" />

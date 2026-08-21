@@ -149,10 +149,18 @@ export const useResumeStore = create<ResumeStore>((set, get) => ({
         }),
       });
 
-      const updated = await res.json();
+      // Don't overwrite currentResume with the response here — the PUT
+      // route is a pure pass-through (see app/api/resumes/[id]/route.ts),
+      // so it's just an echo of what was just sent, and mapResumeFromDB
+      // would build a brand-new object reference from it. useAutoSave
+      // debounces on that reference; replacing it here made every save
+      // look like a fresh edit, which scheduled another save `delay` later
+      // — an infinite save loop (and, since PDFPreview also keys off this
+      // same reference, constant PDF regeneration) instead of one save
+      // per actual change.
+      await res.json();
 
       set({
-        currentResume: mapResumeFromDB(updated),
         isSaving: false,
         lastSaved: new Date(),
       });

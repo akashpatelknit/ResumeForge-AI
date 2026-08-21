@@ -16,6 +16,9 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import TemplateThumbnail from "@/components/dashboard/TemplateThumbnail";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 
 export default function TemplateSelectionModal({
   open,
@@ -88,14 +91,17 @@ export default function TemplateSelectionModal({
               >
                 {/* Thumbnail */}
                 <div className="relative overflow-hidden bg-gray-50 aspect-4/3 rounded-t-[14px]">
-                  <img
-                    src={template.thumbnail}
-                    alt={template.name}
-                    className={cn(
-                      "w-full h-full object-cover transition-transform duration-500",
-                      isHovered ? "scale-105" : "scale-100",
-                    )}
-                  />
+                  {template.comingSoon ? (
+                    <TemplateThumbnail className="opacity-60 saturate-0" />
+                  ) : (
+                    <PdfCanvasThumbnail
+                      resume={buildSampleAppResume(template.id)}
+                      className={cn(
+                        "transition-transform duration-500",
+                        isHovered ? "scale-105" : "scale-100",
+                      )}
+                    />
+                  )}
 
                   {/* Hover Overlay */}
                   <div

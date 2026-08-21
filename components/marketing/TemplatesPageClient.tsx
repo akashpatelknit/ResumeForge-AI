@@ -8,18 +8,9 @@ import { Clock, Crown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/marketing/Navbar";
 import Footer from "@/components/landing/Footer";
-import ResumeTemplatePreview from "@/components/marketing/ResumeTemplatePreview";
-import ClassicTemplatePreview from "@/components/marketing/ClassicTemplatePreview";
 import TemplateThumbnail from "@/components/dashboard/TemplateThumbnail";
-
-// Real-content mini mockups, keyed by templateId — see the "how to add a
-// template" note in components/pdf/template/index.tsx. Falls back to the
-// Modern mockup so a newly-added template without its own preview yet still
-// shows something real rather than crashing.
-const TEMPLATE_PREVIEWS: Record<string, React.ComponentType<{ className?: string }>> = {
-  modern: ResumeTemplatePreview,
-  classic: ClassicTemplatePreview,
-};
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 import { sampleTemplates } from "@/config/templates";
 import type { Template } from "@/types/template";
 import { useResumeStore } from "@/store/resumeStore";
@@ -158,10 +149,10 @@ export default function TemplatesPageClient() {
                   className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-lg"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden border-b border-gray-100 bg-gray-50">
-                    {(() => {
-                      const Preview = TEMPLATE_PREVIEWS[template.id] ?? ResumeTemplatePreview;
-                      return <Preview className="transition-transform duration-300 group-hover:scale-[1.02]" />;
-                    })()}
+                    <PdfCanvasThumbnail
+                      resume={buildSampleAppResume(template.id)}
+                      className="transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
 
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-900/55 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                       <button

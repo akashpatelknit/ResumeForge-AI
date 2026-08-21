@@ -25,7 +25,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Template } from "@/types/template";
-import TemplateThumbnail from "./TemplateThumbnail";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useResumeStore } from "@/store/resumeStore";
@@ -231,7 +232,7 @@ export default function TemplatePreviewModal({
                       "0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)",
                   }}
                 >
-                  <TemplateThumbnail variant="modal" />
+                  <PdfCanvasThumbnail resume={buildSampleAppResume(template.id)} />
                 </div>
               </div>
             </div>

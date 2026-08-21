@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Star, Crown, Eye, Check, Clock } from "lucide-react";
 import { Template } from "@/types/template";
 import TemplateThumbnail from "./TemplateThumbnail";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 
 interface TemplateCardProps {
   template: Template;
@@ -62,7 +64,10 @@ export default function TemplateCard({
     >
       {/* ================= THUMBNAIL ================= */}
       <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden border-b border-gray-100">
-        <TemplateThumbnail className="transition-transform duration-500 group-hover:scale-105" />
+        <PdfCanvasThumbnail
+          resume={buildSampleAppResume(template.id)}
+          className="transition-transform duration-500 group-hover:scale-105"
+        />
 
         {/* Compare Checkbox */}
         <div

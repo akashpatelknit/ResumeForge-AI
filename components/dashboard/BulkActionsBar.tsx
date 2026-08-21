@@ -1,17 +1,19 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Archive, Trash2, X } from "lucide-react";
+import { Download, Archive, Trash2, X, Loader2 } from "lucide-react";
 
 interface BulkActionsBarProps {
   selectedCount: number;
   onAction: (action: string) => void;
   onCancel: () => void;
+  isBusy?: boolean;
 }
 
 export default function BulkActionsBar({
   selectedCount,
   onAction,
   onCancel,
+  isBusy = false,
 }: BulkActionsBarProps) {
   return (
     <div className="fixed bottom-4 left-1/2 z-50 w-[calc(100vw-2rem)] max-w-xl -translate-x-1/2 animate-slideUp sm:bottom-6 sm:w-auto">
@@ -35,9 +37,14 @@ export default function BulkActionsBar({
             size="sm"
             variant="outline"
             onClick={() => onAction("download")}
+            disabled={isBusy}
             className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300"
           >
-            <Download className="w-4 h-4 sm:mr-1.5" />
+            {isBusy ? (
+              <Loader2 className="w-4 h-4 sm:mr-1.5 animate-spin" />
+            ) : (
+              <Download className="w-4 h-4 sm:mr-1.5" />
+            )}
             <span className="hidden sm:inline">Download All</span>
           </Button>
 
@@ -45,6 +52,7 @@ export default function BulkActionsBar({
             size="sm"
             variant="outline"
             onClick={() => onAction("archive")}
+            disabled={isBusy}
             className="hover:bg-gray-100"
           >
             <Archive className="w-4 h-4 sm:mr-1.5" />
@@ -55,6 +63,7 @@ export default function BulkActionsBar({
             size="sm"
             variant="outline"
             onClick={() => onAction("delete")}
+            disabled={isBusy}
             className="hover:bg-red-50 hover:text-red-600 hover:border-red-300"
           >
             <Trash2 className="w-4 h-4 sm:mr-1.5" />
@@ -68,6 +77,7 @@ export default function BulkActionsBar({
           size="sm"
           variant="ghost"
           onClick={onCancel}
+          disabled={isBusy}
           className="hover:bg-gray-100"
         >
           <X className="w-4 h-4 sm:mr-1.5" />

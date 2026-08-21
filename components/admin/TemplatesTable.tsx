@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { FileText, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select";
 import { NumberedPagination } from "@/components/admin/NumberedPagination";
 import type { AdminTemplateRow } from "@/lib/admin/templates";
+import PdfCanvasThumbnail from "@/components/pdf/PdfCanvasThumbnail";
+import { buildSampleAppResume } from "@/lib/pdf/sampleAppResume";
 
 type ToggleField = "isPro" | "isActive" | "isFeatured";
 type SortKey = "newest" | "most-used" | "alphabetical";
@@ -101,15 +103,8 @@ export function TemplatesTable({ initialTemplates }: { initialTemplates: AdminTe
             key={template.templateId}
             className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
           >
-            <div className="relative flex aspect-4/3 items-center justify-center bg-gray-50">
-              <div className="flex h-3/5 w-3/5 items-center justify-center rounded-lg border border-dashed border-gray-300">
-                {template.thumbnail ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- matches components/builder/TemplateCard.tsx's existing convention for these registry thumbnails
-                  <img src={template.thumbnail} alt="" className="h-16 w-16 opacity-70" />
-                ) : (
-                  <FileText className="h-10 w-10 text-gray-400" strokeWidth={1.5} />
-                )}
-              </div>
+            <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden bg-gray-50">
+              <PdfCanvasThumbnail resume={buildSampleAppResume(template.templateId)} />
             </div>
 
             <div className="flex flex-1 flex-col gap-4 p-5">
