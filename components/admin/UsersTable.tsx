@@ -19,14 +19,14 @@ import type { AdminUserRow } from "@/lib/admin/clerkUsers";
 
 function CreditsCell({ user }: { user: AdminUserRow }) {
   if (!user.aiCredits) {
-    return <span className="text-slate-500">Never used AI</span>;
+    return <span className="text-gray-400">Never used AI</span>;
   }
   return (
-    <div className="text-slate-300">
-      <span className="font-medium text-slate-200">{user.aiCredits.available}</span>
-      <span className="text-slate-500"> / {user.aiCredits.monthlyAllowance} left</span>
+    <div className="text-gray-600">
+      <span className="font-medium text-gray-900">{user.aiCredits.available}</span>
+      <span className="text-gray-400"> / {user.aiCredits.monthlyAllowance} left</span>
       {user.aiCredits.bonusCredits > 0 && (
-        <span className="ml-1.5 text-xs text-purple-400">(+{user.aiCredits.bonusCredits} bonus)</span>
+        <span className="ml-1.5 text-xs text-brand-purple">(+{user.aiCredits.bonusCredits} bonus)</span>
       )}
     </div>
   );
@@ -38,7 +38,7 @@ function AiAccessBadge({ user }: { user: AdminUserRow }) {
       AI Blocked
     </Badge>
   ) : (
-    <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+    <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700">
       AI Active
     </Badge>
   );
@@ -165,50 +165,53 @@ export function UsersTable({
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
       <form onSubmit={handleSearch} className="flex gap-2">
         <Input
           placeholder="Search by email or name…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="max-w-xs border-slate-700 bg-slate-950 text-slate-100"
+          className="max-w-xs border-gray-200 bg-white text-gray-900"
         />
-        <Button type="submit" variant="outline" disabled={isPending} className="border-slate-700 bg-transparent text-slate-300">
+        <Button type="submit" variant="outline" disabled={isPending} className="border-gray-200 text-gray-700 hover:bg-gray-50">
           Search
         </Button>
       </form>
 
       {/* Desktop table */}
-      <div className="hidden rounded-md border border-slate-800 md:block">
+      <div className="hidden rounded-md border border-gray-200 md:block">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-800 hover:bg-transparent">
-              <TableHead className="text-slate-400">User</TableHead>
-              <TableHead className="text-slate-400">Plan</TableHead>
-              <TableHead className="text-slate-400">Resumes</TableHead>
-              <TableHead className="text-slate-400">AI Credits</TableHead>
-              <TableHead className="text-slate-400">Signed up</TableHead>
-              <TableHead className="text-slate-400">Status</TableHead>
-              <TableHead className="text-slate-400" />
+            <TableRow className="border-gray-100 hover:bg-transparent">
+              <TableHead className="text-gray-500">User</TableHead>
+              <TableHead className="text-gray-500">Plan</TableHead>
+              <TableHead className="text-gray-500">Resumes</TableHead>
+              <TableHead className="text-gray-500">AI Credits</TableHead>
+              <TableHead className="text-gray-500">Signed up</TableHead>
+              <TableHead className="text-gray-500">Status</TableHead>
+              <TableHead className="text-gray-500" />
             </TableRow>
           </TableHeader>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id} className="border-slate-800 hover:bg-slate-900/50">
+              <TableRow key={user.id} className="border-gray-100 hover:bg-gray-50/60">
                 <TableCell>
-                  <div className="text-slate-200">{user.name ?? "(no name)"}</div>
-                  <div className="text-xs text-slate-500">{user.email}</div>
+                  <div className="text-gray-900">{user.name ?? "(no name)"}</div>
+                  <div className="text-xs text-gray-500">{user.email}</div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={user.plan === "pro" ? "default" : "outline"}>
+                  <Badge
+                    variant={user.plan === "pro" ? "default" : "outline"}
+                    className={user.plan === "pro" ? "bg-purple-100 text-brand-purple hover:bg-purple-100" : ""}
+                  >
                     {user.plan === "pro" ? `Pro (${user.subscriptionStatus})` : "Free"}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-slate-300">{user.resumeCount}</TableCell>
+                <TableCell className="text-gray-600">{user.resumeCount}</TableCell>
                 <TableCell className="text-sm">
                   <CreditsCell user={user} />
                 </TableCell>
-                <TableCell className="text-slate-400">{new Date(user.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell className="text-gray-500">{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <div className="flex flex-col gap-1.5">
                     {user.isBlocked ? (
@@ -216,7 +219,7 @@ export function UsersTable({
                         Blocked
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+                      <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700">
                         Active
                       </Badge>
                     )}
@@ -230,7 +233,7 @@ export function UsersTable({
                         size="sm"
                         variant="ghost"
                         disabled={pendingUserId === user.id}
-                        className="h-8 w-8 p-0 text-slate-400 hover:text-slate-200"
+                        className="h-8 w-8 p-0 text-gray-400 hover:text-gray-700"
                         aria-label={`Actions for ${user.email}`}
                       >
                         <MoreVertical className="h-4 w-4" />
@@ -261,8 +264,8 @@ export function UsersTable({
               </TableRow>
             ))}
             {users.length === 0 && (
-              <TableRow className="border-slate-800 hover:bg-transparent">
-                <TableCell colSpan={7} className="text-center text-slate-500">
+              <TableRow className="border-gray-100 hover:bg-transparent">
+                <TableCell colSpan={7} className="text-center text-gray-500">
                   No users found.
                 </TableCell>
               </TableRow>
@@ -274,18 +277,21 @@ export function UsersTable({
       {/* Mobile cards */}
       <div className="space-y-3 md:hidden">
         {users.length === 0 && (
-          <div className="rounded-md border border-slate-800 py-10 text-center text-sm text-slate-500">
+          <div className="rounded-md border border-gray-200 py-10 text-center text-sm text-gray-500">
             No users found.
           </div>
         )}
         {users.map((user) => (
-          <div key={user.id} className="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+          <div key={user.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="truncate font-medium text-slate-200">{user.name ?? "(no name)"}</p>
-                <p className="truncate text-xs text-slate-500">{user.email}</p>
+                <p className="truncate font-medium text-gray-900">{user.name ?? "(no name)"}</p>
+                <p className="truncate text-xs text-gray-500">{user.email}</p>
               </div>
-              <Badge variant={user.plan === "pro" ? "default" : "outline"} className="shrink-0">
+              <Badge
+                variant={user.plan === "pro" ? "default" : "outline"}
+                className={user.plan === "pro" ? "shrink-0 bg-purple-100 text-brand-purple hover:bg-purple-100" : "shrink-0"}
+              >
                 {user.plan === "pro" ? `Pro (${user.subscriptionStatus})` : "Free"}
               </Badge>
             </div>
@@ -295,7 +301,7 @@ export function UsersTable({
                   Blocked
                 </Badge>
               ) : (
-                <Badge variant="outline" className="border-emerald-800 text-emerald-400">
+                <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700">
                   Active
                 </Badge>
               )}
@@ -304,7 +310,7 @@ export function UsersTable({
             <div className="mb-3 text-xs">
               <CreditsCell user={user} />
             </div>
-            <div className="mb-3 flex items-center justify-between border-t border-slate-800 pt-2.5 text-xs text-slate-400">
+            <div className="mb-3 flex items-center justify-between border-t border-gray-100 pt-2.5 text-xs text-gray-500">
               <span>{user.resumeCount} resumes</span>
               <span>Joined {new Date(user.createdAt).toLocaleDateString()}</span>
             </div>
@@ -314,7 +320,7 @@ export function UsersTable({
                 variant="outline"
                 disabled={pendingUserId === user.id}
                 onClick={() => setGrantCreditsUser(user)}
-                className="w-full border-slate-700 bg-transparent text-slate-300"
+                className="w-full border-gray-200 text-gray-700 hover:bg-gray-50"
               >
                 Grant credits
               </Button>
@@ -323,7 +329,7 @@ export function UsersTable({
                 variant={user.aiAccessBlocked ? "outline" : "destructive"}
                 disabled={pendingUserId === user.id}
                 onClick={() => toggleAiBlock(user)}
-                className={user.aiAccessBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
+                className={user.aiAccessBlocked ? "w-full border-gray-200 text-gray-700 hover:bg-gray-50" : "w-full"}
               >
                 {user.aiAccessBlocked ? "Unblock AI access" : "Block AI access"}
               </Button>
@@ -332,7 +338,7 @@ export function UsersTable({
                 variant={user.isBlocked ? "outline" : "destructive"}
                 disabled={pendingUserId === user.id}
                 onClick={() => toggleBlock(user)}
-                className={user.isBlocked ? "w-full border-slate-700 bg-transparent text-slate-300" : "w-full"}
+                className={user.isBlocked ? "w-full border-gray-200 text-gray-700 hover:bg-gray-50" : "w-full"}
               >
                 {user.isBlocked ? "Unblock account" : "Block account"}
               </Button>
@@ -341,7 +347,7 @@ export function UsersTable({
         ))}
       </div>
 
-      <div className="flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
         <span>
           {total} user{total === 1 ? "" : "s"}
         </span>
@@ -351,7 +357,7 @@ export function UsersTable({
             variant="outline"
             disabled={page <= 1 || isPending}
             onClick={() => goToPage(page - 1)}
-            className="border-slate-700 bg-transparent text-slate-300"
+            className="border-gray-200 text-gray-700 hover:bg-gray-50"
           >
             Previous
           </Button>
@@ -363,7 +369,7 @@ export function UsersTable({
             variant="outline"
             disabled={page >= totalPages || isPending}
             onClick={() => goToPage(page + 1)}
-            className="border-slate-700 bg-transparent text-slate-300"
+            className="border-gray-200 text-gray-700 hover:bg-gray-50"
           >
             Next
           </Button>
