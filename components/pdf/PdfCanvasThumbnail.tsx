@@ -2,15 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import { pdf } from "@react-pdf/renderer";
-import * as pdfjsLib from "pdfjs-dist";
 import type { PDFDocumentLoadingTask } from "pdfjs-dist";
 import { getTemplateComponent } from "@/components/pdf/template";
 import { AppResume } from "@/types/resume";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+// pdfjs-dist must NEVER be a static top-level import here: its build
+// constructs `const SCALE_MATRIX = new DOMMatrix()` at module scope (not
+// inside a function), so merely importing the module — even without
+// calling anything in it — throws "DOMMatrix is not defined" the moment
+// it's evaluated outside a browser. Next still evaluates a "use client"
+// file's static imports during the server-side render pass (SSR/SSG) that
+// produces the initial HTML, so a static import here crashed every page
+// that (transitively) renders this component during prerendering. Loaded
+// dynamically inside the client-only useEffect below instead, so the
+// module is only ever evaluated in the browser, after mount.
+let workerConfigured = false;
 
 // Renders page 1 of the resume's *actual* PDF (via the same react-pdf →
 // pdf.js → <canvas> pipeline as PDFPreview.tsx) at thumbnail size, instead
@@ -39,6 +45,16 @@ export default function PdfCanvasThumbnail({ resume, className = "" }: PdfCanvas
         const TemplateComponent = getTemplateComponent(resume.templateId);
         const blob = await pdf(<TemplateComponent resume={resume} />).toBlob();
         const buffer = await blob.arrayBuffer();
+        if (cancelled) return;
+
+        const pdfjsLib = await import("pdfjs-dist");
+        if (!workerConfigured) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+            "pdfjs-dist/build/pdf.worker.min.mjs",
+            import.meta.url,
+          ).toString();
+          workerConfigured = true;
+        }
         if (cancelled) return;
 
         loadingTask = pdfjsLib.getDocument({ data: buffer });

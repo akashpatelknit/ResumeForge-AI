@@ -5,15 +5,15 @@ import { AppResume } from "@/types/resume";
 import { pdf } from "@react-pdf/renderer";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getTemplateComponent } from "@/components/pdf/template";
-import * as pdfjsLib from "pdfjs-dist";
 import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist";
 
-// pdf.js needs its worker resolved as an asset URL — this pattern is what
-// both webpack 5 and Turbopack understand for bundling a worker file.
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+// pdfjs-dist must NEVER be a static top-level import here — see
+// components/pdf/PdfCanvasThumbnail.tsx's doc comment: its build constructs
+// `const SCALE_MATRIX = new DOMMatrix()` at module scope, which throws the
+// instant the module is evaluated outside a browser, and Next evaluates a
+// "use client" file's static imports during the server render pass too.
+// Loaded dynamically inside the client-only effect below instead.
+let workerConfigured = false;
 
 // Rendered onto <canvas> via pdf.js instead of <object type="application/pdf">
 // so we get full control over the viewer chrome — the browser's native PDF
@@ -47,6 +47,16 @@ export default function PDFPreview({ resume, zoom }: PDFPreviewProps) {
         const TemplateComponent = getTemplateComponent(resume.templateId);
         const blob = await pdf(<TemplateComponent resume={resume} />).toBlob();
         const buffer = await blob.arrayBuffer();
+        if (cancelled) return;
+
+        const pdfjsLib = await import("pdfjs-dist");
+        if (!workerConfigured) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+            "pdfjs-dist/build/pdf.worker.min.mjs",
+            import.meta.url,
+          ).toString();
+          workerConfigured = true;
+        }
         if (cancelled) return;
 
         const loadingTask = pdfjsLib.getDocument({ data: buffer });
