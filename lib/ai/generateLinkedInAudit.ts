@@ -1,16 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { linkedInAuditSchema } from "./schemas";
 import { buildLinkedInAuditPrompt } from "./buildLinkedInAuditPrompt";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / linkedin.ts
-// — kept as a local copy rather than a shared import, matching how those do it.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 export interface LinkedInAuditResult {
   headlineScore: number;
@@ -34,33 +24,18 @@ function toStringArray(value: unknown): string[] {
   );
 }
 
-export async function generateLinkedInAudit({
-  headline,
-  aboutSection,
-  resume,
-}: GenerateLinkedInAuditParams): Promise<LinkedInAuditResult> {
-  const prompt = buildLinkedInAuditPrompt({ headline, aboutSection, resume });
-
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as {
-    headlineScore?: unknown;
-    headlineSuggestions?: unknown;
-    aboutSuggestions?: unknown;
-    missingKeywords?: unknown;
-    rewrittenHeadline?: unknown;
-    rewrittenAbout?: unknown;
-  };
-
-  if (
-    typeof parsed.headlineScore !== "number" ||
-    Number.isNaN(parsed.headlineScore)
-  ) {
-    throw new Error("AI response did not include a valid headline score");
-  }
+export async function generateLinkedInAudit(
+  { headline, aboutSection, resume }: GenerateLinkedInAuditParams,
+  userId: string,
+): Promise<LinkedInAuditResult> {
+  const parsed = await callAiGateway({
+    feature: "linkedin.audit",
+    userId,
+    input: { headline, aboutSection, resume },
+    promptBuilder: buildLinkedInAuditPrompt,
+    outputSchema: linkedInAuditSchema,
+    freeText: [headline, aboutSection],
+  });
 
   const hasResume = resume !== undefined && resume !== null;
 

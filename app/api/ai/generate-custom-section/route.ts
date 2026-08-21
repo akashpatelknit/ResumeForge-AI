@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateCustomSection } from "@/lib/ai/generateCustomSection";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -67,18 +68,14 @@ export async function POST(request: NextRequest) {
     typeof sectionTitleValue === "string" ? sectionTitleValue : undefined;
 
   try {
-    const entry = await generateCustomSection({
-      rawInput,
-      existingEntry,
-      sectionTitle,
-    });
+    const entry = await generateCustomSection(
+      { rawInput, existingEntry, sectionTitle },
+      userId,
+    );
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json(entry);
   } catch (error) {
     console.error("Failed to generate custom section entry:", error);
-    return NextResponse.json(
-      { error: "Failed to generate content. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to generate content. Please try again.");
   }
 }

@@ -425,3 +425,27 @@ model UserOutreachSettings {
 
   @@map("user_outreach_settings")
 }
+
+// One row per call made through the AI Gateway (lib/ai/gateway.ts) — every
+// AI feature in the app, success or failure. Keyed by Clerk userId same as
+// UsageCounter/UserOutreachSettings above (no Prisma User model / FK); an
+// unauthenticated caller (e.g. the pre-login resume parser) is logged as
+// "anon:<anonId>" rather than a null userId, so every row still has a
+// queryable per-actor identifier.
+model AiUsageLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id")
+  feature      String
+  model        String
+  // Estimated from character counts (~4 chars/token), not the provider's
+  // actual usage metadata — see lib/ai/gateway.ts. Null when the call failed
+  // before a prompt/response existed to estimate from.
+  inputTokens  Int?     @map("input_tokens")
+  outputTokens Int?     @map("output_tokens")
+  status       String
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([userId])
+  @@index([feature])
+  @@map("ai_usage_logs")
+}

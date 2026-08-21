@@ -1,14 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { resumeHighlightsSchema } from "./schemas";
 import { buildHighlightsPrompt } from "./buildHighlightsPrompt";
-
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 interface GenerateHighlightsParams {
   rawInput?: string;
@@ -17,32 +9,26 @@ interface GenerateHighlightsParams {
   techStack?: string[];
 }
 
-export async function generateHighlights({
-  rawInput,
-  existingHighlights,
-  projectName,
-  techStack,
-}: GenerateHighlightsParams): Promise<string[]> {
+export async function generateHighlights(
+  { rawInput, existingHighlights, projectName, techStack }: GenerateHighlightsParams,
+  userId: string,
+): Promise<string[]> {
   if (!rawInput?.trim() && (!existingHighlights || existingHighlights.length === 0)) {
     throw new Error(
       "Nothing to generate from — add project notes or write a highlight first",
     );
   }
 
-  const prompt = buildHighlightsPrompt({
-    rawInput,
-    existingHighlights,
-    projectName,
-    techStack,
+  const parsed = await callAiGateway({
+    feature: "resume.highlights",
+    userId,
+    input: { rawInput, existingHighlights, projectName, techStack },
+    promptBuilder: buildHighlightsPrompt,
+    outputSchema: resumeHighlightsSchema,
+    freeText: [rawInput],
   });
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as { highlights?: unknown };
-  if (!Array.isArray(parsed.highlights) || parsed.highlights.length === 0) {
+  if (parsed.highlights.length === 0) {
     throw new Error("AI response did not include highlights");
   }
 

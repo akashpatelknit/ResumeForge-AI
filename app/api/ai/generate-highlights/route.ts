@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateHighlights } from "@/lib/ai/generateHighlights";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -46,19 +47,14 @@ export async function POST(request: NextRequest) {
     : undefined;
 
   try {
-    const highlights = await generateHighlights({
-      rawInput,
-      existingHighlights,
-      projectName,
-      techStack,
-    });
+    const highlights = await generateHighlights(
+      { rawInput, existingHighlights, projectName, techStack },
+      userId,
+    );
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ highlights });
   } catch (error) {
     console.error("Failed to generate highlights:", error);
-    return NextResponse.json(
-      { error: "Failed to generate highlights. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to generate highlights. Please try again.");
   }
 }

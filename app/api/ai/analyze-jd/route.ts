@@ -4,6 +4,7 @@ import { getResume, getResumeAnalytics, trackEvent } from "@/lib/db/resumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { generateAnalyzeJd } from "@/lib/ai/generateAnalyzeJd";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -68,13 +69,10 @@ export async function POST(request: NextRequest) {
 
   let result;
   try {
-    result = await generateAnalyzeJd({ resume, jobDescription });
+    result = await generateAnalyzeJd({ resume, jobDescription }, userId);
   } catch (error) {
     console.error("ATS analysis failed:", error);
-    return NextResponse.json(
-      { error: "Failed to analyze this job description. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to analyze this job description. Please try again.");
   }
 
   try {

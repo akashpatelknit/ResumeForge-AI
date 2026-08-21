@@ -319,6 +319,17 @@ exports.Prisma.UserOutreachSettingsScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AiUsageLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  feature: 'feature',
+  model: 'model',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -413,7 +424,8 @@ exports.Prisma.ModelName = {
   QuickApplyEntry: 'QuickApplyEntry',
   UploadedResume: 'UploadedResume',
   SavedJob: 'SavedJob',
-  UserOutreachSettings: 'UserOutreachSettings'
+  UserOutreachSettings: 'UserOutreachSettings',
+  AiUsageLog: 'AiUsageLog'
 };
 
 /**

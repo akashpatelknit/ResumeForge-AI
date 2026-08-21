@@ -1,16 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { outreachCoverLetterSchema } from "./schemas";
 import { buildCoverLetterPrompt } from "./buildCoverLetterPrompt";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / linkedin.ts
-// — kept as a local copy rather than a shared import, matching how those do it.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 interface GenerateCoverLetterParams {
   resume: string | object;
@@ -18,21 +8,23 @@ interface GenerateCoverLetterParams {
   tone?: string;
 }
 
-export async function generateCoverLetter({
-  resume,
-  jobDescription,
-  tone,
-}: GenerateCoverLetterParams): Promise<string> {
-  const prompt = buildCoverLetterPrompt({ resume, jobDescription, tone });
+export async function generateCoverLetter(
+  { resume, jobDescription, tone }: GenerateCoverLetterParams,
+  userId: string,
+): Promise<string> {
+  const parsed = await callAiGateway({
+    feature: "outreach.coverLetter",
+    userId,
+    input: { resume, jobDescription, tone },
+    promptBuilder: buildCoverLetterPrompt,
+    outputSchema: outreachCoverLetterSchema,
+    freeText: [
+      typeof resume === "string" ? resume : undefined,
+      typeof jobDescription === "string" ? jobDescription : undefined,
+    ],
+  });
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as { coverLetter?: unknown };
-
-  if (typeof parsed.coverLetter !== "string" || !parsed.coverLetter.trim()) {
+  if (!parsed.coverLetter.trim()) {
     throw new Error("AI response did not include a cover letter");
   }
 

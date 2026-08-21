@@ -1,21 +1,17 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { outreachColdEmailSchema } from "./schemas";
 import { buildColdEmailPrompt } from "./buildColdEmailPrompt";
-export function parseAIJson(text: string) {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
 
-  return JSON.parse(cleaned);
-}
-
-export async function generateColdEmails(payload: any) {
-  const prompt = buildColdEmailPrompt(payload);
-
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response is empty");
-  }
-
-  return parseAIJson(res);
+export async function generateColdEmails(payload: any, userId: string) {
+  return callAiGateway({
+    feature: "outreach.coldEmail",
+    userId,
+    input: payload,
+    promptBuilder: buildColdEmailPrompt,
+    outputSchema: outreachColdEmailSchema,
+    freeText: [
+      typeof payload?.jobDescription === "string" ? payload.jobDescription : undefined,
+      typeof payload?.resume === "string" ? payload.resume : undefined,
+    ],
+  });
 }

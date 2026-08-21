@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateAchievements } from "@/lib/ai/generateAchievements";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -43,19 +44,14 @@ export async function POST(request: NextRequest) {
   const company = typeof companyValue === "string" ? companyValue : undefined;
 
   try {
-    const achievements = await generateAchievements({
-      rawInput,
-      existingAchievements,
-      role,
-      company,
-    });
+    const achievements = await generateAchievements(
+      { rawInput, existingAchievements, role, company },
+      userId,
+    );
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ achievements });
   } catch (error) {
     console.error("Failed to generate achievements:", error);
-    return NextResponse.json(
-      { error: "Failed to generate achievements. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to generate achievements. Please try again.");
   }
 }

@@ -1,18 +1,8 @@
 import { randomUUID } from "crypto";
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { jobAnalyzeSchema } from "./schemas";
 import { buildAnalyzeJdPrompt } from "./buildAnalyzeJdPrompt";
 import { parseBulletTarget, FALLBACK_SKILL_CATEGORY } from "@/lib/ats/applySuggestion";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / linkedin.ts
-// — kept as a local copy rather than a shared import, matching how those do it.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 export type AtsSuggestionType = "add_skill" | "rewrite_bullet" | "add_bullet";
 
@@ -120,27 +110,18 @@ function sanitizeSuggestions(value: unknown): AtsSuggestion[] {
   return suggestions;
 }
 
-export async function generateAnalyzeJd({
-  resume,
-  jobDescription,
-}: GenerateAnalyzeJdParams): Promise<AnalyzeJdResult> {
-  const prompt = buildAnalyzeJdPrompt({ resume, jobDescription });
-
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as {
-    score?: unknown;
-    matchedKeywords?: unknown;
-    missingKeywords?: unknown;
-    suggestions?: unknown;
-  };
-
-  if (typeof parsed.score !== "number" || Number.isNaN(parsed.score)) {
-    throw new Error("AI response did not include a valid score");
-  }
+export async function generateAnalyzeJd(
+  { resume, jobDescription }: GenerateAnalyzeJdParams,
+  userId: string,
+): Promise<AnalyzeJdResult> {
+  const parsed = await callAiGateway({
+    feature: "job.analyze",
+    userId,
+    input: { resume, jobDescription },
+    promptBuilder: buildAnalyzeJdPrompt,
+    outputSchema: jobAnalyzeSchema,
+    freeText: [jobDescription, typeof resume === "string" ? resume : undefined],
+  });
 
   return {
     score: Math.max(0, Math.min(100, Math.round(parsed.score))),

@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { fetchReadme } from "@/lib/github";
 import { generateProjectFromRepo } from "@/lib/ai/generateProjectFromRepo";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -49,20 +50,14 @@ export async function POST(request: NextRequest) {
   const repoName = repoFullName.split("/").pop() || repoFullName;
 
   try {
-    const result = await generateProjectFromRepo({
-      repoName,
-      repoDescription,
-      language,
-      topics,
-      readme,
-    });
+    const result = await generateProjectFromRepo(
+      { repoName, repoDescription, language, topics, readme },
+      userId,
+    );
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Failed to generate project from repo:", error);
-    return NextResponse.json(
-      { error: "Failed to generate a project from this repository. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to generate a project from this repository. Please try again.");
   }
 }

@@ -1,14 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { resumeCustomSectionSchema } from "./schemas";
 import { buildCustomSectionPrompt } from "./buildCustomSectionPrompt";
-
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 export interface GeneratedCustomSectionEntry {
   heading: string;
@@ -28,11 +20,10 @@ interface GenerateCustomSectionParams {
   sectionTitle?: string;
 }
 
-export async function generateCustomSection({
-  rawInput,
-  existingEntry,
-  sectionTitle,
-}: GenerateCustomSectionParams): Promise<GeneratedCustomSectionEntry> {
+export async function generateCustomSection(
+  { rawInput, existingEntry, sectionTitle }: GenerateCustomSectionParams,
+  userId: string,
+): Promise<GeneratedCustomSectionEntry> {
   const hasExisting =
     !!existingEntry &&
     (!!existingEntry.heading?.trim() ||
@@ -45,20 +36,16 @@ export async function generateCustomSection({
     );
   }
 
-  const prompt = buildCustomSectionPrompt({ rawInput, existingEntry, sectionTitle });
+  const parsed = await callAiGateway({
+    feature: "resume.customSection",
+    userId,
+    input: { rawInput, existingEntry, sectionTitle },
+    promptBuilder: buildCustomSectionPrompt,
+    outputSchema: resumeCustomSectionSchema,
+    freeText: [rawInput],
+  });
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as {
-    heading?: unknown;
-    subheading?: unknown;
-    bulletPoints?: unknown;
-  };
-
-  if (typeof parsed.heading !== "string" || !parsed.heading.trim()) {
+  if (!parsed.heading.trim()) {
     throw new Error("AI response did not include a heading");
   }
 

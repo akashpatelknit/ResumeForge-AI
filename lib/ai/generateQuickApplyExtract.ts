@@ -1,16 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { outreachQuickApplyExtractSchema } from "./schemas";
 import { buildQuickApplyExtractPrompt } from "./buildQuickApplyExtractPrompt";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / extractJobIdentity.ts
-// — kept as a local copy rather than a shared import, matching how those do it.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 export interface QuickApplyExtractResult {
   recipientEmail: string | null;
@@ -23,15 +13,21 @@ function cleanField(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
-export async function generateQuickApplyExtract(pastedText: string): Promise<QuickApplyExtractResult> {
-  const prompt = buildQuickApplyExtractPrompt({ pastedText });
-
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as {
+export async function generateQuickApplyExtract(pastedText: string, userId: string): Promise<QuickApplyExtractResult> {
+  // No `freeText` pre-check here on purpose: this route is documented
+  // (app/api/outreach/quick-apply/extract/route.ts) as deliberately lenient
+  // — pasted context is expected to be a short, partial snippet, and the
+  // stricter nonsense-detection is explicitly reserved for the generate
+  // endpoint. Adding a length/gibberish reject here would undo that
+  // existing product decision. Still covered by the always-on preamble +
+  // output-level refusal check, same as every other feature.
+  const parsed = (await callAiGateway({
+    feature: "outreach.quickApplyExtract",
+    userId,
+    input: { pastedText },
+    promptBuilder: buildQuickApplyExtractPrompt,
+    outputSchema: outreachQuickApplyExtractSchema,
+  })) as {
     recipientEmail?: unknown;
     companyName?: unknown;
     roleTitle?: unknown;

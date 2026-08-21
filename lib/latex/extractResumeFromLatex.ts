@@ -1,5 +1,6 @@
 import "server-only";
-import { generateText } from "@/lib/ai/llm";
+import { callAiGateway } from "@/lib/ai/gateway";
+import { resumeLatexImportSchema } from "@/lib/ai/schemas";
 import type {
   Achievement,
   CustomSection,
@@ -18,14 +19,6 @@ import type {
 // don't map onto the structured schema are necessarily lost in this
 // direction — callers should surface that to the user, not treat the
 // result as a lossless round-trip.
-
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-  return JSON.parse(cleaned);
-}
 
 const SCHEMA_INSTRUCTIONS = `Return ONLY a single JSON object (no markdown fences, no commentary) with exactly this shape:
 {
@@ -72,17 +65,22 @@ export type ExtractedResumeFields = Omit<
   | "styleConfig"
 >;
 
+function buildLatexToResumePrompt(latexSource: string): string {
+  return `You are extracting structured resume data from a LaTeX document.\n\n${SCHEMA_INSTRUCTIONS}\n\nLaTeX source:\n"""\n${latexSource}\n"""`;
+}
+
 export async function extractResumeFromLatex(
   latexSource: string,
+  userId: string,
 ): Promise<ExtractedResumeFields> {
-  const prompt = `You are extracting structured resume data from a LaTeX document.\n\n${SCHEMA_INSTRUCTIONS}\n\nLaTeX source:\n"""\n${latexSource}\n"""`;
-
-  const response = await generateText(prompt);
-  if (!response) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(response) as Partial<ResumeData>;
+  const parsed = (await callAiGateway({
+    feature: "resume.latexImport",
+    userId,
+    input: latexSource,
+    promptBuilder: buildLatexToResumePrompt,
+    outputSchema: resumeLatexImportSchema,
+    freeText: [latexSource],
+  })) as Partial<ResumeData>;
 
   // Defensive defaults — never trust an LLM response to have every key,
   // even with explicit schema instructions. This has to go item-by-item,

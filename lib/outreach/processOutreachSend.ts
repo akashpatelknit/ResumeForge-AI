@@ -14,6 +14,8 @@ import {
 } from "@/lib/gmail/getValidAccessToken";
 import { GmailSendError, sendQuickApplyEmail } from "@/lib/gmail/sendMail";
 import { generateScheduledOutreachEmail } from "@/lib/ai/generateScheduledOutreachEmail";
+import { AiRefusalError, AI_REFUSAL_MESSAGE } from "@/lib/ai/policy/refusal";
+import { AiRateLimitError } from "@/lib/ai/rateLimit";
 import type { ResumeContext } from "@/lib/ai/formatResumeContext";
 import { buildResumeAttachmentFilename } from "@/lib/outreach/resumeAttachmentFilename";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
@@ -147,12 +149,15 @@ export async function processOutreachSend(job: SavedJob) {
     }
 
     try {
-      const generated = await generateScheduledOutreachEmail({
-        companyName: job.company,
-        roleTitle: job.jobTitle,
-        jobDescription: job.jobDescription,
-        resumeContext,
-      });
+      const generated = await generateScheduledOutreachEmail(
+        {
+          companyName: job.company,
+          roleTitle: job.jobTitle,
+          jobDescription: job.jobDescription,
+          resumeContext,
+        },
+        job.userId,
+      );
       subject = generated.subject;
       bodyText = generated.body;
       await recordAiGeneration(job.userId, gate.plan);
@@ -163,7 +168,13 @@ export async function processOutreachSend(job: SavedJob) {
       });
     } catch (error) {
       console.error(`Failed to generate outreach email for job ${job.id}:`, error);
-      await markOutreachSendFailed(job.id, job.sendAttempts, "Failed to generate the outreach email.");
+      const message =
+        error instanceof AiRefusalError
+          ? AI_REFUSAL_MESSAGE
+          : error instanceof AiRateLimitError
+            ? error.message
+            : "Failed to generate the outreach email.";
+      await markOutreachSendFailed(job.id, job.sendAttempts, message);
       return;
     }
   }

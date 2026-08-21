@@ -1,4 +1,5 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { linkedInOutreachSchema } from "./schemas";
 import { LINKEDIN_PROMPTS } from "./linkedinPrompts";
 
 // Persona/guardrails formerly sent as a separate "system" role message to
@@ -79,19 +80,15 @@ SAFETY:
 You exist to help users communicate professionally and increase real hiring outcomes.
 `.trim();
 
-export async function generateLinkedInContent({
-  tool,
-  resume,
-  jobDescription,
-  tone,
-  manualInputs,
-}: {
+interface LinkedInContentInput {
   tool: keyof typeof LINKEDIN_PROMPTS;
   resume: string | object;
   jobDescription?: string | object;
   manualInputs?: Record<string, string>;
   tone?: string;
-}) {
+}
+
+function buildLinkedInPrompt({ tool, resume, jobDescription, tone, manualInputs }: LinkedInContentInput): string {
   const resumeText =
     typeof resume === "string"
       ? resume.trim()
@@ -105,7 +102,7 @@ export async function generateLinkedInContent({
   const hasJobDescription = jobDesc.trim().length > 0;
   const hasManualInputs = manualInputs && Object.keys(manualInputs).length > 0;
 
-  const prompt = `
+  return `
 ${SYSTEM_PROMPT}
 
 TASK: ${tool.toUpperCase()}
@@ -145,6 +142,25 @@ ${
 INSTRUCTIONS:
 ${LINKEDIN_PROMPTS[tool]}
   `.trim();
+}
 
-  return await generateText(prompt);
+export async function generateLinkedInContent(input: LinkedInContentInput, userId: string): Promise<string> {
+  return callAiGateway({
+    feature: "linkedin.outreach",
+    userId,
+    input,
+    promptBuilder: buildLinkedInPrompt,
+    outputSchema: linkedInOutreachSchema,
+    // manualInputs (an open-ended client-supplied key/value map — see the
+    // policy audit notes in the summary) is deliberately NOT included here:
+    // its values are often legitimately short ("NYC", "Remote"), so the
+    // same minimum-length/gibberish check that suits a job description
+    // would false-positive-reject normal use. It's still covered by the
+    // always-on preamble + output-level refusal check, just not this
+    // deterministic pre-check.
+    freeText: [
+      typeof input.resume === "string" ? input.resume : undefined,
+      typeof input.jobDescription === "string" ? input.jobDescription : undefined,
+    ],
+  });
 }

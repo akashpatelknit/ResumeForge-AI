@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { extractResumeText, ResumeFileError } from "@/lib/textExtraction/extractResumeText";
 import { generateParseResume } from "@/lib/ai/generateParseResume";
+import { AiRefusalError, AI_REFUSAL_MESSAGE } from "@/lib/ai/policy/refusal";
+import { AiRateLimitError } from "@/lib/ai/rateLimit";
 import {
   ANON_ID_COOKIE,
   FREE_PARSE_LIMIT,
@@ -66,13 +68,34 @@ export async function POST(request: NextRequest) {
 
   let resume;
   try {
-    resume = await generateParseResume(text);
+    // No Clerk userId for an anonymous caller — anonId (already generated
+    // above for the free-parse quota) is the closest per-actor identifier
+    // available, so AiUsageLog rows for pre-login parses are still
+    // attributable to a single anonymous session rather than blank.
+    resume = await generateParseResume(text, userId ?? `anon:${anonId}`);
   } catch (error) {
     console.error("Resume parse (Gemini) failed:", error);
-    const res = NextResponse.json(
-      { error: "AI_PARSE_FAILED", message: "Something went wrong reading your resume. Please try again." },
-      { status: 502 },
-    );
+
+    // AI_RATE_LIMITED is deliberately a different code from the
+    // RATE_LIMITED one above (the anonymous free-parse quota) — they're
+    // different failures (lifetime quota vs. request-rate abuse
+    // prevention) and useResumeUpload.ts's caller could otherwise conflate
+    // them if either ever branches on the code instead of just showing
+    // `message`.
+    if (error instanceof AiRateLimitError) {
+      const res = NextResponse.json(
+        { error: "AI_RATE_LIMITED", message: error.message },
+        { status: 429, headers: { "Retry-After": String(error.retryAfterSeconds) } },
+      );
+      if (setAnonCookie && anonId) applyAnonCookie(res, anonId);
+      return res;
+    }
+
+    const message =
+      error instanceof AiRefusalError
+        ? AI_REFUSAL_MESSAGE
+        : "Something went wrong reading your resume. Please try again.";
+    const res = NextResponse.json({ error: "AI_PARSE_FAILED", message }, { status: 502 });
     if (setAnonCookie && anonId) applyAnonCookie(res, anonId);
     return res;
   }

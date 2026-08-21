@@ -1,16 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { resumeProjectFromRepoSchema } from "./schemas";
 import { buildProjectFromRepoPrompt } from "./buildProjectFromRepoPrompt";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / linkedin.ts
-// — kept as a local copy rather than a shared import, matching how those do it.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 export interface GeneratedProjectFromRepo {
   projectName: string;
@@ -34,34 +24,20 @@ function toStringArray(value: unknown): string[] {
   );
 }
 
-export async function generateProjectFromRepo({
-  repoName,
-  repoDescription,
-  language,
-  topics,
-  readme,
-}: GenerateProjectFromRepoParams): Promise<GeneratedProjectFromRepo> {
-  const prompt = buildProjectFromRepoPrompt({
-    repoName,
-    repoDescription,
-    language,
-    topics,
-    readme,
+export async function generateProjectFromRepo(
+  { repoName, repoDescription, language, topics, readme }: GenerateProjectFromRepoParams,
+  userId: string,
+): Promise<GeneratedProjectFromRepo> {
+  const parsed = await callAiGateway({
+    feature: "resume.projectFromRepo",
+    userId,
+    input: { repoName, repoDescription, language, topics, readme },
+    promptBuilder: buildProjectFromRepoPrompt,
+    outputSchema: resumeProjectFromRepoSchema,
+    freeText: [readme ?? undefined],
   });
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as {
-    projectName?: unknown;
-    description?: unknown;
-    highlights?: unknown;
-    techStack?: unknown;
-  };
-
-  if (typeof parsed.projectName !== "string" || !parsed.projectName.trim()) {
+  if (!parsed.projectName.trim()) {
     throw new Error("AI response did not include a project name");
   }
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { extractResumeFromLatex } from "@/lib/latex/extractResumeFromLatex";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -29,14 +30,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await extractResumeFromLatex(latexCode);
+    const result = await extractResumeFromLatex(latexCode, userId);
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Failed to extract resume data from LaTeX:", error);
-    return NextResponse.json(
-      { error: "Failed to parse form fields from LaTeX" },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to parse form fields from LaTeX");
   }
 }

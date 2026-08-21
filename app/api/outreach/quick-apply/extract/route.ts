@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateQuickApplyExtract } from "@/lib/ai/generateQuickApplyExtract";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 // Debounced auto-fill for Quick Apply's "Paste Job Post or Context" field —
 // deliberately lenient: pasted context is optional and can be a short,
@@ -31,11 +32,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await generateQuickApplyExtract(pastedText);
+    const result = await generateQuickApplyExtract(pastedText, userId);
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Quick Apply context extraction failed:", error);
-    return NextResponse.json({ error: "Extraction failed" }, { status: 500 });
+    return aiRouteErrorResponse(error, "Extraction failed");
   }
 }

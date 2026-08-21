@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateSummary } from "@/lib/ai/generateSummary";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -56,18 +57,14 @@ export async function POST(request: NextRequest) {
       : undefined;
 
   try {
-    const summary = await generateSummary({
-      rawInput,
-      existingSummary,
-      resumeContext,
-    });
+    const summary = await generateSummary(
+      { rawInput, existingSummary, resumeContext },
+      userId,
+    );
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ summary });
   } catch (error) {
     console.error("Failed to generate summary:", error);
-    return NextResponse.json(
-      { error: "Failed to generate summary. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to generate summary. Please try again.");
   }
 }

@@ -1,17 +1,6 @@
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { resumeSummarySchema } from "./schemas";
 import { buildSummaryPrompt } from "./buildSummaryPrompt";
-
-// Same strip-fences-then-parse pattern as generateColdEmails.ts / linkedin.ts
-// — kept as a local copy rather than a shared import, matching how those
-// modules each keep their own copy.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 interface ResumeContext {
   name?: string;
@@ -27,26 +16,26 @@ interface GenerateSummaryParams {
   resumeContext?: ResumeContext;
 }
 
-export async function generateSummary({
-  rawInput,
-  existingSummary,
-  resumeContext,
-}: GenerateSummaryParams): Promise<string> {
+export async function generateSummary(
+  { rawInput, existingSummary, resumeContext }: GenerateSummaryParams,
+  userId: string,
+): Promise<string> {
   if (!rawInput?.trim() && !existingSummary?.trim()) {
     throw new Error(
       "Nothing to generate from — add some notes, paste a job description, or write a summary first",
     );
   }
 
-  const prompt = buildSummaryPrompt({ rawInput, existingSummary, resumeContext });
+  const parsed = await callAiGateway({
+    feature: "resume.summary",
+    userId,
+    input: { rawInput, existingSummary, resumeContext },
+    promptBuilder: buildSummaryPrompt,
+    outputSchema: resumeSummarySchema,
+    freeText: [rawInput, existingSummary],
+  });
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as { summary?: unknown };
-  if (typeof parsed.summary !== "string" || !parsed.summary.trim()) {
+  if (!parsed.summary.trim()) {
     throw new Error("AI response did not include a summary");
   }
 

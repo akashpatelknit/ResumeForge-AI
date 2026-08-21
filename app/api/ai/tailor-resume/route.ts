@@ -4,6 +4,7 @@ import { getResume } from "@/lib/db/resumes";
 import { mapResumeFromDB } from "@/mapper/mapResumeFromDB";
 import { generateTailorResume } from "@/lib/ai/generateTailorResume";
 import { checkAiGate, recordAiGeneration } from "@/lib/subscription/aiGate";
+import { aiRouteErrorResponse } from "@/lib/ai/policy/refusal";
 
 // Tailors a resume's wording/emphasis to a job description — reworded
 // bullets and reordered skills only, never fabricated content (see
@@ -58,14 +59,11 @@ export async function POST(request: NextRequest) {
   const resume = mapResumeFromDB(resumeRow);
 
   try {
-    const result = await generateTailorResume({ resume, jobDescription });
+    const result = await generateTailorResume({ resume, jobDescription }, userId);
     await recordAiGeneration(userId, gate.plan);
     return NextResponse.json({ result });
   } catch (error) {
     console.error("Resume tailoring failed:", error);
-    return NextResponse.json(
-      { error: "Failed to tailor this resume. Please try again." },
-      { status: 500 },
-    );
+    return aiRouteErrorResponse(error, "Failed to tailor this resume. Please try again.");
   }
 }

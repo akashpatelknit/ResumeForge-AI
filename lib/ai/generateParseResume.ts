@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
-import { generateText } from "./llm";
+import { callAiGateway } from "./gateway";
+import { resumeParseSchema } from "./schemas";
 import { buildParseResumePrompt } from "./buildParseResumePrompt";
 import type {
   Certification,
@@ -11,18 +12,6 @@ import type {
 } from "@/types/resume";
 import { DEFAULT_SECTION_ORDER } from "@/lib/resumeSections";
 import { DEFAULT_STYLE_CONFIG } from "@/types/styleConfig";
-
-// Same strip-fences-then-parse pattern as generateSummary.ts / generateColdEmails.ts
-// — kept as a local copy rather than a shared import, matching how those
-// modules each keep their own copy.
-function parseAIJson(text: string): unknown {
-  const cleaned = text
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  return JSON.parse(cleaned);
-}
 
 function str(value: unknown): string {
   return typeof value === "string" ? value : "";
@@ -172,14 +161,15 @@ function normalizeResumeData(raw: ParsedResumeJson): ResumeData {
   };
 }
 
-export async function generateParseResume(resumeText: string): Promise<ResumeData> {
-  const prompt = buildParseResumePrompt(resumeText);
+export async function generateParseResume(resumeText: string, userId: string): Promise<ResumeData> {
+  const parsed = (await callAiGateway({
+    feature: "resume.parse",
+    userId,
+    input: resumeText,
+    promptBuilder: buildParseResumePrompt,
+    outputSchema: resumeParseSchema,
+    freeText: [resumeText],
+  })) as ParsedResumeJson;
 
-  const res = await generateText(prompt);
-  if (!res) {
-    throw new Error("AI response was empty");
-  }
-
-  const parsed = parseAIJson(res) as ParsedResumeJson;
   return normalizeResumeData(parsed);
 }
